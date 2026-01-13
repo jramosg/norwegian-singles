@@ -37,10 +37,10 @@ import { DISTANCE_METERS } from '../types';
 
 /**
  * NSM follows a repeatable weekly structure.
- * Progression comes primarily from pace adjustments (VDOT) rather than volume.
+ * Progression comes primarily from pace adjustments (VDOT) and volume loading.
  * Week 6 is a test/reload week.
  */
-const WEEK_VOLUME_MULTIPLIERS = [1.0, 1.0, 1.0, 1.0, 1.0, 0.7] as const;
+const WEEK_VOLUME_MULTIPLIERS = [0.8, 0.9, 1.0, 0.95, 1.0, 0.6] as const;
 
 /**
  * Easy run durations (minutes)
@@ -72,6 +72,11 @@ const LONG_RUN_DURATIONS: Record<
 /**
  * Interval repetitions - Stable for NSM
  */
+/**
+ * Interval repetitions - Aligned with NSM guidelines:
+ * Short: 8-12, Medium: 4-6, Long: 3
+ * Total accumulated time: ~20-35 mins
+ */
 const INTERVAL_REPS_BY_DISTANCE: Record<
   Distance,
   Array<{ short: number; medium: number; long: number }>
@@ -79,18 +84,18 @@ const INTERVAL_REPS_BY_DISTANCE: Record<
   '5K': [
     { short: 6, medium: 3, long: 2 }, // Week 1: 80%
     { short: 7, medium: 4, long: 2 }, // Week 2: 90%
-    { short: 8, medium: 4, long: 2 }, // Week 3: 100%
-    { short: 8, medium: 4, long: 2 }, // Week 4: 95%
-    { short: 8, medium: 4, long: 2 }, // Week 5: 100%
-    { short: 5, medium: 2, long: 1 }, // Week 6: Unload (60%)
+    { short: 8, medium: 4, long: 3 }, // Week 3: 100%
+    { short: 7, medium: 4, long: 2 }, // Week 4: 95% (Build/Recovery)
+    { short: 8, medium: 4, long: 3 }, // Week 5: 100%
+    { short: 5, medium: 2, long: 2 }, // Week 6: Unload (60%)
   ],
   '10K': [
     { short: 8, medium: 4, long: 2 },
     { short: 9, medium: 5, long: 3 },
     { short: 10, medium: 5, long: 3 },
+    { short: 9, medium: 5, long: 3 },
     { short: 10, medium: 5, long: 3 },
-    { short: 10, medium: 5, long: 3 },
-    { short: 7, medium: 3, long: 2 },
+    { short: 6, medium: 3, long: 2 },
   ],
   '21K': [
     { short: 10, medium: 5, long: 2 },
@@ -101,10 +106,10 @@ const INTERVAL_REPS_BY_DISTANCE: Record<
     { short: 8, medium: 4, long: 2 },
   ],
   '42K': [
-    { short: 10, medium: 5, long: 3 },
-    { short: 11, medium: 5, long: 4 },
+    { short: 10, medium: 5, long: 3 }, // Focus on base building
+    { short: 11, medium: 6, long: 3 },
     { short: 12, medium: 6, long: 4 },
-    { short: 11, medium: 6, long: 4 },
+    { short: 11, medium: 6, long: 3 },
     { short: 12, medium: 6, long: 4 },
     { short: 8, medium: 4, long: 3 },
   ],
