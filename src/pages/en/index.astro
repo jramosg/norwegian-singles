@@ -17,6 +17,8 @@ const formTranslations = {
     trainingDays: t("form.trainingDays"),
     trainingDaysHint: t("form.trainingDaysHint"),
     daysPerWeek: t("form.daysPerWeek"),
+    previewThreshold: t("form.previewThreshold"),
+    previewEasy: t("form.previewEasy"),
     submit: t("form.submit"),
     validationRequired: t("form.validation.required"),
     validationFormat: t("form.validation.format"),
@@ -28,8 +30,8 @@ const formTranslations = {
 ---
 
 <AppLayout
-    title="Norwegian Singles - Training Planning"
-    description="Training planning based on the Norwegian Singles method. Conservative paces, short recoveries, exceptional results."
+    title={t("seo.title")}
+    description={t("seo.description")}
     locale={locale}
 >
     <div class="landing">

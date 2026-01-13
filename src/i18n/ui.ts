@@ -119,6 +119,10 @@ export const ui = {
     'footer.support': 'Apoyar el proyecto',
     'footer.supportTagline': 'Ayuda a financiar futuras funciones como envío al reloj, impresión de calendarios y más.',
     
+    // SEO
+    'seo.title': 'Norwegian Singles - Planificación de entrenamiento inteligente',
+    'seo.description': 'Genera planes de entrenamiento basados en el método Norwegian Singles. Optimiza tus ritmos de umbral, mejora tu VDOT y entrena como los profesionales.',
+    
     // Misc
     'loading': 'Cargando...',
     'error': 'Error',
@@ -149,6 +153,8 @@ export const ui = {
     'form.trainingDays': 'Training days',
     'form.trainingDaysHint': 'We recommend 5-6 days for optimal results',
     'form.daysPerWeek': 'days/week',
+    'form.previewThreshold': 'Threshold',
+    'form.previewEasy': 'Easy',
     'form.submit': 'Generate plan',
     'form.validation.required': 'Enter at least one time',
     'form.validation.format': 'Invalid format (use mm:ss)',
@@ -236,6 +242,10 @@ export const ui = {
     'footer.dev': 'Built by',
     'footer.support': 'Support the project',
     'footer.supportTagline': 'Help fund future features like sending to watch, calendar print, and more.',
+    
+    // SEO
+    'seo.title': 'Norwegian Singles - Smart Training Planning',
+    'seo.description': 'Generate training plans based on the Norwegian Singles method. Optimize your threshold paces, improve your VDOT, and train like the pros.',
     
     // Misc
     'loading': 'Loading...',

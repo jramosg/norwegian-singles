@@ -24,6 +24,8 @@ interface Props {
     trainingDays: string;
     trainingDaysHint: string;
     daysPerWeek: string;
+    previewThreshold: string;
+    previewEasy: string;
     submit: string;
     validationRequired: string;
     validationFormat: string;
@@ -221,11 +223,11 @@ export default function TrainingForm({ locale, translations }: Props) {
               <span className="preview-value">{preview.vdot.toFixed(1)}</span>
             </div>
             <div className="preview-row">
-              <span className="preview-label">Umbral</span>
+              <span className="preview-label">{translations.previewThreshold}</span>
               <span className="preview-value">{preview.threshold}/km</span>
             </div>
             <div className="preview-row">
-              <span className="preview-label">Fácil</span>
+              <span className="preview-label">{translations.previewEasy}</span>
               <span className="preview-value">{preview.easy}/km</span>
             </div>
           </div>

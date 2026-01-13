@@ -216,7 +216,7 @@ export default function PlanViewer({ locale, translations }: Props) {
       
       <style>{`
         .plan-viewer {
-          max-width: 900px;
+          max-width: var(--containr-max);
           margin: 0 auto;
         }
         

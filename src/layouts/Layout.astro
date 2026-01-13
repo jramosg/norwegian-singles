@@ -2,30 +2,56 @@
 import "../styles/global.css";
 import "../styles/components.css";
 import "@fontsource-variable/inter";
+import { useTranslations } from "../i18n/ui";
 
 interface Props {
-  title: string;
+  title?: string;
   description?: string;
   locale?: "es" | "en";
 }
 
 const {
-  title,
-  description = "Planificación de entrenamiento basada en el método Norwegian Singles",
   locale = "es",
 } = Astro.props;
+
+const t = useTranslations(locale);
+
+const title = Astro.props.title || t("seo.title");
+const description = Astro.props.description || t("seo.description");
 
 const alternateLocale = locale === "es" ? "en" : "es";
 const currentPath = Astro.url.pathname;
 const alternatePath = currentPath.replace(`/${locale}`, `/${alternateLocale}`);
+const siteURL = "https://norwegian-singles.app";
+
 const canonicalURL = new URL(
   currentPath,
-  Astro.site || "https://norwegian-singles.app"
+  Astro.site || siteURL
 );
 const alternateURL = new URL(
   alternatePath,
-  Astro.site || "https://norwegian-singles.app"
+  Astro.site || siteURL
 );
+
+const schemaData = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Norwegian Singles",
+  "url": siteURL,
+  "description": description,
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Jonramos",
+    "url": "https://jonramos.dev"
+  }
+};
 ---
 
 <!doctype html>
@@ -35,9 +61,12 @@ const alternateURL = new URL(
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#ef4444" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
 
     <!-- Canonical & Alternates -->
     <link rel="canonical" href={canonicalURL.href} />
@@ -49,9 +78,19 @@ const alternateURL = new URL(
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL.href} />
+    <meta property="og:site_name" content="Norwegian Singles" />
     <meta property="og:locale" content={locale === "es" ? "es_ES" : "en_US"} />
+    <meta property="og:image" content={`${siteURL}/og-image.png`} />
 
-    <!-- Fonts -->
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${siteURL}/og-image.png`} />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
 
     <title>{title}</title>
   </head>
