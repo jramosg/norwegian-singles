@@ -23,6 +23,7 @@ interface Props {
     timeHint: string;
     trainingDays: string;
     trainingDaysHint: string;
+    daysPerWeek: string;
     submit: string;
     validationRequired: string;
     validationFormat: string;
@@ -202,10 +203,11 @@ export default function TrainingForm({ locale, translations }: Props) {
               value={trainingDays}
               onChange={(e) => setTrainingDays(Number(e.target.value))}
               className="slider"
+              style={{ '--value': trainingDays } as React.CSSProperties}
             />
             <div className="days-display">
               <span className="days-value">{trainingDays}</span>
-              <span className="days-label">días/semana</span>
+              <span className="days-label">{translations.daysPerWeek}</span>
             </div>
           </div>
           <p className="form-hint">{translations.trainingDaysHint}</p>
@@ -317,13 +319,13 @@ export default function TrainingForm({ locale, translations }: Props) {
         .slider::-webkit-slider-track {
           height: 8px;
           border-radius: var(--radius-full);
-          background: var(--color-border);
+          background: transparent;
         }
         
         .slider::-moz-range-track {
           height: 8px;
           border-radius: var(--radius-full);
-          background: var(--color-border);
+          background: transparent;
           border: none;
         }
         

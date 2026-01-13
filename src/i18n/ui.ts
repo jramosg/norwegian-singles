@@ -25,9 +25,12 @@ export const ui = {
     'form.time5K': 'Marca actual 5K',
     'form.time10K': 'Marca actual 10K',
     'form.timePlaceholder': 'mm:ss',
-    'form.timeHint': 'Si solo introduces una, estimaremos la otra',
+    'form.timeHint': 'Introduce al menos una marca (5K o 10K). Estimaremos la otra automáticamente.',
     'form.trainingDays': 'Días de entrenamiento',
     'form.trainingDaysHint': 'Recomendamos 5-6 días para resultados óptimos',
+    'form.daysPerWeek': 'días/semana',
+    'form.previewThreshold': 'Umbral',
+    'form.previewEasy': 'Fácil',
     'form.submit': 'Generar plan',
     'form.validation.required': 'Introduce al menos una marca',
     'form.validation.format': 'Formato inválido (usa mm:ss)',
@@ -113,6 +116,8 @@ export const ui = {
     'footer.credit': 'Basado en el método de entrenamiento Norwegian Singles',
     'footer.disclaimer': 'Esta aplicación es una herramienta de planificación. Consulta con un profesional antes de iniciar cualquier programa de entrenamiento.',
     'footer.dev': 'Desarrollado por',
+    'footer.support': 'Apoyar el proyecto',
+    'footer.supportTagline': 'Ayuda a financiar futuras funciones como envío al reloj, impresión de calendarios y más.',
     
     // Misc
     'loading': 'Cargando...',
@@ -140,9 +145,10 @@ export const ui = {
     'form.time5K': 'Current 5K time',
     'form.time10K': 'Current 10K time',
     'form.timePlaceholder': 'mm:ss',
-    'form.timeHint': 'If you only enter one, we\'ll estimate the other',
+    'form.timeHint': 'Enter at least one time (5K or 10K). We\'ll estimate the other automatically.',
     'form.trainingDays': 'Training days',
     'form.trainingDaysHint': 'We recommend 5-6 days for optimal results',
+    'form.daysPerWeek': 'days/week',
     'form.submit': 'Generate plan',
     'form.validation.required': 'Enter at least one time',
     'form.validation.format': 'Invalid format (use mm:ss)',
@@ -228,6 +234,8 @@ export const ui = {
     'footer.credit': 'Based on the Norwegian Singles training method',
     'footer.disclaimer': 'This app is a planning tool. Consult a professional before starting any training program.',
     'footer.dev': 'Built by',
+    'footer.support': 'Support the project',
+    'footer.supportTagline': 'Help fund future features like sending to watch, calendar print, and more.',
     
     // Misc
     'loading': 'Loading...',

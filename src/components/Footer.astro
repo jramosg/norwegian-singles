@@ -30,6 +30,15 @@ const t = useTranslations(locale);
                     <li>{t("method.principle4.title")}</li>
                 </ul>
             </div>
+
+            <div class="footer-support">
+                <h4 class="footer-heading">{t("footer.support")}</h4>
+                <p class="support-text">{t("footer.supportTagline")}</p>
+                <a href="https://buymeacoffee.com/jramosg" target="_blank" rel="noopener noreferrer" class="support-button">
+                    <span class="coffee-icon">☕</span>
+                    Buy me a coffee
+                </a>
+            </div>
         </div>
 
         <div class="footer-bottom">
@@ -60,7 +69,7 @@ const t = useTranslations(locale);
 
     @media (min-width: 768px) {
         .footer-content {
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1.2fr;
         }
     }
 
@@ -117,6 +126,35 @@ const t = useTranslations(locale);
         position: absolute;
         left: 0;
         color: var(--color-accent-primary);
+    }
+
+    .support-text {
+        font-size: var(--text-sm);
+        color: var(--color-text-secondary);
+        margin-bottom: var(--space-4);
+        line-height: 1.5;
+    }
+
+    .support-button {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        background-color: #FFDD00;
+        color: #000000;
+        padding: var(--space-2) var(--space-4);
+        border-radius: var(--radius-md);
+        font-size: var(--text-sm);
+        font-weight: var(--font-bold);
+        text-decoration: none;
+        transition: transform 0.2s ease;
+    }
+
+    .support-button:hover {
+        transform: translateY(-2px);
+    }
+
+    .coffee-icon {
+        font-size: var(--text-lg);
     }
 
     .footer-bottom {
