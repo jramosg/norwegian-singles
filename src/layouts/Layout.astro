@@ -1,0 +1,72 @@
+---
+import "../styles/global.css";
+import "../styles/components.css";
+import "@fontsource-variable/inter";
+
+interface Props {
+  title: string;
+  description?: string;
+  locale?: "es" | "en";
+}
+
+const {
+  title,
+  description = "Planificación de entrenamiento basada en el método Norwegian Singles",
+  locale = "es",
+} = Astro.props;
+
+const alternateLocale = locale === "es" ? "en" : "es";
+const currentPath = Astro.url.pathname;
+const alternatePath = currentPath.replace(`/${locale}`, `/${alternateLocale}`);
+const canonicalURL = new URL(
+  currentPath,
+  Astro.site || "https://norwegian-singles.app"
+);
+const alternateURL = new URL(
+  alternatePath,
+  Astro.site || "https://norwegian-singles.app"
+);
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Canonical & Alternates -->
+    <link rel="canonical" href={canonicalURL.href} />
+    <link rel="alternate" hreflang={locale} href={canonicalURL.href} />
+    <link rel="alternate" hreflang={alternateLocale} href={alternateURL.href} />
+    <link rel="alternate" hreflang="x-default" href={canonicalURL.href} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={locale === "es" ? "es_ES" : "en_US"} />
+
+    <!-- Fonts -->
+
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+
+    <!-- Language persistence script -->
+    <script is:inline>
+      (function () {
+        const path = window.location.pathname;
+        const locale = path.split("/")[1];
+        if (locale === "es" || locale === "en") {
+          localStorage.setItem("ns-locale", locale);
+        }
+      })();
+    </script>
+  </body>
+</html>

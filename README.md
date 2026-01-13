@@ -1,43 +1,58 @@
-# Astro Starter Kit: Minimal
+# 🇳🇴 Norwegian Singles Training Planner
 
-```sh
-pnpm create astro@latest -- --template minimal
-```
+A high-performance training plan generator based strictly on the **Norwegian Singles (NS)** methodology. Designed for runners who want to improve their aerobic threshold through science-backed, repeatable, and sustainable training blocks.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## 🏃‍♂️ What is Norwegian Singles?
 
-## 🚀 Project Structure
+The Norwegian Singles method is a training philosophy centered around lactate threshold management. Unlike traditional systems that push athletes to failure, NS prioritizes staying just below the threshold to maximize recovery and volume.
 
-Inside of your Astro project, you'll see the following folders and files:
+### Key Principles
+- **⚡ Threshold Rules**: Quality work represents 20-25% of weekly volume.
+- **🎯 Never to Failure**: Paces are conservative. You finish sessions knowing you could have done more.
+- **⏱️ Short Recoveries**: 60-second breaks between intervals to maintain a steady lactate state.
+- **🔄 Repeatable System**: 6-week blocks with a test on week 6 to recalibrate paces.
 
+## 🚀 Target Distances
+The application intelligently adapts training volume and interval structure based on your goal:
+- **5K/10K**: Focus on race-pace specificity and short intervals.
+- **Half Marathon/Marathon**: Increased aerobic base and longer threshold blocks.
+
+## 🛠 Tech Stack
+- **Framework**: [Astro](https://astro.build/) (Static Site Generation + Islands Architecture)
+- **Frontend**: [React](https://reactjs.org/) (Form logic & interactive Plan Viewer)
+- **Styling**: Modern CSS variables, mobile-first design.
+- **i18n**: Native Astro internationalization (English & Spanish).
+- **Architecture**: Clean separation between calculation logic (`lib`) and UI (`components`).
+
+## 📁 Project Structure
 ```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+/src
+  ├── components/     # Astro & React components
+  ├── i18n/           # Translation dictionaries and helpers
+  ├── layouts/        # Page wrappers
+  ├── lib/            # Core logic (VDOT, Paces, Plan Generation)
+  ├── pages/          # Multilingual routes (/es, /en)
+  ├── styles/         # Global & component styles
+  └── types/          # TypeScript interfaces
 ```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
 
 ## 🧞 Commands
 
-All commands are run from the root of the project, from a terminal:
+| Command | Action |
+| :--- | :--- |
+| `pnpm install` | Installs dependencies |
+| `pnpm dev` | Starts local dev server at `localhost:4321` |
+| `pnpm build` | Build your production site to `./dist/` |
+| `pnpm preview` | Preview your build locally |
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+## 🧪 Methodology Details
+- **VDOT Calculations**: Based on Jack Daniels' oxygen power formula.
+- **Interval Structures**: 
+  - **Short**: 3–4' (15K pace)
+  - **Medium**: 6–8' (Half Marathon pace)
+  - **Long**: 10–12' (≈30K pace)
+- **Tapering**: Automatic adjustment for Race A (7-10 days) and Race B (3-4 days).
 
-## 👀 Want to learn more?
+---
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+*Based on the Norwegian training philosophy. Train smarter, not harder.*

@@ -1,0 +1,168 @@
+---
+/**
+ * Methodology Section Component
+ * 
+ * Displays Norwegian Singles principles and methodology notes
+ * Used in landing pages and plan pages
+ */
+
+import type { Locale } from '../types';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  locale: Locale;
+  includePrinciples?: boolean;
+  includeNotes?: boolean;
+}
+
+const { locale, includePrinciples = true, includeNotes = true } = Astro.props;
+const t = useTranslations(locale);
+
+const notesList = locale === 'es' 
+  ? [
+      'Descansos cortos (60s) para mantener estado de lactato elevado',
+      'Descanso: de pie, caminando o trote muy suave',
+      'Trabajo de calidad = 20-25% del volumen semanal',
+      'Rodajes Easy: extremadamente fáciles, ≤70% FC máx',
+    ]
+  : [
+      'Short recoveries (60s) to maintain elevated lactate state',
+      'Recovery: standing, walking or very easy jog',
+      'Quality work = 20-25% of weekly volume',
+      'Easy runs: extremely easy, ≤70% max HR',
+    ];
+---
+
+<div class="methodology-section">
+  {includePrinciples && (
+    <section class="method-section section">
+      <div class="container">
+        <h2 class="section-title">{t("method.title")}</h2>
+
+        <div class="principles-grid">
+          <article class="principle-card">
+            <div class="principle-icon">⚡</div>
+            <h3>{t("method.principle1.title")}</h3>
+            <p>{t("method.principle1.desc")}</p>
+          </article>
+
+          <article class="principle-card">
+            <div class="principle-icon">🎯</div>
+            <h3>{t("method.principle2.title")}</h3>
+            <p>{t("method.principle2.desc")}</p>
+          </article>
+
+          <article class="principle-card">
+            <div class="principle-icon">⏱️</div>
+            <h3>{t("method.principle3.title")}</h3>
+            <p>{t("method.principle3.desc")}</p>
+          </article>
+
+          <article class="principle-card">
+            <div class="principle-icon">🔄</div>
+            <h3>{t("method.principle4.title")}</h3>
+            <p>{t("method.principle4.desc")}</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {includeNotes && (
+    <section class="note-section section">
+      <div class="container">
+        <div class="note">
+          <h4 class="note-title">📋 {locale === 'es' ? 'Notas metodológicas' : 'Methodology Notes'}</h4>
+          <ul class="note-list">
+            {notesList.map(note => <li>{note}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+  )}
+</div>
+
+<style>
+  .section-title {
+    text-align: center;
+    margin-bottom: var(--space-10);
+  }
+
+  .principles-grid {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  @media (min-width: 640px) {
+    .principles-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .principles-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .principle-card {
+    padding: var(--space-6);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    text-align: center;
+    transition: all var(--transition-base);
+  }
+
+  .principle-card:hover {
+    border-color: var(--color-border-accent);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .principle-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--space-4);
+  }
+
+  .principle-card h3 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-2);
+  }
+
+  .principle-card p {
+    font-size: var(--text-sm);
+    margin: 0;
+    color: var(--color-text-secondary);
+  }
+
+  .note-section .note {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .note-title {
+    margin-bottom: var(--space-4);
+  }
+
+  .note-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .note-list li {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    padding-left: var(--space-4);
+    position: relative;
+  }
+
+  .note-list li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--color-accent-primary);
+  }
+</style>

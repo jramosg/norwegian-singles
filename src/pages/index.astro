@@ -1,16 +1,16 @@
 ---
+import { getSavedLocale } from "../lib/storage";
 
+// Redirect to default locale
+// Client-side will check for saved preference
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<script is:inline>
+	(function () {
+		const savedLocale = localStorage.getItem("ns-locale");
+		const targetLocale = savedLocale || "es";
+		window.location.replace("/" + targetLocale);
+	})();
+</script>
+
+<meta http-equiv="refresh" content="0;url=/es" />

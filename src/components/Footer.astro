@@ -1,0 +1,172 @@
+---
+import type { Locale } from "../types";
+import { useTranslations } from "../i18n/ui";
+
+interface Props {
+    locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <a href={`/${locale}`} class="logo">
+                    <span class="logo-icon">🇳🇴</span>
+                    <span class="logo-text">Norwegian Singles</span>
+                </a>
+                <p class="footer-tagline">{t("footer.credit")}</p>
+            </div>
+
+            <div class="footer-principles">
+                <h4 class="footer-heading">{t("method.title")}</h4>
+                <ul class="principles-list">
+                    <li>{t("method.principle1.title")}</li>
+                    <li>{t("method.principle2.title")}</li>
+                    <li>{t("method.principle3.title")}</li>
+                    <li>{t("method.principle4.title")}</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p class="disclaimer">{t("footer.disclaimer")}</p>
+            <div class="footer-legal">
+                <p class="copyright">
+                    © {new Date().getFullYear()} Norwegian Singles. All rights reserved.
+                </p>
+                <p class="developer">
+                    {t("footer.dev")} <a href="https://jonramos.dev" target="_blank" rel="noopener noreferrer">Jonramos</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<style>
+    .footer {
+        border-top: 1px solid var(--color-border);
+        padding: var(--space-12) 0 var(--space-6);
+        margin-top: auto;
+    }
+
+    .footer-content {
+        display: grid;
+        gap: var(--space-8);
+    }
+
+    @media (min-width: 768px) {
+        .footer-content {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        text-decoration: none;
+        color: var(--color-text-primary);
+        margin-bottom: var(--space-3);
+    }
+
+    .logo-icon {
+        font-size: var(--text-xl);
+    }
+
+    .logo-text {
+        font-family: var(--font-display);
+        font-size: var(--text-lg);
+        font-weight: var(--font-bold);
+    }
+
+    .footer-tagline {
+        color: var(--color-text-muted);
+        font-size: var(--text-sm);
+        margin: 0;
+    }
+
+    .footer-heading {
+        font-size: var(--text-sm);
+        font-weight: var(--font-semibold);
+        color: var(--color-text-primary);
+        margin-bottom: var(--space-4);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .principles-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2);
+    }
+
+    .principles-list li {
+        color: var(--color-text-secondary);
+        font-size: var(--text-sm);
+        padding-left: var(--space-4);
+        position: relative;
+    }
+
+    .principles-list li::before {
+        content: "→";
+        position: absolute;
+        left: 0;
+        color: var(--color-accent-primary);
+    }
+
+    .footer-bottom {
+        margin-top: var(--space-8);
+        padding-top: var(--space-6);
+        border-top: 1px solid var(--color-border);
+        text-align: center;
+    }
+
+    .disclaimer {
+        font-size: var(--text-xs);
+        color: var(--color-text-muted);
+        max-width: 600px;
+        margin: 0 auto var(--space-4);
+    }
+
+    .copyright {
+        font-size: var(--text-xs);
+        color: var(--color-text-muted);
+        margin: 0;
+    }
+
+    .footer-legal {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-2);
+    }
+
+    .developer {
+        font-size: var(--text-xs);
+        color: var(--color-text-muted);
+        margin: 0;
+    }
+
+    .developer a {
+        color: var(--color-accent-primary);
+        text-decoration: none;
+        font-weight: var(--font-medium);
+    }
+
+    .developer a:hover {
+        text-decoration: underline;
+    }
+
+    @media (min-width: 640px) {
+        .footer-legal {
+            flex-direction: row;
+            justify-content: center;
+            gap: var(--space-4);
+        }
+    }
+</style>
