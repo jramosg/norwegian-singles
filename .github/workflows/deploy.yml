@@ -1,0 +1,212 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy to Server
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && !contains(github.event.head_commit.message, '[skip deploy]') || github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        run: |
+          # Build the Docker image
+          docker build -t norwegian-singles:latest .
+
+          # Save the image as a tar file for transfer
+          docker save norwegian-singles:latest -o norwegian-singles.tar
+
+      - name: Create deployment package
+        run: |
+          # Create a deployment package with necessary files
+          mkdir -p deployment-package
+
+          # Copy docker-compose.yml (now uses image instead of build)
+          cp docker-compose.yml deployment-package/
+          echo "✅ Copied docker-compose.yml with image reference"
+
+          # Copy the Docker image tar
+          cp norwegian-singles.tar deployment-package/
+
+          # Create production environment file from secrets
+          cat > deployment-package/.env << EOF
+          PORT=${{ secrets.SITE_PORT || 4321 }}
+          SITE_URL=${{ secrets.SITE_URL }}
+          EOF
+          echo "✅ Created .env file from GitHub secrets"
+
+          # Copy environment template if it exists
+          if [ -f .env.example ]; then
+            cp .env.example deployment-package/
+          fi
+
+          # Create deployment script that loads the Docker image and runs compose
+          cat > deployment-package/load-and-deploy.sh << 'EOF'
+          #!/bin/bash
+          set -e
+
+          echo "🚀 Loading Docker image..."
+          docker load -i norwegian-singles.tar
+
+          echo "🛑 Stopping existing containers..."
+          docker-compose down 2>/dev/null || true
+
+          echo "🚀 Starting containers with pre-built image..."
+          docker-compose up -d
+
+          echo "⏱️  Waiting for application to be healthy..."
+          sleep 10
+
+          # Health check using docker-compose healthcheck
+          max_attempts=12
+          attempt=1
+          while [ $attempt -le $max_attempts ]; do
+            if docker-compose ps | grep -q "healthy"; then
+              echo "✅ Application is healthy!"
+              break
+            fi
+            
+            if [ $attempt -eq $max_attempts ]; then
+              echo "❌ Health check failed after $max_attempts attempts"
+              echo "📋 Container status:"
+              docker-compose ps
+              echo "📋 Recent logs:"
+              docker-compose logs --tail=20
+              exit 1
+            fi
+            
+            echo "⏳ Attempt $attempt/$max_attempts - waiting..."
+            sleep 5
+            ((attempt++))
+          done
+
+          echo "🧹 Cleaning up..."
+          rm -f norwegian-singles.tar
+
+          echo "✅ Deployment completed successfully!"
+          echo "📊 Container status:"
+          docker-compose ps
+          EOF
+
+          chmod +x deployment-package/load-and-deploy.sh
+
+          # Create a tar archive of the deployment package
+          tar -czf deployment-package.tar.gz -C deployment-package .
+
+      - name: Upload deployment package to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          source: 'deployment-package.tar.gz'
+          target: '/tmp/'
+
+      - name: Deploy on server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          script: |
+            # Set deployment directory
+            DEPLOY_DIR="/root/apps/norwegian-singles"
+
+            # Create deployment directory if it doesn't exist
+            mkdir -p $DEPLOY_DIR
+
+            # Extract deployment package to a temporary directory first
+            TEMP_EXTRACT_DIR="/tmp/norwegian-singles-deploy-$(date +%Y%m%d_%H%M%S)"
+            mkdir -p $TEMP_EXTRACT_DIR
+            tar -xzf /tmp/deployment-package.tar.gz -C $TEMP_EXTRACT_DIR
+
+            # Copy files to deployment directory, preserving existing files
+            cd $TEMP_EXTRACT_DIR
+
+            # Copy new application files (overwrite these)
+            cp docker-compose.yml $DEPLOY_DIR/
+            cp load-and-deploy.sh $DEPLOY_DIR/
+            cp norwegian-singles.tar $DEPLOY_DIR/
+
+            # Copy environment file
+            if [ -f .env ]; then
+              cp .env $DEPLOY_DIR/.env
+              echo "✅ Copied .env file to deployment directory"
+            else
+              echo "❌ .env not found in deployment package!"
+              exit 1
+            fi
+
+            # Copy .env.example for reference if it doesn't exist
+            if [ -f .env.example ] && [ ! -f $DEPLOY_DIR/.env.example ]; then
+              cp .env.example $DEPLOY_DIR/
+            fi
+
+            # Clean up temporary extraction directory
+            rm -rf $TEMP_EXTRACT_DIR
+
+            # Change to deployment directory and make scripts executable
+            cd $DEPLOY_DIR
+            chmod +x *.sh
+
+            # Run the deployment
+            ./load-and-deploy.sh
+
+            # Clean up
+            rm -f /tmp/deployment-package.tar.gz
+
+      - name: Verify deployment
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          script: |
+            # Check if the application is running
+            cd /root/apps/norwegian-singles
+
+            # Give the application time to start
+            sleep 10
+
+            # Check if containers are running and healthy
+            if docker-compose ps | grep -q "Up"; then
+              echo "✅ Norwegian Singles is running successfully!"
+              docker-compose ps
+              
+              # Test health endpoint if available (following redirects)
+              # We use the port from .env or default to 4321
+              CHECK_PORT=$(grep PORT .env | cut -d'=' -f2 || echo 4321)
+              if curl -f -sL http://localhost:$CHECK_PORT/ >/dev/null 2>&1; then
+                echo "✅ Health check passed on port $CHECK_PORT!"
+              else
+                echo "⚠️  Health check endpoint not responding yet (this might be normal during startup)"
+              fi
+            else
+              echo "❌ Deployment verification failed!"
+              echo "Container status:"
+              docker-compose ps
+              echo "Recent logs:"
+              docker-compose logs --tail=20
+              exit 1
+            fi
+
+      - name: Deployment notification
+        run: |
+          echo "🎉 Deployment completed successfully!"
+          echo "📦 Docker image built and deployed to server"
+          echo "🏃 Deployment executed via ./load-and-deploy.sh on VPS"
+          echo "📍 Application deployed to: /root/apps/norwegian-singles/"
