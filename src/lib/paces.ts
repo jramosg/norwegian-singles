@@ -2,9 +2,9 @@
  * Pace Calculator for Norwegian Singles
  *
  * Calculates training paces based on VDOT:
- * - Threshold Pace: ~88-90% of VO2max
+ * - Sub-Threshold Pace: ~88% of VO2max (conservative margin)
  * - Easy Pace: ~65-70% of VO2max (≤70% HRmax)
- * - Norwegian Singles intervals: various percentages based on target distance
+ * - Norwegian Singles intervals: based on target distance at sub-threshold intensity
  */
 
 import type { Paces } from '../types';
@@ -12,10 +12,10 @@ import { calculateTimeFromVDOT, formatPace } from './vdot';
 import { DISTANCE_METERS } from '../types';
 
 /**
- * Calculate Threshold Pace from VDOT
+ * Calculate Sub-Threshold Pace from VDOT
  *
- * Threshold pace is typically the pace you can sustain for about 60 minutes
- * It corresponds to approximately 88% of VO2max
+ * NSM uses a conservative "sub-threshold" pace to avoid lactate accumulation.
+ * It corresponds to approximately 88% of VO2max.
  */
 export function calculateThresholdPace(vdot: number): number {
   // Threshold pace corresponds roughly to 1-hour race pace

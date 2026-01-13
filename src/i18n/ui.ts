@@ -34,7 +34,7 @@ export const ui = {
     'form.unit': 'Unidad de ritmo',
     'unit.km': 'km',
     'unit.mile': 'mi',
-    'form.previewThreshold': 'Umbral',
+    'form.previewThreshold': 'Sub-Umbral',
     'form.previewEasy': 'Fácil',
     'form.submit': 'Generar plan',
     'form.validation.required': 'Introduce al menos una marca',
@@ -48,19 +48,19 @@ export const ui = {
 
     // Session types
     'session.easy': 'Fácil',
-    'session.threshold': 'Umbral',
+    'session.threshold': 'Sub-Umbral',
     'session.long': 'Tirada Larga',
     'session.test': 'Test',
     'session.rest': 'Descanso',
     'session.race': 'Carrera',
 
     // Paces
-    'pace.threshold': 'Umbral',
+    'pace.threshold': 'Sub-Umbral',
     'pace.easy': 'Fácil',
     'pace.unit': 'min/km',
-    'pace.intervals.short': "Cortos (3-4')",
-    'pace.intervals.medium': "Medios (6-8')",
-    'pace.intervals.long': "Largos (10-12')",
+    'pace.intervals.short': "Sub-T Cortos (3-4')",
+    'pace.intervals.medium': "Sub-T Medios (6-8')",
+    'pace.intervals.long': "Sub-T Largos (10-12')",
 
     // Plan
     'plan.title': 'Tu Plan de Entrenamiento',
@@ -108,18 +108,18 @@ export const ui = {
 
     // Methodology
     'method.title': 'El Método Norwegian Singles',
-    'method.principle1.title': 'El umbral manda',
+    'method.principle1.title': 'Margen Sub-Umbral',
     'method.principle1.desc':
-      'El trabajo de calidad representa el 20-25% del volumen semanal. El resto es rodaje fácil.',
+      'El trabajo de calidad se realiza a ritmos sub-umbral (umbral relajado), representando el 20-25% del volumen.',
     'method.principle2.title': 'Nunca al fallo',
     'method.principle2.desc':
       'Ritmos conservadores y sostenibles. Podrías hacer más, pero no lo haces.',
     'method.principle3.title': 'Descansos cortos',
     'method.principle3.desc':
       '60 segundos de recuperación para mantener el estado de lactato elevado.',
-    'method.principle4.title': 'Sistema repetible',
+    'method.principle4.title': 'Semanas Repetibles',
     'method.principle4.desc':
-      'Bloques de 6 semanas con test y recalibración. La consistencia gana.',
+      'Consistencia sobre variedad. Repite la misma estructura semanal y deja que el ritmo progrese con tu VDOT.',
 
     // Footer
     'footer.credit': 'Basado en el método de entrenamiento Norwegian Singles',
@@ -171,7 +171,7 @@ export const ui = {
     'form.unit': 'Pace unit',
     'unit.km': 'km',
     'unit.mile': 'mi',
-    'form.previewThreshold': 'Threshold',
+    'form.previewThreshold': 'Sub-Threshold',
     'form.previewEasy': 'Easy',
     'form.submit': 'Generate plan',
     'form.validation.required': 'Enter at least one time',
@@ -185,19 +185,19 @@ export const ui = {
 
     // Session types
     'session.easy': 'Easy',
-    'session.threshold': 'Threshold',
+    'session.threshold': 'Sub-Threshold',
     'session.long': 'Long Run',
     'session.test': 'Test',
     'session.rest': 'Rest',
     'session.race': 'Race',
 
     // Paces
-    'pace.threshold': 'Threshold',
+    'pace.threshold': 'Sub-Threshold',
     'pace.easy': 'Easy',
     'pace.unit': 'min/km',
-    'pace.intervals.short': "Short (3-4')",
-    'pace.intervals.medium': "Medium (6-8')",
-    'pace.intervals.long': "Long (10-12')",
+    'pace.intervals.short': "Sub-T Short (3-4')",
+    'pace.intervals.medium': "Sub-T Medium (6-8')",
+    'pace.intervals.long': "Sub-T Long (10-12')",
 
     // Plan
     'plan.title': 'Your Training Plan',
@@ -245,18 +245,18 @@ export const ui = {
 
     // Methodology
     'method.title': 'The Norwegian Singles Method',
-    'method.principle1.title': 'Threshold rules',
+    'method.principle1.title': 'The Sub-T Margin',
     'method.principle1.desc':
-      'Quality work represents 20-25% of weekly volume. The rest is easy running.',
+      'Quality sessions are run at sub-threshold paces (relaxed threshold). They represent 20-25% of your volume.',
     'method.principle2.title': 'Never to failure',
     'method.principle2.desc':
       "Conservative and sustainable paces. You could do more, but you don't.",
     'method.principle3.title': 'Short recoveries',
     'method.principle3.desc':
       '60 seconds recovery to maintain elevated lactate state.',
-    'method.principle4.title': 'Repeatable system',
+    'method.principle4.title': 'Repeatable Weeks',
     'method.principle4.desc':
-      '6-week blocks with test and recalibration. Consistency wins.',
+      'Consistency over variety. Repeat a solid weekly structure and let your paces progress as your VDOT improves.',
 
     // Footer
     'footer.credit': 'Based on the Norwegian Singles training method',

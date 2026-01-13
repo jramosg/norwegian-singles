@@ -36,81 +36,77 @@ import { calculateVDOT, formatPace } from './vdot';
 import { DISTANCE_METERS } from '../types';
 
 /**
- * Progressive volume multipliers for each week
- * Week 6 is unloading week with reduced volume
+ * NSM follows a repeatable weekly structure.
+ * Progression comes primarily from pace adjustments (VDOT) rather than volume.
+ * Week 6 is a test/reload week.
  */
-const WEEK_VOLUME_MULTIPLIERS = [0.8, 0.9, 1.0, 0.95, 1.0, 0.6] as const;
+const WEEK_VOLUME_MULTIPLIERS = [1.0, 1.0, 1.0, 1.0, 1.0, 0.7] as const;
 
 /**
- * Easy run durations (minutes) by distance and week progression
- * 5K/10K: Shorter easy runs, focus on quality
- * 21K/42K: Longer easy runs, build endurance base
+ * Easy run durations (minutes)
+ * NSM emphasizes consistency over progressive duration builds.
  */
 const EASY_RUN_DURATIONS: Record<
   Distance,
   { base: number; max: number; unload: number }
 > = {
-  '5K': { base: 40, max: 60, unload: 30 },
-  '10K': { base: 45, max: 65, unload: 35 },
-  '21K': { base: 50, max: 80, unload: 40 },
-  '42K': { base: 60, max: 90, unload: 45 },
+  '5K': { base: 45, max: 45, unload: 30 },
+  '10K': { base: 50, max: 50, unload: 35 },
+  '21K': { base: 60, max: 60, unload: 40 },
+  '42K': { base: 75, max: 75, unload: 50 },
 };
 
 /**
- * Long run durations (minutes) by distance and week progression
- * NS principle: Long runs are aerobic development, not exhaustion
- * Marathon runners need more endurance work
+ * Long run durations (minutes)
  */
 const LONG_RUN_DURATIONS: Record<
   Distance,
   { base: number; max: number; unload: number }
 > = {
-  '5K': { base: 50, max: 70, unload: 40 },
-  '10K': { base: 60, max: 85, unload: 45 },
-  '21K': { base: 75, max: 110, unload: 55 },
-  '42K': { base: 90, max: 140, unload: 65 },
+  '5K': { base: 70, max: 70, unload: 45 },
+  '10K': { base: 85, max: 85, unload: 55 },
+  '21K': { base: 105, max: 105, unload: 70 },
+  '42K': { base: 130, max: 130, unload: 90 },
 };
 
 /**
- * Interval repetitions by distance and week
- * 5K runners: More short intervals, race pace specificity
- * Marathon runners: More medium/long intervals, tempo endurance
+ * Interval repetitions - Stable for NSM
  */
 const INTERVAL_REPS_BY_DISTANCE: Record<
   Distance,
   Array<{ short: number; medium: number; long: number }>
 > = {
   '5K': [
-    { short: 10, medium: 4, long: 3 }, // Week 1
-    { short: 12, medium: 5, long: 3 }, // Week 2
-    { short: 14, medium: 6, long: 3 }, // Week 3: Peak
-    { short: 12, medium: 5, long: 3 }, // Week 4
-    { short: 14, medium: 6, long: 3 }, // Week 5: Peak
-    { short: 8, medium: 3, long: 2 }, // Week 6: Unload
+    { short: 10, medium: 5, long: 3 }, // Stable weeks
+    { short: 10, medium: 5, long: 3 },
+    { short: 10, medium: 5, long: 3 },
+    { short: 10, medium: 5, long: 3 },
+    { short: 10, medium: 5, long: 3 },
+    { short: 6, medium: 3, long: 2 }, // Week 6: Unload
   ],
   '10K': [
-    { short: 8, medium: 5, long: 3 }, // Week 1
-    { short: 10, medium: 6, long: 3 }, // Week 2
-    { short: 12, medium: 6, long: 3 }, // Week 3: Peak
-    { short: 10, medium: 6, long: 3 }, // Week 4
-    { short: 12, medium: 6, long: 3 }, // Week 5: Peak
-    { short: 6, medium: 4, long: 2 }, // Week 6: Unload
+    { short: 12, medium: 6, long: 3 },
+    { short: 12, medium: 6, long: 3 },
+    { short: 12, medium: 6, long: 3 },
+    { short: 12, medium: 6, long: 3 },
+    { short: 12, medium: 6, long: 3 },
+    { short: 8, medium: 4, long: 2 },
   ],
   '21K': [
-    { short: 6, medium: 5, long: 3 }, // Week 1
-    { short: 8, medium: 6, long: 3 }, // Week 2
-    { short: 10, medium: 6, long: 3 }, // Week 3: Peak
-    { short: 8, medium: 6, long: 3 }, // Week 4
-    { short: 10, medium: 6, long: 3 }, // Week 5: Peak
-    { short: 6, medium: 4, long: 3 }, // Week 6: Unload
+    { short: 12, medium: 6, long: 4 },
+    { short: 12, medium: 6, long: 4 },
+    { short: 12, medium: 6, long: 4 },
+    { short: 12, medium: 6, long: 4 },
+    { short: 12, medium: 6, long: 4 },
+    { short: 8, medium: 4, long: 3 },
   ],
   '42K': [
-    { short: 6, medium: 5, long: 4 }, // Week 1
-    { short: 8, medium: 6, long: 4 }, // Week 2
-    { short: 10, medium: 6, long: 4 }, // Week 3: Peak
-    { short: 8, medium: 6, long: 4 }, // Week 4
-    { short: 10, medium: 6, long: 4 }, // Week 5: Peak
-    { short: 6, medium: 4, long: 3 }, // Week 6: Unload
+    { short: 14, medium: 8, long: 5 },
+    { short: 14, medium: 8, long: 5 },
+    { short: 14, medium: 8, long: 5 },
+    { short: 14, medium: 8, long: 5 },
+    { short: 14, medium: 8, long: 5 },
+    { short: 8, medium: 5, long: 3 },
   ],
 };
 
@@ -132,21 +128,29 @@ const BASE_WEEK_STRUCTURE: {
 
 /**
  * Get reduced week structure based on training days
- * Priority: Threshold sessions > Long run > Easy runs
+ * Rules to maintain NSM balance (20-25% quality):
+ * 7 days: 3 Sub-T, 1 Long, 3 Easy
+ * 6 days: 3 Sub-T, 1 Long, 2 Easy (Drop Friday Easy)
+ * 5 days: 2 Sub-T, 1 Long, 2 Easy (Drop Saturday Sub-T, Monday Easy)
+ * 4 days: 2 Sub-T, 1 Long, 1 Easy (Drop Friday/Monday Easy, Saturday Sub-T)
+ * 3 days: 1 Sub-T, 1 Long, 1 Easy (Drop Friday/Monday/Wednesday Easy, Saturday/Thursday Sub-T)
  */
 function getWeekStructure(trainingDays: number): typeof BASE_WEEK_STRUCTURE {
-  if (trainingDays >= 7) return [...BASE_WEEK_STRUCTURE];
-
   const structure = [...BASE_WEEK_STRUCTURE];
 
-  // Remove easy days first, based on number of days
-  const easyDayIndices = [0, 2, 4]; // Monday, Wednesday, Friday
-  const daysToRemove = 7 - trainingDays;
+  let indicesToRemove: number[] = [];
 
-  // Remove from the end of easy days first (Friday, Wednesday, Monday)
-  const indicesToRemove = easyDayIndices
-    .slice(-daysToRemove)
-    .sort((a, b) => b - a);
+  if (trainingDays === 6) {
+    indicesToRemove = [4]; // Drop Friday Easy
+  } else if (trainingDays === 5) {
+    indicesToRemove = [4, 5]; // Drop Friday Easy, Saturday Sub-T
+  } else if (trainingDays === 4) {
+    indicesToRemove = [4, 5, 0]; // Drop Friday Easy, Saturday Sub-T, Monday Easy
+  } else if (trainingDays === 3) {
+    indicesToRemove = [4, 5, 0, 3]; // Drop Friday Easy, Saturday Sub-T, Monday Easy, Thursday Sub-T
+  } else if (trainingDays < 3) {
+    indicesToRemove = [4, 5, 0, 3, 2]; // Minimal: Tuesday Sub-T, Sunday Long
+  }
 
   for (const index of indicesToRemove) {
     if (index < structure.length) {
@@ -163,27 +167,12 @@ function getWeekStructure(trainingDays: number): typeof BASE_WEEK_STRUCTURE {
 function getEasyDuration(
   weekNumber: number,
   targetDistance: Distance,
-  day: number,
+  _day: number,
 ): number {
   const config = EASY_RUN_DURATIONS[targetDistance];
   if (weekNumber === 6) return config.unload;
 
-  // Progressive build: base -> max over weeks 1-5
-  const progressionSteps = [
-    config.base,
-    config.base + 5,
-    config.max,
-    config.max - 5,
-    config.max,
-    config.unload,
-  ];
-  let duration = progressionSteps[weekNumber - 1] || config.base;
-
-  // Add some variety based on the day
-  if (day === 1) duration -= 5; // Monday recovery
-  if (day === 5) duration += 5; // Friday pre-long run build
-
-  return duration;
+  return config.base;
 }
 
 /**
@@ -193,16 +182,7 @@ function getLongDuration(weekNumber: number, targetDistance: Distance): number {
   const config = LONG_RUN_DURATIONS[targetDistance];
   if (weekNumber === 6) return config.unload;
 
-  // Progressive build: base -> max over weeks 1-5
-  const progressionSteps = [
-    config.base,
-    config.base + 10,
-    config.max,
-    config.max - 10,
-    config.max,
-    config.unload,
-  ];
-  return progressionSteps[weekNumber - 1] || config.base;
+  return config.base;
 }
 
 /**
@@ -267,7 +247,7 @@ function createSession(
 
       return {
         ...baseSession,
-        title: `NS ${intervalName} Intervals`,
+        title: `NS ${intervalName} Sub-T`,
         description: `${reps} × ${nsConfig.duration} @ ${formatPace(
           paceRange.min,
           unit,
