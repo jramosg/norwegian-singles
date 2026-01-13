@@ -208,7 +208,7 @@ export const NS_INTERVALS = {
       recovery: 60,
     },
     long: {
-      reps: { min: 3, max: 3 },
+      reps: { min: 2, max: 4 },
       duration: "10–12'",
       paceDesc: '~30K pace',
       recovery: 60,
@@ -228,7 +228,7 @@ export const NS_INTERVALS = {
       recovery: 60,
     },
     long: {
-      reps: { min: 3, max: 3 },
+      reps: { min: 2, max: 4 },
       distance: '3K',
       paceDesc: '~30K pace',
       recovery: 60,

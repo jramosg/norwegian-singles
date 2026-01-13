@@ -77,36 +77,36 @@ const INTERVAL_REPS_BY_DISTANCE: Record<
   Array<{ short: number; medium: number; long: number }>
 > = {
   '5K': [
-    { short: 10, medium: 5, long: 3 }, // Stable weeks
-    { short: 10, medium: 5, long: 3 },
-    { short: 10, medium: 5, long: 3 },
-    { short: 10, medium: 5, long: 3 },
-    { short: 10, medium: 5, long: 3 },
-    { short: 6, medium: 3, long: 2 }, // Week 6: Unload
+    { short: 6, medium: 3, long: 2 }, // Week 1: 80%
+    { short: 7, medium: 4, long: 2 }, // Week 2: 90%
+    { short: 8, medium: 4, long: 2 }, // Week 3: 100%
+    { short: 8, medium: 4, long: 2 }, // Week 4: 95%
+    { short: 8, medium: 4, long: 2 }, // Week 5: 100%
+    { short: 5, medium: 2, long: 1 }, // Week 6: Unload (60%)
   ],
   '10K': [
+    { short: 8, medium: 4, long: 2 },
+    { short: 9, medium: 5, long: 3 },
+    { short: 10, medium: 5, long: 3 },
+    { short: 10, medium: 5, long: 3 },
+    { short: 10, medium: 5, long: 3 },
+    { short: 7, medium: 3, long: 2 },
+  ],
+  '21K': [
+    { short: 10, medium: 5, long: 2 },
+    { short: 11, medium: 5, long: 3 },
     { short: 12, medium: 6, long: 3 },
-    { short: 12, medium: 6, long: 3 },
-    { short: 12, medium: 6, long: 3 },
-    { short: 12, medium: 6, long: 3 },
+    { short: 11, medium: 6, long: 3 },
     { short: 12, medium: 6, long: 3 },
     { short: 8, medium: 4, long: 2 },
   ],
-  '21K': [
+  '42K': [
+    { short: 10, medium: 5, long: 3 },
+    { short: 11, medium: 5, long: 4 },
     { short: 12, medium: 6, long: 4 },
-    { short: 12, medium: 6, long: 4 },
-    { short: 12, medium: 6, long: 4 },
-    { short: 12, medium: 6, long: 4 },
+    { short: 11, medium: 6, long: 4 },
     { short: 12, medium: 6, long: 4 },
     { short: 8, medium: 4, long: 3 },
-  ],
-  '42K': [
-    { short: 14, medium: 8, long: 5 },
-    { short: 14, medium: 8, long: 5 },
-    { short: 14, medium: 8, long: 5 },
-    { short: 14, medium: 8, long: 5 },
-    { short: 14, medium: 8, long: 5 },
-    { short: 8, medium: 5, long: 3 },
   ],
 };
 
@@ -141,11 +141,11 @@ function getWeekStructure(trainingDays: number): typeof BASE_WEEK_STRUCTURE {
 
   // Removal priority to maintain balance:
   // 1. Friday Easy (4)
-  // 2. Monday Easy (0)
-  // 3. Wednesday Easy (2)
-  // 4. Saturday Sub-T (5)
+  // 2. Saturday Sub-T (5) - Drop to 2 threshold sessions if training < 7 days
+  // 3. Monday Easy (0)
+  // 4. Wednesday Easy (2)
   // 5. Thursday Sub-T (3)
-  const removalPriority = [4, 0, 2, 5, 3];
+  const removalPriority = [4, 5, 0, 2, 3];
   const toRemove = removalPriority.slice(0, daysToRemove);
 
   for (const index of toRemove) {
