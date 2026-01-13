@@ -10,9 +10,7 @@ interface Props {
   locale?: "es" | "en";
 }
 
-const {
-  locale = "es",
-} = Astro.props;
+const { locale = "es" } = Astro.props;
 
 const t = useTranslations(locale);
 
@@ -24,33 +22,27 @@ const currentPath = Astro.url.pathname;
 const alternatePath = currentPath.replace(`/${locale}`, `/${alternateLocale}`);
 const siteURL = "https://norwegian-singles.app";
 
-const canonicalURL = new URL(
-  currentPath,
-  Astro.site || siteURL
-);
-const alternateURL = new URL(
-  alternatePath,
-  Astro.site || siteURL
-);
+const canonicalURL = new URL(currentPath, Astro.site || siteURL);
+const alternateURL = new URL(alternatePath, Astro.site || siteURL);
 
 const schemaData = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Norwegian Singles",
-  "url": siteURL,
-  "description": description,
-  "applicationCategory": "HealthApplication",
-  "operatingSystem": "All",
-  "offers": {
+  name: "Norwegian Singles",
+  url: siteURL,
+  description: description,
+  applicationCategory: "HealthApplication",
+  operatingSystem: "All",
+  offers: {
     "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
+    price: "0",
+    priceCurrency: "USD",
   },
-  "author": {
+  author: {
     "@type": "Person",
-    "name": "Jonramos",
-    "url": "https://jonramos.dev"
-  }
+    name: "Jonramos",
+    url: "https://jonramos.dev",
+  },
 };
 ---
 
@@ -90,7 +82,11 @@ const schemaData = {
     <meta name="twitter:image" content={`${siteURL}/og-image.png`} />
 
     <!-- Structured Data -->
-    <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(schemaData)}
+    />
 
     <title>{title}</title>
   </head>

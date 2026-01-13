@@ -1,14 +1,14 @@
 /**
  * Plan Viewer Component (React Island)
- * 
+ *
  * Displays the training plan with interactive features
  */
 
-import React, { useState, useEffect } from 'react';
-import type { TrainingBlock, WeekPlan, TrainingSession, Locale } from '../../types';
-import { getUserData } from '../../lib/storage';
-import { getFormattedPaces, NS_INTERVALS } from '../../lib/paces';
-import { formatPace } from '../../lib/vdot';
+import React, { useState, useEffect } from "react";
+import type { TrainingBlock, Locale } from "../../types";
+import { getUserData } from "../../lib/storage";
+import { getFormattedPaces } from "../../lib/paces";
+import { formatPace } from "../../lib/vdot";
 
 interface Props {
   locale: Locale;
@@ -43,13 +43,21 @@ interface Props {
   };
 }
 
-const DAY_KEYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const;
+const DAY_KEYS = [
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday",
+] as const;
 
 export default function PlanViewer({ locale, translations }: Props) {
   const [block, setBlock] = useState<TrainingBlock | null>(null);
   const [selectedWeek, setSelectedWeek] = useState(1);
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     const data = getUserData();
     if (data?.currentBlock) {
@@ -57,7 +65,7 @@ export default function PlanViewer({ locale, translations }: Props) {
     }
     setLoading(false);
   }, []);
-  
+
   if (loading) {
     return (
       <div className="plan-loading">
@@ -65,7 +73,7 @@ export default function PlanViewer({ locale, translations }: Props) {
       </div>
     );
   }
-  
+
   if (!block) {
     return (
       <div className="plan-empty">
@@ -74,7 +82,7 @@ export default function PlanViewer({ locale, translations }: Props) {
         <a href={`/${locale}`} className="btn btn-primary">
           {translations.createPlan}
         </a>
-        
+
         <style>{`
           .plan-empty {
             text-align: center;
@@ -94,20 +102,22 @@ export default function PlanViewer({ locale, translations }: Props) {
       </div>
     );
   }
-  
+
   const formattedPaces = getFormattedPaces(block.paces);
   const currentWeek = block.weeks[selectedWeek - 1];
-  
+
   const getDayTranslation = (index: number): string => {
     const key = DAY_KEYS[index];
     return translations[key as keyof typeof translations] || key;
   };
-  
+
   const getSessionTypeTranslation = (type: string): string => {
-    const key = `session${type.charAt(0).toUpperCase() + type.slice(1)}` as keyof typeof translations;
+    const key = `session${
+      type.charAt(0).toUpperCase() + type.slice(1)
+    }` as keyof typeof translations;
     return translations[key] || type;
   };
-  
+
   return (
     <div className="plan-viewer">
       {/* Paces Overview */}
@@ -125,12 +135,12 @@ export default function PlanViewer({ locale, translations }: Props) {
             <span className="pace-unit">{translations.unit}</span>
           </div>
         </div>
-        
+
         <div className="vdot-badge">
           VDOT: <strong>{block.vdot.toFixed(1)}</strong>
         </div>
       </section>
-      
+
       {/* Intervals Table */}
       <section className="intervals-section">
         <h2>{translations.intervals}</h2>
@@ -167,33 +177,37 @@ export default function PlanViewer({ locale, translations }: Props) {
           </table>
         </div>
       </section>
-      
+
       {/* Week Selector */}
       <section className="week-section">
         <div className="week-header">
-          <h2>{translations.week} {selectedWeek}</h2>
+          <h2>
+            {translations.week} {selectedWeek}
+          </h2>
           {currentWeek.isTestWeek && (
             <span className="badge badge-test">{translations.testWeek}</span>
           )}
         </div>
-        
+
         <div className="week-tabs">
           {block.weeks.map((week, i) => (
             <button
               key={i}
-              className={`week-tab ${selectedWeek === i + 1 ? 'is-active' : ''} ${week.isTestWeek ? 'is-test' : ''}`}
+              className={`week-tab ${
+                selectedWeek === i + 1 ? "is-active" : ""
+              } ${week.isTestWeek ? "is-test" : ""}`}
               onClick={() => setSelectedWeek(i + 1)}
             >
               {i + 1}
             </button>
           ))}
         </div>
-        
+
         {/* Sessions Grid */}
         <div className="sessions-grid">
           {currentWeek.sessions.map((session, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className={`session-card session-card--${session.type}`}
             >
               <div className="session-day">{getDayTranslation(index)}</div>
@@ -213,7 +227,7 @@ export default function PlanViewer({ locale, translations }: Props) {
           ))}
         </div>
       </section>
-      
+
       <style>{`
         .plan-viewer {
           max-width: var(--containr-max);
