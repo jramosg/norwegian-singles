@@ -128,31 +128,27 @@ const BASE_WEEK_STRUCTURE: {
 
 /**
  * Get reduced week structure based on training days
- * Rules to maintain NSM balance (20-25% quality):
- * 7 days: 3 Sub-T, 1 Long, 3 Easy
- * 6 days: 3 Sub-T, 1 Long, 2 Easy (Drop Friday Easy)
- * 5 days: 2 Sub-T, 1 Long, 2 Easy (Drop Saturday Sub-T, Monday Easy)
- * 4 days: 2 Sub-T, 1 Long, 1 Easy (Drop Friday/Monday Easy, Saturday Sub-T)
- * 3 days: 1 Sub-T, 1 Long, 1 Easy (Drop Friday/Monday/Wednesday Easy, Saturday/Thursday Sub-T)
+ * Priority: 1. Keep quality sessions (Thresholds, Long Run) 2. Keep Easy sessions
  */
 function getWeekStructure(trainingDays: number): typeof BASE_WEEK_STRUCTURE {
-  const structure = [...BASE_WEEK_STRUCTURE];
+  // Copy to avoid mutating original template
+  const structure = BASE_WEEK_STRUCTURE.map((s) => ({ ...s }));
 
-  let indicesToRemove: number[] = [];
+  const targetDays = Math.max(3, Math.min(7, Math.floor(trainingDays)));
+  if (targetDays === 7) return structure;
 
-  if (trainingDays === 6) {
-    indicesToRemove = [4]; // Drop Friday Easy
-  } else if (trainingDays === 5) {
-    indicesToRemove = [4, 5]; // Drop Friday Easy, Saturday Sub-T
-  } else if (trainingDays === 4) {
-    indicesToRemove = [4, 5, 0]; // Drop Friday Easy, Saturday Sub-T, Monday Easy
-  } else if (trainingDays === 3) {
-    indicesToRemove = [4, 5, 0, 3]; // Drop Friday Easy, Saturday Sub-T, Monday Easy, Thursday Sub-T
-  } else if (trainingDays < 3) {
-    indicesToRemove = [4, 5, 0, 3, 2]; // Minimal: Tuesday Sub-T, Sunday Long
-  }
+  const daysToRemove = 7 - targetDays;
 
-  for (const index of indicesToRemove) {
+  // Removal priority to maintain balance:
+  // 1. Friday Easy (4)
+  // 2. Monday Easy (0)
+  // 3. Wednesday Easy (2)
+  // 4. Saturday Sub-T (5)
+  // 5. Thursday Sub-T (3)
+  const removalPriority = [4, 0, 2, 5, 3];
+  const toRemove = removalPriority.slice(0, daysToRemove);
+
+  for (const index of toRemove) {
     if (index < structure.length) {
       structure[index] = { type: 'rest' };
     }
@@ -347,8 +343,8 @@ function generateWeekPlan(
   const structure = getWeekStructure(trainingDays);
 
   const sessions: TrainingSession[] = structure.map((config, index) => {
-    // On test week, replace Saturday threshold with test
-    if (isTestWeek && index === 5 && config.type === 'threshold') {
+    // On test week, Saturday (index 5) MUST be a test day regardless of structure
+    if (isTestWeek && index === 5) {
       return createSession(
         index + 1,
         { type: 'test' },
