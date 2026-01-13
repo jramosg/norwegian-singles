@@ -218,12 +218,19 @@ export default function TrainingForm({ locale, translations }: Props) {
 
         {/* Training Days */}
         <div className="form-group">
-          <label className="form-label">{translations.trainingDays}</label>
+          <label
+            id="trainingDaysLabel"
+            htmlFor="trainingDays"
+            className="form-label"
+          >
+            {translations.trainingDays}
+          </label>
           <div className="days-slider">
             <input
               type="range"
               min="3"
               max="7"
+              id="trainingDays"
               value={trainingDays}
               onChange={(e) => setTrainingDays(Number(e.target.value))}
               className="slider"
