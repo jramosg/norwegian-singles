@@ -1,9 +1,9 @@
 ---
-import type { Locale } from "../types";
-import { useTranslations, getPathInLocale, locales } from "../i18n/ui";
+import type { Locale } from '../types';
+import { useTranslations, getPathInLocale, locales } from '../i18n/ui';
 
 interface Props {
-    locale: Locale;
+  locale: Locale;
 }
 
 const { locale } = Astro.props;
@@ -12,265 +12,259 @@ const currentPath = Astro.url.pathname;
 ---
 
 <header class="header glass">
-    <div class="header-container container">
-        <a href={`/${locale}`} class="logo">
-            <span class="logo-icon">🇳🇴</span>
-            <span class="logo-text">NS</span>
-        </a>
+  <div class="header-container container">
+    <a href={`/${locale}`} class="logo">
+      <span class="logo-icon">🇳🇴</span>
+      <span class="logo-text">NS</span>
+    </a>
 
-        <nav class="nav">
-            <a href={`/${locale}`} class="nav-link">{t("nav.home")}</a>
-            <a href={`/${locale}/plan`} class="nav-link">{t("nav.plan")}</a>
-        </nav>
+    <nav class="nav">
+      <a href={`/${locale}`} class="nav-link">{t('nav.home')}</a>
+      <a href={`/${locale}/plan`} class="nav-link">{t('nav.plan')}</a>
+    </nav>
 
-        <div class="header-actions">
-            <div class="lang-switcher">
-                {
-                    locales.map((lang) => (
-                        <a
-                            href={getPathInLocale(currentPath, lang)}
-                            class:list={[
-                                "lang-btn",
-                                { "is-active": lang === locale },
-                            ]}
-                        >
-                            {lang.toUpperCase()}
-                        </a>
-                    ))
-                }
-            </div>
-
-            <button
-                class="mobile-menu-btn btn-icon btn-ghost"
-                aria-label="Menu"
-                id="mobile-menu-toggle"
+    <div class="header-actions">
+      <div class="lang-switcher">
+        {
+          locales.map((lang) => (
+            <a
+              href={getPathInLocale(currentPath, lang)}
+              class:list={['lang-btn', { 'is-active': lang === locale }]}
             >
-                <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
-            </button>
-        </div>
+              {lang.toUpperCase()}
+            </a>
+          ))
+        }
+      </div>
+
+      <button
+        class="mobile-menu-btn btn-icon btn-ghost"
+        aria-label="Menu"
+        id="mobile-menu-toggle"
+      >
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
     </div>
+  </div>
 </header>
 
 <!-- Mobile Menu -->
 <div class="mobile-menu" id="mobile-menu">
-    <div class="mobile-menu-header">
-        <a href={`/${locale}`} class="logo">
-            <span class="logo-icon">🇳🇴</span>
-            <span class="logo-text">NS</span>
-        </a>
-        <button
-            class="btn-icon btn-ghost"
-            aria-label="Close"
-            id="mobile-menu-close"
-        >
-            <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            >
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-        </button>
-    </div>
+  <div class="mobile-menu-header">
+    <a href={`/${locale}`} class="logo">
+      <span class="logo-icon">🇳🇴</span>
+      <span class="logo-text">NS</span>
+    </a>
+    <button
+      class="btn-icon btn-ghost"
+      aria-label="Close"
+      id="mobile-menu-close"
+    >
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
 
-    <nav class="mobile-nav">
-        <a href={`/${locale}`} class="mobile-nav-link">{t("nav.home")}</a>
-        <a href={`/${locale}/plan`} class="mobile-nav-link">{t("nav.plan")}</a>
-    </nav>
+  <nav class="mobile-nav">
+    <a href={`/${locale}`} class="mobile-nav-link">{t('nav.home')}</a>
+    <a href={`/${locale}/plan`} class="mobile-nav-link">{t('nav.plan')}</a>
+  </nav>
 
-    <div class="mobile-lang">
-        <div class="lang-switcher">
-            {
-                locales.map((lang) => (
-                    <a
-                        href={getPathInLocale(currentPath, lang)}
-                        class:list={[
-                            "lang-btn",
-                            { "is-active": lang === locale },
-                        ]}
-                    >
-                        {lang.toUpperCase()}
-                    </a>
-                ))
-            }
-        </div>
+  <div class="mobile-lang">
+    <div class="lang-switcher">
+      {
+        locales.map((lang) => (
+          <a
+            href={getPathInLocale(currentPath, lang)}
+            class:list={['lang-btn', { 'is-active': lang === locale }]}
+          >
+            {lang.toUpperCase()}
+          </a>
+        ))
+      }
     </div>
+  </div>
 </div>
 
 <style>
-    .header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: var(--header-height);
-        z-index: var(--z-sticky);
-    }
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--header-height);
+    z-index: var(--z-sticky);
+  }
 
-    .header-container {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 100%;
-    }
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+  }
 
-    .logo {
-        display: flex;
-        align-items: center;
-        gap: var(--space-2);
-        text-decoration: none;
-        color: var(--color-text-primary);
-    }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    text-decoration: none;
+    color: var(--color-text-primary);
+  }
 
-    .logo-icon {
-        font-size: var(--text-xl);
-    }
+  .logo-icon {
+    font-size: var(--text-xl);
+  }
 
-    .logo-text {
-        font-family: var(--font-display);
-        font-size: var(--text-xl);
-        font-weight: var(--font-bold);
-        letter-spacing: -0.02em;
-    }
+  .logo-text {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: var(--font-bold);
+    letter-spacing: -0.02em;
+  }
 
+  .nav {
+    display: none;
+    gap: var(--space-6);
+  }
+
+  @media (min-width: 768px) {
     .nav {
-        display: none;
-        gap: var(--space-6);
+      display: flex;
     }
 
-    @media (min-width: 768px) {
-        .nav {
-            display: flex;
-        }
-
-        .mobile-menu-btn {
-            display: none;
-        }
+    .mobile-menu-btn {
+      display: none;
     }
+  }
 
-    .nav-link {
-        font-size: var(--text-sm);
-        font-weight: var(--font-medium);
-        color: var(--color-text-secondary);
-        text-decoration: none;
-        transition: color var(--transition-fast);
-    }
+  .nav-link {
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
 
-    .nav-link:hover {
-        color: var(--color-text-primary);
-    }
+  .nav-link:hover {
+    color: var(--color-text-primary);
+  }
 
-    .header-actions {
-        display: flex;
-        align-items: center;
-        gap: var(--space-4);
-    }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
 
+  .lang-switcher {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
     .lang-switcher {
-        display: none;
+      display: flex;
     }
+  }
 
-    @media (min-width: 768px) {
-        .lang-switcher {
-            display: flex;
-        }
-    }
+  /* Mobile Menu */
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-modal);
+    background: var(--color-bg-primary);
+    padding: var(--space-4);
+    transform: translateX(100%);
+    transition: transform var(--transition-slow);
+    display: flex;
+    flex-direction: column;
+  }
 
-    /* Mobile Menu */
+  .mobile-menu.is-open {
+    transform: translateX(0);
+  }
+
+  @media (min-width: 768px) {
     .mobile-menu {
-        position: fixed;
-        inset: 0;
-        z-index: var(--z-modal);
-        background: var(--color-bg-primary);
-        padding: var(--space-4);
-        transform: translateX(100%);
-        transition: transform var(--transition-slow);
-        display: flex;
-        flex-direction: column;
+      display: none;
     }
+  }
 
-    .mobile-menu.is-open {
-        transform: translateX(0);
-    }
+  .mobile-menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-8);
+  }
 
-    @media (min-width: 768px) {
-        .mobile-menu {
-            display: none;
-        }
-    }
+  .mobile-nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    flex: 1;
+  }
 
-    .mobile-menu-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: var(--space-8);
-    }
+  .mobile-nav-link {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--color-border);
+  }
 
-    .mobile-nav {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-4);
-        flex: 1;
-    }
+  .mobile-lang {
+    padding: var(--space-4) 0;
+  }
 
-    .mobile-nav-link {
-        font-size: var(--text-2xl);
-        font-weight: var(--font-semibold);
-        color: var(--color-text-primary);
-        text-decoration: none;
-        padding: var(--space-3) 0;
-        border-bottom: 1px solid var(--color-border);
-    }
-
-    .mobile-lang {
-        padding: var(--space-4) 0;
-    }
-
-    .mobile-lang .lang-switcher {
-        display: flex;
-        justify-content: center;
-    }
+  .mobile-lang .lang-switcher {
+    display: flex;
+    justify-content: center;
+  }
 </style>
 
 <script>
-    const menuToggle = document.getElementById("mobile-menu-toggle");
-    const menuClose = document.getElementById("mobile-menu-close");
-    const mobileMenu = document.getElementById("mobile-menu");
+  const menuToggle = document.getElementById('mobile-menu-toggle');
+  const menuClose = document.getElementById('mobile-menu-close');
+  const mobileMenu = document.getElementById('mobile-menu');
 
-    menuToggle?.addEventListener("click", () => {
-        mobileMenu?.classList.add("is-open");
-        document.body.style.overflow = "hidden";
-    });
+  menuToggle?.addEventListener('click', () => {
+    mobileMenu?.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  });
 
-    menuClose?.addEventListener("click", () => {
-        mobileMenu?.classList.remove("is-open");
-        document.body.style.overflow = "";
-    });
+  menuClose?.addEventListener('click', () => {
+    mobileMenu?.classList.remove('is-open');
+    document.body.style.overflow = '';
+  });
 
-    // Close menu on link click
-    mobileMenu?.querySelectorAll("a").forEach((link) => {
-        link.addEventListener("click", () => {
-            mobileMenu?.classList.remove("is-open");
-            document.body.style.overflow = "";
-        });
+  // Close menu on link click
+  mobileMenu?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      mobileMenu?.classList.remove('is-open');
+      document.body.style.overflow = '';
     });
+  });
 </script>

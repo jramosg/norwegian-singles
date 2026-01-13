@@ -1,47 +1,47 @@
 ---
-import "../styles/global.css";
-import "../styles/components.css";
-import "@fontsource-variable/inter";
-import { useTranslations } from "../i18n/ui";
+import '../styles/global.css';
+import '../styles/components.css';
+import '@fontsource-variable/inter';
+import { useTranslations } from '../i18n/ui';
 
 interface Props {
   title?: string;
   description?: string;
-  locale?: "es" | "en";
+  locale?: 'es' | 'en';
 }
 
-const { locale = "es" } = Astro.props;
+const { locale = 'es' } = Astro.props;
 
 const t = useTranslations(locale);
 
-const title = Astro.props.title || t("seo.title");
-const description = Astro.props.description || t("seo.description");
+const title = Astro.props.title || t('seo.title');
+const description = Astro.props.description || t('seo.description');
 
-const alternateLocale = locale === "es" ? "en" : "es";
+const alternateLocale = locale === 'es' ? 'en' : 'es';
 const currentPath = Astro.url.pathname;
 const alternatePath = currentPath.replace(`/${locale}`, `/${alternateLocale}`);
-const siteURL = "https://norwegian-singles.app";
+const siteURL = 'https://norwegian-singles.app';
 
 const canonicalURL = new URL(currentPath, Astro.site || siteURL);
 const alternateURL = new URL(alternatePath, Astro.site || siteURL);
 
 const schemaData = {
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  name: "Norwegian Singles",
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Norwegian Singles',
   url: siteURL,
   description: description,
-  applicationCategory: "HealthApplication",
-  operatingSystem: "All",
+  applicationCategory: 'HealthApplication',
+  operatingSystem: 'All',
   offers: {
-    "@type": "Offer",
-    price: "0",
-    priceCurrency: "USD",
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
   },
   author: {
-    "@type": "Person",
-    name: "Jonramos",
-    url: "https://jonramos.dev",
+    '@type': 'Person',
+    name: 'Jonramos',
+    url: 'https://jonramos.dev',
   },
 };
 ---
@@ -72,7 +72,7 @@ const schemaData = {
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL.href} />
     <meta property="og:site_name" content="Norwegian Singles" />
-    <meta property="og:locale" content={locale === "es" ? "es_ES" : "en_US"} />
+    <meta property="og:locale" content={locale === 'es' ? 'es_ES' : 'en_US'} />
     <meta property="og:image" content={`${siteURL}/og-image.png`} />
 
     <!-- Twitter -->
@@ -97,9 +97,9 @@ const schemaData = {
     <script is:inline>
       (function () {
         const path = window.location.pathname;
-        const locale = path.split("/")[1];
-        if (locale === "es" || locale === "en") {
-          localStorage.setItem("ns-locale", locale);
+        const locale = path.split('/')[1];
+        if (locale === 'es' || locale === 'en') {
+          localStorage.setItem('ns-locale', locale);
         }
       })();
     </script>

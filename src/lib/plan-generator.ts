@@ -29,10 +29,10 @@ import type {
   Race,
   IntervalType,
   Distance,
-} from "../types";
-import { calculatePaces, NS_INTERVALS } from "./paces";
-import { calculateVDOT, formatPace } from "./vdot";
-import { DISTANCE_METERS } from "../types";
+} from '../types';
+import { calculatePaces, NS_INTERVALS } from './paces';
+import { calculateVDOT, formatPace } from './vdot';
+import { DISTANCE_METERS } from '../types';
 
 /**
  * Progressive volume multipliers for each week
@@ -49,10 +49,10 @@ const EASY_RUN_DURATIONS: Record<
   Distance,
   { base: number; max: number; unload: number }
 > = {
-  "5K": { base: 30, max: 45, unload: 25 },
-  "10K": { base: 35, max: 50, unload: 30 },
-  "21K": { base: 45, max: 60, unload: 35 },
-  "42K": { base: 50, max: 70, unload: 40 },
+  '5K': { base: 30, max: 45, unload: 25 },
+  '10K': { base: 35, max: 50, unload: 30 },
+  '21K': { base: 45, max: 60, unload: 35 },
+  '42K': { base: 50, max: 70, unload: 40 },
 };
 
 /**
@@ -64,10 +64,10 @@ const LONG_RUN_DURATIONS: Record<
   Distance,
   { base: number; max: number; unload: number }
 > = {
-  "5K": { base: 50, max: 70, unload: 40 },
-  "10K": { base: 60, max: 85, unload: 45 },
-  "21K": { base: 75, max: 110, unload: 55 },
-  "42K": { base: 90, max: 140, unload: 65 },
+  '5K': { base: 50, max: 70, unload: 40 },
+  '10K': { base: 60, max: 85, unload: 45 },
+  '21K': { base: 75, max: 110, unload: 55 },
+  '42K': { base: 90, max: 140, unload: 65 },
 };
 
 /**
@@ -79,7 +79,7 @@ const INTERVAL_REPS_BY_DISTANCE: Record<
   Distance,
   Array<{ short: number; medium: number; long: number }>
 > = {
-  "5K": [
+  '5K': [
     { short: 10, medium: 4, long: 3 }, // Week 1
     { short: 12, medium: 5, long: 3 }, // Week 2
     { short: 14, medium: 6, long: 3 }, // Week 3: Peak
@@ -87,7 +87,7 @@ const INTERVAL_REPS_BY_DISTANCE: Record<
     { short: 14, medium: 6, long: 3 }, // Week 5: Peak
     { short: 8, medium: 3, long: 2 }, // Week 6: Unload
   ],
-  "10K": [
+  '10K': [
     { short: 8, medium: 5, long: 3 }, // Week 1
     { short: 10, medium: 6, long: 3 }, // Week 2
     { short: 12, medium: 6, long: 3 }, // Week 3: Peak
@@ -95,7 +95,7 @@ const INTERVAL_REPS_BY_DISTANCE: Record<
     { short: 12, medium: 6, long: 3 }, // Week 5: Peak
     { short: 6, medium: 4, long: 2 }, // Week 6: Unload
   ],
-  "21K": [
+  '21K': [
     { short: 6, medium: 5, long: 3 }, // Week 1
     { short: 8, medium: 6, long: 3 }, // Week 2
     { short: 10, medium: 6, long: 3 }, // Week 3: Peak
@@ -103,7 +103,7 @@ const INTERVAL_REPS_BY_DISTANCE: Record<
     { short: 10, medium: 6, long: 3 }, // Week 5: Peak
     { short: 6, medium: 4, long: 3 }, // Week 6: Unload
   ],
-  "42K": [
+  '42K': [
     { short: 6, medium: 5, long: 4 }, // Week 1
     { short: 8, medium: 6, long: 4 }, // Week 2
     { short: 10, medium: 6, long: 4 }, // Week 3: Peak
@@ -120,13 +120,13 @@ const BASE_WEEK_STRUCTURE: {
   type: SessionType;
   intervalType?: IntervalType;
 }[] = [
-  { type: "easy" }, // Monday
-  { type: "threshold", intervalType: "short" }, // Tuesday
-  { type: "easy" }, // Wednesday
-  { type: "threshold", intervalType: "medium" }, // Thursday
-  { type: "easy" }, // Friday
-  { type: "threshold", intervalType: "long" }, // Saturday
-  { type: "long" }, // Sunday
+  { type: 'easy' }, // Monday
+  { type: 'threshold', intervalType: 'short' }, // Tuesday
+  { type: 'easy' }, // Wednesday
+  { type: 'threshold', intervalType: 'medium' }, // Thursday
+  { type: 'easy' }, // Friday
+  { type: 'threshold', intervalType: 'long' }, // Saturday
+  { type: 'long' }, // Sunday
 ];
 
 /**
@@ -149,7 +149,7 @@ function getWeekStructure(trainingDays: number): typeof BASE_WEEK_STRUCTURE {
 
   for (const index of indicesToRemove) {
     if (index < structure.length) {
-      structure[index] = { type: "rest" };
+      structure[index] = { type: 'rest' };
     }
   }
 
@@ -200,7 +200,7 @@ function getLongDuration(weekNumber: number, targetDistance: Distance): number {
 function getIntervalReps(
   weekNumber: number,
   intervalType: IntervalType,
-  targetDistance: Distance
+  targetDistance: Distance,
 ): number {
   const distanceConfig = INTERVAL_REPS_BY_DISTANCE[targetDistance];
   const weekConfig = distanceConfig[weekNumber - 1] || distanceConfig[0];
@@ -216,47 +216,47 @@ function createSession(
   paces: Paces,
   weekNumber: number,
   targetDistance: Distance,
-  _isTestWeek: boolean
+  _isTestWeek: boolean,
 ): TrainingSession {
   const { type, intervalType } = sessionConfig;
 
   const baseSession: TrainingSession = {
     day,
     type,
-    title: "",
-    description: "",
+    title: '',
+    description: '',
   };
 
   switch (type) {
-    case "easy": {
+    case 'easy': {
       const duration = getEasyDuration(weekNumber, targetDistance);
       return {
         ...baseSession,
-        title: "Easy Run",
+        title: 'Easy Run',
         description: `${duration} min @ easy pace`,
         duration,
         paces: { target: paces.easy },
       };
     }
 
-    case "threshold": {
-      const interval = intervalType || "short";
+    case 'threshold': {
+      const interval = intervalType || 'short';
       const nsConfig = NS_INTERVALS.byTime[interval];
       const paceRange = paces.intervals[interval];
       const reps = getIntervalReps(weekNumber, interval, targetDistance);
 
       const intervalName =
-        interval === "short"
-          ? "Short"
-          : interval === "medium"
-          ? "Medium"
-          : "Long";
+        interval === 'short'
+          ? 'Short'
+          : interval === 'medium'
+            ? 'Medium'
+            : 'Long';
 
       return {
         ...baseSession,
         title: `NS ${intervalName} Intervals`,
         description: `${reps} × ${nsConfig.duration} @ ${formatPace(
-          paceRange.min
+          paceRange.min,
         )}-${formatPace(paceRange.max)}/km (60s rec)`,
         intervals: {
           type: interval,
@@ -272,37 +272,37 @@ function createSession(
       };
     }
 
-    case "long": {
+    case 'long': {
       const duration = getLongDuration(weekNumber, targetDistance);
       return {
         ...baseSession,
-        title: "Long Run",
+        title: 'Long Run',
         description: `${duration} min @ easy pace`,
         duration,
         paces: { target: paces.easy },
       };
     }
 
-    case "test":
+    case 'test':
       return {
         ...baseSession,
-        title: "Test Day",
-        description: "Time trial 5K or 10K - max effort",
+        title: 'Test Day',
+        description: 'Time trial 5K or 10K - max effort',
       };
 
-    case "race":
+    case 'race':
       return {
         ...baseSession,
-        title: "Race Day",
-        description: baseSession.race?.name || "Race",
+        title: 'Race Day',
+        description: baseSession.race?.name || 'Race',
         race: baseSession.race,
       };
 
-    case "rest":
+    case 'rest':
       return {
         ...baseSession,
-        title: "Rest",
-        description: "Active recovery or complete rest",
+        title: 'Rest',
+        description: 'Active recovery or complete rest',
       };
 
     default:
@@ -315,22 +315,22 @@ function createSession(
  */
 function calculateWeekVolume(
   _weekNumber: number,
-  sessions: TrainingSession[]
+  sessions: TrainingSession[],
 ): number {
   let totalMinutes = 0;
 
   for (const session of sessions) {
-    if (session.type === "easy" || session.type === "long") {
+    if (session.type === 'easy' || session.type === 'long') {
       totalMinutes += session.duration || 0;
-    } else if (session.type === "threshold" && session.intervals) {
+    } else if (session.type === 'threshold' && session.intervals) {
       // Estimate threshold session duration: warmup + work + cooldown
       const workMinutes =
         session.intervals.reps.min *
-        (session.intervals.type === "short"
+        (session.intervals.type === 'short'
           ? 3.5
-          : session.intervals.type === "medium"
-          ? 7
-          : 11);
+          : session.intervals.type === 'medium'
+            ? 7
+            : 11);
       totalMinutes += 15 + workMinutes + 10; // warmup + work + cooldown
     }
   }
@@ -346,21 +346,21 @@ function generateWeekPlan(
   weekNumber: number,
   trainingDays: number,
   paces: Paces,
-  targetDistance: Distance
+  targetDistance: Distance,
 ): WeekPlan {
   const isTestWeek = weekNumber === 6;
   const structure = getWeekStructure(trainingDays);
 
   const sessions: TrainingSession[] = structure.map((config, index) => {
     // On test week, replace Saturday threshold with test
-    if (isTestWeek && index === 5 && config.type === "threshold") {
+    if (isTestWeek && index === 5 && config.type === 'threshold') {
       return createSession(
         index + 1,
-        { type: "test" },
+        { type: 'test' },
         paces,
         weekNumber,
         targetDistance,
-        true
+        true,
       );
     }
 
@@ -370,7 +370,7 @@ function generateWeekPlan(
       paces,
       weekNumber,
       targetDistance,
-      isTestWeek
+      isTestWeek,
     );
   });
 
@@ -392,13 +392,13 @@ export function generateTrainingBlock(
   blockNumber: number,
   input: UserInput,
   vdot: number,
-  paces: Paces
+  paces: Paces,
 ): TrainingBlock {
   const weeks: WeekPlan[] = [];
 
   for (let week = 1; week <= 6; week++) {
     weeks.push(
-      generateWeekPlan(week, input.trainingDays, paces, input.targetDistance)
+      generateWeekPlan(week, input.trainingDays, paces, input.targetDistance),
     );
   }
 
@@ -420,10 +420,10 @@ export function applyRaceTapering(
   block: TrainingBlock,
   race: Race,
   raceWeek: number,
-  raceDay: number
+  raceDay: number,
 ): TrainingBlock {
   const updatedBlock = { ...block, weeks: [...block.weeks] };
-  const taperDays = race.type === "A" ? 7 : 3;
+  const taperDays = race.type === 'A' ? 7 : 3;
 
   const weekIndex = raceWeek - 1;
   if (weekIndex < 0 || weekIndex >= updatedBlock.weeks.length) {
@@ -439,10 +439,10 @@ export function applyRaceTapering(
   if (dayIndex >= 0 && dayIndex < week.sessions.length) {
     week.sessions[dayIndex] = {
       day: raceDay,
-      type: "race",
+      type: 'race',
       title: `Race Day: ${race.name}`,
       description: `${race.distance} race - ${
-        race.type === "A" ? "Priority" : "Tune-up"
+        race.type === 'A' ? 'Priority' : 'Tune-up'
       }`,
       race,
     };
@@ -456,18 +456,18 @@ export function applyRaceTapering(
   while (daysToTaper > 0 && currentWeek >= 0) {
     while (currentDay >= 0 && daysToTaper > 0) {
       const session = week.sessions[currentDay];
-      if (session.type === "threshold") {
+      if (session.type === 'threshold') {
         week.sessions[currentDay] = {
           ...session,
-          title: "NS Intervals (Taper)",
-          description: "Reduced volume - maintain intensity",
+          title: 'NS Intervals (Taper)',
+          description: 'Reduced volume - maintain intensity',
         };
-      } else if (session.type === "long") {
+      } else if (session.type === 'long') {
         week.sessions[currentDay] = {
           ...session,
-          type: "easy",
-          title: "Easy Run (Taper)",
-          description: "40 min @ easy pace",
+          type: 'easy',
+          title: 'Easy Run (Taper)',
+          description: '40 min @ easy pace',
           duration: 40,
         };
       }
@@ -495,19 +495,19 @@ export function createTrainingPlan(input: UserInput): TrainingBlock {
   if (input.time10K) {
     const parsed = parseTimeString(input.time10K);
     if (parsed) {
-      vdot = calculateVDOT(DISTANCE_METERS["10K"], parsed);
+      vdot = calculateVDOT(DISTANCE_METERS['10K'], parsed);
     } else {
-      throw new Error("Invalid 10K time format");
+      throw new Error('Invalid 10K time format');
     }
   } else if (input.time5K) {
     const parsed = parseTimeString(input.time5K);
     if (parsed) {
-      vdot = calculateVDOT(DISTANCE_METERS["5K"], parsed);
+      vdot = calculateVDOT(DISTANCE_METERS['5K'], parsed);
     } else {
-      throw new Error("Invalid 5K time format");
+      throw new Error('Invalid 5K time format');
     }
   } else {
-    throw new Error("At least one race time is required");
+    throw new Error('At least one race time is required');
   }
 
   const paces = calculatePaces(vdot);
@@ -527,7 +527,7 @@ export function createTrainingPlan(input: UserInput): TrainingBlock {
  * Parse time string helper
  */
 function parseTimeString(timeStr: string): number | null {
-  const parts = timeStr.split(":").map(Number);
+  const parts = timeStr.split(':').map(Number);
   if (parts.some(isNaN)) return null;
 
   if (parts.length === 2) {

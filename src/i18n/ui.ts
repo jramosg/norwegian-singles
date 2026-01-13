@@ -12,20 +12,22 @@ export const ui = {
     'nav.home': 'Inicio',
     'nav.plan': 'Mi Plan',
     'nav.method': 'El Método',
-    
+
     // Hero
     'hero.title': 'Entrena como los',
     'hero.titleAccent': 'Noruegos',
-    'hero.subtitle': 'Planificación de entrenamiento basada en el método Norwegian Singles. Ritmos conservadores, descansos cortos, resultados excepcionales.',
+    'hero.subtitle':
+      'Planificación de entrenamiento basada en el método Norwegian Singles. Ritmos conservadores, descansos cortos, resultados excepcionales.',
     'hero.cta': 'Crear mi plan',
-    
+
     // Form
     'form.title': 'Configura tu entrenamiento',
     'form.targetDistance': 'Distancia objetivo',
     'form.time5K': 'Marca actual 5K',
     'form.time10K': 'Marca actual 10K',
     'form.timePlaceholder': 'mm:ss',
-    'form.timeHint': 'Introduce al menos una marca (5K o 10K). Estimaremos la otra automáticamente.',
+    'form.timeHint':
+      'Introduce al menos una marca (5K o 10K). Estimaremos la otra automáticamente.',
     'form.trainingDays': 'Días de entrenamiento',
     'form.trainingDaysHint': 'Recomendamos 5-6 días para resultados óptimos',
     'form.daysPerWeek': 'días/semana',
@@ -34,13 +36,13 @@ export const ui = {
     'form.submit': 'Generar plan',
     'form.validation.required': 'Introduce al menos una marca',
     'form.validation.format': 'Formato inválido (usa mm:ss)',
-    
+
     // Distances
     'distance.5K': '5K',
     'distance.10K': '10K',
     'distance.21K': 'Media Maratón',
     'distance.42K': 'Maratón',
-    
+
     // Session types
     'session.easy': 'Fácil',
     'session.threshold': 'Umbral',
@@ -48,15 +50,15 @@ export const ui = {
     'session.test': 'Test',
     'session.rest': 'Descanso',
     'session.race': 'Carrera',
-    
+
     // Paces
     'pace.threshold': 'Umbral',
     'pace.easy': 'Fácil',
     'pace.unit': 'min/km',
-    'pace.intervals.short': 'Cortos (3-4\')',
-    'pace.intervals.medium': 'Medios (6-8\')',
-    'pace.intervals.long': 'Largos (10-12\')',
-    
+    'pace.intervals.short': "Cortos (3-4')",
+    'pace.intervals.medium': "Medios (6-8')",
+    'pace.intervals.long': "Largos (10-12')",
+
     // Plan
     'plan.title': 'Tu Plan de Entrenamiento',
     'plan.week': 'Semana',
@@ -66,7 +68,7 @@ export const ui = {
     'plan.intervals': 'Intervalos NS',
     'plan.addRace': 'Añadir carrera',
     'plan.recalculate': 'Recalcular',
-    
+
     // Days
     'day.monday': 'Lunes',
     'day.tuesday': 'Martes',
@@ -82,7 +84,7 @@ export const ui = {
     'day.fri': 'Vie',
     'day.sat': 'Sáb',
     'day.sun': 'Dom',
-    
+
     // Races
     'race.title': 'Carreras',
     'race.add': 'Añadir carrera',
@@ -92,7 +94,7 @@ export const ui = {
     'race.typeA': 'Carrera A (prioritaria)',
     'race.typeB': 'Carrera B (secundaria)',
     'race.remove': 'Eliminar',
-    
+
     // Intervals table
     'intervals.type': 'Tipo',
     'intervals.structure': 'Estructura',
@@ -100,56 +102,66 @@ export const ui = {
     'intervals.recovery': 'Recuperación',
     'intervals.byTime': 'Por tiempo',
     'intervals.byDistance': 'Por distancia',
-    
+
     // Methodology
     'method.title': 'El Método Norwegian Singles',
     'method.principle1.title': 'El umbral manda',
-    'method.principle1.desc': 'El trabajo de calidad representa el 20-25% del volumen semanal. El resto es rodaje fácil.',
+    'method.principle1.desc':
+      'El trabajo de calidad representa el 20-25% del volumen semanal. El resto es rodaje fácil.',
     'method.principle2.title': 'Nunca al fallo',
-    'method.principle2.desc': 'Ritmos conservadores y sostenibles. Podrías hacer más, pero no lo haces.',
+    'method.principle2.desc':
+      'Ritmos conservadores y sostenibles. Podrías hacer más, pero no lo haces.',
     'method.principle3.title': 'Descansos cortos',
-    'method.principle3.desc': '60 segundos de recuperación para mantener el estado de lactato elevado.',
+    'method.principle3.desc':
+      '60 segundos de recuperación para mantener el estado de lactato elevado.',
     'method.principle4.title': 'Sistema repetible',
-    'method.principle4.desc': 'Bloques de 6 semanas con test y recalibración. La consistencia gana.',
-    
+    'method.principle4.desc':
+      'Bloques de 6 semanas con test y recalibración. La consistencia gana.',
+
     // Footer
     'footer.credit': 'Basado en el método de entrenamiento Norwegian Singles',
-    'footer.disclaimer': 'Esta aplicación es una herramienta de planificación. Consulta con un profesional antes de iniciar cualquier programa de entrenamiento.',
+    'footer.disclaimer':
+      'Esta aplicación es una herramienta de planificación. Consulta con un profesional antes de iniciar cualquier programa de entrenamiento.',
     'footer.dev': 'Desarrollado por',
     'footer.support': 'Apoyar el proyecto',
-    'footer.supportTagline': 'Ayuda a financiar futuras funciones como envío al reloj, impresión de calendarios y más.',
-    
+    'footer.supportTagline':
+      'Ayuda a financiar futuras funciones como envío al reloj, impresión de calendarios y más.',
+
     // SEO
-    'seo.title': 'Norwegian Singles - Planificación de entrenamiento inteligente',
-    'seo.description': 'Genera planes de entrenamiento basados en el método Norwegian Singles. Optimiza tus ritmos de umbral, mejora tu VDOT y entrena como los profesionales.',
-    
+    'seo.title':
+      'Norwegian Singles - Planificación de entrenamiento inteligente',
+    'seo.description':
+      'Genera planes de entrenamiento basados en el método Norwegian Singles. Optimiza tus ritmos de umbral, mejora tu VDOT y entrena como los profesionales.',
+
     // Misc
-    'loading': 'Cargando...',
-    'error': 'Error',
-    'save': 'Guardar',
-    'cancel': 'Cancelar',
-    'edit': 'Editar',
-    'delete': 'Eliminar',
+    loading: 'Cargando...',
+    error: 'Error',
+    save: 'Guardar',
+    cancel: 'Cancelar',
+    edit: 'Editar',
+    delete: 'Eliminar',
   },
   en: {
     // Navigation
     'nav.home': 'Home',
     'nav.plan': 'My Plan',
     'nav.method': 'The Method',
-    
+
     // Hero
     'hero.title': 'Train like the',
     'hero.titleAccent': 'Norwegians',
-    'hero.subtitle': 'Training planning based on the Norwegian Singles method. Conservative paces, short recoveries, exceptional results.',
+    'hero.subtitle':
+      'Training planning based on the Norwegian Singles method. Conservative paces, short recoveries, exceptional results.',
     'hero.cta': 'Create my plan',
-    
+
     // Form
     'form.title': 'Configure your training',
     'form.targetDistance': 'Target distance',
     'form.time5K': 'Current 5K time',
     'form.time10K': 'Current 10K time',
     'form.timePlaceholder': 'mm:ss',
-    'form.timeHint': 'Enter at least one time (5K or 10K). We\'ll estimate the other automatically.',
+    'form.timeHint':
+      "Enter at least one time (5K or 10K). We'll estimate the other automatically.",
     'form.trainingDays': 'Training days',
     'form.trainingDaysHint': 'We recommend 5-6 days for optimal results',
     'form.daysPerWeek': 'days/week',
@@ -158,13 +170,13 @@ export const ui = {
     'form.submit': 'Generate plan',
     'form.validation.required': 'Enter at least one time',
     'form.validation.format': 'Invalid format (use mm:ss)',
-    
+
     // Distances
     'distance.5K': '5K',
     'distance.10K': '10K',
     'distance.21K': 'Half Marathon',
     'distance.42K': 'Marathon',
-    
+
     // Session types
     'session.easy': 'Easy',
     'session.threshold': 'Threshold',
@@ -172,15 +184,15 @@ export const ui = {
     'session.test': 'Test',
     'session.rest': 'Rest',
     'session.race': 'Race',
-    
+
     // Paces
     'pace.threshold': 'Threshold',
     'pace.easy': 'Easy',
     'pace.unit': 'min/km',
-    'pace.intervals.short': 'Short (3-4\')',
-    'pace.intervals.medium': 'Medium (6-8\')',
-    'pace.intervals.long': 'Long (10-12\')',
-    
+    'pace.intervals.short': "Short (3-4')",
+    'pace.intervals.medium': "Medium (6-8')",
+    'pace.intervals.long': "Long (10-12')",
+
     // Plan
     'plan.title': 'Your Training Plan',
     'plan.week': 'Week',
@@ -190,7 +202,7 @@ export const ui = {
     'plan.intervals': 'NS Intervals',
     'plan.addRace': 'Add race',
     'plan.recalculate': 'Recalculate',
-    
+
     // Days
     'day.monday': 'Monday',
     'day.tuesday': 'Tuesday',
@@ -206,7 +218,7 @@ export const ui = {
     'day.fri': 'Fri',
     'day.sat': 'Sat',
     'day.sun': 'Sun',
-    
+
     // Races
     'race.title': 'Races',
     'race.add': 'Add race',
@@ -216,7 +228,7 @@ export const ui = {
     'race.typeA': 'Race A (priority)',
     'race.typeB': 'Race B (secondary)',
     'race.remove': 'Remove',
-    
+
     // Intervals table
     'intervals.type': 'Type',
     'intervals.structure': 'Structure',
@@ -224,36 +236,43 @@ export const ui = {
     'intervals.recovery': 'Recovery',
     'intervals.byTime': 'By time',
     'intervals.byDistance': 'By distance',
-    
+
     // Methodology
     'method.title': 'The Norwegian Singles Method',
     'method.principle1.title': 'Threshold rules',
-    'method.principle1.desc': 'Quality work represents 20-25% of weekly volume. The rest is easy running.',
+    'method.principle1.desc':
+      'Quality work represents 20-25% of weekly volume. The rest is easy running.',
     'method.principle2.title': 'Never to failure',
-    'method.principle2.desc': 'Conservative and sustainable paces. You could do more, but you don\'t.',
+    'method.principle2.desc':
+      "Conservative and sustainable paces. You could do more, but you don't.",
     'method.principle3.title': 'Short recoveries',
-    'method.principle3.desc': '60 seconds recovery to maintain elevated lactate state.',
+    'method.principle3.desc':
+      '60 seconds recovery to maintain elevated lactate state.',
     'method.principle4.title': 'Repeatable system',
-    'method.principle4.desc': '6-week blocks with test and recalibration. Consistency wins.',
-    
+    'method.principle4.desc':
+      '6-week blocks with test and recalibration. Consistency wins.',
+
     // Footer
     'footer.credit': 'Based on the Norwegian Singles training method',
-    'footer.disclaimer': 'This app is a planning tool. Consult a professional before starting any training program.',
+    'footer.disclaimer':
+      'This app is a planning tool. Consult a professional before starting any training program.',
     'footer.dev': 'Built by',
     'footer.support': 'Support the project',
-    'footer.supportTagline': 'Help fund future features like sending to watch, calendar print, and more.',
-    
+    'footer.supportTagline':
+      'Help fund future features like sending to watch, calendar print, and more.',
+
     // SEO
     'seo.title': 'Norwegian Singles - Smart Training Planning',
-    'seo.description': 'Generate training plans based on the Norwegian Singles method. Optimize your threshold paces, improve your VDOT, and train like the pros.',
-    
+    'seo.description':
+      'Generate training plans based on the Norwegian Singles method. Optimize your threshold paces, improve your VDOT, and train like the pros.',
+
     // Misc
-    'loading': 'Loading...',
-    'error': 'Error',
-    'save': 'Save',
-    'cancel': 'Cancel',
-    'edit': 'Edit',
-    'delete': 'Delete',
+    loading: 'Loading...',
+    error: 'Error',
+    save: 'Save',
+    cancel: 'Cancel',
+    edit: 'Edit',
+    delete: 'Delete',
   },
 } as const;
 
@@ -295,13 +314,13 @@ export function getLocaleFromPath(path: string): Locale {
 export function getPathInLocale(path: string, targetLocale: Locale): string {
   const currentLocale = getLocaleFromPath(path);
   if (currentLocale === targetLocale) return path;
-  
+
   const segments = path.split('/').filter(Boolean);
   if (locales.includes(segments[0] as Locale)) {
     segments[0] = targetLocale;
   } else {
     segments.unshift(targetLocale);
   }
-  
+
   return '/' + segments.join('/');
 }

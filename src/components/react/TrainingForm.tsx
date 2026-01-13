@@ -4,18 +4,18 @@
  * Interactive form for configuring training parameters
  */
 
-import React, { useState, useEffect } from "react";
-import type { Distance, UserInput, Locale } from "../../types";
+import React, { useState, useEffect } from 'react';
+import type { Distance, UserInput, Locale } from '../../types';
 import {
   calculateVDOT,
   parseTime,
   estimate5KFrom10K,
   estimate10KFrom5K,
-} from "../../lib/vdot";
-import { calculatePaces, getFormattedPaces } from "../../lib/paces";
-import { createTrainingPlan } from "../../lib/plan-generator";
-import { saveInput, saveBlock } from "../../lib/storage";
-import { DISTANCE_METERS } from "../../types";
+} from '../../lib/vdot';
+import { calculatePaces, getFormattedPaces } from '../../lib/paces';
+import { createTrainingPlan } from '../../lib/plan-generator';
+import { saveInput, saveBlock } from '../../lib/storage';
+import { DISTANCE_METERS } from '../../types';
 
 interface Props {
   locale: Locale;
@@ -42,18 +42,18 @@ interface Props {
 }
 
 const DISTANCES: { value: Distance; label: string }[] = [
-  { value: "5K", label: "5K" },
-  { value: "10K", label: "10K" },
-  { value: "21K", label: "Half Marathon" },
-  { value: "42K", label: "Marathon" },
+  { value: '5K', label: '5K' },
+  { value: '10K', label: '10K' },
+  { value: '21K', label: 'Half Marathon' },
+  { value: '42K', label: 'Marathon' },
 ];
 
 export default function TrainingForm({ locale, translations }: Props) {
-  const [targetDistance, setTargetDistance] = useState<Distance>("10K");
-  const [time5K, setTime5K] = useState("");
-  const [time10K, setTime10K] = useState("");
+  const [targetDistance, setTargetDistance] = useState<Distance>('10K');
+  const [time5K, setTime5K] = useState('');
+  const [time10K, setTime10K] = useState('');
   const [trainingDays, setTrainingDays] = useState(5);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Calculate derived values for preview
@@ -88,7 +88,7 @@ export default function TrainingForm({ locale, translations }: Props) {
       return;
     }
 
-    const distance = time10K ? "10K" : "5K";
+    const distance = time10K ? '10K' : '5K';
     const vdot = calculateVDOT(DISTANCE_METERS[distance], parsed.totalSeconds);
     const paces = calculatePaces(vdot);
     const formatted = getFormattedPaces(paces);
@@ -107,7 +107,7 @@ export default function TrainingForm({ locale, translations }: Props) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setError('');
 
     // Validation
     if (!time5K && !time10K) {
@@ -144,7 +144,7 @@ export default function TrainingForm({ locale, translations }: Props) {
       // Redirect to plan page
       window.location.href = `/${locale}/plan`;
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
+      setError(err instanceof Error ? err.message : 'An error occurred');
       setIsSubmitting(false);
     }
   };
@@ -161,17 +161,17 @@ export default function TrainingForm({ locale, translations }: Props) {
                 key={d.value}
                 type="button"
                 className={`distance-btn ${
-                  targetDistance === d.value ? "is-active" : ""
+                  targetDistance === d.value ? 'is-active' : ''
                 }`}
                 onClick={() => setTargetDistance(d.value)}
               >
-                {d.value === "5K"
+                {d.value === '5K'
                   ? translations.distance5K
-                  : d.value === "10K"
-                  ? translations.distance10K
-                  : d.value === "21K"
-                  ? translations.distance21K
-                  : translations.distance42K}
+                  : d.value === '10K'
+                    ? translations.distance10K
+                    : d.value === '21K'
+                      ? translations.distance21K
+                      : translations.distance42K}
               </button>
             ))}
           </div>
@@ -222,7 +222,7 @@ export default function TrainingForm({ locale, translations }: Props) {
               value={trainingDays}
               onChange={(e) => setTrainingDays(Number(e.target.value))}
               className="slider"
-              style={{ "--value": trainingDays } as React.CSSProperties}
+              style={{ '--value': trainingDays } as React.CSSProperties}
             />
             <div className="days-display">
               <span className="days-value">{trainingDays}</span>
@@ -261,7 +261,7 @@ export default function TrainingForm({ locale, translations }: Props) {
           className="btn btn-primary btn-lg submit-btn"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "..." : translations.submit}
+          {isSubmitting ? '...' : translations.submit}
         </button>
       </form>
 

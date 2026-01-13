@@ -34,7 +34,9 @@
 
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-lg), 0 0 60px rgba(239, 68, 68, 0.25);
+  box-shadow:
+    var(--shadow-lg),
+    0 0 60px rgba(239, 68, 68, 0.25);
 }
 
 .btn-primary:active:not(:disabled) {

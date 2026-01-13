@@ -18,7 +18,7 @@ export function saveUserData(data: Partial<UserData>): void {
       updatedAt: new Date().toISOString(),
       createdAt: existing?.createdAt || new Date().toISOString(),
     } as UserData;
-    
+
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
   } catch (error) {
     console.error('Failed to save user data:', error);

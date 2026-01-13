@@ -4,11 +4,11 @@
  * Displays the training plan with interactive features
  */
 
-import React, { useState, useEffect } from "react";
-import type { TrainingBlock, Locale } from "../../types";
-import { getUserData } from "../../lib/storage";
-import { getFormattedPaces } from "../../lib/paces";
-import { formatPace } from "../../lib/vdot";
+import React, { useState, useEffect } from 'react';
+import type { TrainingBlock, Locale } from '../../types';
+import { getUserData } from '../../lib/storage';
+import { getFormattedPaces } from '../../lib/paces';
+import { formatPace } from '../../lib/vdot';
 
 interface Props {
   locale: Locale;
@@ -44,13 +44,13 @@ interface Props {
 }
 
 const DAY_KEYS = [
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
-  "sunday",
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+  'sunday',
 ] as const;
 
 export default function PlanViewer({ locale, translations }: Props) {
@@ -194,8 +194,8 @@ export default function PlanViewer({ locale, translations }: Props) {
             <button
               key={i}
               className={`week-tab ${
-                selectedWeek === i + 1 ? "is-active" : ""
-              } ${week.isTestWeek ? "is-test" : ""}`}
+                selectedWeek === i + 1 ? 'is-active' : ''
+              } ${week.isTestWeek ? 'is-test' : ''}`}
               onClick={() => setSelectedWeek(i + 1)}
             >
               {i + 1}

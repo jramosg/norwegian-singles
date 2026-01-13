@@ -7,9 +7,9 @@
  * - Norwegian Singles intervals: various percentages based on target distance
  */
 
-import type { Paces } from "../types";
-import { calculateTimeFromVDOT, formatPace } from "./vdot";
-import { DISTANCE_METERS } from "../types";
+import type { Paces } from '../types';
+import { calculateTimeFromVDOT, formatPace } from './vdot';
+import { DISTANCE_METERS } from '../types';
 
 /**
  * Calculate Threshold Pace from VDOT
@@ -33,7 +33,7 @@ export function calculateThresholdPace(vdot: number): number {
   const thresholdDistance = 15000;
   const thresholdTime = calculateTimeFromVDOT(
     thresholdVdot + 5,
-    thresholdDistance
+    thresholdDistance,
   );
 
   // Return pace per km in seconds
@@ -70,7 +70,7 @@ export function calculateEasyPace(vdot: number): number {
   // Use marathon distance as reference for easy pace range
   const marathonTime = calculateTimeFromVDOT(
     easyVdot + 15,
-    DISTANCE_METERS["42K"]
+    DISTANCE_METERS['42K'],
   );
 
   return marathonTime / 42.195;
@@ -96,12 +96,12 @@ export function calculateEasyPaceFromThreshold(thresholdPace: number): number {
  *
  * All with 60s recovery to maintain lactate state
  */
-export function calculateNSIntervalPaces(vdot: number): Paces["intervals"] {
+export function calculateNSIntervalPaces(vdot: number): Paces['intervals'] {
   // Short intervals: 15K pace (slightly faster than threshold)
   const pace15K = calculateTimeFromVDOT(vdot, 15000) / 15;
 
   // Medium intervals: Half Marathon pace
-  const paceHM = calculateTimeFromVDOT(vdot, DISTANCE_METERS["21K"]) / 21.0975;
+  const paceHM = calculateTimeFromVDOT(vdot, DISTANCE_METERS['21K']) / 21.0975;
 
   // Long intervals: ~30K pace (between HM and Marathon)
   const pace30K = calculateTimeFromVDOT(vdot, 30000) / 30;
@@ -172,13 +172,13 @@ export function getFormattedPaces(paces: Paces): {
     easy: formatPace(paces.easy),
     intervals: {
       short: `${formatPace(paces.intervals.short.min)}–${formatPace(
-        paces.intervals.short.max
+        paces.intervals.short.max,
       )}`,
       medium: `${formatPace(paces.intervals.medium.min)}–${formatPace(
-        paces.intervals.medium.max
+        paces.intervals.medium.max,
       )}`,
       long: `${formatPace(paces.intervals.long.min)}–${formatPace(
-        paces.intervals.long.max
+        paces.intervals.long.max,
       )}`,
     },
   };
@@ -192,39 +192,39 @@ export const NS_INTERVALS = {
     short: {
       reps: { min: 8, max: 12 },
       duration: "3–4'",
-      paceDesc: "15K pace",
+      paceDesc: '15K pace',
       recovery: 60,
     },
     medium: {
       reps: { min: 4, max: 6 },
       duration: "6–8'",
-      paceDesc: "HM pace",
+      paceDesc: 'HM pace',
       recovery: 60,
     },
     long: {
       reps: { min: 3, max: 3 },
       duration: "10–12'",
-      paceDesc: "~30K pace",
+      paceDesc: '~30K pace',
       recovery: 60,
     },
   },
   byDistance: {
     short: {
       reps: { min: 8, max: 12 },
-      distance: "1K",
-      paceDesc: "15K pace",
+      distance: '1K',
+      paceDesc: '15K pace',
       recovery: 60,
     },
     medium: {
       reps: { min: 4, max: 6 },
-      distance: "2K",
-      paceDesc: "HM pace",
+      distance: '2K',
+      paceDesc: 'HM pace',
       recovery: 60,
     },
     long: {
       reps: { min: 3, max: 3 },
-      distance: "3K",
-      paceDesc: "~30K pace",
+      distance: '3K',
+      paceDesc: '~30K pace',
       recovery: 60,
     },
   },

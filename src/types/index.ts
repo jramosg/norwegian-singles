@@ -1,7 +1,13 @@
 // Types for Norwegian Singles Training Application
 
 export type Distance = '5K' | '10K' | '21K' | '42K';
-export type SessionType = 'easy' | 'threshold' | 'long' | 'test' | 'rest' | 'race';
+export type SessionType =
+  | 'easy'
+  | 'threshold'
+  | 'long'
+  | 'test'
+  | 'rest'
+  | 'race';
 export type RaceType = 'A' | 'B';
 export type IntervalType = 'short' | 'medium' | 'long';
 export type Locale = 'es' | 'en';

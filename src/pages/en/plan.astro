@@ -1,77 +1,73 @@
 ---
-import AppLayout from "../../layouts/AppLayout.astro";
-import PlanViewer from "../../components/react/PlanViewer";
-import MethodologySection from "../../components/MethodologySection.astro";
-import { useTranslations } from "../../i18n/ui";
+import AppLayout from '../../layouts/AppLayout.astro';
+import PlanViewer from '../../components/react/PlanViewer';
+import MethodologySection from '../../components/MethodologySection.astro';
+import { useTranslations } from '../../i18n/ui';
 
-const locale = "en";
+const locale = 'en';
 const t = useTranslations(locale);
 
 const planTranslations = {
-    title: t("plan.title"),
-    week: t("plan.week"),
-    block: t("plan.block"),
-    testWeek: t("plan.testWeek"),
-    paces: t("plan.paces"),
-    intervals: t("plan.intervals"),
-    threshold: t("pace.threshold"),
-    easy: t("pace.easy"),
-    unit: t("pace.unit"),
-    intervalsShort: t("pace.intervals.short"),
-    intervalsMedium: t("pace.intervals.medium"),
-    intervalsLong: t("pace.intervals.long"),
-    monday: t("day.monday"),
-    tuesday: t("day.tuesday"),
-    wednesday: t("day.wednesday"),
-    thursday: t("day.thursday"),
-    friday: t("day.friday"),
-    saturday: t("day.saturday"),
-    sunday: t("day.sunday"),
-    sessionEasy: t("session.easy"),
-    sessionThreshold: t("session.threshold"),
-    sessionLong: t("session.long"),
-    sessionTest: t("session.test"),
-    sessionRest: t("session.rest"),
-    sessionRace: t("session.race"),
-    noData: "You don't have a plan yet",
-    createPlan: t("hero.cta"),
+  title: t('plan.title'),
+  week: t('plan.week'),
+  block: t('plan.block'),
+  testWeek: t('plan.testWeek'),
+  paces: t('plan.paces'),
+  intervals: t('plan.intervals'),
+  threshold: t('pace.threshold'),
+  easy: t('pace.easy'),
+  unit: t('pace.unit'),
+  intervalsShort: t('pace.intervals.short'),
+  intervalsMedium: t('pace.intervals.medium'),
+  intervalsLong: t('pace.intervals.long'),
+  monday: t('day.monday'),
+  tuesday: t('day.tuesday'),
+  wednesday: t('day.wednesday'),
+  thursday: t('day.thursday'),
+  friday: t('day.friday'),
+  saturday: t('day.saturday'),
+  sunday: t('day.sunday'),
+  sessionEasy: t('session.easy'),
+  sessionThreshold: t('session.threshold'),
+  sessionLong: t('session.long'),
+  sessionTest: t('session.test'),
+  sessionRest: t('session.rest'),
+  sessionRace: t('session.race'),
+  noData: "You don't have a plan yet",
+  createPlan: t('hero.cta'),
 };
 ---
 
 <AppLayout
-    title={`${t("plan.title")} - Norwegian Singles`}
-    description={t("seo.description")}
-    locale={locale}
+  title={`${t('plan.title')} - Norwegian Singles`}
+  description={t('seo.description')}
+  locale={locale}
 >
-    <div class="plan-page section">
-        <div class="container">
-            <header class="page-header">
-                <h1>{t("plan.title")}</h1>
-            </header>
+  <div class="plan-page section">
+    <div class="container">
+      <header class="page-header">
+        <h1>{t('plan.title')}</h1>
+      </header>
 
-            <PlanViewer
-                locale={locale}
-                translations={planTranslations}
-                client:load
-            />
+      <PlanViewer locale={locale} translations={planTranslations} client:load />
 
-            <!-- Methodology Section -->
-            <MethodologySection locale={locale} includeNotes={false} />
-        </div>
+      <!-- Methodology Section -->
+      <MethodologySection locale={locale} includeNotes={false} />
     </div>
+  </div>
 </AppLayout>
 
 <style>
-    .plan-page {
-        padding-top: var(--space-8);
-    }
+  .plan-page {
+    padding-top: var(--space-8);
+  }
 
-    .page-header {
-        margin-bottom: var(--space-8);
-        text-align: center;
-    }
+  .page-header {
+    margin-bottom: var(--space-8);
+    text-align: center;
+  }
 
-    .page-header h1 {
-        margin-bottom: var(--space-2);
-    }
+  .page-header h1 {
+    margin-bottom: var(--space-2);
+  }
 </style>
