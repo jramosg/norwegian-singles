@@ -158,7 +158,10 @@ export function calculatePacesFrom10K(time10KSeconds: number): Paces {
 /**
  * Get formatted pace strings for display
  */
-export function getFormattedPaces(paces: Paces): {
+export function getFormattedPaces(
+  paces: Paces,
+  unit: 'km' | 'mile' = 'km',
+): {
   threshold: string;
   easy: string;
   intervals: {
@@ -168,17 +171,20 @@ export function getFormattedPaces(paces: Paces): {
   };
 } {
   return {
-    threshold: formatPace(paces.threshold),
-    easy: formatPace(paces.easy),
+    threshold: formatPace(paces.threshold, unit),
+    easy: formatPace(paces.easy, unit),
     intervals: {
-      short: `${formatPace(paces.intervals.short.min)}–${formatPace(
+      short: `${formatPace(paces.intervals.short.min, unit)}–${formatPace(
         paces.intervals.short.max,
+        unit,
       )}`,
-      medium: `${formatPace(paces.intervals.medium.min)}–${formatPace(
+      medium: `${formatPace(paces.intervals.medium.min, unit)}–${formatPace(
         paces.intervals.medium.max,
+        unit,
       )}`,
-      long: `${formatPace(paces.intervals.long.min)}–${formatPace(
+      long: `${formatPace(paces.intervals.long.min, unit)}–${formatPace(
         paces.intervals.long.max,
+        unit,
       )}`,
     },
   };

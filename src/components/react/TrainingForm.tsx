@@ -29,6 +29,9 @@ interface Props {
     trainingDays: string;
     trainingDaysHint: string;
     daysPerWeek: string;
+    unit: string;
+    unitKm: string;
+    unitMile: string;
     previewThreshold: string;
     previewEasy: string;
     submit: string;
@@ -53,6 +56,7 @@ export default function TrainingForm({ locale, translations }: Props) {
   const [time5K, setTime5K] = useState('');
   const [time10K, setTime10K] = useState('');
   const [trainingDays, setTrainingDays] = useState(5);
+  const [unit, setUnit] = useState<'km' | 'mile'>('km');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -91,14 +95,14 @@ export default function TrainingForm({ locale, translations }: Props) {
     const distance = time10K ? '10K' : '5K';
     const vdot = calculateVDOT(DISTANCE_METERS[distance], parsed.totalSeconds);
     const paces = calculatePaces(vdot);
-    const formatted = getFormattedPaces(paces);
+    const formatted = getFormattedPaces(paces, unit);
 
     setPreview({
       vdot,
       threshold: formatted.threshold,
       easy: formatted.easy,
     });
-  }, [time5K, time10K]);
+  }, [time5K, time10K, unit]);
 
   const validateTime = (time: string): boolean => {
     if (!time) return true;
@@ -132,6 +136,7 @@ export default function TrainingForm({ locale, translations }: Props) {
         time10K: time10K || undefined,
         trainingDays,
         races: [],
+        unit,
       };
 
       // Create plan
@@ -232,6 +237,27 @@ export default function TrainingForm({ locale, translations }: Props) {
           <p className="form-hint">{translations.trainingDaysHint}</p>
         </div>
 
+        {/* Pace Unit */}
+        <div className="form-group">
+          <label className="form-label">{translations.unit}</label>
+          <div className="unit-selector">
+            <button
+              type="button"
+              className={`unit-btn ${unit === 'km' ? 'is-active' : ''}`}
+              onClick={() => setUnit('km')}
+            >
+              {translations.unitKm}
+            </button>
+            <button
+              type="button"
+              className={`unit-btn ${unit === 'mile' ? 'is-active' : ''}`}
+              onClick={() => setUnit('mile')}
+            >
+              {translations.unitMile}
+            </button>
+          </div>
+        </div>
+
         {/* Preview */}
         {preview && (
           <div className="preview-card">
@@ -243,11 +269,15 @@ export default function TrainingForm({ locale, translations }: Props) {
               <span className="preview-label">
                 {translations.previewThreshold}
               </span>
-              <span className="preview-value">{preview.threshold}/km</span>
+              <span className="preview-value">
+                {preview.threshold} min/{unit === 'km' ? 'km' : 'mi'}
+              </span>
             </div>
             <div className="preview-row">
               <span className="preview-label">{translations.previewEasy}</span>
-              <span className="preview-value">{preview.easy}/km</span>
+              <span className="preview-value">
+                {preview.easy} min/{unit === 'km' ? 'km' : 'mi'}
+              </span>
             </div>
           </div>
         )}
@@ -321,6 +351,36 @@ export default function TrainingForm({ locale, translations }: Props) {
           display: flex;
           align-items: center;
           gap: var(--space-4);
+        }
+
+        .unit-selector {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: var(--space-3);
+        }
+
+        .unit-btn {
+          padding: var(--space-3);
+          font-family: var(--font-display);
+          font-size: var(--text-base);
+          font-weight: var(--font-medium);
+          color: var(--color-text-secondary);
+          background: var(--color-surface);
+          border: 2px solid var(--color-border);
+          border-radius: var(--radius-md);
+          cursor: pointer;
+          transition: all var(--transition-base);
+        }
+
+        .unit-btn:hover {
+          border-color: var(--color-border-accent);
+          color: var(--color-text-primary);
+        }
+
+        .unit-btn.is-active {
+          border-color: var(--color-accent-primary);
+          background: rgba(239, 68, 68, 0.1);
+          color: var(--color-text-primary);
         }
         
         .slider {

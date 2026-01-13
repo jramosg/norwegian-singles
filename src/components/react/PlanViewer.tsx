@@ -59,6 +59,7 @@ const DAY_KEYS = [
 
 export default function PlanViewer({ locale, translations }: Props) {
   const [block, setBlock] = useState<TrainingBlock | null>(null);
+  const [unit, setUnit] = useState<'km' | 'mile'>('km');
   const [selectedWeek, setSelectedWeek] = useState(1);
   const [loading, setLoading] = useState(true);
 
@@ -66,6 +67,9 @@ export default function PlanViewer({ locale, translations }: Props) {
     const data = getUserData();
     if (data?.currentBlock) {
       setBlock(data.currentBlock);
+      if (data.input?.unit) {
+        setUnit(data.input.unit);
+      }
     }
     setLoading(false);
   }, []);
@@ -107,7 +111,7 @@ export default function PlanViewer({ locale, translations }: Props) {
     );
   }
 
-  const formattedPaces = getFormattedPaces(block.paces);
+  const formattedPaces = getFormattedPaces(block.paces, unit);
   const currentWeek = block.weeks[selectedWeek - 1];
 
   const getDayTranslation = (index: number): string => {
@@ -122,21 +126,39 @@ export default function PlanViewer({ locale, translations }: Props) {
     return translations[key] || type;
   };
 
+  const unitLabel = unit === 'km' ? 'min/km' : 'min/mi';
+
   return (
     <div className="plan-viewer">
       {/* Paces Overview */}
       <section className="paces-section">
-        <h2>{translations.paces}</h2>
+        <div className="section-header-row">
+          <h2>{translations.paces}</h2>
+          <div className="unit-toggle-mini">
+            <button
+              className={`toggle-btn ${unit === 'km' ? 'is-active' : ''}`}
+              onClick={() => setUnit('km')}
+            >
+              KM
+            </button>
+            <button
+              className={`toggle-btn ${unit === 'mile' ? 'is-active' : ''}`}
+              onClick={() => setUnit('mile')}
+            >
+              MI
+            </button>
+          </div>
+        </div>
         <div className="paces-grid">
           <div className="pace-card pace-threshold">
             <span className="pace-label">{translations.threshold}</span>
             <span className="pace-value">{formattedPaces.threshold}</span>
-            <span className="pace-unit">{translations.unit}</span>
+            <span className="pace-unit">{unitLabel}</span>
           </div>
           <div className="pace-card pace-easy">
             <span className="pace-label">{translations.easy}</span>
             <span className="pace-value">{formattedPaces.easy}</span>
-            <span className="pace-unit">{translations.unit}</span>
+            <span className="pace-unit">{unitLabel}</span>
           </div>
         </div>
 
@@ -224,7 +246,7 @@ export default function PlanViewer({ locale, translations }: Props) {
               <div className="session-desc">{session.description}</div>
               {session.paces && (
                 <div className="session-pace">
-                  {formatPace(session.paces.target)}/km
+                  {formatPace(session.paces.target, unit)} {unitLabel}
                 </div>
               )}
             </div>
@@ -247,7 +269,38 @@ export default function PlanViewer({ locale, translations }: Props) {
         .paces-section h2,
         .intervals-section h2,
         .week-header h2 {
+          margin-bottom: 0;
+        }
+
+        .section-header-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
           margin-bottom: var(--space-4);
+        }
+
+        .unit-toggle-mini {
+          display: flex;
+          background: var(--color-surface);
+          border: 1px solid var(--color-border);
+          border-radius: var(--radius-md);
+          overflow: hidden;
+        }
+
+        .toggle-btn {
+          padding: var(--space-1) var(--space-3);
+          font-size: var(--text-xs);
+          font-weight: var(--font-bold);
+          color: var(--color-text-muted);
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          transition: all var(--transition-base);
+        }
+
+        .toggle-btn.is-active {
+          color: var(--color-text-primary);
+          background: var(--color-accent-primary);
         }
         
         .paces-grid {

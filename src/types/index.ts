@@ -11,6 +11,7 @@ export type SessionType =
 export type RaceType = 'A' | 'B';
 export type IntervalType = 'short' | 'medium' | 'long';
 export type Locale = 'es' | 'en';
+export type Unit = 'km' | 'mile';
 
 // Distance in meters
 export const DISTANCE_METERS: Record<Distance, number> = {
@@ -27,6 +28,7 @@ export interface UserInput {
   time10K?: string;
   trainingDays: number; // 3-7
   races: Race[];
+  unit: Unit;
 }
 
 // Pace in seconds per kilometer

@@ -63,9 +63,13 @@ export function formatTime(totalSeconds: number): string {
 /**
  * Format pace (seconds per km) to mm:ss string
  */
-export function formatPace(secondsPerKm: number): string {
-  const minutes = Math.floor(secondsPerKm / 60);
-  const seconds = Math.round(secondsPerKm % 60);
+export function formatPace(
+  secondsPerKm: number,
+  unit: 'km' | 'mile' = 'km',
+): string {
+  const pace = unit === 'mile' ? secondsPerKm * 1.60934 : secondsPerKm;
+  const minutes = Math.floor(pace / 60);
+  const seconds = Math.round(pace % 60);
   return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 }
 

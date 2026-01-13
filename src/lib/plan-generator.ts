@@ -29,6 +29,7 @@ import type {
   Race,
   IntervalType,
   Distance,
+  Unit,
 } from '../types';
 import { calculatePaces, NS_INTERVALS } from './paces';
 import { calculateVDOT, formatPace } from './vdot';
@@ -49,10 +50,10 @@ const EASY_RUN_DURATIONS: Record<
   Distance,
   { base: number; max: number; unload: number }
 > = {
-  '5K': { base: 30, max: 45, unload: 25 },
-  '10K': { base: 35, max: 50, unload: 30 },
-  '21K': { base: 45, max: 60, unload: 35 },
-  '42K': { base: 50, max: 70, unload: 40 },
+  '5K': { base: 40, max: 60, unload: 30 },
+  '10K': { base: 45, max: 65, unload: 35 },
+  '21K': { base: 50, max: 80, unload: 40 },
+  '42K': { base: 60, max: 90, unload: 45 },
 };
 
 /**
@@ -159,7 +160,11 @@ function getWeekStructure(trainingDays: number): typeof BASE_WEEK_STRUCTURE {
 /**
  * Calculate easy run duration for a specific week and distance
  */
-function getEasyDuration(weekNumber: number, targetDistance: Distance): number {
+function getEasyDuration(
+  weekNumber: number,
+  targetDistance: Distance,
+  day: number,
+): number {
   const config = EASY_RUN_DURATIONS[targetDistance];
   if (weekNumber === 6) return config.unload;
 
@@ -172,7 +177,13 @@ function getEasyDuration(weekNumber: number, targetDistance: Distance): number {
     config.max,
     config.unload,
   ];
-  return progressionSteps[weekNumber - 1] || config.base;
+  let duration = progressionSteps[weekNumber - 1] || config.base;
+
+  // Add some variety based on the day
+  if (day === 1) duration -= 5; // Monday recovery
+  if (day === 5) duration += 5; // Friday pre-long run build
+
+  return duration;
 }
 
 /**
@@ -217,8 +228,10 @@ function createSession(
   weekNumber: number,
   targetDistance: Distance,
   _isTestWeek: boolean,
+  unit: Unit = 'km',
 ): TrainingSession {
   const { type, intervalType } = sessionConfig;
+  const unitLabel = unit === 'km' ? 'km' : 'mi';
 
   const baseSession: TrainingSession = {
     day,
@@ -229,7 +242,7 @@ function createSession(
 
   switch (type) {
     case 'easy': {
-      const duration = getEasyDuration(weekNumber, targetDistance);
+      const duration = getEasyDuration(weekNumber, targetDistance, day);
       return {
         ...baseSession,
         title: 'Easy Run',
@@ -257,7 +270,8 @@ function createSession(
         title: `NS ${intervalName} Intervals`,
         description: `${reps} × ${nsConfig.duration} @ ${formatPace(
           paceRange.min,
-        )}-${formatPace(paceRange.max)}/km (60s rec)`,
+          unit,
+        )}-${formatPace(paceRange.max, unit)}/${unitLabel} (60s rec)`,
         intervals: {
           type: interval,
           reps: { min: reps, max: reps },
@@ -347,6 +361,7 @@ function generateWeekPlan(
   trainingDays: number,
   paces: Paces,
   targetDistance: Distance,
+  unit: Unit = 'km',
 ): WeekPlan {
   const isTestWeek = weekNumber === 6;
   const structure = getWeekStructure(trainingDays);
@@ -361,6 +376,7 @@ function generateWeekPlan(
         weekNumber,
         targetDistance,
         true,
+        unit,
       );
     }
 
@@ -371,6 +387,7 @@ function generateWeekPlan(
       weekNumber,
       targetDistance,
       isTestWeek,
+      unit,
     );
   });
 
@@ -398,7 +415,13 @@ export function generateTrainingBlock(
 
   for (let week = 1; week <= 6; week++) {
     weeks.push(
-      generateWeekPlan(week, input.trainingDays, paces, input.targetDistance),
+      generateWeekPlan(
+        week,
+        input.trainingDays,
+        paces,
+        input.targetDistance,
+        input.unit,
+      ),
     );
   }
 
