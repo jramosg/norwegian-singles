@@ -25,6 +25,10 @@ interface Props {
     intervalsShort: string;
     intervalsMedium: string;
     intervalsLong: string;
+    intervalsType: string;
+    intervalsStructure: string;
+    intervalsPace: string;
+    intervalsRecovery: string;
     monday: string;
     tuesday: string;
     wednesday: string;
@@ -148,10 +152,10 @@ export default function PlanViewer({ locale, translations }: Props) {
           <table className="table">
             <thead>
               <tr>
-                <th>Tipo</th>
-                <th>Estructura</th>
-                <th>Ritmo</th>
-                <th>Rec.</th>
+                <th>{translations.intervalsType}</th>
+                <th>{translations.intervalsStructure}</th>
+                <th>{translations.intervalsPace}</th>
+                <th>{translations.intervalsRecovery}</th>
               </tr>
             </thead>
             <tbody>
