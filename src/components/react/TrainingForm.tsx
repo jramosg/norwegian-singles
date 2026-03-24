@@ -3,7 +3,7 @@
  * Collects 5K/10K time, weekly hours, and unit, then saves plan and redirects.
  */
 
-import React, { useState, useId } from 'react';
+import { type FormEvent, useState, useId, useMemo } from 'react';
 import type { UserInput, Locale } from '../../types';
 import { parseTime, formatPace } from '../../lib/paces';
 import { getSubTPaces, estimate5KFrom10K } from '../../lib/nsa-pace-table';
@@ -31,7 +31,7 @@ export default function TrainingForm({ locale }: Props) {
   const unitLabel = unit === 'km' ? 'min/km' : 'min/mi';
 
   // Live pace preview
-  const preview = React.useMemo(() => {
+  const preview = useMemo(() => {
     const t5 = parseTime(time5K);
     const t10 = parseTime(time10K);
     const fiveK = t5 ?? (t10 ? estimate5KFrom10K(t10) : null);
@@ -45,7 +45,7 @@ export default function TrainingForm({ locale }: Props) {
     };
   }, [time5K, time10K, unit]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
 
