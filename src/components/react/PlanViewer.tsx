@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect } from 'react';
 import type { SavedPlan, Locale, TrainingPaces } from '../../types';
+import { useTranslations, type TranslationKey } from '../../i18n/ui';
 import { loadPlan } from '../../lib/storage';
 import { formatPace } from '../../lib/paces';
 import {
@@ -49,6 +50,7 @@ const DAY_LABELS: Record<string, { en: string; es: string }> = {
 };
 
 export default function PlanViewer({ locale }: Props) {
+  const t = useTranslations(locale);
   const [plan, setPlan] = useState<SavedPlan | null>(null);
   const [unit, setUnit] = useState<'km' | 'mile'>('km');
   const [tab, setTab] = useState<'week' | 'paces' | 'taper' | 'marathon'>(
@@ -148,9 +150,9 @@ export default function PlanViewer({ locale }: Props) {
   const hasMarathon = Boolean(input.marathonDate);
 
   const tabs = [
-    { id: 'week' as const, label: locale === 'es' ? 'Semana' : 'Week' },
+    { id: 'week' as const, label: t('plan.week') },
     { id: 'paces' as const, label: locale === 'es' ? 'Paces' : 'Paces' },
-    { id: 'taper' as const, label: locale === 'es' ? 'Tapering' : 'Tapering' },
+    { id: 'taper' as const, label: t('taper.tab') },
     ...(hasMarathon
       ? [
           {
@@ -328,10 +330,9 @@ export default function PlanViewer({ locale }: Props) {
             unitLabel={unitLabel}
             locale={locale}
             title={
-              locale === 'es'
-                ? 'Taper 10K (semana de carrera)'
-                : 'Taper into 10K (race week)'
+              t('taper.title.10k')
             }
+            t={t}
           />
           <TaperTable
             plan={REVERSE_TAPER_10K}
@@ -340,9 +341,8 @@ export default function PlanViewer({ locale }: Props) {
             unit={unit}
             unitLabel={unitLabel}
             locale={locale}
-            title={
-              locale === 'es' ? 'Recuperación post 10K' : 'Recovery after 10K'
-            }
+            title={t('taper.title.recovery10k')}
+            t={t}
           />
           <TaperTable
             plan={TAPER_HALF}
@@ -352,10 +352,9 @@ export default function PlanViewer({ locale }: Props) {
             unitLabel={unitLabel}
             locale={locale}
             title={
-              locale === 'es'
-                ? 'Taper Media Maratón (semana de carrera)'
-                : 'Taper into Half Marathon (race week)'
+              t('taper.title.half')
             }
+            t={t}
           />
           <TaperTable
             plan={REVERSE_TAPER_HALF}
@@ -364,11 +363,8 @@ export default function PlanViewer({ locale }: Props) {
             unit={unit}
             unitLabel={unitLabel}
             locale={locale}
-            title={
-              locale === 'es'
-                ? 'Recuperación post Media Maratón'
-                : 'Recovery after Half Marathon'
-            }
+            title={t('taper.title.recoveryHalf')}
+            t={t}
           />
         </div>
       )}
@@ -565,6 +561,7 @@ function TaperTable({
   unitLabel,
   locale,
   title,
+  t,
 }: {
   plan: import('../../lib/tapering').TaperPlan;
   weekly: import('../../lib/training-plans').WeeklyPlan;
@@ -573,8 +570,10 @@ function TaperTable({
   unitLabel: string;
   locale: Locale;
   title: string;
+  t: (key: TranslationKey) => string;
 }) {
   const mpLabel = `${formatPace(paces.marathonPace, unit)} ${unitLabel}`;
+  const taperDayLabel = (day: string) => DAY_LABELS[day.toLowerCase()]?.[locale] ?? day;
 
   const descFor = (d: import('../../lib/tapering').TaperDay): string => {
     const normalSession = weekly.days[d.dayIndex];
@@ -598,15 +597,15 @@ function TaperTable({
             ? `${s.reps} × ${s.repDurationMin} min (entrenamiento normal)`
             : `${s.reps} × ${s.repDurationMin} min (normal workout)`;
         }
-        return d.description;
+        return t(d.description as TranslationKey);
       }
       case 'subt_modified':
         // Inject the actual MP pace into the description where it says "@ MP"
-        return d.description.replace('@ MP', `@ MP (${mpLabel})`);
+        return t(d.description as TranslationKey).replace('@ MP', `@ MP (${mpLabel})`);
       case 'race':
         return locale === 'es' ? 'Carrera' : 'Race';
       default:
-        return d.description;
+        return t(d.description as TranslationKey);
     }
   };
 
@@ -617,7 +616,7 @@ function TaperTable({
         <tbody>
           {plan.days.map((d) => (
             <tr key={d.day}>
-              <td>{d.day}</td>
+              <td>{taperDayLabel(d.day)}</td>
               <td>{descFor(d)}</td>
             </tr>
           ))}

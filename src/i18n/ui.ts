@@ -72,6 +72,34 @@ export const ui = {
     'plan.addRace': 'Añadir carrera',
     'plan.recalculate': 'Recalcular',
 
+    // Tapering
+    'taper.tab': 'Tapering',
+    'taper.title.10k': 'Taper 10K (semana de carrera)',
+    'taper.title.recovery10k': 'Recuperación post 10K',
+    'taper.title.half': 'Taper Media Maratón (semana de carrera)',
+    'taper.title.recoveryHalf': 'Recuperación post Media Maratón',
+    'taper.desc.easy_normal': 'Rodaje fácil normal',
+    'taper.desc.subt_normal': 'Entrenamiento sub-umbral normal',
+    'taper.desc.10k_taper_thursday':
+      '6–8 × 3 min @ ~ritmo HM, últimas 2 repeticiones a ritmo objetivo 10K',
+    'taper.desc.easy_shorter_30': 'Muy fácil, 30% más corto de lo normal',
+    'taper.desc.easy_shorter_40': 'Muy fácil, 40% más corto de lo normal',
+    'taper.desc.race': 'Carrera',
+    'taper.desc.easy_shorter_20_25':
+      'Fácil, 20–25% más corto de lo normal',
+    'taper.desc.3x10_mp_reduced': '3 × 10 min @ MP (intensidad reducida)',
+    'taper.desc.scheduled_normal_workout': 'Entrenamiento normal programado',
+    'taper.desc.normal_long_run': 'Tirada larga normal',
+    'taper.desc.half_taper_thursday':
+      '6–8 × 3 min @ MP, últimas 2 repeticiones a ritmo objetivo HM',
+    'taper.desc.easy_shorter_50': 'Muy fácil, 50% más corto de lo normal',
+    'taper.desc.easy_shorter_30_40':
+      'Muy fácil, 30–40% más corto de lo normal',
+    'taper.desc.easy_or_shorter_30': 'Fácil o 30% más corto de lo normal',
+    'taper.desc.3x6_mp_reduced': '3 × 6 min @ MP (intensidad reducida)',
+    'taper.desc.long_run_or_15_shorter':
+      'Tirada larga (o 15% más corta si hay fatiga)',
+
     // Days
     'day.monday': 'Lunes',
     'day.tuesday': 'Martes',
@@ -237,6 +265,33 @@ export const ui = {
     'plan.intervals': 'NS Intervals',
     'plan.addRace': 'Add race',
     'plan.recalculate': 'Recalculate',
+
+    // Tapering
+    'taper.tab': 'Tapering',
+    'taper.title.10k': 'Taper into 10K (race week)',
+    'taper.title.recovery10k': 'Recovery after 10K',
+    'taper.title.half': 'Taper into Half Marathon (race week)',
+    'taper.title.recoveryHalf': 'Recovery after Half Marathon',
+    'taper.desc.easy_normal': 'Easy as per normal week',
+    'taper.desc.subt_normal': 'Normal sub-T workout',
+    'taper.desc.10k_taper_thursday':
+      '6–8 × 3 min @ ~HM pace, last 2 reps at goal 10K pace',
+    'taper.desc.easy_shorter_30': 'Very easy, 30% shorter than normal',
+    'taper.desc.easy_shorter_40': 'Very easy, 40% shorter than normal',
+    'taper.desc.race': 'Race',
+    'taper.desc.easy_shorter_20_25': 'Easy, 20–25% shorter than normal',
+    'taper.desc.3x10_mp_reduced': '3 × 10 min @ MP (reduced intensity)',
+    'taper.desc.scheduled_normal_workout': 'Scheduled normal workout',
+    'taper.desc.normal_long_run': 'Normal long run',
+    'taper.desc.half_taper_thursday':
+      '6–8 × 3 min @ MP, last 2 reps at goal HM pace',
+    'taper.desc.easy_shorter_50': 'Very easy, 50% shorter than normal',
+    'taper.desc.easy_shorter_30_40':
+      'Very easy, 30–40% shorter than normal',
+    'taper.desc.easy_or_shorter_30': 'Easy or 30% shorter than normal',
+    'taper.desc.3x6_mp_reduced': '3 × 6 min @ MP (reduced intensity)',
+    'taper.desc.long_run_or_15_shorter':
+      'Long run (or 15% shorter if fatigued)',
 
     // Days
     'day.monday': 'Monday',
