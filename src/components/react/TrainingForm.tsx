@@ -45,7 +45,7 @@ export default function TrainingForm({ locale }: Props) {
     };
   }, [time5K, time10K, unit]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
 
