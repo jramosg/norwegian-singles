@@ -6,40 +6,6 @@ import { useTranslations } from '../../i18n/ui';
 
 const locale = 'es';
 const t = useTranslations(locale);
-
-const planTranslations = {
-  title: t('plan.title'),
-  week: t('plan.week'),
-  block: t('plan.block'),
-  testWeek: t('plan.testWeek'),
-  paces: t('plan.paces'),
-  intervals: t('plan.intervals'),
-  threshold: t('pace.threshold'),
-  easy: t('pace.easy'),
-  unit: t('pace.unit'),
-  intervalsShort: t('pace.intervals.short'),
-  intervalsMedium: t('pace.intervals.medium'),
-  intervalsLong: t('pace.intervals.long'),
-  intervalsType: t('intervals.type'),
-  intervalsStructure: t('intervals.structure'),
-  intervalsPace: t('intervals.pace'),
-  intervalsRecovery: t('intervals.recovery'),
-  monday: t('day.monday'),
-  tuesday: t('day.tuesday'),
-  wednesday: t('day.wednesday'),
-  thursday: t('day.thursday'),
-  friday: t('day.friday'),
-  saturday: t('day.saturday'),
-  sunday: t('day.sunday'),
-  sessionEasy: t('session.easy'),
-  sessionThreshold: t('session.threshold'),
-  sessionLong: t('session.long'),
-  sessionTest: t('session.test'),
-  sessionRest: t('session.rest'),
-  sessionRace: t('session.race'),
-  noData: 'No tienes un plan creado todavía',
-  createPlan: t('hero.cta'),
-};
 ---
 
 <AppLayout
@@ -53,9 +19,8 @@ const planTranslations = {
         <h1>{t('plan.title')}</h1>
       </header>
 
-      <PlanViewer locale={locale} translations={planTranslations} client:load />
+      <PlanViewer locale={locale} client:load />
 
-      <!-- Methodology Section -->
       <MethodologySection locale={locale} includeNotes={false} />
     </div>
   </div>
@@ -65,13 +30,8 @@ const planTranslations = {
   .plan-page {
     padding-top: var(--space-8);
   }
-
   .page-header {
     margin-bottom: var(--space-8);
     text-align: center;
-  }
-
-  .page-header h1 {
-    margin-bottom: var(--space-2);
   }
 </style>

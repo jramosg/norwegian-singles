@@ -6,30 +6,6 @@ import { useTranslations } from '../../i18n/ui';
 
 const locale = 'es';
 const t = useTranslations(locale);
-
-const formTranslations = {
-  title: t('form.title'),
-  targetDistance: t('form.targetDistance'),
-  time5K: t('form.time5K'),
-  time10K: t('form.time10K'),
-  timePlaceholder: t('form.timePlaceholder'),
-  timeHint: t('form.timeHint'),
-  trainingDays: t('form.trainingDays'),
-  trainingDaysHint: t('form.trainingDaysHint'),
-  daysPerWeek: t('form.daysPerWeek'),
-  unit: t('form.unit'),
-  unitKm: t('unit.km'),
-  unitMile: t('unit.mile'),
-  previewThreshold: t('form.previewThreshold'),
-  previewEasy: t('form.previewEasy'),
-  submit: t('form.submit'),
-  validationRequired: t('form.validation.required'),
-  validationFormat: t('form.validation.format'),
-  distance5K: t('distance.5K'),
-  distance10K: t('distance.10K'),
-  distance21K: t('distance.21K'),
-  distance42K: t('distance.42K'),
-};
 ---
 
 <AppLayout
@@ -38,7 +14,6 @@ const formTranslations = {
   locale={locale}
 >
   <div class="landing">
-    <!-- Hero Section -->
     <section class="hero">
       <div class="container">
         <div class="hero-content">
@@ -49,23 +24,17 @@ const formTranslations = {
           <p class="hero-subtitle">{t('hero.subtitle')}</p>
         </div>
 
-        <!-- Form Card -->
         <div class="form-card card glass">
           <div class="card-header">
             <h2 class="card-title">{t('form.title')}</h2>
           </div>
           <div class="card-body">
-            <TrainingForm
-              locale={locale}
-              translations={formTranslations}
-              client:load
-            />
+            <TrainingForm locale={locale} client:load />
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Methodology Section -->
     <MethodologySection locale={locale} />
   </div>
 </AppLayout>
@@ -97,7 +66,6 @@ const formTranslations = {
   .hero-content {
     text-align: center;
   }
-
   @media (min-width: 1024px) {
     .hero-content {
       text-align: left;
@@ -109,13 +77,11 @@ const formTranslations = {
     line-height: 1.1;
     margin-bottom: var(--space-4);
   }
-
   @media (min-width: 768px) {
     .hero-title {
       font-size: var(--text-5xl);
     }
   }
-
   @media (min-width: 1024px) {
     .hero-title {
       font-size: var(--text-6xl);
@@ -135,7 +101,6 @@ const formTranslations = {
     max-width: 500px;
     margin: 0 auto;
   }
-
   @media (min-width: 1024px) {
     .hero-subtitle {
       margin: 0;
@@ -146,7 +111,6 @@ const formTranslations = {
     max-width: 520px;
     margin: 0 auto;
   }
-
   @media (min-width: 1024px) {
     .form-card {
       margin: 0;

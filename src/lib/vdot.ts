@@ -6,7 +6,13 @@
  * to predict race performances and calculate training paces.
  */
 
-import type { Distance, VDOTResult, ParsedTime } from '../types';
+import type { Distance, ParsedTime } from '../types';
+
+interface VDOTResult {
+  vdot: number;
+  distance: Distance;
+  time: number;
+}
 import { DISTANCE_METERS } from '../types';
 
 /**

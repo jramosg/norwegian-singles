@@ -44,6 +44,55 @@ const schemaData = {
     url: 'https://jonramos.dev',
   },
 };
+
+const faqData = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name:
+        locale === 'es'
+          ? '¿Qué es el método Norwegian Singles (NSM)?'
+          : 'What is the Norwegian Singles Method (NSM)?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text:
+          locale === 'es'
+            ? 'El NSM es un método de entrenamiento de resistencia que usa carreras sub-umbral repetibles (intervals de 3, 6 y 10 min con 60s de descanso) para mejorar el rendimiento sin acumular fatiga excesiva.'
+            : 'NSM is an endurance training method using repeatable sub-threshold sessions (3, 6, and 10-min intervals with 60s recovery) to build performance without excessive fatigue accumulation.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name:
+        locale === 'es'
+          ? '¿Cómo calculo mi ritmo sub-umbral?'
+          : 'How do I calculate my sub-threshold pace?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text:
+          locale === 'es'
+            ? 'Introduce tu marca de 5K en el formulario y esta app calculará automáticamente tus ritmos para intervalos de 3, 6 y 10 minutos usando la Tabla 1.4 del libro NSM.'
+            : 'Enter your 5K race time in the form and this app automatically calculates your paces for 3, 6, and 10-minute intervals using Table 1.4 from the NSM book.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name:
+        locale === 'es'
+          ? '¿Cuántas horas debo entrenar a la semana?'
+          : 'How many hours should I train per week?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text:
+          locale === 'es'
+            ? 'El NSM ofrece planes desde 4.5 hasta 8 horas semanales. Si empiezas, comienza en el nivel 4.5-5.5h. Aumenta gradualmente cuando el plan actual se sienta cómodo durante varias semanas.'
+            : 'NSM offers plans from 4.5 to 8 hours per week. If starting out, begin at the 4.5–5.5h level. Increase gradually once the current plan feels comfortable for several consecutive weeks.',
+      },
+    },
+  ],
+};
 ---
 
 <!doctype html>
@@ -89,6 +138,11 @@ const schemaData = {
       type="application/ld+json"
       is:inline
       set:html={JSON.stringify(schemaData)}
+    />
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(faqData)}
     />
 
     <title>{title}</title>

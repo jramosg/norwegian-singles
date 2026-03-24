@@ -1,19 +1,9 @@
 // Types for Norwegian Singles Training Application
 
 export type Distance = '5K' | '10K' | '21K' | '42K';
-export type SessionType =
-  | 'easy'
-  | 'threshold'
-  | 'long'
-  | 'test'
-  | 'rest'
-  | 'race';
-export type RaceType = 'A' | 'B';
-export type IntervalType = 'short' | 'medium' | 'long';
 export type Locale = 'es' | 'en';
 export type Unit = 'km' | 'mile';
 
-// Distance in meters
 export const DISTANCE_METERS: Record<Distance, number> = {
   '5K': 5000,
   '10K': 10000,
@@ -21,98 +11,44 @@ export const DISTANCE_METERS: Record<Distance, number> = {
   '42K': 42195,
 };
 
-// User input from the form
+/** User input from the form */
 export interface UserInput {
-  targetDistance: Distance;
-  time5K?: string; // Format: "mm:ss" or "h:mm:ss"
+  /** 5K race time as "mm:ss" (preferred for pace lookup) */
+  time5K?: string;
+  /** 10K race time as "mm:ss" or "h:mm:ss" (will estimate 5K) */
   time10K?: string;
-  trainingDays: number; // 3-7
-  races: Race[];
+  /** Weekly training hours (4.5 to 8) */
+  weeklyHours: number;
   unit: Unit;
+  /** Target marathon date as ISO date string (YYYY-MM-DD), optional */
+  marathonDate?: string;
 }
 
-// Pace in seconds per kilometer
-export interface Paces {
-  threshold: number;
+/** Resolved training paces from NSM Table 1.4 */
+export interface TrainingPaces {
+  /** 5K time used for the lookup (seconds) */
+  fiveKSeconds: number;
+  /** Sub-T pace for 3-min reps (s/km) */
+  rep3min: number;
+  /** Sub-T pace for 6-min reps (s/km) */
+  rep6min: number;
+  /** Sub-T pace for 10-min reps (s/km) */
+  rep10min: number;
+  /** Easy run pace (s/km) */
   easy: number;
-  intervals: {
-    short: { min: number; max: number };
-    medium: { min: number; max: number };
-    long: { min: number; max: number };
-  };
+  /** Estimated marathon race pace (s/km) — used in taper/recovery sessions */
+  marathonPace: number;
 }
 
-// Norwegian Singles interval structure
-export interface IntervalSession {
-  type: IntervalType;
-  reps: { min: number; max: number };
-  duration: string; // "3-4'" or "1K"
-  paceRange: { min: number; max: number }; // seconds per km
-  recovery: number; // seconds
-}
-
-// Training session for a single day
-export interface TrainingSession {
-  day: number; // 1-7 (Monday = 1)
-  type: SessionType;
-  title: string;
-  description: string;
-  duration?: number; // minutes
-  intervals?: IntervalSession;
-  paces?: {
-    target: number;
-    range?: { min: number; max: number };
-  };
-  race?: Race;
-}
-
-// Week plan within a block
-export interface WeekPlan {
-  weekNumber: number; // 1-6
-  isTestWeek: boolean;
-  isRecoveryWeek: boolean;
-  sessions: TrainingSession[];
-  totalVolume?: number; // km
-}
-
-// Training block (6 weeks)
-export interface TrainingBlock {
-  blockNumber: number;
-  weeks: WeekPlan[];
-  startDate?: Date;
-  endDate?: Date;
-  vdot: number;
-  paces: Paces;
-}
-
-// Race information
-export interface Race {
-  id: string;
-  name: string;
-  date: string; // ISO date string
-  type: RaceType;
-  distance: Distance;
-}
-
-// Stored user data
-export interface UserData {
+/** Complete training plan saved in storage */
+export interface SavedPlan {
   input: UserInput;
-  vdot: number;
-  paces: Paces;
-  currentBlock?: TrainingBlock;
-  history?: TrainingBlock[];
+  paces: TrainingPaces;
   createdAt: string;
   updatedAt: string;
 }
 
-// VDOT calculation result
-export interface VDOTResult {
-  vdot: number;
-  distance: Distance;
-  time: number; // seconds
-}
-
-// Time parsing result
+/** Time parsing result */
 export interface ParsedTime {
   hours: number;
   minutes: number;

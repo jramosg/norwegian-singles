@@ -1,79 +1,40 @@
 /**
- * Storage utility for persisting user data
+ * LocalStorage persistence for the user's saved plan.
  */
 
-import type { UserData, UserInput, TrainingBlock, Paces } from '../types';
+import type { SavedPlan } from '../types';
 
-const STORAGE_KEY = 'ns-user-data';
+const KEY = 'nsm-plan-v2';
 
-/**
- * Save user data to localStorage
- */
-export function saveUserData(data: Partial<UserData>): void {
+export function savePlan(plan: SavedPlan): void {
   try {
-    const existing = getUserData();
-    const updated: UserData = {
-      ...existing,
-      ...data,
-      updatedAt: new Date().toISOString(),
-      createdAt: existing?.createdAt || new Date().toISOString(),
-    } as UserData;
-
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-  } catch (error) {
-    console.error('Failed to save user data:', error);
+    localStorage.setItem(
+      KEY,
+      JSON.stringify({ ...plan, updatedAt: new Date().toISOString() }),
+    );
+  } catch {
+    // Storage unavailable (SSR or private mode)
   }
 }
 
-/**
- * Get user data from localStorage
- */
-export function getUserData(): UserData | null {
+export function loadPlan(): SavedPlan | null {
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (!stored) return null;
-    return JSON.parse(stored) as UserData;
-  } catch (error) {
-    console.error('Failed to get user data:', error);
+    const raw = localStorage.getItem(KEY);
+    if (!raw) return null;
+    return JSON.parse(raw) as SavedPlan;
+  } catch {
     return null;
   }
 }
 
-/**
- * Clear user data
- */
-export function clearUserData(): void {
+export function clearPlan(): void {
   try {
-    localStorage.removeItem(STORAGE_KEY);
-  } catch (error) {
-    console.error('Failed to clear user data:', error);
+    localStorage.removeItem(KEY);
+  } catch {
+    // ignore
   }
 }
 
-/**
- * Check if user has existing data
- */
-export function hasUserData(): boolean {
-  return getUserData() !== null;
-}
-
-/**
- * Save just the input configuration
- */
-export function saveInput(input: UserInput, vdot: number, paces: Paces): void {
-  saveUserData({ input, vdot, paces });
-}
-
-/**
- * Save the current training block
- */
-export function saveBlock(block: TrainingBlock): void {
-  saveUserData({ currentBlock: block });
-}
-
-/**
- * Get current locale from storage
- */
 export function getSavedLocale(): 'es' | 'en' | null {
   try {
     return localStorage.getItem('ns-locale') as 'es' | 'en' | null;
