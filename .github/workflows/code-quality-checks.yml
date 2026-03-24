@@ -46,3 +46,6 @@ jobs:
 
       - name: Run check
         run: pnpm run check --minimumFailingSeverity hint
+
+      - name: Run tests
+        run: pnpm test
