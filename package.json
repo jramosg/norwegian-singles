@@ -9,15 +9,17 @@
     "astro": "astro",
     "check": "astro check",
     "format": "pnpm exec prettier . --write",
-    "format:check": "pnpm exec prettier . --check"
+    "format:check": "pnpm exec prettier . --check",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.6",
-    "@astrojs/react": "^4.4.2",
-    "@astrojs/sitemap": "^3.6.1",
-    "@astrojs/ts-plugin": "^1.10.6",
+    "@astrojs/check": "^0.9.8",
+    "@astrojs/react": "^5.0.1",
+    "@astrojs/sitemap": "^3.7.1",
+    "@astrojs/ts-plugin": "^1.10.7",
     "@fontsource-variable/inter": "^5.2.8",
-    "astro": "^5.16.9",
+    "astro": "^6.0.8",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "typescript": "^5.9.3"
@@ -26,6 +28,7 @@
     "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",
     "prettier": "3.7.4",
-    "prettier-plugin-astro": "^0.14.1"
+    "prettier-plugin-astro": "^0.14.1",
+    "vitest": "^4.1.0"
   }
 }
