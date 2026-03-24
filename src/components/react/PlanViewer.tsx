@@ -130,12 +130,19 @@ export default function PlanViewer({ locale }: Props) {
         : `AM ${d.morning.durationMin} min · PM ${d.afternoon.durationMin} min`;
     }
     const s = session as SubTSession;
-    const rec =
-      s.recoverySeconds >= 60
-        ? `${s.recoverySeconds / 60} min`
-        : `${s.recoverySeconds}s`;
+    const fmtSec = (sec: number) => {
+      const m = Math.floor(sec / 60);
+      const r = sec % 60;
+      if (r === 0) return `${m}:00`;
+      return `${m}:${r.toString().padStart(2, '0')}`;
+    };
+    const rec = s.recoverySecondsMax
+      ? `${fmtSec(s.recoverySeconds)}–${fmtSec(s.recoverySecondsMax)}`
+      : fmtSec(s.recoverySeconds);
     const note = s.intensityNote ? ` — ${s.intensityNote}` : '';
-    return `${s.totalDurationMin} min total (WU+CD incl.) · ${rec} recovery${note}`;
+    const wucd = locale === 'es' ? 'cal.+vuelta a calma incl.' : 'WU+CD incl.';
+    const recLabel = locale === 'es' ? 'recup.' : 'recovery';
+    return `${s.totalDurationMin} min total (${wucd}) · ${rec} ${recLabel}${note}`;
   };
 
   const hasMarathon = Boolean(input.marathonDate);

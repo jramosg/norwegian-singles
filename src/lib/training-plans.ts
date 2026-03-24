@@ -43,8 +43,10 @@ export interface SubTSession {
   totalDurationMin: number;
   /** Pace column to use from the NSA table */
   paceColumn: 'rep3min' | 'rep6min' | 'rep10min';
-  /** Recovery between reps in seconds */
+  /** Recovery between reps in seconds (minimum) */
   recoverySeconds: number;
+  /** Recovery max (when a range applies, e.g. 60–90s) */
+  recoverySecondsMax?: number;
   /** Note for reduced-intensity gateway plans */
   intensityNote?: string;
 }
@@ -91,7 +93,8 @@ export const WEEKLY_PLANS: Record<PlanHours, WeeklyPlan> = {
         repDurationMin: 10,
         totalDurationMin: 40,
         paceColumn: 'rep10min',
-        recoverySeconds: 120,
+        recoverySeconds: 90,
+        recoverySecondsMax: 120,
         intensityNote: '~95% of marathon pace (gateway intensity)',
       },
       { kind: 'easy', durationMin: 35 },
@@ -102,6 +105,7 @@ export const WEEKLY_PLANS: Record<PlanHours, WeeklyPlan> = {
         totalDurationMin: 40,
         paceColumn: 'rep6min',
         recoverySeconds: 60,
+        recoverySecondsMax: 90,
       },
       { kind: 'easy', durationMin: 35 },
       {
@@ -127,7 +131,8 @@ export const WEEKLY_PLANS: Record<PlanHours, WeeklyPlan> = {
         repDurationMin: 10,
         totalDurationMin: 50,
         paceColumn: 'rep10min',
-        recoverySeconds: 60,
+        recoverySeconds: 90,
+        recoverySecondsMax: 120,
       },
       { kind: 'easy', durationMin: 40 },
       {
@@ -137,6 +142,7 @@ export const WEEKLY_PLANS: Record<PlanHours, WeeklyPlan> = {
         totalDurationMin: 45,
         paceColumn: 'rep6min',
         recoverySeconds: 60,
+        recoverySecondsMax: 90,
       },
       { kind: 'easy', durationMin: 40 },
       {
@@ -162,7 +168,8 @@ export const WEEKLY_PLANS: Record<PlanHours, WeeklyPlan> = {
         repDurationMin: 10,
         totalDurationMin: 50,
         paceColumn: 'rep10min',
-        recoverySeconds: 60,
+        recoverySeconds: 90,
+        recoverySecondsMax: 120,
       },
       { kind: 'easy', durationMin: 45 },
       {
@@ -172,6 +179,7 @@ export const WEEKLY_PLANS: Record<PlanHours, WeeklyPlan> = {
         totalDurationMin: 50,
         paceColumn: 'rep6min',
         recoverySeconds: 60,
+        recoverySecondsMax: 90,
       },
       { kind: 'easy', durationMin: 40 },
       {
@@ -197,7 +205,8 @@ export const WEEKLY_PLANS: Record<PlanHours, WeeklyPlan> = {
         repDurationMin: 10,
         totalDurationMin: 55,
         paceColumn: 'rep10min',
-        recoverySeconds: 60,
+        recoverySeconds: 90,
+        recoverySecondsMax: 120,
       },
       { kind: 'easy', durationMin: 45 },
       {
@@ -207,6 +216,7 @@ export const WEEKLY_PLANS: Record<PlanHours, WeeklyPlan> = {
         totalDurationMin: 55,
         paceColumn: 'rep6min',
         recoverySeconds: 60,
+        recoverySecondsMax: 90,
       },
       { kind: 'easy', durationMin: 45 },
       {
@@ -232,7 +242,8 @@ export const WEEKLY_PLANS: Record<PlanHours, WeeklyPlan> = {
         repDurationMin: 10,
         totalDurationMin: 60,
         paceColumn: 'rep10min',
-        recoverySeconds: 60,
+        recoverySeconds: 90,
+        recoverySecondsMax: 120,
       },
       { kind: 'easy', durationMin: 55 },
       {
@@ -242,6 +253,7 @@ export const WEEKLY_PLANS: Record<PlanHours, WeeklyPlan> = {
         totalDurationMin: 55,
         paceColumn: 'rep6min',
         recoverySeconds: 60,
+        recoverySecondsMax: 90,
       },
       { kind: 'easy', durationMin: 50 },
       {
@@ -267,7 +279,8 @@ export const WEEKLY_PLANS: Record<PlanHours, WeeklyPlan> = {
         repDurationMin: 12,
         totalDurationMin: 65,
         paceColumn: 'rep10min',
-        recoverySeconds: 60,
+        recoverySeconds: 90,
+        recoverySecondsMax: 120,
       },
       { kind: 'easy', durationMin: 60 },
       {
@@ -277,6 +290,7 @@ export const WEEKLY_PLANS: Record<PlanHours, WeeklyPlan> = {
         totalDurationMin: 55,
         paceColumn: 'rep6min',
         recoverySeconds: 60,
+        recoverySecondsMax: 90,
       },
       { kind: 'easy', durationMin: 55 },
       {
@@ -302,7 +316,8 @@ export const WEEKLY_PLANS: Record<PlanHours, WeeklyPlan> = {
         repDurationMin: 10,
         totalDurationMin: 70,
         paceColumn: 'rep10min',
-        recoverySeconds: 60,
+        recoverySeconds: 90,
+        recoverySecondsMax: 120,
       },
       { kind: 'easy', durationMin: 60 },
       {
@@ -312,6 +327,7 @@ export const WEEKLY_PLANS: Record<PlanHours, WeeklyPlan> = {
         totalDurationMin: 65,
         paceColumn: 'rep6min',
         recoverySeconds: 60,
+        recoverySecondsMax: 90,
       },
       { kind: 'easy', durationMin: 60 },
       {
@@ -337,7 +353,8 @@ export const WEEKLY_PLANS: Record<PlanHours, WeeklyPlan> = {
         repDurationMin: 10,
         totalDurationMin: 70,
         paceColumn: 'rep10min',
-        recoverySeconds: 60,
+        recoverySeconds: 90,
+        recoverySecondsMax: 120,
       },
       {
         kind: 'double',
@@ -351,6 +368,7 @@ export const WEEKLY_PLANS: Record<PlanHours, WeeklyPlan> = {
         totalDurationMin: 65,
         paceColumn: 'rep6min',
         recoverySeconds: 60,
+        recoverySecondsMax: 90,
       },
       {
         kind: 'double',
