@@ -132,9 +132,38 @@ export const ui = {
 
     // SEO
     'seo.title':
-      'Norwegian Singles - Planificación de entrenamiento inteligente',
+      'Norwegian Singles Method (NSM) — Calculadora gratuita de ritmos sub-umbral',
     'seo.description':
-      'Genera planes de entrenamiento basados en el método Norwegian Singles. Optimiza tus ritmos de umbral, mejora tu VDOT y entrena como los profesionales.',
+      'Genera planes de entrenamiento con el método Norwegian Singles de James Copeland (sirpoc). Simplifica el doble umbral de Marius Bakken en sesiones únicas diarias. Calcula ritmos sub-T a partir de tu marca de 5K. Incluye planes semanales de 4.5–9h y preparación maratón de 15 semanas.',
+
+    // SEO Content Section
+    'seo.content.h2': '¿Qué es el Norwegian Singles Method?',
+    'seo.content.intro':
+      'El <strong>Norwegian Singles Method (NSM)</strong> es un sistema de entrenamiento sub-umbral creado por <strong>James Copeland</strong> (conocido como <strong>sirpoc</strong> en la comunidad runner). Adapta el <strong>método de doble umbral de Marius Bakken</strong> — el mismo enfoque detrás de los récords mundiales de Jakob Ingebrigtsen — en <strong>sesiones diarias únicas</strong> accesibles para corredores de todos los niveles.',
+    'seo.content.doubleThreshold.title':
+      'Del doble umbral al Norwegian Singles',
+    'seo.content.doubleThreshold.text':
+      'El <strong>Método Noruego</strong> original prescribe dos sesiones de umbral de lactato al día, una por la mañana y otra por la tarde. Aunque extraordinariamente efectivo para atletas profesionales, es impracticable para la mayoría de corredores. NSM destila los <strong>principios fisiológicos clave</strong> — intensidad sub-umbral controlada, recuperaciones cortas para mantener el lactato elevado, y alta consistencia semanal — en un formato de sesión única que se adapta a la vida normal.',
+    'seo.content.howItWorks.title': 'Cómo funciona el método',
+    'seo.content.howItWorks.text':
+      'Cada semana sigue la misma estructura repetible: <strong>tres sesiones sub-umbral</strong> (martes, jueves, sábado) más rodajes fáciles el resto de días. Las sesiones sub-umbral usan tres longitudes de intervalo diferentes:',
+    'seo.content.howItWorks.rep3':
+      '<strong>Repeticiones de 3 minutos</strong> — a ritmo de carrera de ~15K, con 60 segundos de recuperación',
+    'seo.content.howItWorks.rep6':
+      '<strong>Repeticiones de 6 minutos</strong> — a ritmo de carrera de ~30K, con 60–90s de recuperación',
+    'seo.content.howItWorks.rep10':
+      '<strong>Repeticiones de 10 minutos</strong> — cercano al ritmo de maratón, con 90–120s de recuperación',
+    'seo.content.howItWorks.paces':
+      'Todos los ritmos se derivan de tu <strong>marca actual de 5K</strong> usando las tablas del libro <em>"NSM: Subthreshold Running Kept Simple"</em> de James Copeland. La idea clave: corres a ritmos <strong>por debajo</strong> de tu umbral de lactato, nunca al fallo, maximizando las ganancias aeróbicas y minimizando el riesgo de lesión.',
+    'seo.content.weeklyPlans.title': 'Planes semanales: 4.5 a 9 horas',
+    'seo.content.weeklyPlans.text':
+      'NSM ofrece planes estructurados de <strong>4.5 a 9 horas semanales</strong>, escalando el número de repeticiones y la duración de los rodajes fáciles conforme crece tu condición física. Progresar significa pasar al siguiente nivel de horas cuando el plan actual se sienta cómodo durante varias semanas consecutivas.',
+    'seo.content.marathon.title': 'Preparación Maratón: programa de 15 semanas',
+    'seo.content.marathon.text':
+      'Para corredores que se preparan para un maratón, esta app incluye el programa completo <strong>"My Marathon Build" de 15 semanas</strong> del libro NSM. Incluye tiradas largas progresivas hasta 140 minutos, carreras de puesta a punto (parkrun, 10K, media maratón) y <strong>sesiones específicas a ritmo maratón</strong> en las últimas semanas. Introduce la fecha de tu maratón y la app genera toda la cuenta atrás.',
+    'seo.content.whoIsItFor.title': '¿Para quién es este método?',
+    'seo.content.whoIsItFor.text':
+      'NSM está diseñado para corredores de <strong>todos los niveles</strong> — desde quienes corren un 5K en 30 minutos hasta atletas sub-15. Las tablas de ritmos cubren tiempos de 5K desde 15:00 hasta 30:00. Ya sea que entrenes para tu primer 10K o prepares un maratón, el método escala a tu condición física con la misma estructura probada.',
 
     // Misc
     loading: 'Cargando...',
@@ -268,9 +297,39 @@ export const ui = {
       'Help fund future features like sending to watch, calendar print, and more.',
 
     // SEO
-    'seo.title': 'Norwegian Singles - Smart Training Planning',
+    'seo.title':
+      'Norwegian Singles Method (NSM) — Free Sub-Threshold Pace Calculator',
     'seo.description':
-      'Generate training plans based on the Norwegian Singles method. Optimize your threshold paces, improve your VDOT, and train like the pros.',
+      "Generate training plans using James Copeland's Norwegian Singles Method (sirpoc). Simplifies Marius Bakken's double threshold into single daily sessions. Calculate sub-T paces from your 5K time. Weekly plans from 4.5–9h plus 15-week marathon build.",
+
+    // SEO Content Section
+    'seo.content.h2': 'What is the Norwegian Singles Method?',
+    'seo.content.intro':
+      "The <strong>Norwegian Singles Method (NSM)</strong> is a sub-threshold running system created by <strong>James Copeland</strong> (known as <strong>sirpoc</strong> in the running community). It adapts <strong>Marius Bakken's</strong> elite <strong>double threshold method</strong> — the same approach behind Jakob Ingebrigtsen's world records — into <strong>single daily sessions</strong> accessible to everyday runners.",
+    'seo.content.doubleThreshold.title':
+      'From Double Threshold to Norwegian Singles',
+    'seo.content.doubleThreshold.text':
+      'The original <strong>Norwegian Method</strong> prescribes two lactate threshold sessions per day, one in the morning and one in the evening. While extraordinarily effective for professional athletes, this is impractical for most runners. NSM distills the <strong>core physiological principles</strong> — controlled sub-threshold intensity, short recoveries to maintain elevated lactate, and high weekly consistency — into a single-session format that fits a normal life.',
+    'seo.content.howItWorks.title': 'How the Method Works',
+    'seo.content.howItWorks.text':
+      'Every week follows the same repeatable structure: <strong>three sub-threshold workouts</strong> (Tuesday, Thursday, Saturday) plus easy runs on the other days. The sub-threshold sessions use three different interval lengths:',
+    'seo.content.howItWorks.rep3':
+      '<strong>3-minute reps</strong> — at roughly 15K race effort, with 60-second recovery',
+    'seo.content.howItWorks.rep6':
+      '<strong>6-minute reps</strong> — at roughly 30K race effort, with 60–90s recovery',
+    'seo.content.howItWorks.rep10':
+      '<strong>10-minute reps</strong> — close to marathon effort, with 90–120s recovery',
+    'seo.content.howItWorks.paces':
+      'All paces are derived from your current <strong>5K race time</strong> using the pace tables from the book <em>"NSM: Subthreshold Running Kept Simple"</em> by James Copeland. The key insight: you run at paces <strong>below</strong> your lactate threshold, never to failure, maximizing aerobic gains while minimizing injury risk.',
+    'seo.content.weeklyPlans.title': 'Weekly Plans: 4.5 to 9 Hours',
+    'seo.content.weeklyPlans.text':
+      'NSM provides structured plans ranging from <strong>4.5 to 9 hours per week</strong>, scaling the number of repetitions and easy run duration as your fitness grows. Progression means moving to the next hours tier when your current plan feels comfortable for several consecutive weeks — not by increasing pace.',
+    'seo.content.marathon.title': 'Marathon Build: 15-Week Program',
+    'seo.content.marathon.text':
+      'For runners targeting a marathon, this app includes the complete <strong>15-week "My Marathon Build"</strong> from the NSM book. It features progressive long runs up to 140 minutes, tune-up races (parkrun, 10K, half marathon), and <strong>marathon-pace specific sessions</strong> in the final weeks. Enter your marathon date and the app generates the entire countdown.',
+    'seo.content.whoIsItFor.title': 'Who Is This For?',
+    'seo.content.whoIsItFor.text':
+      "NSM is designed for runners of <strong>all levels</strong> — from those running a 30-minute 5K to sub-15 athletes. The pace tables cover 5K times from 15:00 to 30:00. Whether you're training for your first 10K or preparing for a marathon PB, the method scales to your fitness through the same proven structure.",
 
     // Misc
     loading: 'Loading...',
