@@ -2,14 +2,16 @@
 /**
  * Book Recommendations Component
  *
- * Displays affiliate-linked book recommendations. Links are marketplace-aware
- * (see src/lib/affiliate.ts) and carry the required FTC/Amazon disclosure.
+ * Affiliate-linked book recommendations. Each card is a single clickable link.
+ * Links are marketplace-aware (see src/lib/affiliate.ts) and labelled as
+ * affiliate links per FTC/Amazon disclosure requirements.
  */
 
 import { Image } from 'astro:assets';
 import type { Locale } from '../types';
 import { useTranslations } from '../i18n/ui';
 import { books, amazonUrl } from '../lib/affiliate';
+import Icon from './Icon.astro';
 
 import nsmCover from '../assets/book-nsm.jpg';
 import bakkenCover from '../assets/book-bakken.jpg';
@@ -29,42 +31,50 @@ const t = useTranslations(locale);
 
 <section class="books-section section">
   <div class="container">
-    <h2 class="section-title">{t('books.title')}</h2>
-    <p class="books-subtitle">{t('books.subtitle')}</p>
+    <div class="books-head">
+      <h2 class="section-title">{t('books.title')}</h2>
+      <p class="books-subtitle">{t('books.subtitle')}</p>
+    </div>
 
     <div class="books-grid">
       {
         books.map((book) => (
-          <article class="book-card">
-            {book.cover && coverMap[book.cover] ? (
-              <Image
-                src={coverMap[book.cover]}
-                alt={book.title}
-                class="book-cover"
-                width={140}
-                loading="lazy"
-              />
-            ) : (
-              <div class="book-icon">📖</div>
-            )}
+          <a
+            class="book-card"
+            href={amazonUrl(book.asin, locale)}
+            target="_blank"
+            rel="sponsored nofollow noopener"
+          >
+            <div class="book-cover-wrap">
+              {book.cover && coverMap[book.cover] ? (
+                <Image
+                  src={coverMap[book.cover]}
+                  alt={book.title}
+                  class="book-cover"
+                  width={150}
+                  loading="lazy"
+                />
+              ) : (
+                <Icon name="book-open" size={32} />
+              )}
+            </div>
             <div class="book-body">
               <h3>{book.title}</h3>
               {book.author && <p class="book-author">{book.author}</p>}
+              <span class="book-cta">
+                {t('books.cta')}
+                <Icon name="arrow-right" size={16} />
+              </span>
             </div>
-            <a
-              class="book-cta"
-              href={amazonUrl(book.asin, locale)}
-              target="_blank"
-              rel="sponsored nofollow noopener"
-            >
-              {t('books.cta')}
-            </a>
-          </article>
+          </a>
         ))
       }
     </div>
 
-    <p class="books-disclosure">{t('books.disclosure')}</p>
+    <p class="books-affiliate">
+      <Icon name="book-open" size={13} />
+      {t('books.affiliate')}
+    </p>
   </div>
 </section>
 
@@ -74,21 +84,24 @@ const t = useTranslations(locale);
     border-top: 1px solid var(--color-border);
   }
 
-  .section-title {
+  .books-head {
     text-align: center;
+    margin-bottom: var(--space-10);
+  }
+
+  .section-title {
     margin-bottom: var(--space-2);
   }
 
   .books-subtitle {
-    text-align: center;
     color: var(--color-text-secondary);
-    margin-bottom: var(--space-10);
+    margin: 0;
   }
 
   .books-grid {
     display: grid;
-    gap: var(--space-6);
-    max-width: 720px;
+    gap: var(--space-5);
+    max-width: 780px;
     margin: 0 auto;
   }
 
@@ -100,74 +113,85 @@ const t = useTranslations(locale);
 
   .book-card {
     display: flex;
-    flex-direction: column;
-    padding: var(--space-6);
+    gap: var(--space-5);
+    align-items: center;
+    padding: var(--space-5);
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-xl);
-    text-align: center;
+    border-radius: var(--radius-2xl);
+    text-decoration: none;
+    color: inherit;
     transition: all var(--transition-base);
   }
 
   .book-card:hover {
     border-color: var(--color-border-accent);
+    background: var(--color-surface-hover);
     transform: translateY(-4px);
     box-shadow: var(--shadow-lg);
   }
 
+  .book-cover-wrap {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-muted);
+  }
+
   .book-cover {
-    width: 140px;
+    width: 88px;
     height: auto;
     border-radius: var(--radius-md);
     object-fit: cover;
     box-shadow: var(--shadow-lg);
-    margin-bottom: var(--space-4);
+    transition: transform var(--transition-base);
   }
 
-  .book-icon {
-    font-size: 2.5rem;
-    margin-bottom: var(--space-4);
+  .book-card:hover .book-cover {
+    transform: scale(1.04) rotate(-1deg);
   }
 
   .book-body {
-    flex: 1;
+    min-width: 0;
   }
 
   .book-card h3 {
     font-size: var(--text-lg);
-    margin-bottom: var(--space-2);
+    line-height: 1.25;
+    margin-bottom: var(--space-1);
   }
 
   .book-author {
     font-size: var(--text-sm);
     color: var(--color-text-secondary);
-    margin: 0;
+    margin: 0 0 var(--space-3);
   }
 
   .book-cta {
-    display: inline-block;
-    margin-top: var(--space-5);
-    padding: var(--space-3) var(--space-5);
-    background: var(--color-accent-gradient);
-    color: white;
-    font-weight: var(--font-semibold);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
     font-size: var(--text-sm);
-    border-radius: var(--radius-lg);
-    text-decoration: none;
-    transition: opacity var(--transition-base);
+    font-weight: var(--font-semibold);
+    color: var(--color-accent-primary);
   }
 
-  .book-cta:hover {
-    opacity: 0.9;
+  .book-cta :global(svg) {
+    transition: transform var(--transition-base);
   }
 
-  .books-disclosure {
-    text-align: center;
-    font-size: var(--text-xs);
-    color: var(--color-text-secondary);
+  .book-card:hover .book-cta :global(svg) {
+    transform: translateX(3px);
+  }
+
+  .books-affiliate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
     margin-top: var(--space-8);
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
   }
 </style>

@@ -152,8 +152,7 @@ export const ui = {
     'books.subtitle':
       'Profundiza en el método con estas lecturas de referencia.',
     'books.cta': 'Ver en Amazon',
-    'books.disclosure':
-      'Como afiliado de Amazon, gano una comisión por las compras aptas. No supone ningún coste adicional para ti.',
+    'books.affiliate': 'Enlaces de afiliado',
 
     // Footer
     'footer.credit': 'Basado en el método de entrenamiento Norwegian Singles',
@@ -351,8 +350,7 @@ export const ui = {
     'books.title': 'Recommended books',
     'books.subtitle': 'Go deeper into the method with these reference reads.',
     'books.cta': 'View on Amazon',
-    'books.disclosure':
-      'As an Amazon Associate, I earn from qualifying purchases. This comes at no extra cost to you.',
+    'books.affiliate': 'Affiliate links',
 
     // Footer
     'footer.credit': 'Based on the Norwegian Singles training method',

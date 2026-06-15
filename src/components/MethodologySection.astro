@@ -7,7 +7,9 @@
  */
 
 import type { Locale } from '../types';
-import { useTranslations } from '../i18n/ui';
+import { useTranslations, type TranslationKey } from '../i18n/ui';
+import Icon from './Icon.astro';
+import type { IconName } from '../lib/icons';
 
 interface Props {
   locale: Locale;
@@ -17,6 +19,33 @@ interface Props {
 
 const { locale, includePrinciples = true, includeNotes = true } = Astro.props;
 const t = useTranslations(locale);
+
+const principles: {
+  icon: IconName;
+  title: TranslationKey;
+  desc: TranslationKey;
+}[] = [
+  {
+    icon: 'zap',
+    title: 'method.principle1.title',
+    desc: 'method.principle1.desc',
+  },
+  {
+    icon: 'target',
+    title: 'method.principle2.title',
+    desc: 'method.principle2.desc',
+  },
+  {
+    icon: 'timer',
+    title: 'method.principle3.title',
+    desc: 'method.principle3.desc',
+  },
+  {
+    icon: 'repeat',
+    title: 'method.principle4.title',
+    desc: 'method.principle4.desc',
+  },
+];
 
 const notesList =
   locale === 'es'
@@ -42,29 +71,15 @@ const notesList =
           <h2 class="section-title">{t('method.title')}</h2>
 
           <div class="principles-grid">
-            <article class="principle-card">
-              <div class="principle-icon">⚡</div>
-              <h3>{t('method.principle1.title')}</h3>
-              <p>{t('method.principle1.desc')}</p>
-            </article>
-
-            <article class="principle-card">
-              <div class="principle-icon">🎯</div>
-              <h3>{t('method.principle2.title')}</h3>
-              <p>{t('method.principle2.desc')}</p>
-            </article>
-
-            <article class="principle-card">
-              <div class="principle-icon">⏱️</div>
-              <h3>{t('method.principle3.title')}</h3>
-              <p>{t('method.principle3.desc')}</p>
-            </article>
-
-            <article class="principle-card">
-              <div class="principle-icon">🔄</div>
-              <h3>{t('method.principle4.title')}</h3>
-              <p>{t('method.principle4.desc')}</p>
-            </article>
+            {principles.map((principle) => (
+              <article class="principle-card">
+                <div class="principle-icon">
+                  <Icon name={principle.icon} size={24} />
+                </div>
+                <h3>{t(principle.title)}</h3>
+                <p>{t(principle.desc)}</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>
@@ -115,12 +130,28 @@ const notesList =
   }
 
   .principle-card {
-    padding: var(--space-6);
+    position: relative;
+    overflow: hidden;
+    padding: var(--space-8) var(--space-6);
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-xl);
+    border-radius: var(--radius-2xl);
     text-align: center;
     transition: all var(--transition-base);
+  }
+
+  .principle-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at 50% 0%,
+      rgba(239, 68, 68, 0.08),
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity var(--transition-base);
+    pointer-events: none;
   }
 
   .principle-card:hover {
@@ -129,9 +160,29 @@ const notesList =
     box-shadow: var(--shadow-lg);
   }
 
+  .principle-card:hover::before {
+    opacity: 1;
+  }
+
   .principle-icon {
-    font-size: 2.5rem;
-    margin-bottom: var(--space-4);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    margin-bottom: var(--space-5);
+    color: var(--color-accent-primary);
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: var(--radius-lg);
+    transition:
+      transform var(--transition-base),
+      background var(--transition-base);
+  }
+
+  .principle-card:hover .principle-icon {
+    transform: scale(1.08);
+    background: rgba(239, 68, 68, 0.16);
   }
 
   .principle-card h3 {
