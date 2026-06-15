@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it } from 'vitest';
+import Stripe from 'stripe';
 import { POST as checkoutPost } from '../checkout';
 import { POST as webhookPost } from '../stripe-webhook';
 
@@ -11,6 +12,7 @@ const checkoutBody = {
   },
   plan: {
     input: {
+      time5K: '20:00',
       weeklyHours: 6,
       unit: 'km',
     },
@@ -76,6 +78,49 @@ describe('checkout API security', () => {
     expect(response.status).toBe(503);
     await expect(response.json()).resolves.toEqual({
       error: 'Webhook is not configured',
+    });
+  });
+
+  it('returns a retryable failure when a paid order cannot be fulfilled', async () => {
+    process.env.STRIPE_SECRET_KEY = 'sk_test_123';
+    process.env.STRIPE_WEBHOOK_SECRET = 'whsec_test';
+    process.env.ORDER_STORE_DIR = '/tmp/norwegian-singles-test-missing-order';
+
+    const payload = JSON.stringify({
+      id: 'evt_test',
+      object: 'event',
+      type: 'checkout.session.completed',
+      data: {
+        object: {
+          id: 'cs_test',
+          object: 'checkout.session',
+          client_reference_id: 'missing_order',
+          payment_status: 'paid',
+          metadata: {
+            order_id: 'missing_order',
+          },
+        },
+      },
+    });
+    const signature = Stripe.webhooks.generateTestHeaderString({
+      payload,
+      secret: 'whsec_test',
+    });
+
+    const response = await webhookPost({
+      request: new Request('https://norwegian-singles.app/api/stripe-webhook', {
+        method: 'POST',
+        headers: {
+          'stripe-signature': signature,
+          'Content-Type': 'application/json',
+        },
+        body: payload,
+      }),
+    } as never);
+
+    expect(response.status).toBe(500);
+    await expect(response.json()).resolves.toEqual({
+      error: 'Fulfillment failed',
     });
   });
 });

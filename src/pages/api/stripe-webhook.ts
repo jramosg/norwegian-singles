@@ -1,5 +1,12 @@
 import type { APIRoute } from 'astro';
 import Stripe from 'stripe';
+import { fulfillPaidOrder } from '../../lib/server/fulfillment';
+import {
+  markOrderFulfilled,
+  markOrderFulfillmentFailed,
+  markOrderPaid,
+  readCheckoutOrder,
+} from '../../lib/server/order-store';
 
 export const prerender = false;
 
@@ -23,38 +30,38 @@ export const POST: APIRoute = async ({ request }) => {
 
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
-    await forwardFulfillment(session);
+    try {
+      await fulfillCheckoutSession(session);
+    } catch (error) {
+      console.error('Order fulfillment failed', error);
+      return json({ error: 'Fulfillment failed' }, 500);
+    }
   }
 
   return json({ received: true });
 };
 
-async function forwardFulfillment(
+async function fulfillCheckoutSession(
   session: Stripe.Checkout.Session,
 ): Promise<void> {
-  const fulfillmentWebhookUrl = process.env.FULFILLMENT_WEBHOOK_URL;
-  if (!fulfillmentWebhookUrl) return;
-  const fulfillmentWebhookSecret = process.env.FULFILLMENT_WEBHOOK_SECRET;
+  const orderId = session.client_reference_id || session.metadata?.order_id;
+  if (!orderId) throw new Error('Checkout session is missing order id');
 
-  await fetch(fulfillmentWebhookUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      ...(fulfillmentWebhookSecret
-        ? { Authorization: `Bearer ${fulfillmentWebhookSecret}` }
-        : {}),
-    },
-    body: JSON.stringify({
-      event: 'checkout.session.completed',
-      sessionId: session.id,
-      orderId: session.client_reference_id,
-      customerEmail: session.customer_email,
-      amountTotal: session.amount_total,
-      currency: session.currency,
-      paymentStatus: session.payment_status,
-      metadata: session.metadata,
-    }),
+  const existing = await readCheckoutOrder(orderId);
+  if (existing?.status === 'fulfilled') return;
+
+  const order = await markOrderPaid(orderId, {
+    stripeSessionId: session.id,
+    paymentStatus: session.payment_status,
   });
+
+  try {
+    await fulfillPaidOrder(order);
+    await markOrderFulfilled(order);
+  } catch (error) {
+    await markOrderFulfillmentFailed(order, error);
+    throw error;
+  }
 }
 
 function stripeClient(): Stripe | null {

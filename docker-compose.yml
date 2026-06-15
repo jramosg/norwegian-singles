@@ -13,11 +13,19 @@ services:
       - STRIPE_EXPORT_PRICE_ID=${STRIPE_EXPORT_PRICE_ID}
       - STRIPE_BUNDLE_PRICE_ID=${STRIPE_BUNDLE_PRICE_ID}
       - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
-      - FULFILLMENT_WEBHOOK_URL=${FULFILLMENT_WEBHOOK_URL}
-      - FULFILLMENT_WEBHOOK_SECRET=${FULFILLMENT_WEBHOOK_SECRET}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - FULFILLMENT_FROM_EMAIL=${FULFILLMENT_FROM_EMAIL}
+      - SUPPORT_EMAIL=${SUPPORT_EMAIL}
+      - REMINDER_CRON_SECRET=${REMINDER_CRON_SECRET}
+      - ORDER_STORE_DIR=/app/data/orders
+    volumes:
+      - checkout-orders:/app/data/orders
     healthcheck:
       test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:80/ >/dev/null']
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 10s
+
+volumes:
+  checkout-orders:

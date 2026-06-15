@@ -1,17 +1,22 @@
 import type { APIRoute } from 'astro';
 import Stripe from 'stripe';
+import { createPlan } from '../../lib/plan-generator';
+import {
+  saveCheckoutOrder,
+  type ProductId,
+} from '../../lib/server/order-store';
+import type { UserInput } from '../../types';
 
 export const prerender = false;
 
 type Locale = 'es' | 'en';
-type ProductId = 'export' | 'bundle';
-
 interface CheckoutRequest {
   order?: {
     id?: unknown;
     email?: unknown;
     locale?: unknown;
     productId?: unknown;
+    pageUrl?: unknown;
   };
   plan?: {
     input?: {
@@ -68,7 +73,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     return json({ error: parsed.error }, 400);
   }
 
-  const { orderId, email, locale, productId } = parsed.value;
+  const { orderId, email, locale, productId, input, pageUrl } = parsed.value;
   const priceId = process.env[PRODUCT_PRICE_ENV[productId]];
 
   if (!priceId) {
@@ -79,6 +84,19 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   const successUrl = new URL(`/${locale}/checkout/success`, siteUrl);
   successUrl.searchParams.set('session_id', '{CHECKOUT_SESSION_ID}');
   const cancelUrl = new URL(`/${locale}/checkout/cancel`, siteUrl);
+  const plan = createPlan(input);
+  const price = productId === 'bundle' ? 19 : 9;
+
+  await saveCheckoutOrder({
+    id: orderId,
+    email,
+    locale,
+    productId,
+    price,
+    currency: 'EUR',
+    plan,
+    pageUrl,
+  });
 
   let session: Stripe.Checkout.Session;
   try {
@@ -96,12 +114,12 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
           product_id: productId,
           product_name: PRODUCT_NAMES[productId],
           locale,
-          weekly_hours: body.plan?.input?.weeklyHours,
-          unit: body.plan?.input?.unit,
-          marathon_date: body.plan?.input?.marathonDate,
-          time_5k: body.plan?.input?.time5K,
-          time_10k: body.plan?.input?.time10K,
-          five_k_seconds: body.plan?.paces?.fiveKSeconds,
+          weekly_hours: plan.input.weeklyHours,
+          unit: plan.input.unit,
+          marathon_date: plan.input.marathonDate,
+          time_5k: plan.input.time5K,
+          time_10k: plan.input.time10K,
+          five_k_seconds: plan.paces.fiveKSeconds,
         }),
       },
       {
@@ -128,6 +146,8 @@ function parseCheckoutRequest(body: CheckoutRequest):
         email: string;
         locale: Locale;
         productId: ProductId;
+        input: UserInput;
+        pageUrl: string;
       };
     }
   | { ok: false; error: string } {
@@ -135,6 +155,8 @@ function parseCheckoutRequest(body: CheckoutRequest):
   const email = asShortString(body.order?.email, 254);
   const locale = body.order?.locale;
   const productId = body.order?.productId;
+  const input = parsePlanInput(body.plan?.input);
+  const pageUrl = asShortString(body.order?.pageUrl, 2048) ?? '';
 
   if (!orderId) return { ok: false, error: 'Order ID is required' };
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -146,8 +168,38 @@ function parseCheckoutRequest(body: CheckoutRequest):
   if (productId !== 'export' && productId !== 'bundle') {
     return { ok: false, error: 'Invalid product' };
   }
+  if (!input) return { ok: false, error: 'Invalid plan input' };
 
-  return { ok: true, value: { orderId, email, locale, productId } };
+  return {
+    ok: true,
+    value: { orderId, email, locale, productId, input, pageUrl },
+  };
+}
+
+function parsePlanInput(
+  input: NonNullable<CheckoutRequest['plan']>['input'],
+): UserInput | null {
+  if (!input) return null;
+  const weeklyHours =
+    typeof input.weeklyHours === 'number' ? input.weeklyHours : NaN;
+  const unit =
+    input.unit === 'mile' ? 'mile' : input.unit === 'km' ? 'km' : null;
+  const time5K = asOptionalString(input.time5K, 20);
+  const time10K = asOptionalString(input.time10K, 20);
+  const marathonDate = asOptionalString(input.marathonDate, 10);
+
+  if (!Number.isFinite(weeklyHours) || weeklyHours < 4 || weeklyHours > 12) {
+    return null;
+  }
+  if (!unit || (!time5K && !time10K)) return null;
+
+  return {
+    weeklyHours,
+    unit,
+    time5K: time5K ?? undefined,
+    time10K: time10K ?? undefined,
+    marathonDate: marathonDate ?? undefined,
+  };
 }
 
 function isAllowedOrigin(request: Request): boolean {
@@ -212,6 +264,11 @@ function asShortString(value: unknown, maxLength: number): string | null {
   const trimmed = value.trim();
   if (!trimmed || trimmed.length > maxLength) return null;
   return trimmed;
+}
+
+function asOptionalString(value: unknown, maxLength: number): string | null {
+  if (value === undefined || value === null || value === '') return null;
+  return asShortString(value, maxLength);
 }
 
 function safeMetadata(
