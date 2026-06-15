@@ -1,0 +1,62 @@
+---
+import AppLayout from '../../../layouts/AppLayout.astro';
+
+const locale = 'en';
+---
+
+<AppLayout
+  title="Checkout cancelled - Norwegian Singles"
+  description="Your Norwegian Singles checkout was cancelled."
+  locale={locale}
+>
+  <section class="checkout-result section">
+    <div class="container checkout-container">
+      <div class="checkout-panel">
+        <span class="checkout-kicker">Checkout cancelled</span>
+        <h1>No payment was taken</h1>
+        <p>
+          Your plan is still available. You can return to it, adjust your
+          package, and restart checkout when ready.
+        </p>
+
+        <div class="checkout-actions">
+          <a class="btn btn-primary" href="/en/plan">Return to checkout</a>
+          <a class="btn btn-secondary" href="/en">Create another plan</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</AppLayout>
+
+<style>
+  .checkout-container {
+    max-width: 720px;
+  }
+
+  .checkout-panel {
+    padding: var(--space-8);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .checkout-kicker {
+    color: var(--color-accent-primary);
+    font-size: var(--text-xs);
+    font-weight: var(--font-bold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .checkout-panel h1 {
+    margin: var(--space-2) 0 var(--space-4);
+    font-size: var(--text-3xl);
+  }
+
+  .checkout-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+</style>

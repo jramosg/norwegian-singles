@@ -365,6 +365,8 @@ export default function PlanViewer({ locale }: Props) {
         </div>
       </div>
 
+      <PlanUpgradeCard plan={plan} locale={locale} />
+
       {/* Tabs */}
       <div className="pv-tabs" role="tablist">
         {tabs.map((t) => (
@@ -562,6 +564,172 @@ export default function PlanViewer({ locale }: Props) {
           align-items: flex-start;
           margin-bottom: var(--space-6);
         }
+        .pv-upgrade {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr);
+          gap: var(--space-4);
+          padding: var(--space-5);
+          margin-bottom: var(--space-6);
+          background:
+            linear-gradient(135deg, rgba(239,68,68,0.13), rgba(59,130,246,0.07)),
+            var(--color-surface);
+          border: 1px solid rgba(255,255,255,0.12);
+          border-radius: var(--radius-lg);
+        }
+        .pv-upgrade-kicker {
+          display: inline-flex;
+          width: fit-content;
+          padding: 2px var(--space-2);
+          margin-bottom: var(--space-2);
+          color: #fecaca;
+          background: rgba(239,68,68,0.14);
+          border: 1px solid rgba(239,68,68,0.28);
+          border-radius: var(--radius-md);
+          font-size: 11px;
+          font-weight: var(--font-bold);
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+        }
+        .pv-upgrade-title {
+          margin: 0 0 var(--space-2);
+          font-size: var(--text-xl);
+          letter-spacing: 0;
+        }
+        .pv-upgrade-copy {
+          margin: 0;
+          max-width: 58ch;
+          color: var(--color-text-secondary);
+          font-size: var(--text-sm);
+          line-height: 1.6;
+        }
+        .pv-upgrade-products {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: var(--space-3);
+        }
+        .pv-upgrade-product {
+          appearance: none;
+          width: 100%;
+          padding: var(--space-4);
+          background: rgba(10,10,11,0.42);
+          border: 1px solid var(--color-border);
+          border-radius: var(--radius-md);
+          color: inherit;
+          cursor: pointer;
+          text-align: left;
+          transition: all var(--transition-fast);
+        }
+        .pv-upgrade-product:hover {
+          border-color: var(--color-border-accent);
+          background: rgba(255,255,255,0.04);
+        }
+        .pv-upgrade-product.is-featured {
+          border-color: rgba(239,68,68,0.45);
+          box-shadow: inset 0 0 0 1px rgba(239,68,68,0.08);
+        }
+        .pv-upgrade-product.is-selected {
+          border-color: var(--color-accent-primary);
+          box-shadow:
+            inset 0 0 0 1px rgba(239,68,68,0.2),
+            0 0 0 3px rgba(239,68,68,0.12);
+        }
+        .pv-upgrade-product-head {
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          gap: var(--space-3);
+          margin-bottom: var(--space-2);
+        }
+        .pv-upgrade-product-name {
+          color: var(--color-text-primary);
+          font-size: var(--text-sm);
+          font-weight: var(--font-bold);
+        }
+        .pv-upgrade-price {
+          color: var(--color-text-primary);
+          font-family: var(--font-mono);
+          font-size: var(--text-lg);
+          font-weight: var(--font-bold);
+        }
+        .pv-upgrade-product p {
+          margin: 0;
+          color: var(--color-text-muted);
+          font-size: var(--text-xs);
+          line-height: 1.5;
+        }
+        .pv-upgrade-features {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: var(--space-2) var(--space-4);
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+        .pv-upgrade-features li {
+          display: flex;
+          align-items: flex-start;
+          gap: var(--space-2);
+          color: var(--color-text-secondary);
+          font-size: var(--text-sm);
+          line-height: 1.4;
+        }
+        .pv-upgrade-features li::before {
+          content: '';
+          width: 7px;
+          height: 7px;
+          margin-top: 0.45em;
+          border-radius: 50%;
+          background: var(--color-accent-primary);
+          flex: 0 0 auto;
+        }
+        .pv-upgrade-form {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          gap: var(--space-2);
+          align-items: start;
+        }
+        .pv-upgrade-input {
+          min-height: 42px;
+          padding: var(--space-2) var(--space-3);
+          font-size: var(--text-sm);
+        }
+        .pv-upgrade-submit {
+          min-height: 42px;
+          padding: var(--space-2) var(--space-4);
+          border-radius: var(--radius-md);
+        }
+        .pv-upgrade-consent {
+          grid-column: 1 / -1;
+          display: flex;
+          align-items: flex-start;
+          gap: var(--space-2);
+          color: var(--color-text-muted);
+          font-size: var(--text-xs);
+          line-height: 1.45;
+        }
+        .pv-upgrade-consent input {
+          width: 15px;
+          height: 15px;
+          margin-top: 1px;
+          accent-color: var(--color-accent-primary);
+          flex: 0 0 auto;
+        }
+        .pv-upgrade-message {
+          grid-column: 1 / -1;
+          margin: 0;
+          font-size: var(--text-xs);
+        }
+        .pv-upgrade-message.is-error { color: var(--color-accent-primary); }
+        .pv-upgrade-message.is-success { color: var(--color-easy); }
+        .pv-upgrade-footer {
+          display: flex;
+          justify-content: space-between;
+          gap: var(--space-3);
+          padding-top: var(--space-2);
+          border-top: 1px solid var(--color-border);
+          color: var(--color-text-muted);
+          font-size: var(--text-xs);
+        }
         .pv-plan-name { font-size: var(--text-2xl); margin-bottom: var(--space-1); }
         .pv-5k { font-size: var(--text-sm); color: var(--color-text-muted); margin: 0; }
         .pv-5k-val { font-family: var(--font-mono); font-weight: var(--font-bold); color: var(--color-text-secondary); }
@@ -705,12 +873,294 @@ export default function PlanViewer({ locale }: Props) {
         .pv-taper-table td:last-child { color: var(--color-text-primary); }
         .pv-taper-table tr:last-child td { border-bottom: none; }
         @media (max-width: 520px) {
+          .pv-header {
+            flex-direction: column;
+            gap: var(--space-3);
+          }
+          .pv-header-actions { flex-wrap: wrap; }
+          .pv-upgrade {
+            padding: var(--space-4);
+          }
+          .pv-upgrade-products,
+          .pv-upgrade-features,
+          .pv-upgrade-form {
+            grid-template-columns: 1fr;
+          }
+          .pv-upgrade-footer {
+            flex-direction: column;
+            gap: var(--space-1);
+          }
           .pv-day { grid-template-columns: 1fr; gap: var(--space-1); }
           .pv-day-name { font-size: var(--text-xs); }
         }
       `}</style>
     </div>
   );
+}
+
+type UpgradeProductId = 'export' | 'bundle';
+
+interface UpgradeProduct {
+  id: UpgradeProductId;
+  price: 9 | 19;
+}
+
+const UPGRADE_PRODUCTS: Record<UpgradeProductId, UpgradeProduct> = {
+  export: {
+    id: 'export',
+    price: 9,
+  },
+  bundle: {
+    id: 'bundle',
+    price: 19,
+  },
+};
+
+function PlanUpgradeCard({
+  plan,
+  locale,
+}: {
+  plan: SavedPlan;
+  locale: Locale;
+}) {
+  const [email, setEmail] = useState('');
+  const [consent, setConsent] = useState(false);
+  const [message, setMessage] = useState('');
+  const [selectedProduct, setSelectedProduct] =
+    useState<UpgradeProductId>('bundle');
+  const [messageKind, setMessageKind] = useState<'error' | 'success'>(
+    'success',
+  );
+  const [submitting, setSubmitting] = useState(false);
+
+  const weekly = getPlanByHours(plan.input.weeklyHours);
+  const hasMarathon = Boolean(plan.input.marathonDate);
+
+  const text = {
+    kicker: locale === 'es' ? 'Checkout seguro' : 'Secure checkout',
+    title:
+      locale === 'es'
+        ? 'Compra los exports de tu plan'
+        : 'Buy exports for your plan',
+    copy:
+      locale === 'es'
+        ? 'Selecciona el formato, deja tu email para la entrega y continúa al pago. Tu plan actual se adjunta al pedido.'
+        : 'Choose the package, enter your delivery email, and continue to payment. Your current plan is attached to the order.',
+    exportName: locale === 'es' ? 'Export básico' : 'Basic export',
+    exportCopy:
+      locale === 'es'
+        ? 'Calendario .ics, PDF imprimible y archivo de entrenos.'
+        : 'Calendar .ics, printable PDF, and workout export file.',
+    bundleName:
+      locale === 'es'
+        ? 'Bundle maratón + recordatorios'
+        : 'Marathon + reminders bundle',
+    bundleCopy:
+      locale === 'es'
+        ? 'Todo el export básico, PDF de 15 semanas y emails semanales.'
+        : 'Everything in basic export, 15-week PDF, and weekly emails.',
+    emailPlaceholder: locale === 'es' ? 'tu@email.com' : 'you@example.com',
+    submit: locale === 'es' ? 'Continuar al pago' : 'Continue to checkout',
+    submitting:
+      locale === 'es' ? 'Preparando pago...' : 'Preparing checkout...',
+    consent:
+      locale === 'es'
+        ? 'Acepto recibir el producto comprado, recordatorios relacionados y emails transaccionales de este pedido.'
+        : 'I agree to receive the purchased product, related reminders, and transactional emails for this order.',
+    missingEmail:
+      locale === 'es' ? 'Introduce un email válido.' : 'Enter a valid email.',
+    missingConsent:
+      locale === 'es'
+        ? 'Confirma el permiso para enviarte emails.'
+        : 'Confirm permission to send emails.',
+    success:
+      locale === 'es'
+        ? 'Pedido preparado. Redirigiendo al pago...'
+        : 'Order ready. Redirecting to checkout...',
+    error:
+      locale === 'es'
+        ? 'No he podido preparar el checkout. Prueba otra vez.'
+        : 'Could not prepare checkout. Try again.',
+    planAttached: locale === 'es' ? 'Plan adjunto' : 'Plan attached',
+    secure:
+      locale === 'es'
+        ? 'Pago externo seguro. Entrega por email.'
+        : 'Secure external payment. Delivery by email.',
+    features:
+      locale === 'es'
+        ? [
+            'Exportar a calendario .ics',
+            'PDF imprimible del plan',
+            'Archivo Garmin / Coros / TrainingPeaks',
+            'PDF maratón 15 semanas',
+            'Recordatorios semanales por email',
+          ]
+        : [
+            'Export to .ics calendar',
+            'Printable plan PDF',
+            'Garmin / Coros / TrainingPeaks file',
+            '15-week marathon PDF',
+            'Weekly email reminders',
+          ],
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const cleanEmail = email.trim();
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
+      setMessageKind('error');
+      setMessage(text.missingEmail);
+      return;
+    }
+    if (!consent) {
+      setMessageKind('error');
+      setMessage(text.missingConsent);
+      return;
+    }
+
+    const product = UPGRADE_PRODUCTS[selectedProduct];
+    const order = {
+      id: crypto.randomUUID(),
+      email: cleanEmail,
+      locale,
+      productId: product.id,
+      price: product.price,
+      currency: 'EUR',
+      planLabel: weekly.label,
+      fiveK: formatTime(plan.paces.fiveKSeconds),
+      weeklyHours: plan.input.weeklyHours,
+      time5K: plan.input.time5K ?? null,
+      time10K: plan.input.time10K ?? null,
+      unit: plan.input.unit,
+      marathonDate: plan.input.marathonDate ?? null,
+      pageUrl: window.location.href,
+      createdAt: new Date().toISOString(),
+    };
+
+    setSubmitting(true);
+    try {
+      localStorage.setItem('ns-pending-order', JSON.stringify(order));
+      const checkoutUrl = await resolveCheckoutUrl(order, plan);
+      setMessageKind('success');
+      setMessage(text.success);
+      window.location.href = checkoutUrl;
+    } catch {
+      setMessageKind('error');
+      setMessage(text.error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <section className="pv-upgrade" aria-labelledby="pv-upgrade-title">
+      <div>
+        <span className="pv-upgrade-kicker">{text.kicker}</span>
+        <h3 className="pv-upgrade-title" id="pv-upgrade-title">
+          {text.title}
+        </h3>
+        <p className="pv-upgrade-copy">{text.copy}</p>
+      </div>
+
+      <div className="pv-upgrade-products" role="radiogroup">
+        <button
+          type="button"
+          className={`pv-upgrade-product ${selectedProduct === 'export' ? 'is-selected' : ''}`}
+          onClick={() => setSelectedProduct('export')}
+          role="radio"
+          aria-checked={selectedProduct === 'export'}
+        >
+          <div className="pv-upgrade-product-head">
+            <span className="pv-upgrade-product-name">{text.exportName}</span>
+            <span className="pv-upgrade-price">€9</span>
+          </div>
+          <p>{text.exportCopy}</p>
+        </button>
+        <button
+          type="button"
+          className={`pv-upgrade-product is-featured ${selectedProduct === 'bundle' ? 'is-selected' : ''}`}
+          onClick={() => setSelectedProduct('bundle')}
+          role="radio"
+          aria-checked={selectedProduct === 'bundle'}
+        >
+          <div className="pv-upgrade-product-head">
+            <span className="pv-upgrade-product-name">{text.bundleName}</span>
+            <span className="pv-upgrade-price">€19</span>
+          </div>
+          <p>{text.bundleCopy}</p>
+        </button>
+      </div>
+
+      <ul className="pv-upgrade-features">
+        {text.features
+          .filter((feature) => hasMarathon || !feature.includes('15'))
+          .map((feature) => (
+            <li key={feature}>{feature}</li>
+          ))}
+      </ul>
+
+      <form className="pv-upgrade-form" onSubmit={handleSubmit}>
+        <input
+          className="form-input pv-upgrade-input"
+          type="email"
+          inputMode="email"
+          autoComplete="email"
+          placeholder={text.emailPlaceholder}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          aria-label="Email"
+        />
+        <button
+          className="btn btn-primary pv-upgrade-submit"
+          type="submit"
+          disabled={submitting}
+        >
+          {submitting ? text.submitting : text.submit}
+        </button>
+        <label className="pv-upgrade-consent">
+          <input
+            type="checkbox"
+            checked={consent}
+            onChange={(e) => setConsent(e.target.checked)}
+          />
+          <span>{text.consent}</span>
+        </label>
+        {message && (
+          <p className={`pv-upgrade-message is-${messageKind}`}>{message}</p>
+        )}
+      </form>
+      <div className="pv-upgrade-footer">
+        <span>
+          {text.planAttached}: {weekly.label}
+        </span>
+        <span>{text.secure}</span>
+      </div>
+    </section>
+  );
+}
+
+async function resolveCheckoutUrl(
+  order: {
+    id: string;
+    email: string;
+    locale: Locale;
+    productId: UpgradeProductId;
+    price: number;
+    currency: string;
+    pageUrl: string;
+  },
+  plan: SavedPlan,
+): Promise<string> {
+  const response = await fetch('/api/checkout', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ order, plan }),
+  });
+  if (!response.ok) throw new Error('Checkout session failed');
+  const payload = (await response.json()) as { url?: string };
+  if (!payload.url) throw new Error('Checkout URL missing');
+  return payload.url;
 }
 
 function formatTime(seconds: number): string {
