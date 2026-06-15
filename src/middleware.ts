@@ -2,7 +2,8 @@ import { defineMiddleware } from 'astro:middleware';
 
 // Replaces the security headers and asset caching that nginx provided before
 // the move to the Node SSR adapter.
-const STATIC_ASSET = /\.(?:js|mjs|css|png|jpe?g|gif|ico|svg|webp|avif|woff2?|ttf|otf)$/;
+const STATIC_ASSET =
+  /\.(?:js|mjs|css|png|jpe?g|gif|ico|svg|webp|avif|woff2?|ttf|otf)$/;
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const response = await next();
@@ -17,7 +18,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
     STATIC_ASSET.test(new URL(context.request.url).pathname) &&
     !response.headers.has('Cache-Control')
   ) {
-    response.headers.set('Cache-Control', 'public, max-age=31536000, immutable');
+    response.headers.set(
+      'Cache-Control',
+      'public, max-age=31536000, immutable',
+    );
   }
 
   return response;
