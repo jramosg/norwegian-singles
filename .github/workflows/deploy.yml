@@ -94,6 +94,12 @@ jobs:
           echo "🧹 Cleaning up..."
           rm -f norwegian-singles.tar
 
+          # Loading a new :latest image untags the previous one, leaving it
+          # dangling (<none>). Remove dangling images so they don't pile up on
+          # the VPS disk after every deploy.
+          echo "🧹 Removing old dangling images..."
+          docker image prune -f
+
           echo "✅ Deployment completed successfully!"
           echo "📊 Container status:"
           docker-compose ps
