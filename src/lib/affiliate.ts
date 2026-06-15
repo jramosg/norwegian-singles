@@ -37,17 +37,21 @@ export interface Book {
   asin: string;
   title: string;
   author?: string;
+  cover?: string;
 }
 
 export const books: Book[] = [
   {
     asin: 'B0G4D8438Z',
-    title: 'The Norwegian Singles Method: Subthreshold Running',
+    title: 'Norwegian Singles Method',
     author: 'James Copeland',
+    cover: '/book-nsm.jpg',
   },
   {
     asin: '8269471100',
-    title: 'The Norwegian Method Applied: Training at Threshold Intensity',
+    title: 'The Norwegian Method Applied',
+    author: 'Marius Bakken, MD',
+    cover: '/book-bakken.jpg',
   },
 ];
 

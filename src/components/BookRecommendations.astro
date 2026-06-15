@@ -6,9 +6,18 @@
  * (see src/lib/affiliate.ts) and carry the required FTC/Amazon disclosure.
  */
 
+import { Image } from 'astro:assets';
 import type { Locale } from '../types';
 import { useTranslations } from '../i18n/ui';
 import { books, amazonUrl } from '../lib/affiliate';
+
+import nsmCover from '../assets/book-nsm.jpg';
+import bakkenCover from '../assets/book-bakken.jpg';
+
+const coverMap: Record<string, ImageMetadata> = {
+  '/book-nsm.jpg': nsmCover,
+  '/book-bakken.jpg': bakkenCover,
+};
 
 interface Props {
   locale: Locale;
@@ -27,7 +36,17 @@ const t = useTranslations(locale);
       {
         books.map((book) => (
           <article class="book-card">
-            <div class="book-icon">📖</div>
+            {book.cover && coverMap[book.cover] ? (
+              <Image
+                src={coverMap[book.cover]}
+                alt={book.title}
+                class="book-cover"
+                width={140}
+                loading="lazy"
+              />
+            ) : (
+              <div class="book-icon">📖</div>
+            )}
             <div class="book-body">
               <h3>{book.title}</h3>
               {book.author && <p class="book-author">{book.author}</p>}
@@ -94,6 +113,15 @@ const t = useTranslations(locale);
     border-color: var(--color-border-accent);
     transform: translateY(-4px);
     box-shadow: var(--shadow-lg);
+  }
+
+  .book-cover {
+    width: 140px;
+    height: auto;
+    border-radius: var(--radius-md);
+    object-fit: cover;
+    box-shadow: var(--shadow-lg);
+    margin-bottom: var(--space-4);
   }
 
   .book-icon {
