@@ -80,32 +80,38 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   successUrl.searchParams.set('session_id', '{CHECKOUT_SESSION_ID}');
   const cancelUrl = new URL(`/${locale}/checkout/cancel`, siteUrl);
 
-  const session = await stripe.checkout.sessions.create(
-    {
-      mode: 'payment',
-      customer_email: email,
-      line_items: [{ price: priceId, quantity: 1 }],
-      client_reference_id: orderId,
-      success_url: successUrl.toString(),
-      cancel_url: cancelUrl.toString(),
-      allow_promotion_codes: true,
-      metadata: safeMetadata({
-        order_id: orderId,
-        product_id: productId,
-        product_name: PRODUCT_NAMES[productId],
-        locale,
-        weekly_hours: body.plan?.input?.weeklyHours,
-        unit: body.plan?.input?.unit,
-        marathon_date: body.plan?.input?.marathonDate,
-        time_5k: body.plan?.input?.time5K,
-        time_10k: body.plan?.input?.time10K,
-        five_k_seconds: body.plan?.paces?.fiveKSeconds,
-      }),
-    },
-    {
-      idempotencyKey: orderId,
-    },
-  );
+  let session: Stripe.Checkout.Session;
+  try {
+    session = await stripe.checkout.sessions.create(
+      {
+        mode: 'payment',
+        customer_email: email,
+        line_items: [{ price: priceId, quantity: 1 }],
+        client_reference_id: orderId,
+        success_url: successUrl.toString(),
+        cancel_url: cancelUrl.toString(),
+        allow_promotion_codes: true,
+        metadata: safeMetadata({
+          order_id: orderId,
+          product_id: productId,
+          product_name: PRODUCT_NAMES[productId],
+          locale,
+          weekly_hours: body.plan?.input?.weeklyHours,
+          unit: body.plan?.input?.unit,
+          marathon_date: body.plan?.input?.marathonDate,
+          time_5k: body.plan?.input?.time5K,
+          time_10k: body.plan?.input?.time10K,
+          five_k_seconds: body.plan?.paces?.fiveKSeconds,
+        }),
+      },
+      {
+        idempotencyKey: orderId,
+      },
+    );
+  } catch (error) {
+    console.error('Stripe checkout session creation failed', error);
+    return json({ error: 'Could not create checkout session' }, 502);
+  }
 
   if (!session.url) {
     return json({ error: 'Checkout URL missing' }, 502);
