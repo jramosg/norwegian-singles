@@ -1,5 +1,0 @@
-# Approve build scripts for these deps so `pnpm install` doesn't fail with
-# ERR_PNPM_IGNORED_BUILDS on pnpm 10+ (esbuild/sharp run postinstall builds).
-onlyBuiltDependencies:
-  - esbuild
-  - sharp

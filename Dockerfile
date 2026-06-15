@@ -1,14 +1,15 @@
 FROM node:22-alpine AS base
 WORKDIR /app
 
-# Enable Corepack to use pnpm
-RUN corepack enable
+# Enable Corepack and pin pnpm to 9 (matches the pnpm-lock.yaml 9.0 format).
+# Unpinned, corepack pulls the latest pnpm (10+), which fails install with
+# ERR_PNPM_IGNORED_BUILDS; pnpm 9 runs build scripts by default and honors
+# the lockfile exactly (avoiding esbuild host/binary version drift).
+RUN corepack enable && corepack prepare pnpm@9 --activate
 ENV PNPM_STORE_PATH=/pnpm/store
 
-# Copy only manifest files to leverage build cache.
-# pnpm-workspace.yaml carries onlyBuiltDependencies (build-script approval),
-# so it must be present before `pnpm install` runs.
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+# Copy only manifest files to leverage build cache
+COPY package.json pnpm-lock.yaml ./
 
 FROM base AS prod-deps
 RUN pnpm install --prod
