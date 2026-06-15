@@ -9,6 +9,7 @@ import { useTranslations, type TranslationKey } from '../../i18n/ui';
 import { loadPlan, savePlan } from '../../lib/storage';
 import { createPlan } from '../../lib/plan-generator';
 import { encodePlanInput, decodePlanInput } from '../../lib/plan-url';
+import { sharePlanCard, type PlanCardData } from '../../lib/share-card';
 import { formatPace } from '../../lib/paces';
 import {
   DAYS_OF_WEEK,
@@ -60,6 +61,7 @@ export default function PlanViewer({ locale }: Props) {
   );
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [imgBusy, setImgBusy] = useState(false);
 
   useEffect(() => {
     // Prefer a plan encoded in the URL (shared / bookmarked link), then fall
@@ -106,6 +108,53 @@ export default function PlanViewer({ locale }: Props) {
       setTimeout(() => setCopied(false), 2000);
     } catch {
       // User cancelled the share sheet or clipboard is unavailable.
+    }
+  };
+
+  const handleShareImage = async () => {
+    if (!plan || imgBusy) return;
+    setImgBusy(true);
+    try {
+      const { paces } = plan;
+      const card: PlanCardData = {
+        planLabel: getPlanByHours(plan.input.weeklyHours).label,
+        fiveKLabel: formatTime(paces.fiveKSeconds),
+        unitLabel: unit === 'km' ? 'min/km' : 'min/mi',
+        rows: [
+          {
+            label: locale === 'es' ? 'Interv. 3 min' : '3-min reps',
+            value: formatPace(paces.rep3min, unit),
+            color: 'var(--color-threshold)',
+          },
+          {
+            label: locale === 'es' ? 'Interv. 6 min' : '6-min reps',
+            value: formatPace(paces.rep6min, unit),
+            color: 'var(--color-threshold)',
+          },
+          {
+            label: locale === 'es' ? 'Interv. 10 min' : '10-min reps',
+            value: formatPace(paces.rep10min, unit),
+            color: 'var(--color-threshold)',
+          },
+          {
+            label: locale === 'es' ? 'Ritmo maratón' : 'Marathon pace',
+            value: formatPace(paces.marathonPace, unit),
+            color: '#ef4444',
+          },
+          {
+            label: locale === 'es' ? 'Ritmo fácil' : 'Easy pace',
+            value: formatPace(paces.easy, unit),
+            color: '#22c55e',
+          },
+        ].map((r) => ({
+          ...r,
+          // Resolve the two CSS-var colors to hex for the canvas.
+          color: r.color === 'var(--color-threshold)' ? '#f59e0b' : r.color,
+        })),
+      };
+      await sharePlanCard(card, locale, window.location.href);
+    } finally {
+      setImgBusy(false);
     }
   };
 
@@ -266,6 +315,35 @@ export default function PlanViewer({ locale }: Props) {
                 : locale === 'es'
                   ? 'Compartir'
                   : 'Share'}
+            </span>
+          </button>
+          <button
+            type="button"
+            className="pv-share-btn"
+            onClick={handleShareImage}
+            disabled={imgBusy}
+            aria-label={
+              locale === 'es' ? 'Compartir como imagen' : 'Share as image'
+            }
+          >
+            <svg
+              className="pv-share-icon"
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+              <circle cx="8.5" cy="8.5" r="1.5" />
+              <polyline points="21 15 16 10 5 21" />
+            </svg>
+            <span className="pv-share-label">
+              {imgBusy ? '…' : locale === 'es' ? 'Imagen' : 'Image'}
             </span>
           </button>
           <div
@@ -511,6 +589,7 @@ export default function PlanViewer({ locale }: Props) {
           color: var(--color-easy);
           border-color: var(--color-easy);
         }
+        .pv-share-btn:disabled { opacity: 0.6; cursor: default; }
         .pv-share-icon { flex-shrink: 0; }
         @media (max-width: 420px) {
           .pv-share-label { display: none; }
