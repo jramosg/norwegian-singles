@@ -3,6 +3,19 @@
    Premium, Modern, Mobile-First
    ============================================ */
 
+/* ---------- Metric-adjusted fallback ----------
+   Matches Arial's metrics to Inter so text rendered with the fallback
+   occupies the same box as Inter. This prevents the layout shift (CLS)
+   that otherwise happens when the web font swaps in. */
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial');
+  ascent-override: 90.44%;
+  descent-override: 22.52%;
+  line-gap-override: 0%;
+  size-adjust: 107.12%;
+}
+
 /* ---------- CSS Custom Properties ---------- */
 :root {
   /* Colors  */
@@ -36,7 +49,8 @@
 
   /* Typography */
   --font-sans:
-    'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    'Inter Variable', 'Inter Fallback', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', sans-serif;
   --font-display: 'Outfit', var(--font-sans);
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 

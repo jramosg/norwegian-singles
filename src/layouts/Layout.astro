@@ -208,9 +208,11 @@ const faqData = {
   <body>
     <slot />
 
-    <!-- Buy Me a Coffee floating widget -->
+    <!-- Buy Me a Coffee floating widget (non-critical, load off the
+         critical path so it doesn't block render or the LCP) -->
     <script
       is:inline
+      async
       data-name="BMC-Widget"
       data-cfasync="false"
       src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
