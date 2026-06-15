@@ -2,6 +2,7 @@
   "name": "norwegian-singles",
   "type": "module",
   "version": "0.0.1",
+  "packageManager": "pnpm@9.15.9",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -15,6 +16,7 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.8",
+    "@astrojs/node": "10.0.0",
     "@astrojs/react": "^5.0.1",
     "@astrojs/sitemap": "^3.7.1",
     "@astrojs/ts-plugin": "^1.10.7",
@@ -22,6 +24,8 @@
     "astro": "^6.0.8",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
+    "sharp": "^0.35.1",
+    "stripe": "^22.2.1",
     "typescript": "^5.9.3"
   },
   "devDependencies": {

@@ -7,8 +7,16 @@ services:
       - '${PORT:-4321}:80'
     environment:
       - NODE_ENV=production
+      - SITE_URL=${SITE_URL:-https://norwegian-singles.app}
+      - PUBLIC_SITE_URL=${PUBLIC_SITE_URL:-https://norwegian-singles.app}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_EXPORT_PRICE_ID=${STRIPE_EXPORT_PRICE_ID}
+      - STRIPE_BUNDLE_PRICE_ID=${STRIPE_BUNDLE_PRICE_ID}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+      - FULFILLMENT_WEBHOOK_URL=${FULFILLMENT_WEBHOOK_URL}
+      - FULFILLMENT_WEBHOOK_SECRET=${FULFILLMENT_WEBHOOK_SECRET}
     healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:80/']
+      test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:80/ >/dev/null']
       interval: 30s
       timeout: 10s
       retries: 3
