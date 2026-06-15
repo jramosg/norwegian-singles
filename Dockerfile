@@ -5,8 +5,10 @@ WORKDIR /app
 RUN corepack enable
 ENV PNPM_STORE_PATH=/pnpm/store
 
-# Copy only manifest files to leverage build cache
-COPY package.json pnpm-lock.yaml ./
+# Copy only manifest files to leverage build cache.
+# pnpm-workspace.yaml carries onlyBuiltDependencies (build-script approval),
+# so it must be present before `pnpm install` runs.
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 FROM base AS prod-deps
 RUN pnpm install --prod
