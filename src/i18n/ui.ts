@@ -85,16 +85,14 @@ export const ui = {
     'taper.desc.easy_shorter_30': 'Muy fácil, 30% más corto de lo normal',
     'taper.desc.easy_shorter_40': 'Muy fácil, 40% más corto de lo normal',
     'taper.desc.race': 'Carrera',
-    'taper.desc.easy_shorter_20_25':
-      'Fácil, 20–25% más corto de lo normal',
+    'taper.desc.easy_shorter_20_25': 'Fácil, 20–25% más corto de lo normal',
     'taper.desc.3x10_mp_reduced': '3 × 10 min @ MP (intensidad reducida)',
     'taper.desc.scheduled_normal_workout': 'Entrenamiento normal programado',
     'taper.desc.normal_long_run': 'Tirada larga normal',
     'taper.desc.half_taper_thursday':
       '6–8 × 3 min @ MP, últimas 2 repeticiones a ritmo objetivo HM',
     'taper.desc.easy_shorter_50': 'Muy fácil, 50% más corto de lo normal',
-    'taper.desc.easy_shorter_30_40':
-      'Muy fácil, 30–40% más corto de lo normal',
+    'taper.desc.easy_shorter_30_40': 'Muy fácil, 30–40% más corto de lo normal',
     'taper.desc.easy_or_shorter_30': 'Fácil o 30% más corto de lo normal',
     'taper.desc.3x6_mp_reduced': '3 × 6 min @ MP (intensidad reducida)',
     'taper.desc.long_run_or_15_shorter':
@@ -148,6 +146,14 @@ export const ui = {
     'method.principle4.title': 'Semanas Repetibles',
     'method.principle4.desc':
       'Consistencia sobre variedad. Repite la misma estructura semanal y deja que el ritmo progrese con tu VDOT.',
+
+    // Books / affiliate
+    'books.title': 'Libros recomendados',
+    'books.subtitle':
+      'Profundiza en el método con estas lecturas de referencia.',
+    'books.cta': 'Ver en Amazon',
+    'books.disclosure':
+      'Como afiliado de Amazon, gano una comisión por las compras aptas. No supone ningún coste adicional para ti.',
 
     // Footer
     'footer.credit': 'Basado en el método de entrenamiento Norwegian Singles',
@@ -286,8 +292,7 @@ export const ui = {
     'taper.desc.half_taper_thursday':
       '6–8 × 3 min @ MP, last 2 reps at goal HM pace',
     'taper.desc.easy_shorter_50': 'Very easy, 50% shorter than normal',
-    'taper.desc.easy_shorter_30_40':
-      'Very easy, 30–40% shorter than normal',
+    'taper.desc.easy_shorter_30_40': 'Very easy, 30–40% shorter than normal',
     'taper.desc.easy_or_shorter_30': 'Easy or 30% shorter than normal',
     'taper.desc.3x6_mp_reduced': '3 × 6 min @ MP (reduced intensity)',
     'taper.desc.long_run_or_15_shorter':
@@ -341,6 +346,13 @@ export const ui = {
     'method.principle4.title': 'Repeatable Weeks',
     'method.principle4.desc':
       'Consistency over variety. Repeat a solid weekly structure and let your paces progress as your VDOT improves.',
+
+    // Books / affiliate
+    'books.title': 'Recommended books',
+    'books.subtitle': 'Go deeper into the method with these reference reads.',
+    'books.cta': 'View on Amazon',
+    'books.disclosure':
+      'As an Amazon Associate, I earn from qualifying purchases. This comes at no extra cost to you.',
 
     // Footer
     'footer.credit': 'Based on the Norwegian Singles training method',

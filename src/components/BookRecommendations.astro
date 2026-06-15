@@ -1,0 +1,145 @@
+---
+/**
+ * Book Recommendations Component
+ *
+ * Displays affiliate-linked book recommendations. Links are marketplace-aware
+ * (see src/lib/affiliate.ts) and carry the required FTC/Amazon disclosure.
+ */
+
+import type { Locale } from '../types';
+import { useTranslations } from '../i18n/ui';
+import { books, amazonUrl } from '../lib/affiliate';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<section class="books-section section">
+  <div class="container">
+    <h2 class="section-title">{t('books.title')}</h2>
+    <p class="books-subtitle">{t('books.subtitle')}</p>
+
+    <div class="books-grid">
+      {
+        books.map((book) => (
+          <article class="book-card">
+            <div class="book-icon">📖</div>
+            <div class="book-body">
+              <h3>{book.title}</h3>
+              {book.author && <p class="book-author">{book.author}</p>}
+            </div>
+            <a
+              class="book-cta"
+              href={amazonUrl(book.asin, locale)}
+              target="_blank"
+              rel="sponsored nofollow noopener"
+            >
+              {t('books.cta')}
+            </a>
+          </article>
+        ))
+      }
+    </div>
+
+    <p class="books-disclosure">{t('books.disclosure')}</p>
+  </div>
+</section>
+
+<style>
+  .books-section {
+    padding: var(--space-16) 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .section-title {
+    text-align: center;
+    margin-bottom: var(--space-2);
+  }
+
+  .books-subtitle {
+    text-align: center;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-10);
+  }
+
+  .books-grid {
+    display: grid;
+    gap: var(--space-6);
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 640px) {
+    .books-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .book-card {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-6);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    text-align: center;
+    transition: all var(--transition-base);
+  }
+
+  .book-card:hover {
+    border-color: var(--color-border-accent);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .book-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--space-4);
+  }
+
+  .book-body {
+    flex: 1;
+  }
+
+  .book-card h3 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-2);
+  }
+
+  .book-author {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .book-cta {
+    display: inline-block;
+    margin-top: var(--space-5);
+    padding: var(--space-3) var(--space-5);
+    background: var(--color-accent-gradient);
+    color: white;
+    font-weight: var(--font-semibold);
+    font-size: var(--text-sm);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    transition: opacity var(--transition-base);
+  }
+
+  .book-cta:hover {
+    opacity: 0.9;
+  }
+
+  .books-disclosure {
+    text-align: center;
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+    margin-top: var(--space-8);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>

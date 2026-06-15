@@ -6,7 +6,9 @@
 import React, { useState, useEffect } from 'react';
 import type { SavedPlan, Locale, TrainingPaces } from '../../types';
 import { useTranslations, type TranslationKey } from '../../i18n/ui';
-import { loadPlan } from '../../lib/storage';
+import { loadPlan, savePlan } from '../../lib/storage';
+import { createPlan } from '../../lib/plan-generator';
+import { encodePlanInput, decodePlanInput } from '../../lib/plan-url';
 import { formatPace } from '../../lib/paces';
 import {
   DAYS_OF_WEEK,
@@ -57,15 +59,55 @@ export default function PlanViewer({ locale }: Props) {
     'week',
   );
   const [loading, setLoading] = useState(true);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    const saved = loadPlan();
+    // Prefer a plan encoded in the URL (shared / bookmarked link), then fall
+    // back to the locally cached plan.
+    const params = new URLSearchParams(window.location.search);
+    const fromUrl = decodePlanInput(params);
+
+    let saved: SavedPlan | null = null;
+    if (fromUrl) {
+      try {
+        saved = createPlan(fromUrl);
+        savePlan(saved);
+      } catch {
+        saved = null;
+      }
+    }
+    if (!saved) saved = loadPlan();
+
     if (saved) {
       setPlan(saved);
       setUnit(saved.input.unit);
+      // Make sure the URL carries the plan so it can be shared from anywhere.
+      if (!fromUrl) {
+        const qs = encodePlanInput(saved.input);
+        window.history.replaceState(
+          null,
+          '',
+          `${window.location.pathname}?${qs}`,
+        );
+      }
     }
     setLoading(false);
   }, []);
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    try {
+      if (navigator.share) {
+        await navigator.share({ url });
+        return;
+      }
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // User cancelled the share sheet or clipboard is unavailable.
+    }
+  };
 
   if (loading) return <div className="skeleton" style={{ height: 300 }} />;
 
@@ -174,16 +216,74 @@ export default function PlanViewer({ locale }: Props) {
             <span className="pv-5k-val">{formatTime(paces.fiveKSeconds)}</span>
           </p>
         </div>
-        <div className="pv-unit-toggle">
-          {(['km', 'mile'] as const).map((u) => (
-            <button
-              key={u}
-              className={`pv-unit-btn ${unit === u ? 'is-active' : ''}`}
-              onClick={() => setUnit(u)}
-            >
-              {u === 'km' ? 'KM' : 'MI'}
-            </button>
-          ))}
+        <div className="pv-header-actions">
+          <button
+            type="button"
+            className={`pv-share-btn ${copied ? 'is-copied' : ''}`}
+            onClick={handleShare}
+            aria-label={locale === 'es' ? 'Compartir plan' : 'Share plan'}
+          >
+            {copied ? (
+              <svg
+                className="pv-share-icon"
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            ) : (
+              <svg
+                className="pv-share-icon"
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <circle cx="18" cy="5" r="3" />
+                <circle cx="6" cy="12" r="3" />
+                <circle cx="18" cy="19" r="3" />
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+              </svg>
+            )}
+            <span className="pv-share-label">
+              {copied
+                ? locale === 'es'
+                  ? 'Copiado'
+                  : 'Copied'
+                : locale === 'es'
+                  ? 'Compartir'
+                  : 'Share'}
+            </span>
+          </button>
+          <div
+            className="pv-unit-toggle"
+            role="group"
+            aria-label={locale === 'es' ? 'Unidad' : 'Unit'}
+          >
+            {(['km', 'mile'] as const).map((u) => (
+              <button
+                key={u}
+                aria-pressed={unit === u}
+                className={`pv-unit-btn ${unit === u ? 'is-active' : ''}`}
+                onClick={() => setUnit(u)}
+              >
+                {u === 'km' ? 'KM' : 'MI'}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -329,9 +429,7 @@ export default function PlanViewer({ locale }: Props) {
             unit={unit}
             unitLabel={unitLabel}
             locale={locale}
-            title={
-              t('taper.title.10k')
-            }
+            title={t('taper.title.10k')}
             t={t}
           />
           <TaperTable
@@ -351,9 +449,7 @@ export default function PlanViewer({ locale }: Props) {
             unit={unit}
             unitLabel={unitLabel}
             locale={locale}
-            title={
-              t('taper.title.half')
-            }
+            title={t('taper.title.half')}
             t={t}
           />
           <TaperTable
@@ -391,6 +487,34 @@ export default function PlanViewer({ locale }: Props) {
         .pv-plan-name { font-size: var(--text-2xl); margin-bottom: var(--space-1); }
         .pv-5k { font-size: var(--text-sm); color: var(--color-text-muted); margin: 0; }
         .pv-5k-val { font-family: var(--font-mono); font-weight: var(--font-bold); color: var(--color-text-secondary); }
+        .pv-header-actions { display: flex; align-items: center; gap: var(--space-2); }
+        .pv-share-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: var(--space-2);
+          padding: var(--space-1) var(--space-3);
+          font-size: var(--text-xs);
+          font-weight: var(--font-bold);
+          color: var(--color-text-secondary);
+          background: var(--color-surface);
+          border: 1px solid var(--color-border);
+          border-radius: var(--radius-md);
+          cursor: pointer;
+          white-space: nowrap;
+          transition: all var(--transition-fast);
+        }
+        .pv-share-btn:hover {
+          color: var(--color-accent-primary);
+          border-color: var(--color-accent-primary);
+        }
+        .pv-share-btn.is-copied {
+          color: var(--color-easy);
+          border-color: var(--color-easy);
+        }
+        .pv-share-icon { flex-shrink: 0; }
+        @media (max-width: 420px) {
+          .pv-share-label { display: none; }
+        }
         .pv-unit-toggle {
           display: flex;
           background: var(--color-surface);
@@ -573,7 +697,8 @@ function TaperTable({
   t: (key: TranslationKey) => string;
 }) {
   const mpLabel = `${formatPace(paces.marathonPace, unit)} ${unitLabel}`;
-  const taperDayLabel = (day: string) => DAY_LABELS[day.toLowerCase()]?.[locale] ?? day;
+  const taperDayLabel = (day: string) =>
+    DAY_LABELS[day.toLowerCase()]?.[locale] ?? day;
 
   const descFor = (d: import('../../lib/tapering').TaperDay): string => {
     const normalSession = weekly.days[d.dayIndex];
@@ -601,7 +726,10 @@ function TaperTable({
       }
       case 'subt_modified':
         // Inject the actual MP pace into the description where it says "@ MP"
-        return t(d.description as TranslationKey).replace('@ MP', `@ MP (${mpLabel})`);
+        return t(d.description as TranslationKey).replace(
+          '@ MP',
+          `@ MP (${mpLabel})`,
+        );
       case 'race':
         return locale === 'es' ? 'Carrera' : 'Race';
       default:

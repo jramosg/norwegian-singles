@@ -2,6 +2,7 @@
 import AppLayout from '../../layouts/AppLayout.astro';
 import TrainingForm from '../../components/react/TrainingForm';
 import MethodologySection from '../../components/MethodologySection.astro';
+import BookRecommendations from '../../components/BookRecommendations.astro';
 import { useTranslations } from '../../i18n/ui';
 
 const locale = 'es';
@@ -36,6 +37,8 @@ const t = useTranslations(locale);
     </section>
 
     <MethodologySection locale={locale} />
+
+    <BookRecommendations locale={locale} />
 
     <section class="seo-content section">
       <div class="container seo-container">

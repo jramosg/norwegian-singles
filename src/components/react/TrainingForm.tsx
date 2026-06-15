@@ -9,6 +9,7 @@ import { parseTime, formatPace } from '../../lib/paces';
 import { getSubTPaces, estimate5KFrom10K } from '../../lib/nsa-pace-table';
 import { createPlan } from '../../lib/plan-generator';
 import { savePlan } from '../../lib/storage';
+import { encodePlanInput } from '../../lib/plan-url';
 import { getPlanByHours } from '../../lib/training-plans';
 
 interface Props {
@@ -24,6 +25,13 @@ export default function TrainingForm({ locale }: Props) {
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const hoursId = useId();
+  const time5KId = useId();
+  const time10KId = useId();
+  const marathonDateId = useId();
+  const unitLabelId = useId();
+
+  // Earliest selectable marathon date: today (no past dates).
+  const todayISO = new Date().toISOString().slice(0, 10);
 
   const weeklyHours = parseFloat(weeklyHoursRaw) || 6;
   const matchedPlan = getPlanByHours(weeklyHours);
@@ -85,7 +93,8 @@ export default function TrainingForm({ locale }: Props) {
       };
       const plan = createPlan(input);
       savePlan(plan);
-      window.location.href = `/${locale}/plan`;
+      // Encode the input in the URL so the plan is shareable / bookmarkable.
+      window.location.href = `/${locale}/plan?${encodePlanInput(input)}`;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error');
       setSubmitting(false);
@@ -128,9 +137,13 @@ export default function TrainingForm({ locale }: Props) {
         {/* Race Times */}
         <div className="tf-row">
           <div className="form-group">
-            <label className="form-label">{T.race5K}</label>
+            <label className="form-label" htmlFor={time5KId}>
+              {T.race5K}
+            </label>
             <input
+              id={time5KId}
               type="text"
+              inputMode="numeric"
               className="form-input"
               placeholder="mm:ss"
               value={time5K}
@@ -138,9 +151,13 @@ export default function TrainingForm({ locale }: Props) {
             />
           </div>
           <div className="form-group">
-            <label className="form-label">{T.race10K}</label>
+            <label className="form-label" htmlFor={time10KId}>
+              {T.race10K}
+            </label>
             <input
+              id={time10KId}
               type="text"
+              inputMode="numeric"
               className="form-input"
               placeholder="mm:ss"
               value={time10K}
@@ -176,10 +193,14 @@ export default function TrainingForm({ locale }: Props) {
 
         {/* Marathon date */}
         <div className="form-group" style={{ marginTop: 'var(--space-6)' }}>
-          <label className="form-label">{T.marathonDateLabel}</label>
+          <label className="form-label" htmlFor={marathonDateId}>
+            {T.marathonDateLabel}
+          </label>
           <input
+            id={marathonDateId}
             type="date"
             className="form-input tf-date-input"
+            min={todayISO}
             value={marathonDate}
             onChange={(e) => setMarathonDate(e.target.value)}
           />
@@ -188,12 +209,15 @@ export default function TrainingForm({ locale }: Props) {
 
         {/* Unit */}
         <div className="form-group" style={{ marginTop: 'var(--space-4)' }}>
-          <label className="form-label">{T.unitLabel}</label>
-          <div className="tf-unit">
+          <span className="form-label" id={unitLabelId}>
+            {T.unitLabel}
+          </span>
+          <div className="tf-unit" role="group" aria-labelledby={unitLabelId}>
             {(['km', 'mile'] as const).map((u) => (
               <button
                 key={u}
                 type="button"
+                aria-pressed={unit === u}
                 className={`tf-unit-btn ${unit === u ? 'is-active' : ''}`}
                 onClick={() => setUnit(u)}
               >
@@ -205,7 +229,7 @@ export default function TrainingForm({ locale }: Props) {
 
         {/* Pace Preview */}
         {preview && (
-          <div className="tf-preview">
+          <div className="tf-preview" aria-live="polite">
             <p className="tf-preview-title">{T.previewTitle}</p>
             <div className="tf-preview-grid">
               <PaceRow
