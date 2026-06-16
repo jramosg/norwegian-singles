@@ -4,7 +4,17 @@ import TrainingForm from './react/TrainingForm';
 import MethodologySection from './MethodologySection.astro';
 import BookRecommendations from './BookRecommendations.astro';
 import { useTranslations } from '../i18n/ui';
+import { getSeoPages, getVisibleFaqs } from '../lib/seo-pages';
+import { getRacePagesByDistance } from '../lib/race-seo-pages';
 import type { Locale } from '../types';
+
+interface PaceCardData {
+  raceLabel: string;
+  rep3min: string;
+  rep6min: string;
+  rep10min: string;
+  easy: string;
+}
 
 interface Props {
   locale: Locale;
@@ -13,70 +23,287 @@ interface Props {
   structuredData?: Record<string, unknown>[];
   seoHeading?: string;
   seoIntro?: string;
+  paceCard?: PaceCardData;
 }
 
-const { locale, title, description, structuredData, seoHeading, seoIntro } =
-  Astro.props;
+const {
+  locale,
+  title,
+  description,
+  structuredData,
+  seoHeading,
+  seoIntro,
+  paceCard,
+} = Astro.props;
 const t = useTranslations(locale);
+const relatedPages = getSeoPages(locale);
+const faqs = getVisibleFaqs(locale);
+const racePagesByDistance = getRacePagesByDistance(locale);
+const raceGroups = {
+  en: [
+    { key: '5K' as const, label: '5K' },
+    { key: '10K' as const, label: '10K' },
+    { key: 'HM' as const, label: 'Half Marathon' },
+    { key: 'marathon' as const, label: 'Marathon' },
+  ],
+  es: [
+    { key: '5K' as const, label: '5K' },
+    { key: '10K' as const, label: '10K' },
+    { key: 'HM' as const, label: 'Media Maratón' },
+    { key: 'marathon' as const, label: 'Maratón' },
+  ],
+  ko: [
+    { key: '5K' as const, label: '5K' },
+    { key: '10K' as const, label: '10K' },
+    { key: 'HM' as const, label: '하프 마라톤' },
+    { key: 'marathon' as const, label: '마라톤' },
+  ],
+}[locale];
+const faqStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.a,
+    },
+  })),
+};
 
-const proofBullets =
-  locale === 'es'
-    ? [
-        'Ritmos desde 5K o 10K',
-        'Planes semanales de 4.5-9h',
-        'Preparación maratón de 15 semanas',
-        'URL compartible del plan',
-      ]
-    : [
-        'Paces from 5K or 10K',
-        '4.5-9h weekly plans',
-        '15-week marathon build',
-        'Shareable plan URL',
-      ];
+const proofBullets = {
+  en: [
+    'Paces from 5K or 10K',
+    '4.5-9h weekly plans',
+    '15-week marathon build',
+    'Shareable plan URL',
+  ],
+  es: [
+    'Ritmos desde 5K o 10K',
+    'Planes semanales de 4.5-9 h',
+    'Preparación maratón de 15 semanas',
+    'URL compartible del plan',
+  ],
+  ko: [
+    '5K 또는 10K 기반 페이스',
+    '주 4.5-9시간 플랜',
+    '15주 마라톤 빌드업',
+    '공유 가능한 플랜 URL',
+  ],
+}[locale];
 
-const sample =
-  locale === 'es'
-    ? {
-        eyebrow: 'Ejemplo instantáneo',
-        title: 'Semana NSA / NSM',
-        input: '5K 20:00 · 6 h/semana',
-        days: [
-          ['Mar', '3 x 10 min', '4:28/km'],
-          ['Jue', '5 x 6 min', '4:15/km'],
-          ['Sáb', '9 x 3 min', '4:04/km'],
-          ['Dom', '75 min fácil', '5:35/km'],
-        ],
-      }
-    : {
-        eyebrow: 'Instant sample output',
-        title: 'NSA / NSM Week',
-        input: '20:00 5K · 6 h/week',
-        days: [
-          ['Tue', '3 x 10 min', '4:28/km'],
-          ['Thu', '5 x 6 min', '4:15/km'],
-          ['Sat', '9 x 3 min', '4:04/km'],
-          ['Sun', '75 min easy', '5:35/km'],
-        ],
-      };
+const sample = {
+  en: {
+    eyebrow: 'Instant sample output',
+    title: 'NSA / NSM Week',
+    input: '20:00 5K · 6 h/week',
+    days: [
+      ['Tue', '3 x 10 min', '4:28/km'],
+      ['Thu', '5 x 6 min', '4:15/km'],
+      ['Sat', '9 x 3 min', '4:04/km'],
+      ['Sun', '75 min easy', '5:35/km'],
+    ],
+  },
+  es: {
+    eyebrow: 'Ejemplo instantáneo',
+    title: 'Semana NSA / NSM',
+    input: '5K 20:00 · 6 h/semana',
+    days: [
+      ['Mar', '3 x 10 min', '4:28/km'],
+      ['Jue', '5 x 6 min', '4:15/km'],
+      ['Sáb', '9 x 3 min', '4:04/km'],
+      ['Dom', '75 min fácil', '5:35/km'],
+    ],
+  },
+  ko: {
+    eyebrow: '즉시 예시',
+    title: 'NSA / NSM 주간',
+    input: '5K 20:00 · 주 6시간',
+    days: [
+      ['화', '3 x 10분', '4:28/km'],
+      ['목', '5 x 6분', '4:15/km'],
+      ['토', '9 x 3분', '4:04/km'],
+      ['일', '75분 이지', '5:35/km'],
+    ],
+  },
+}[locale];
+
+const landingText = {
+  en: {
+    faqTitle: 'FAQ',
+    faqIntro:
+      'Quick answers about NSA, NSM, and using this independent calculator.',
+    relatedTitle: 'Related calculators and guides',
+    relatedIntro:
+      'Explore focused pages for NSA paces, plans, marathon builds, and comparisons.',
+    paceTitle: 'Training paces',
+    paceIntro:
+      'NSA / NSM paces calculated from your race time. Use the calculator above to confirm or fine-tune.',
+    shortSubT: 'Short sub-T',
+    mediumSubT: 'Medium sub-T',
+    longSubT: 'Long sub-T',
+    easyPace: 'Easy pace',
+    rep3: '3-min reps',
+    rep6: '6-min reps',
+    rep10: '10-min reps',
+    easyRunning: 'easy running',
+    lookupTitle: 'NSA training paces by race time',
+    lookupIntro:
+      'Select your race time to see the calculated sub-threshold training paces.',
+  },
+  es: {
+    faqTitle: 'Preguntas frecuentes',
+    faqIntro:
+      'Respuestas rápidas sobre NSA, NSM y el uso de esta calculadora independiente.',
+    relatedTitle: 'Calculadoras y guías relacionadas',
+    relatedIntro:
+      'Explora páginas específicas para ritmos NSA, planes, maratón y comparativas.',
+    paceTitle: 'Ritmos de entrenamiento',
+    paceIntro:
+      'Ritmos NSA/NSM calculados desde tu marca. Úsalos como referencia y ajusta con la calculadora.',
+    shortSubT: 'Sub-T corto',
+    mediumSubT: 'Sub-T medio',
+    longSubT: 'Sub-T largo',
+    easyPace: 'Ritmo fácil',
+    rep3: 'rep. 3 min',
+    rep6: 'rep. 6 min',
+    rep10: 'rep. 10 min',
+    easyRunning: 'rodaje suave',
+    lookupTitle: 'Ritmos NSA por marca de carrera',
+    lookupIntro:
+      'Selecciona tu marca para ver los ritmos sub-umbral calculados.',
+  },
+  ko: {
+    faqTitle: '자주 묻는 질문',
+    faqIntro: 'NSA, NSM, 이 독립 계산기 사용에 대한 빠른 답변입니다.',
+    relatedTitle: '관련 계산기와 가이드',
+    relatedIntro:
+      'NSA 페이스, 훈련 플랜, 마라톤 빌드업, NSM 러닝 가이드를 확인하세요.',
+    paceTitle: '훈련 페이스',
+    paceIntro:
+      '레이스 기록으로 계산한 NSA/NSM 페이스입니다. 위 계산기로 확인하거나 조정하세요.',
+    shortSubT: '짧은 Sub-T',
+    mediumSubT: '중간 Sub-T',
+    longSubT: '긴 Sub-T',
+    easyPace: '이지 페이스',
+    rep3: '3분 반복',
+    rep6: '6분 반복',
+    rep10: '10분 반복',
+    easyRunning: '이지런',
+    lookupTitle: '레이스 기록별 NSA 훈련 페이스',
+    lookupIntro: '기록을 선택해 계산된 서브스레숄드 훈련 페이스를 확인하세요.',
+  },
+}[locale];
+
+const educationLinks = {
+  en: {
+    nsm: '/en/nsm-calculator/',
+    method: '/en/norwegian-method-calculator/',
+    bakken: '/en/marius-bakken-pace-calculator/',
+    marathon: '/en/norwegian-method-marathon-plan/',
+  },
+  es: {
+    nsm: '/es/calculadora-nsm/',
+    method: '/es/calculadora-metodo-noruego/',
+    bakken: '/es/calculadora-ritmos-marius-bakken/',
+    marathon: '/es/plan-maraton-metodo-noruego/',
+  },
+  ko: {
+    nsm: '/ko/nsm-calculator/',
+    method: '/ko/norwegian-method-calculator/',
+    bakken: '/ko/marius-bakken-pace-calculator/',
+    marathon: '/ko/norwegian-method-marathon-plan/',
+  },
+}[locale];
+
+const educationText = {
+  en: {
+    title: 'How to use these paces',
+    intro:
+      'The calculator gives conservative training targets for repeatable weeks, not race-effort interval goals.',
+    cards: [
+      {
+        title: '3-minute reps',
+        text: 'Use these for the shortest sub-threshold workout of the week. They should feel controlled, quick, and repeatable.',
+      },
+      {
+        title: '6-minute reps',
+        text: 'Use these as the middle session: steadier than 3-minute reps, but still comfortably below threshold.',
+      },
+      {
+        title: '10-minute reps',
+        text: 'Use these for longer aerobic pressure. The pace should stay relaxed enough that the final rep is not a survival effort.',
+      },
+      {
+        title: 'Easy pace',
+        text: 'Easy runs should feel genuinely easy. If fatigue builds, slow them down before changing the sub-threshold paces.',
+      },
+    ],
+    linksHtml: `New to the method? Start with the <a href="${educationLinks.nsm}">NSM calculator</a>, compare the <a href="${educationLinks.method}">Norwegian method calculator</a>, read the <a href="${educationLinks.bakken}">Marius Bakken pace notes</a>, or build a <a href="${educationLinks.marathon}">Norwegian method marathon plan</a>.`,
+  },
+  es: {
+    title: 'Cómo usar estos ritmos',
+    intro:
+      'La calculadora da objetivos conservadores para semanas repetibles, no ritmos de intervalos al máximo.',
+    cards: [
+      {
+        title: 'Repeticiones de 3 min',
+        text: 'Úsalas para la sesión sub-umbral más corta de la semana. Deben sentirse controladas, rápidas y repetibles.',
+      },
+      {
+        title: 'Repeticiones de 6 min',
+        text: 'Úsalas como sesión intermedia: más estables que las de 3 minutos, pero todavía claramente por debajo del umbral.',
+      },
+      {
+        title: 'Repeticiones de 10 min',
+        text: 'Úsalas para presión aeróbica más larga. El ritmo debe ser lo bastante relajado como para no sobrevivir la última repetición.',
+      },
+      {
+        title: 'Ritmo fácil',
+        text: 'Los rodajes fáciles deben sentirse realmente fáciles. Si acumulas fatiga, baja el ritmo antes de tocar los ritmos sub-umbral.',
+      },
+    ],
+    linksHtml: `Si estás empezando, usa la <a href="${educationLinks.nsm}">calculadora NSM</a>, compara la <a href="${educationLinks.method}">calculadora del método noruego</a>, revisa los <a href="${educationLinks.bakken}">ritmos inspirados en Marius Bakken</a> o crea un <a href="${educationLinks.marathon}">plan maratón con método noruego</a>.`,
+  },
+  ko: {
+    title: '이 페이스를 사용하는 방법',
+    intro:
+      '계산기는 전력 인터벌 목표가 아니라 반복 가능한 주간을 위한 보수적인 훈련 목표를 제공합니다.',
+    cards: [
+      {
+        title: '3분 반복',
+        text: '주간에서 가장 짧은 서브스레숄드 세션에 사용합니다. 빠르지만 통제 가능하고 반복 가능해야 합니다.',
+      },
+      {
+        title: '6분 반복',
+        text: '중간 세션에 사용합니다. 3분 반복보다 안정적이지만 여전히 임계값 아래에 있어야 합니다.',
+      },
+      {
+        title: '10분 반복',
+        text: '더 긴 유산소 압박을 주는 세션입니다. 마지막 반복이 버티기 모드가 되지 않을 정도로 여유가 있어야 합니다.',
+      },
+      {
+        title: '이지 페이스',
+        text: '이지런은 정말 쉽게 느껴져야 합니다. 피로가 쌓이면 서브스레숄드 페이스를 바꾸기 전에 이지런을 늦추세요.',
+      },
+    ],
+    linksHtml: `처음이라면 <a href="${educationLinks.nsm}">NSM 계산기</a>에서 시작하고, <a href="${educationLinks.method}">노르웨이식 훈련 계산기</a>와 비교하거나, <a href="${educationLinks.bakken}">Marius Bakken 페이스 노트</a>를 확인하고, <a href="${educationLinks.marathon}">노르웨이식 마라톤 플랜</a>을 만들어 보세요.`,
+  },
+}[locale];
 ---
 
 <AppLayout
   title={title || t('seo.title')}
   description={description || t('seo.description')}
   locale={locale}
-  structuredData={structuredData}
+  structuredData={[...(structuredData || []), faqStructuredData]}
 >
   <div class="landing">
     <section class="hero">
       <div class="container hero-grid">
         <div class="hero-content">
-          <p class="hero-kicker">
-            {
-              locale === 'es'
-                ? 'Norwegian Singles Approach / Method'
-                : 'Norwegian Singles Approach / Method'
-            }
-          </p>
+          <p class="hero-kicker">Norwegian Singles Approach / Method</p>
           <h1 class="hero-title">
             {t('hero.title')}
             <span class="hero-accent">{t('hero.titleAccent')}</span>
@@ -145,9 +372,66 @@ const sample =
       </div>
     </section>
 
+    <section class="education-section section">
+      <div class="container education-container">
+        <div class="education-head">
+          <h2>{educationText.title}</h2>
+          <p>{educationText.intro}</p>
+        </div>
+
+        <div class="education-grid">
+          {
+            educationText.cards.map((card) => (
+              <article class="education-card">
+                <h3>{card.title}</h3>
+                <p>{card.text}</p>
+              </article>
+            ))
+          }
+        </div>
+
+        <p class="education-links" set:html={educationText.linksHtml} />
+      </div>
+    </section>
+
     <MethodologySection locale={locale} />
 
     <BookRecommendations locale={locale} />
+
+    {
+      paceCard && (
+        <section class="pace-card-section section">
+          <div class="container pace-card-container">
+            <div class="pace-card-head">
+              <h2>{`${landingText.paceTitle} — ${paceCard.raceLabel}`}</h2>
+              <p>{landingText.paceIntro}</p>
+            </div>
+            <div class="pace-grid">
+              <div class="pace-cell">
+                <span>{landingText.shortSubT}</span>
+                <strong>{paceCard.rep3min}</strong>
+                <em>{landingText.rep3}</em>
+              </div>
+              <div class="pace-cell">
+                <span>{landingText.mediumSubT}</span>
+                <strong>{paceCard.rep6min}</strong>
+                <em>{landingText.rep6}</em>
+              </div>
+              <div class="pace-cell">
+                <span>{landingText.longSubT}</span>
+                <strong>{paceCard.rep10min}</strong>
+                <em>{landingText.rep10}</em>
+              </div>
+              <div class="pace-cell">
+                <span>{landingText.easyPace}</span>
+                <strong>{paceCard.easy}</strong>
+                <em>{landingText.easyRunning}</em>
+              </div>
+            </div>
+          </div>
+        </section>
+      )
+    }
 
     <section class="seo-content section">
       <div class="container seo-container">
@@ -182,6 +466,76 @@ const sample =
         <p set:html={t('seo.content.whoIsItFor.text')} />
       </div>
     </section>
+
+    <section class="faq-section section">
+      <div class="container">
+        <div class="section-head">
+          <h2>{landingText.faqTitle}</h2>
+          <p>{landingText.faqIntro}</p>
+        </div>
+
+        <div class="faq-grid">
+          {
+            faqs.map((faq) => (
+              <article class="faq-item">
+                <h3>{faq.q}</h3>
+                <p>{faq.a}</p>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="related-section section">
+      <div class="container">
+        <div class="section-head">
+          <h2>
+            {landingText.relatedTitle}
+          </h2>
+          <p>{landingText.relatedIntro}</p>
+        </div>
+
+        <div class="related-grid">
+          {
+            relatedPages.map((page) => (
+              <a class="related-link" href={`/${locale}/${page.slug}/`}>
+                <strong>{page.h1}</strong>
+                <span>{page.description}</span>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="pace-lookup-section section">
+      <div class="container">
+        <div class="section-head">
+          <h2>{landingText.lookupTitle}</h2>
+          <p>{landingText.lookupIntro}</p>
+        </div>
+        <div class="pace-lookup-grid">
+          {
+            raceGroups.map(({ key, label }) => (
+              <div class="pace-lookup-group">
+                <h3 class="pace-lookup-label">{label}</h3>
+                <div class="pace-lookup-times">
+                  {racePagesByDistance[key].map((page) => (
+                    <a
+                      class="pace-lookup-time"
+                      href={`/${locale}/${page.slug}/`}
+                    >
+                      {page.displayTime}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
   </div>
 </AppLayout>
 
@@ -202,7 +556,6 @@ const sample =
   .hero-grid {
     display: grid;
     gap: var(--space-10);
-    align-items: center;
   }
 
   @media (min-width: 1080px) {
@@ -264,6 +617,11 @@ const sample =
     margin: var(--space-6) 0;
     padding: 0;
     list-style: none;
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
   }
 
   @media (min-width: 680px) {
@@ -413,6 +771,76 @@ const sample =
     }
   }
 
+  .pace-card-section {
+    padding: var(--space-16) 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .pace-card-container {
+    max-width: 900px;
+  }
+
+  .pace-card-head {
+    max-width: 640px;
+    margin-bottom: var(--space-8);
+  }
+
+  .pace-card-head h2 {
+    font-size: var(--text-3xl);
+    margin-bottom: var(--space-3);
+  }
+
+  .pace-card-head p {
+    color: var(--color-text-secondary);
+    font-size: var(--text-base);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .pace-grid {
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (min-width: 640px) {
+    .pace-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .pace-cell {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .pace-cell span {
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    font-weight: var(--font-bold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .pace-cell strong {
+    color: var(--color-threshold);
+    font-family: var(--font-mono);
+    font-size: var(--text-2xl);
+    font-weight: var(--font-bold);
+    line-height: 1;
+  }
+
+  .pace-cell em {
+    color: var(--color-text-secondary);
+    font-size: var(--text-xs);
+    font-style: normal;
+  }
+
   .seo-content {
     padding: var(--space-16) 0;
     border-top: 1px solid var(--color-border);
@@ -471,5 +899,232 @@ const sample =
 
   .seo-content em {
     color: var(--color-text-primary);
+  }
+
+  .faq-section,
+  .related-section {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .education-section {
+    border-top: 1px solid var(--color-border);
+    background: rgba(255, 255, 255, 0.018);
+  }
+
+  .education-container {
+    max-width: 1080px;
+  }
+
+  .education-head {
+    max-width: 760px;
+    margin-bottom: var(--space-8);
+  }
+
+  .education-head h2 {
+    margin-bottom: var(--space-3);
+  }
+
+  .education-head p {
+    margin: 0;
+    color: var(--color-text-secondary);
+  }
+
+  .education-grid {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  @media (min-width: 760px) {
+    .education-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .education-card {
+    min-height: 11rem;
+    padding: var(--space-5);
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .education-card h3 {
+    margin-bottom: var(--space-2);
+    font-size: var(--text-base);
+  }
+
+  .education-card p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    line-height: 1.55;
+  }
+
+  .education-links {
+    max-width: 860px;
+    margin: var(--space-6) 0 0;
+    color: var(--color-text-secondary);
+  }
+
+  .education-links a {
+    color: var(--color-accent);
+    font-weight: var(--font-semibold);
+    text-decoration: none;
+  }
+
+  .education-links a:hover {
+    text-decoration: underline;
+  }
+
+  .section-head {
+    max-width: 720px;
+    margin: 0 auto var(--space-8);
+    text-align: center;
+  }
+
+  .section-head h2 {
+    margin-bottom: var(--space-3);
+  }
+
+  .section-head p {
+    margin: 0;
+  }
+
+  .faq-grid {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 980px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 760px) {
+    .faq-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .faq-item {
+    padding: var(--space-5);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .faq-item h3 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-2);
+  }
+
+  .faq-item p {
+    margin: 0;
+    color: var(--color-text-secondary);
+  }
+
+  .related-grid {
+    display: grid;
+    gap: var(--space-3);
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 760px) {
+    .related-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1120px) {
+    .related-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .related-link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    min-height: 8.5rem;
+    padding: var(--space-5);
+    color: var(--color-text-primary);
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    transition:
+      background var(--transition-fast),
+      border-color var(--transition-fast),
+      transform var(--transition-fast);
+  }
+
+  .related-link:hover {
+    background: rgba(255, 255, 255, 0.055);
+    border-color: var(--color-border-accent);
+    transform: translateY(-2px);
+  }
+
+  .related-link strong {
+    font-size: var(--text-base);
+    line-height: 1.3;
+  }
+
+  .related-link span {
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    line-height: 1.5;
+  }
+
+  .pace-lookup-section {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .pace-lookup-grid {
+    display: grid;
+    gap: var(--space-8);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 760px) {
+    .pace-lookup-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .pace-lookup-label {
+    font-size: var(--text-sm);
+    font-weight: var(--font-bold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-3);
+  }
+
+  .pace-lookup-times {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .pace-lookup-time {
+    display: inline-block;
+    padding: var(--space-1) var(--space-3);
+    color: var(--color-text-secondary);
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    text-decoration: none;
+    transition:
+      background var(--transition-fast),
+      border-color var(--transition-fast),
+      color var(--transition-fast);
+  }
+
+  .pace-lookup-time:hover {
+    color: var(--color-text-primary);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--color-border-accent);
   }
 </style>

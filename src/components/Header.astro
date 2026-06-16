@@ -1,6 +1,11 @@
 ---
 import type { Locale } from '../types';
-import { useTranslations, getPathInLocale, locales } from '../i18n/ui';
+import {
+  getPathInLocale,
+  languageLabels,
+  locales,
+  useTranslations,
+} from '../i18n/ui';
 import { getAlternateSeoPath } from '../lib/seo-pages';
 
 interface Props {
@@ -14,6 +19,12 @@ const currentPath = Astro.url.pathname;
 const localizedPath = (lang: Locale) =>
   getAlternateSeoPath(currentPath, locale, lang) ||
   getPathInLocale(currentPath, lang);
+const currentLanguage = languageLabels[locale];
+const languageMenuLabel = {
+  en: 'Language',
+  es: 'Idioma',
+  ko: '언어',
+}[locale];
 ---
 
 <header class="header glass">
@@ -29,18 +40,34 @@ const localizedPath = (lang: Locale) =>
     </nav>
 
     <div class="header-actions">
-      <div class="lang-switcher">
-        {
-          locales.map((lang) => (
-            <a
-              href={localizedPath(lang)}
-              class:list={['lang-btn', { 'is-active': lang === locale }]}
-            >
-              {lang.toUpperCase()}
-            </a>
-          ))
-        }
-      </div>
+      <details class="lang-menu">
+        <summary class="lang-trigger" aria-label="Change language">
+          <span class="lang-trigger-code">{currentLanguage.code}</span>
+          <span class="lang-trigger-name">{currentLanguage.nativeName}</span>
+          <span class="lang-trigger-chevron" aria-hidden="true">⌄</span>
+        </summary>
+        <div class="lang-options">
+          {
+            locales.map((lang) => {
+              const label = languageLabels[lang];
+              return (
+                <a
+                  href={localizedPath(lang)}
+                  class:list={['lang-option', { 'is-active': lang === locale }]}
+                  aria-current={lang === locale ? 'page' : undefined}
+                  data-lang-target={lang}
+                >
+                  <span class="lang-option-code">{label.code}</span>
+                  <span>
+                    <strong>{label.nativeName}</strong>
+                    <em>{label.name}</em>
+                  </span>
+                </a>
+              );
+            })
+          }
+        </div>
+      </details>
 
       <button
         class="mobile-menu-btn btn-icon btn-ghost"
@@ -100,16 +127,26 @@ const localizedPath = (lang: Locale) =>
   </nav>
 
   <div class="mobile-lang">
-    <div class="lang-switcher">
+    <div class="mobile-lang-label">{languageMenuLabel}</div>
+    <div class="mobile-lang-grid">
       {
-        locales.map((lang) => (
-          <a
-            href={localizedPath(lang)}
-            class:list={['lang-btn', { 'is-active': lang === locale }]}
-          >
-            {lang.toUpperCase()}
-          </a>
-        ))
+        locales.map((lang) => {
+          const label = languageLabels[lang];
+          return (
+            <a
+              href={localizedPath(lang)}
+              class:list={[
+                'mobile-lang-option',
+                { 'is-active': lang === locale },
+              ]}
+              aria-current={lang === locale ? 'page' : undefined}
+              data-lang-target={lang}
+            >
+              <span>{label.code}</span>
+              <strong>{label.nativeName}</strong>
+            </a>
+          );
+        })
       }
     </div>
   </div>
@@ -184,14 +221,114 @@ const localizedPath = (lang: Locale) =>
     gap: var(--space-4);
   }
 
-  .lang-switcher {
+  .lang-menu {
     display: none;
+    position: relative;
   }
 
   @media (min-width: 768px) {
-    .lang-switcher {
-      display: flex;
+    .lang-menu {
+      display: block;
     }
+  }
+
+  .lang-trigger {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-width: 8.75rem;
+    padding: 0.45rem 0.55rem 0.45rem 0.45rem;
+    color: var(--color-text-primary);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    list-style: none;
+    transition:
+      background var(--transition-fast),
+      border-color var(--transition-fast);
+  }
+
+  .lang-trigger::-webkit-details-marker {
+    display: none;
+  }
+
+  .lang-trigger:hover,
+  .lang-menu[open] .lang-trigger {
+    background: rgba(255, 255, 255, 0.09);
+    border-color: var(--color-border-accent);
+  }
+
+  .lang-trigger-code,
+  .lang-option-code,
+  .mobile-lang-option span {
+    display: inline-grid;
+    place-items: center;
+    width: 2rem;
+    height: 1.75rem;
+    color: var(--color-text-primary);
+    background: rgba(239, 68, 68, 0.16);
+    border: 1px solid rgba(239, 68, 68, 0.28);
+    border-radius: var(--radius-md);
+    font-size: var(--text-xs);
+    font-weight: var(--font-bold);
+  }
+
+  .lang-trigger-name {
+    flex: 1;
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+  }
+
+  .lang-trigger-chevron {
+    color: var(--color-text-muted);
+    transform: translateY(-1px);
+  }
+
+  .lang-options {
+    position: absolute;
+    top: calc(100% + var(--space-2));
+    right: 0;
+    display: grid;
+    gap: var(--space-1);
+    width: 14rem;
+    padding: var(--space-2);
+    background: rgba(15, 23, 42, 0.98);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .lang-option {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2);
+    color: var(--color-text-primary);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+  }
+
+  .lang-option:hover,
+  .lang-option.is-active {
+    background: rgba(255, 255, 255, 0.07);
+  }
+
+  .lang-option strong,
+  .lang-option em {
+    display: block;
+    line-height: 1.2;
+  }
+
+  .lang-option strong {
+    font-size: var(--text-sm);
+  }
+
+  .lang-option em {
+    margin-top: 0.1rem;
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    font-style: normal;
   }
 
   /* Mobile Menu */
@@ -244,9 +381,39 @@ const localizedPath = (lang: Locale) =>
     padding: var(--space-4) 0;
   }
 
-  .mobile-lang .lang-switcher {
-    display: flex;
-    justify-content: center;
+  .mobile-lang-label {
+    margin-bottom: var(--space-3);
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    font-weight: var(--font-bold);
+    text-transform: uppercase;
+  }
+
+  .mobile-lang-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+
+  .mobile-lang-option {
+    display: grid;
+    gap: var(--space-2);
+    justify-items: center;
+    padding: var(--space-3);
+    color: var(--color-text-primary);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+  }
+
+  .mobile-lang-option.is-active {
+    background: rgba(239, 68, 68, 0.14);
+    border-color: rgba(239, 68, 68, 0.36);
+  }
+
+  .mobile-lang-option strong {
+    font-size: var(--text-sm);
   }
 </style>
 
@@ -270,6 +437,25 @@ const localizedPath = (lang: Locale) =>
     link.addEventListener('click', () => {
       mobileMenu?.classList.remove('is-open');
       document.body.style.overflow = '';
+    });
+  });
+
+  document.querySelectorAll('[data-lang-target]').forEach((link) => {
+    link.addEventListener('click', () => {
+      const target = link.getAttribute('data-lang-target');
+      const current = document.documentElement.dataset.locale;
+      if (!target || target === current) return;
+
+      const analyticsWindow = window as Window & {
+        dataLayer?: Record<string, string | undefined>[];
+      };
+      analyticsWindow.dataLayer = analyticsWindow.dataLayer || [];
+      analyticsWindow.dataLayer.push({
+        event: 'language_change',
+        from: current,
+        to: target,
+        path: window.location.pathname,
+      });
     });
   });
 </script>

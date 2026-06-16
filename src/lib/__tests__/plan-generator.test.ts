@@ -20,6 +20,76 @@ describe('createPlan', () => {
     expect(plan.paces.rep3min).toBeGreaterThan(0);
   });
 
+  it('creates a plan from a half marathon race result', () => {
+    const input: UserInput = {
+      raceDistance: '21K',
+      raceTime: '1:30:00',
+      weeklyHours: 6,
+      unit: 'km',
+    };
+    const plan = createPlan(input);
+    expect(plan.paces.fiveKSeconds).toBeGreaterThan(0);
+    expect(plan.paces.rep3min).toBeGreaterThan(0);
+  });
+
+  it('creates a plan from a marathon race result', () => {
+    const input: UserInput = {
+      raceDistance: '42K',
+      raceTime: '3:15:00',
+      weeklyHours: 6,
+      unit: 'km',
+    };
+    const plan = createPlan(input);
+    expect(plan.paces.fiveKSeconds).toBeGreaterThan(0);
+    expect(plan.paces.easy).toBeGreaterThan(plan.paces.rep10min);
+  });
+
+  it('creates a plan from a custom race result', () => {
+    const input: UserInput = {
+      raceDistance: 'custom',
+      raceTime: '1:00:00',
+      customDistanceKm: 15,
+      weeklyHours: 6,
+      unit: 'km',
+    };
+    const plan = createPlan(input);
+    expect(plan.paces.fiveKSeconds).toBeGreaterThan(0);
+  });
+
+  it('creates a plan from VDOT-style short race distances', () => {
+    const input: UserInput = {
+      raceDistance: '1MI',
+      raceTime: '6:00',
+      weeklyHours: 6,
+      unit: 'km',
+    };
+
+    const plan = createPlan(input);
+    expect(plan.paces.fiveKSeconds).toBeGreaterThan(0);
+    expect(plan.paces.rep3min).toBeGreaterThan(0);
+  });
+
+  it('matches built-in mile distances with custom miles', () => {
+    const builtIn: UserInput = {
+      raceDistance: '1MI',
+      raceTime: '6:00',
+      weeklyHours: 6,
+      unit: 'km',
+    };
+    const custom: UserInput = {
+      raceDistance: 'custom',
+      raceTime: '6:00',
+      customDistance: 1,
+      customDistanceUnit: 'mile',
+      weeklyHours: 6,
+      unit: 'km',
+    };
+
+    expect(createPlan(custom).paces.fiveKSeconds).toBe(
+      createPlan(builtIn).paces.fiveKSeconds,
+    );
+  });
+
   it('prefers 5K over 10K when both provided', () => {
     const inputWith5K: UserInput = {
       time5K: '20:00',
@@ -52,6 +122,29 @@ describe('createPlan', () => {
 
   it('throws on invalid time format', () => {
     const input: UserInput = { time5K: 'abc', weeklyHours: 6, unit: 'km' };
+    expect(() => createPlan(input)).toThrow();
+  });
+
+  it('throws on invalid custom distance', () => {
+    const input: UserInput = {
+      raceDistance: 'custom',
+      raceTime: '1:00:00',
+      customDistanceKm: 0,
+      weeklyHours: 6,
+      unit: 'km',
+    };
+    expect(() => createPlan(input)).toThrow();
+  });
+
+  it('throws when custom distance is under 800 meters', () => {
+    const input: UserInput = {
+      raceDistance: 'custom',
+      raceTime: '2:00',
+      customDistance: 0.4,
+      customDistanceUnit: 'km',
+      weeklyHours: 6,
+      unit: 'km',
+    };
     expect(() => createPlan(input)).toThrow();
   });
 });

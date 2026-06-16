@@ -1,0 +1,662 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import TrainingForm from './react/TrainingForm';
+import { encodePlanInput } from '../lib/plan-url';
+import { getNearbyRacePages, type RaceSeoPage } from '../lib/race-seo-pages';
+import { getPlanByHours, type DaySession } from '../lib/training-plans';
+import type { Locale, TrainingPaces } from '../types';
+
+interface Props {
+  locale: Locale;
+  page: RaceSeoPage;
+  structuredData?: Record<string, unknown>[];
+}
+
+const { locale, page, structuredData } = Astro.props;
+const samplePlan = getPlanByHours(6);
+const nearbyPages = getNearbyRacePages(locale, page);
+const paces: Record<
+  keyof Pick<TrainingPaces, 'rep3min' | 'rep6min' | 'rep10min' | 'easy'>,
+  string
+> = {
+  rep3min: page.paceCard.rep3min,
+  rep6min: page.paceCard.rep6min,
+  rep10min: page.paceCard.rep10min,
+  easy: page.paceCard.easy,
+};
+
+const planUrl = `/${locale}/plan?${encodePlanInput({
+  raceDistance: page.raceDistance,
+  raceTime: page.raceTime,
+  weeklyHours: samplePlan.hours,
+  unit: 'km',
+})}`;
+
+const labels = {
+  en: {
+    kicker: 'Pre-built race input',
+    paceTitle: 'Training paces',
+    short: '3-min reps',
+    medium: '6-min reps',
+    long: '10-min reps',
+    easy: 'Easy pace',
+    sampleTitle: 'Sample week at 6 hours',
+    sampleIntro:
+      'Use this as a practical starting week. Keep the quality days controlled and let the easy days protect recovery.',
+    equivalentsTitle: 'Equivalent race performances',
+    equivalentsIntro:
+      'Approximate race equivalents from the same fitness estimate. Use them as context, not as exact predictions.',
+    nearbyTitle: 'Browse nearby times',
+    ctaTitle: 'Want your exact plan?',
+    ctaIntro:
+      'Start from this race input, change the weekly hours, add a marathon date if needed, or enter your exact recent result.',
+    planCta: 'Open 6 h/week plan',
+    formTitle: 'Calculate another race result',
+    total: 'total',
+    recovery: 'recovery',
+    rest: 'Rest',
+    easyRun: 'Easy run',
+    doubleEasy: 'Two easy runs',
+    active: 'Current page',
+  },
+  es: {
+    kicker: 'Marca ya calculada',
+    paceTitle: 'Ritmos de entrenamiento',
+    short: 'Rep. 3 min',
+    medium: 'Rep. 6 min',
+    long: 'Rep. 10 min',
+    easy: 'Ritmo fácil',
+    sampleTitle: 'Semana ejemplo de 6 horas',
+    sampleIntro:
+      'Úsala como punto de partida práctico. Mantén los días de calidad controlados y protege la recuperación en los rodajes.',
+    equivalentsTitle: 'Marcas equivalentes',
+    equivalentsIntro:
+      'Equivalencias aproximadas desde la misma estimación de forma. Sirven como contexto, no como predicción exacta.',
+    nearbyTitle: 'Ver marcas cercanas',
+    ctaTitle: '¿Quieres tu plan exacto?',
+    ctaIntro:
+      'Empieza desde esta marca, cambia las horas semanales, añade fecha de maratón si hace falta o introduce tu resultado exacto.',
+    planCta: 'Abrir plan de 6 h/semana',
+    formTitle: 'Calcular otra marca',
+    total: 'total',
+    recovery: 'recuperación',
+    rest: 'Descanso',
+    easyRun: 'Rodaje fácil',
+    doubleEasy: 'Dos rodajes fáciles',
+    active: 'Página actual',
+  },
+  ko: {
+    kicker: '미리 계산된 레이스 기록',
+    paceTitle: '훈련 페이스',
+    short: '3분 반복',
+    medium: '6분 반복',
+    long: '10분 반복',
+    easy: '이지 페이스',
+    sampleTitle: '주 6시간 예시 주간',
+    sampleIntro:
+      '실전적인 시작점으로 사용하세요. 퀄리티 데이는 통제하고 이지런은 회복을 지키는 역할을 해야 합니다.',
+    equivalentsTitle: '동등한 레이스 기록',
+    equivalentsIntro:
+      '같은 체력 추정치에서 계산한 대략적인 레이스 환산 기록입니다. 정확한 예측보다 맥락으로 보세요.',
+    nearbyTitle: '가까운 기록 보기',
+    ctaTitle: '정확한 플랜이 필요하신가요?',
+    ctaIntro:
+      '이 기록에서 시작해 주간 시간을 바꾸고, 필요하면 마라톤 날짜를 추가하거나 실제 최근 기록을 입력하세요.',
+    planCta: '주 6시간 플랜 열기',
+    formTitle: '다른 기록 계산하기',
+    total: '전체',
+    recovery: '회복',
+    rest: '휴식',
+    easyRun: '이지런',
+    doubleEasy: '이지런 2회',
+    active: '현재 페이지',
+  },
+}[locale];
+
+const dayLabels = {
+  en: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+  es: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+  ko: ['월', '화', '수', '목', '금', '토', '일'],
+}[locale];
+
+const paceCards = [
+  {
+    label: labels.long,
+    value: page.paceCard.rep10min,
+    note: '3 x 10 min',
+    tone: 'long',
+  },
+  {
+    label: labels.medium,
+    value: page.paceCard.rep6min,
+    note: '5 x 6 min',
+    tone: 'medium',
+  },
+  {
+    label: labels.short,
+    value: page.paceCard.rep3min,
+    note: '9 x 3 min',
+    tone: 'short',
+  },
+  {
+    label: labels.easy,
+    value: page.paceCard.easy,
+    note: labels.easyRun,
+    tone: 'easy',
+  },
+];
+
+const sessionPace = (session: DaySession): string | null => {
+  if (session.kind !== 'subT') return null;
+  return paces[session.paceColumn];
+};
+
+const sessionTitle = (session: DaySession): string => {
+  if (session.kind === 'rest') return labels.rest;
+  if (session.kind === 'easy') return labels.easyRun;
+  if (session.kind === 'double') return labels.doubleEasy;
+  return `${session.reps} x ${session.repDurationMin} min`;
+};
+
+const sessionDetail = (session: DaySession): string => {
+  if (session.kind === 'rest') return '';
+  if (session.kind === 'easy') return `${session.durationMin} min`;
+  if (session.kind === 'double') {
+    return `${session.morning.durationMin} + ${session.afternoon.durationMin} min`;
+  }
+
+  const recovery = session.recoverySecondsMax
+    ? `${session.recoverySeconds}-${session.recoverySecondsMax}s`
+    : `${session.recoverySeconds}s`;
+  return `${session.totalDurationMin} min ${labels.total} · ${recovery} ${labels.recovery}`;
+};
+---
+
+<AppLayout
+  title={page.title}
+  description={page.description}
+  locale={locale}
+  structuredData={structuredData}
+>
+  <div class="race-page">
+    <section class="race-hero">
+      <div class="container race-hero-grid">
+        <div class="race-hero-copy">
+          <p class="race-kicker">{labels.kicker}</p>
+          <h1>{page.h1}</h1>
+          <p set:html={page.intro} />
+          <div class="race-actions">
+            <a class="race-primary" href={planUrl}>{labels.planCta}</a>
+            <a class="race-secondary" href="#calculator">{labels.formTitle}</a>
+          </div>
+        </div>
+
+        <div class="race-pace-panel" aria-label={labels.paceTitle}>
+          <div class="race-panel-head">
+            <span>{labels.paceTitle}</span>
+            <strong>{page.paceCard.raceLabel}</strong>
+          </div>
+          <div class="race-pace-grid">
+            {
+              paceCards.map((pace) => (
+                <article class={`race-pace-card is-${pace.tone}`}>
+                  <span>{pace.label}</span>
+                  <strong>{pace.value}</strong>
+                  <em>{pace.note}</em>
+                </article>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="race-section">
+      <div class="container race-section-grid">
+        <div class="race-section-head">
+          <h2>{labels.sampleTitle}</h2>
+          <p>{labels.sampleIntro}</p>
+        </div>
+        <div class="sample-week">
+          {
+            samplePlan.days.map((session, index) => (
+              <article class={`sample-day sample-day-${session.kind}`}>
+                <span>{dayLabels[index]}</span>
+                <strong>{sessionTitle(session)}</strong>
+                <p>{sessionDetail(session)}</p>
+                {sessionPace(session) && <em>{sessionPace(session)}</em>}
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="race-section race-section-muted">
+      <div class="container race-two-col">
+        <div>
+          <div class="race-section-head compact">
+            <h2>{labels.equivalentsTitle}</h2>
+            <p>{labels.equivalentsIntro}</p>
+          </div>
+          <div class="equivalence-grid">
+            {
+              page.equivalents.map((equivalent) => (
+                <div class="equivalence-card">
+                  <span>{equivalent.label}</span>
+                  <strong>{equivalent.time}</strong>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        <div>
+          <div class="race-section-head compact">
+            <h2>{labels.nearbyTitle}</h2>
+          </div>
+          <nav class="nearby-list" aria-label={labels.nearbyTitle}>
+            {
+              nearbyPages.map((nearby) => (
+                <a
+                  class:list={[
+                    'nearby-link',
+                    nearby.slug === page.slug && 'is-current',
+                  ]}
+                  href={`/${locale}/${nearby.slug}/`}
+                  aria-current={nearby.slug === page.slug ? 'page' : undefined}
+                >
+                  <span>{nearby.displayTime}</span>
+                  <strong>{nearby.paceCard.rep3min}</strong>
+                  {nearby.slug === page.slug && <em>{labels.active}</em>}
+                </a>
+              ))
+            }
+          </nav>
+        </div>
+      </div>
+    </section>
+
+    <section class="race-section" id="calculator">
+      <div class="container race-calculator">
+        <div class="race-section-head compact">
+          <h2>{labels.ctaTitle}</h2>
+          <p>{labels.ctaIntro}</p>
+        </div>
+        <div class="race-form-card">
+          <div class="race-form-head">
+            <h3>{labels.formTitle}</h3>
+          </div>
+          <TrainingForm locale={locale} client:idle />
+        </div>
+      </div>
+    </section>
+  </div>
+</AppLayout>
+
+<style>
+  .race-page {
+    background:
+      radial-gradient(
+        circle at 18% 8%,
+        rgba(239, 68, 68, 0.16),
+        transparent 24rem
+      ),
+      linear-gradient(180deg, rgba(59, 130, 246, 0.1), transparent 34rem),
+      var(--color-bg-primary);
+  }
+
+  .race-hero {
+    min-height: calc(100vh - var(--header-height));
+    display: flex;
+    align-items: center;
+    padding: var(--space-10) 0 var(--space-14);
+  }
+
+  .race-hero-grid {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 1040px) {
+    .race-hero-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(440px, 560px);
+      align-items: center;
+    }
+  }
+
+  .race-kicker {
+    display: inline-flex;
+    margin-bottom: var(--space-4);
+    padding: var(--space-2) var(--space-3);
+    color: var(--color-text-primary);
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.32);
+    border-radius: var(--radius-full);
+    font-size: var(--text-xs);
+    font-weight: var(--font-bold);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .race-hero-copy h1 {
+    max-width: 760px;
+    margin-bottom: var(--space-5);
+    font-size: var(--text-4xl);
+    line-height: 1.05;
+    letter-spacing: 0;
+  }
+
+  @media (min-width: 768px) {
+    .race-hero-copy h1 {
+      font-size: var(--text-6xl);
+    }
+  }
+
+  .race-hero-copy p {
+    max-width: 690px;
+    color: var(--color-text-secondary);
+    font-size: var(--text-lg);
+    line-height: 1.7;
+  }
+
+  .race-hero-copy strong {
+    color: var(--color-text-primary);
+  }
+
+  .race-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-7);
+  }
+
+  .race-primary,
+  .race-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3rem;
+    padding: 0 var(--space-5);
+    border-radius: var(--radius-md);
+    font-weight: var(--font-bold);
+    text-decoration: none;
+  }
+
+  .race-primary {
+    color: #111113;
+    background: var(--color-accent-primary);
+  }
+
+  .race-secondary {
+    color: var(--color-text-primary);
+    background: rgba(255, 255, 255, 0.055);
+    border: 1px solid var(--color-border);
+  }
+
+  .race-pace-panel,
+  .race-form-card {
+    background: rgba(17, 17, 19, 0.86);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .race-pace-panel {
+    padding: var(--space-5);
+  }
+
+  .race-panel-head {
+    display: grid;
+    gap: var(--space-1);
+    margin-bottom: var(--space-4);
+  }
+
+  .race-panel-head span {
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    font-weight: var(--font-bold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .race-panel-head strong {
+    color: var(--color-text-primary);
+    font-size: var(--text-2xl);
+  }
+
+  .race-pace-grid {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  @media (min-width: 560px) {
+    .race-pace-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .race-pace-card {
+    min-height: 9.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: var(--space-5);
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .race-pace-card span,
+  .race-pace-card em {
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    font-style: normal;
+  }
+
+  .race-pace-card span {
+    font-weight: var(--font-bold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .race-pace-card strong {
+    color: var(--color-threshold);
+    font-family: var(--font-mono);
+    font-size: var(--text-4xl);
+    line-height: 1;
+  }
+
+  .race-section {
+    padding: var(--space-16) 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .race-section-muted {
+    background: rgba(255, 255, 255, 0.018);
+  }
+
+  .race-section-grid {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .race-section-head {
+    max-width: 760px;
+  }
+
+  .race-section-head.compact {
+    margin-bottom: var(--space-5);
+  }
+
+  .race-section-head h2 {
+    margin-bottom: var(--space-3);
+    font-size: var(--text-3xl);
+  }
+
+  .race-section-head p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    line-height: 1.65;
+  }
+
+  .sample-week {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  @media (min-width: 720px) {
+    .sample-week {
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+    }
+  }
+
+  .sample-day {
+    min-height: 11rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .sample-day-subT {
+    border-color: rgba(239, 68, 68, 0.42);
+    background: rgba(239, 68, 68, 0.075);
+  }
+
+  .sample-day span {
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    font-weight: var(--font-bold);
+    text-transform: uppercase;
+  }
+
+  .sample-day strong {
+    color: var(--color-text-primary);
+    font-size: var(--text-sm);
+    line-height: 1.3;
+  }
+
+  .sample-day p {
+    flex: 1;
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: var(--text-xs);
+    line-height: 1.45;
+  }
+
+  .sample-day em {
+    color: var(--color-threshold);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-style: normal;
+    font-weight: var(--font-bold);
+  }
+
+  .race-two-col {
+    display: grid;
+    gap: var(--space-10);
+  }
+
+  @media (min-width: 920px) {
+    .race-two-col {
+      grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+    }
+  }
+
+  .equivalence-grid,
+  .nearby-list {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  @media (min-width: 560px) {
+    .equivalence-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .equivalence-card,
+  .nearby-link {
+    padding: var(--space-4);
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .equivalence-card {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .equivalence-card span,
+  .nearby-link em {
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    font-style: normal;
+  }
+
+  .equivalence-card span {
+    font-weight: var(--font-bold);
+    text-transform: uppercase;
+  }
+
+  .equivalence-card strong,
+  .nearby-link strong {
+    color: var(--color-text-primary);
+    font-family: var(--font-mono);
+    font-size: var(--text-xl);
+  }
+
+  .nearby-link {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-2);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition:
+      background var(--transition-fast),
+      border-color var(--transition-fast),
+      transform var(--transition-fast);
+  }
+
+  .nearby-link:hover,
+  .nearby-link.is-current {
+    background: rgba(239, 68, 68, 0.08);
+    border-color: rgba(239, 68, 68, 0.38);
+  }
+
+  .nearby-link:hover {
+    transform: translateY(-2px);
+  }
+
+  .nearby-link span {
+    font-weight: var(--font-bold);
+  }
+
+  .nearby-link em {
+    grid-column: 1 / -1;
+  }
+
+  .race-calculator {
+    display: grid;
+    gap: var(--space-6);
+    max-width: 920px;
+  }
+
+  .race-form-card {
+    padding: var(--space-5);
+  }
+
+  .race-form-head {
+    margin-bottom: var(--space-4);
+  }
+
+  .race-form-head h3 {
+    margin: 0;
+    font-size: var(--text-xl);
+  }
+</style>

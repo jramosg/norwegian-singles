@@ -47,20 +47,32 @@ const principles: {
   },
 ];
 
-const notesList =
-  locale === 'es'
-    ? [
-        'Descansos cortos (60s) para mantener estado de lactato elevado',
-        'Descanso: de pie, caminando o trote muy suave',
-        'Trabajo de calidad = 20-25% del volumen semanal',
-        'Rodajes Easy: extremadamente fáciles, ≤70% FC máx',
-      ]
-    : [
-        'Short recoveries (60s) to maintain elevated lactate state',
-        'Recovery: standing, walking or very easy jog',
-        'Quality work = 20-25% of weekly volume',
-        'Easy runs: extremely easy, ≤70% max HR',
-      ];
+const notesList = {
+  en: [
+    'Short recoveries (60s) to maintain elevated lactate state',
+    'Recovery: standing, walking or very easy jog',
+    'Quality work = 20-25% of weekly volume',
+    'Easy runs: extremely easy, ≤70% max HR',
+  ],
+  es: [
+    'Recuperaciones cortas (60s) para mantener el lactato elevado',
+    'Recuperación: de pie, caminando o trote muy suave',
+    'Trabajo de calidad = 20-25% del volumen semanal',
+    'Rodajes fáciles: muy suaves, ≤70% FC máx',
+  ],
+  ko: [
+    '짧은 회복(60초)으로 젖산이 약간 높은 상태 유지',
+    '회복은 서 있기, 걷기 또는 아주 가벼운 조깅',
+    '품질 훈련은 주간 볼륨의 20-25%',
+    '이지런은 매우 편하게, 최대 심박의 70% 이하',
+  ],
+}[locale];
+
+const notesTitle = {
+  en: 'Methodology Notes',
+  es: 'Notas metodológicas',
+  ko: '훈련법 메모',
+}[locale];
 ---
 
 <div class="methodology-section">
@@ -91,9 +103,7 @@ const notesList =
       <section class="note-section section">
         <div class="container">
           <div class="note">
-            <h4 class="note-title">
-              📋 {locale === 'es' ? 'Notas metodológicas' : 'Methodology Notes'}
-            </h4>
+            <h4 class="note-title">📋 {notesTitle}</h4>
             <ul class="note-list">
               {notesList.map((note) => (
                 <li>{note}</li>

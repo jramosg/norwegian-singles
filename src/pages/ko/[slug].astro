@@ -12,14 +12,14 @@ import {
   getRacePages,
 } from '../../lib/race-seo-pages';
 
-const locale = 'es';
+const locale = 'ko';
 
 export function getStaticPaths() {
-  const seoPages = getSeoPages('es').map((page) => ({
+  const seoPages = getSeoPages('ko').map((page) => ({
     params: { slug: page.slug },
     props: { page, racePage: null },
   }));
-  const racePages = getRacePages('es').map((page) => ({
+  const racePages = getRacePages('ko').map((page) => ({
     params: { slug: page.slug },
     props: { page: null, racePage: page },
   }));

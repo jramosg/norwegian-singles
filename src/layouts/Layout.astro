@@ -2,35 +2,46 @@
 import '../styles/global.css';
 import '../styles/components.css';
 import '@fontsource-variable/inter';
-import { useTranslations } from '../i18n/ui';
+import type { Locale } from '../types';
+import { languageLabels, locales, useTranslations } from '../i18n/ui';
 import { getAlternateSeoPath } from '../lib/seo-pages';
 
 interface Props {
   title?: string;
   description?: string;
-  locale?: 'es' | 'en';
+  locale?: Locale;
   structuredData?: Record<string, unknown>[];
 }
 
-const { locale = 'es' } = Astro.props;
+const { locale = 'en' } = Astro.props;
 
 const t = useTranslations(locale);
 
 const title = Astro.props.title || t('seo.title');
 const description = Astro.props.description || t('seo.description');
 const structuredData = Astro.props.structuredData || [];
+const floatingSupportMessage = t('support.floatingMessage');
+const floatingSupportButton = t('support.floatingButton');
+const floatingSupportAria = t('support.floatingAria');
 
-const alternateLocale = locale === 'es' ? 'en' : 'es';
 const currentPath = Astro.url.pathname;
-const alternatePath =
-  getAlternateSeoPath(currentPath, locale, alternateLocale) ||
-  currentPath.replace(`/${locale}`, `/${alternateLocale}`);
 const siteURL = 'https://norwegian-singles.app';
 
 const canonicalURL = new URL(currentPath, Astro.site || siteURL);
-const alternateURL = new URL(alternatePath, Astro.site || siteURL);
+const localeUrls = locales.map((lang) => {
+  const path =
+    lang === locale
+      ? currentPath
+      : getAlternateSeoPath(currentPath, locale, lang) ||
+        currentPath.replace(`/${locale}`, `/${lang}`);
+
+  return {
+    lang,
+    url: new URL(path, Astro.site || siteURL),
+  };
+});
 const defaultURL = new URL(
-  locale === 'en' ? currentPath : alternatePath,
+  localeUrls.find(({ lang }) => lang === 'en')?.url.pathname || currentPath,
   Astro.site || siteURL,
 );
 
@@ -39,10 +50,15 @@ const schemaData = {
   '@type': ['WebApplication', 'SoftwareApplication'],
   name: 'Norwegian Singles Method Calculator',
   alternateName: [
+    'Norwegian Singles Calculator',
     'NSA Pace Calculator',
     'NSM Calculator',
+    'NSM Pace Calculator',
     'Norwegian Singles Approach Calculator',
+    'Norwegian Singles Method Calculator',
     'Norwegian Method Training Planner',
+    'Marius Bakken Pace Calculator',
+    'James Copeland Norwegian Singles Calculator',
   ],
   url: siteURL,
   description: description,
@@ -66,100 +82,14 @@ const schemaData = {
     sameAs: [],
   },
   keywords:
-    'NSA, NSM, Norwegian Singles Approach, Norwegian Singles Method, Norwegian method, sub-threshold, lactate threshold, double threshold, running training plan, 5K pace calculator, marathon training',
+    'NSA, NSM, Norwegian Singles calculator, Norwegian Singles Approach, Norwegian Singles Method, NSM calculator, NSM running, Norwegian method calculator, sub-threshold pace calculator, Marius Bakken pace calculator, James Copeland Norwegian Singles, running training plan, 5K pace calculator, marathon training',
 };
 
-const faqEntries = [
-  {
-    en: {
-      q: 'What is the Norwegian Singles Method (NSM)?',
-      a: 'The Norwegian Singles Method, also called the Norwegian Singles Approach (NSA), is a practical way to apply Norwegian-style sub-threshold training with single daily sessions. It commonly uses 3, 6, and 10-minute intervals with short recoveries, plus very easy running around the quality days.',
-    },
-    es: {
-      q: '¿Qué es el método Norwegian Singles (NSM)?',
-      a: 'El Norwegian Singles Method, también llamado Norwegian Singles Approach (NSA), es una forma práctica de aplicar entrenamiento sub-umbral de estilo noruego con una sola sesión diaria. Suele usar intervalos de 3, 6 y 10 minutos con recuperaciones cortas, más rodajes muy fáciles alrededor de los días de calidad.',
-    },
-  },
-  {
-    en: {
-      q: 'How is NSM different from the original Norwegian double threshold method?',
-      a: 'The original Norwegian Method, popularized by Jakob Ingebrigtsen and Marius Bakken, uses two threshold sessions per day (morning and evening). NSM condenses this into a single daily sub-threshold session, making it accessible for recreational runners who cannot train twice a day while preserving the core lactate management principles.',
-    },
-    es: {
-      q: '¿En qué se diferencia NSM del método noruego de doble umbral original?',
-      a: 'El Método Noruego original, popularizado por Jakob Ingebrigtsen y Marius Bakken, usa dos sesiones de umbral al día (mañana y tarde). NSM condensa esto en una única sesión sub-umbral diaria, haciéndolo accesible para corredores recreativos que no pueden entrenar dos veces al día, preservando los principios de gestión de lactato.',
-    },
-  },
-  {
-    en: {
-      q: 'How do I calculate my sub-threshold pace?',
-      a: 'Enter your 5K race time, or a 10K time if that is what you have. The calculator estimates three practical sub-threshold targets: 3-minute reps, 6-minute reps, and 10-minute reps, plus an easy pace for non-quality days.',
-    },
-    es: {
-      q: '¿Cómo calculo mi ritmo sub-umbral?',
-      a: 'Introduce tu marca de 5K, o una marca de 10K si es lo que tienes. La calculadora estima tres ritmos sub-umbral prácticos: repeticiones de 3 minutos, 6 minutos y 10 minutos, además del ritmo fácil para los días sin calidad.',
-    },
-  },
-  {
-    en: {
-      q: 'How many hours per week should I train with NSM?',
-      a: 'NSM offers structured weekly plans from 4.5 to 9 hours. Begin at 4.5–5.5h if new to the method. Each tier prescribes three sub-threshold sessions (Tuesday, Thursday, Saturday) plus easy runs. Progress to the next tier when your current plan feels comfortable for several consecutive weeks.',
-    },
-    es: {
-      q: '¿Cuántas horas debo entrenar a la semana con NSM?',
-      a: 'NSM ofrece planes semanales estructurados de 4.5 a 9 horas. Empieza en 4.5–5.5h si eres nuevo en el método. Cada nivel prescribe tres sesiones sub-umbral (martes, jueves, sábado) más rodajes fáciles. Progresa al siguiente nivel cuando el plan actual se sienta cómodo durante varias semanas consecutivas.',
-    },
-  },
-  {
-    en: {
-      q: 'What book is the Norwegian Singles Method from?',
-      a: '"NSM: Subthreshold Running Kept Simple" by James Copeland is one of the main references runners use for this method. This independent calculator helps runners turn recent race fitness into practical NSA/NSM paces and weekly plan structures.',
-    },
-    es: {
-      q: '¿De qué libro viene el Norwegian Singles Method?',
-      a: '"NSM: Subthreshold Running Kept Simple" de James Copeland es una de las referencias principales que usan los corredores para este método. Esta calculadora independiente ayuda a convertir tu estado de forma reciente en ritmos NSA/NSM y estructuras semanales prácticas.',
-    },
-  },
-  {
-    en: {
-      q: 'Can I use NSM to train for a marathon?',
-      a: 'Yes. Enter your marathon date and the app generates a 15-week build with sub-threshold sessions, marathon-pace specific workouts, tune-up races, and a taper leading to race day.',
-    },
-    es: {
-      q: '¿Puedo usar NSM para preparar un maratón?',
-      a: 'Sí. Introduce la fecha de tu maratón y la app genera una preparación de 15 semanas con sesiones sub-umbral, sesiones específicas a ritmo maratón, carreras de puesta a punto y taper.',
-    },
-  },
-  {
-    en: {
-      q: 'Why 60-second recoveries between intervals?',
-      a: 'Short 60-second recoveries (90–120s for longer 10-minute reps) are a core principle of the Norwegian Method. They keep blood lactate slightly elevated between repetitions, training your body to clear lactate efficiently at race pace — the key physiological adaptation that makes threshold training effective.',
-    },
-    es: {
-      q: '¿Por qué recuperaciones de 60 segundos entre intervalos?',
-      a: 'Las recuperaciones cortas de 60 segundos (90–120s para repeticiones largas de 10 minutos) son un principio central del Método Noruego. Mantienen el lactato en sangre ligeramente elevado entre repeticiones, entrenando al cuerpo a aclarar lactato eficientemente a ritmo de carrera — la adaptación fisiológica clave del entrenamiento de umbral.',
-    },
-  },
-];
-
-const faqData = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: faqEntries.map((entry) => ({
-    '@type': 'Question',
-    name: entry[locale].q,
-    acceptedAnswer: {
-      '@type': 'Answer',
-      text: entry[locale].a,
-    },
-  })),
-};
-
-const allStructuredData = [schemaData, faqData, ...structuredData];
+const allStructuredData = [schemaData, ...structuredData];
 ---
 
 <!doctype html>
-<html lang={locale}>
+<html lang={locale} data-locale={locale} data-seo-page={currentPath}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -171,13 +101,11 @@ const allStructuredData = [schemaData, faqData, ...structuredData];
     <meta
       name="keywords"
       content={locale === 'es'
-        ? 'NSA, NSM, Norwegian Singles Approach, Norwegian Singles Method, método noruego, sub-umbral, entrenamiento umbral lactato, doble umbral, plan entrenamiento correr, calculadora ritmo 5K, preparación maratón, entrenamiento resistencia'
-        : 'NSA, NSM, Norwegian Singles Approach, Norwegian Singles Method, Norwegian method, sub-threshold, lactate threshold training, double threshold, running training plan, 5K pace calculator, marathon training, endurance training'}
+        ? 'NSA, NSM, calculadora Norwegian Singles, Norwegian Singles Method, calculadora NSM, método noruego, sub-umbral, calculadora ritmos Marius Bakken, James Copeland Norwegian Singles, plan entrenamiento correr, calculadora ritmo 5K, preparación maratón'
+        : locale === 'ko'
+          ? 'NSM 러닝, NSM 훈련법, Norwegian Singles Method, Norwegian Singles 계산기, NSM 계산기, 서브스레숄드 러닝, 노르웨이식 훈련, 마라톤 훈련 플랜, 5K 페이스 계산기'
+          : 'NSA, NSM, Norwegian Singles calculator, Norwegian Singles Approach, Norwegian Singles Method, NSM calculator, NSM running, Norwegian method calculator, sub-threshold pace calculator, Marius Bakken pace calculator, James Copeland Norwegian Singles, running training plan, 5K pace calculator, marathon training'}
     />
-
-    <!-- Preconnect to Buy Me a Coffee CDNs (floating widget) -->
-    <link rel="preconnect" href="https://cdnjs.buymeacoffee.com" crossorigin />
-    <link rel="preconnect" href="https://cdn.buymeacoffee.com" crossorigin />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -188,8 +116,15 @@ const allStructuredData = [schemaData, faqData, ...structuredData];
 
     <!-- Canonical & Alternates -->
     <link rel="canonical" href={canonicalURL.href} />
-    <link rel="alternate" hreflang={locale} href={canonicalURL.href} />
-    <link rel="alternate" hreflang={alternateLocale} href={alternateURL.href} />
+    {
+      localeUrls.map(({ lang, url }) => (
+        <link
+          rel="alternate"
+          hreflang={languageLabels[lang].hreflang}
+          href={url.href}
+        />
+      ))
+    }
     <link rel="alternate" hreflang="x-default" href={defaultURL.href} />
 
     <!-- Open Graph -->
@@ -198,7 +133,7 @@ const allStructuredData = [schemaData, faqData, ...structuredData];
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL.href} />
     <meta property="og:site_name" content="Norwegian Singles" />
-    <meta property="og:locale" content={locale === 'es' ? 'es_ES' : 'en_US'} />
+    <meta property="og:locale" content={languageLabels[locale].og} />
     <meta property="og:image" content={`${siteURL}/og-image.png`} />
 
     <!-- Twitter -->
@@ -223,28 +158,34 @@ const allStructuredData = [schemaData, faqData, ...structuredData];
   <body>
     <slot />
 
-    <!-- Buy Me a Coffee floating widget (non-critical, load off the
-         critical path so it doesn't block render or the LCP) -->
-    <script
-      is:inline
-      async
-      data-name="BMC-Widget"
-      data-cfasync="false"
-      src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
-      data-id="jramosg"
-      data-description="Support the Norwegian Singles project"
-      data-message="Enjoying the free training planner? Fuel the next features with a coffee ☕"
-      data-color="#FFDD00"
-      data-position="Right"
-      data-x_margin="18"
-      data-y_margin="18"></script>
+    <a
+      class="floating-support"
+      href="https://buymeacoffee.com/jramosg"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={floatingSupportAria}
+    >
+      <span class="floating-support-message" aria-hidden="true">
+        {floatingSupportMessage}
+      </span>
+      <span aria-hidden="true">☕</span>
+      <span class="floating-support-text">{floatingSupportButton}</span>
+    </a>
+
+    <script is:inline>
+      window.setTimeout(() => {
+        document
+          .querySelector('.floating-support-message')
+          ?.classList.add('is-hidden');
+      }, 6000);
+    </script>
 
     <!-- Language persistence script -->
     <script is:inline>
       (function () {
         const path = window.location.pathname;
         const locale = path.split('/')[1];
-        if (locale === 'es' || locale === 'en') {
+        if (locale === 'en' || locale === 'es' || locale === 'ko') {
           localStorage.setItem('ns-locale', locale);
         }
       })();

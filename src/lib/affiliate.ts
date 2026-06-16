@@ -30,6 +30,7 @@ const TAGS = {
 const MARKETPLACE: Record<Locale, { tld: string; tag: string }> = {
   es: { tld: 'es', tag: TAGS.es },
   en: { tld: 'com', tag: TAGS.com },
+  ko: { tld: 'com', tag: TAGS.com },
 };
 
 export interface Book {

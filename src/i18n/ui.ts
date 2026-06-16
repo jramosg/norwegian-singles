@@ -3,7 +3,40 @@
 import type { Locale } from '../types';
 
 export const defaultLocale: Locale = 'en';
-export const locales: Locale[] = ['es', 'en'];
+export const locales: Locale[] = ['en', 'es', 'ko'];
+
+export const languageLabels: Record<
+  Locale,
+  {
+    code: string;
+    name: string;
+    nativeName: string;
+    hreflang: string;
+    og: string;
+  }
+> = {
+  en: {
+    code: 'EN',
+    name: 'English',
+    nativeName: 'English',
+    hreflang: 'en',
+    og: 'en_US',
+  },
+  es: {
+    code: 'ES',
+    name: 'Spanish',
+    nativeName: 'Español',
+    hreflang: 'es',
+    og: 'es_ES',
+  },
+  ko: {
+    code: 'KO',
+    name: 'Korean',
+    nativeName: '한국어',
+    hreflang: 'ko',
+    og: 'ko_KR',
+  },
+};
 
 // UI translations
 export const ui = {
@@ -157,16 +190,21 @@ export const ui = {
     // Footer
     'footer.credit': 'Basado en el método de entrenamiento Norwegian Singles',
     'footer.disclaimer':
-      'Esta aplicación es una herramienta de planificación. Consulta con un profesional antes de iniciar cualquier programa de entrenamiento.',
+      'Herramienta independiente y no oficial. No está afiliada, avalada ni autorizada por autores, entrenadores o marcas mencionadas. Consulta con un profesional antes de iniciar cualquier programa de entrenamiento.',
     'footer.dev': 'Desarrollado por',
     'footer.support': 'Apoyar el proyecto',
     'footer.supportTagline':
       'Ayuda a financiar futuras funciones como envío al reloj, impresión de calendarios y más.',
+    'support.floatingMessage':
+      '¿Te gusta el planificador gratuito? Ayuda a impulsar las próximas funciones con un café',
+    'support.floatingButton': 'Invítame a un café',
+    'support.floatingAria':
+      '¿Te gusta el planificador gratuito? Ayuda a impulsar las próximas funciones con un café',
 
     // SEO
-    'seo.title': 'Calculadora NSA / NSM — Ritmos y planes Norwegian Singles',
+    'seo.title': 'Calculadora Norwegian Singles — Ritmos y planes NSA/NSM',
     'seo.description':
-      'Calculadora independiente para Norwegian Singles Approach / Method. Calcula ritmos sub-umbral desde tu 5K o 10K, genera planes de 4.5-9h y crea una preparación de maratón de 15 semanas.',
+      'Calcula ritmos sub-umbral, semanas NSA/NSM de 4.5-9 h y preparación de maratón desde una marca reciente. Herramienta independiente Norwegian Singles.',
 
     // SEO Content Section
     'seo.content.h2': '¿Qué es el Norwegian Singles Method?',
@@ -354,17 +392,21 @@ export const ui = {
     // Footer
     'footer.credit': 'Based on the Norwegian Singles training method',
     'footer.disclaimer':
-      'This app is a planning tool. Consult a professional before starting any training program.',
+      'Independent, unofficial planning tool. It is not affiliated with, endorsed by, or authorized by any mentioned author, coach, or brand. Consult a professional before starting any training program.',
     'footer.dev': 'Built by',
     'footer.support': 'Support the project',
     'footer.supportTagline':
       'Help fund future features like sending to watch, calendar print, and more.',
+    'support.floatingMessage':
+      'Enjoying the free training planner? Fuel the next features with a coffee',
+    'support.floatingButton': 'Buy me a coffee',
+    'support.floatingAria':
+      'Enjoying the free training planner? Fuel the next features with a coffee',
 
     // SEO
-    'seo.title':
-      'NSA / NSM Calculator — Norwegian Singles Paces and Training Plans',
+    'seo.title': 'Norwegian Singles Calculator — NSA / NSM Paces and Plans',
     'seo.description':
-      'Independent Norwegian Singles Approach / Method calculator. Calculate sub-threshold paces from your 5K or 10K, generate 4.5-9h plans, and build a 15-week marathon schedule.',
+      'Free Norwegian Singles calculator for NSA / NSM runners. Calculate sub-threshold paces from your 5K or 10K, 4.5-9h plans, and marathon builds.',
 
     // SEO Content Section
     'seo.content.h2': 'What is the Norwegian Singles Method?',
@@ -403,6 +445,177 @@ export const ui = {
     edit: 'Edit',
     delete: 'Delete',
   },
+  ko: {
+    // Navigation
+    'nav.home': '홈',
+    'nav.plan': '내 플랜',
+    'nav.method': '훈련법',
+
+    // Hero
+    'hero.title': 'Norwegian Singles',
+    'hero.titleAccent': 'NSA / NSM 계산기',
+    'hero.subtitle':
+      '5K 또는 10K 기록으로 서브스레숄드 페이스, 주 4.5-9시간 훈련 주간, 15주 마라톤 빌드업을 계산하세요.',
+    'hero.cta': '플랜 만들기',
+
+    // Form
+    'form.title': '훈련 설정',
+    'form.targetDistance': '목표 거리',
+    'form.time5K': '현재 5K 기록',
+    'form.time10K': '현재 10K 기록',
+    'form.timePlaceholder': 'mm:ss',
+    'form.timeHint':
+      '5K 또는 10K 기록 중 하나를 입력하세요. 다른 기록은 자동으로 추정합니다.',
+    'form.trainingDays': '훈련 일수',
+    'form.trainingDaysHint': '최적의 결과를 위해 주 5-6일을 권장합니다',
+    'form.daysPerWeek': '일/주',
+    'form.unit': '페이스 단위',
+    'form.previewThreshold': '서브스레숄드',
+    'form.previewEasy': '이지',
+    'form.submit': '플랜 생성',
+    'form.validation.required': '기록을 하나 이상 입력하세요',
+    'form.validation.format': '형식이 올바르지 않습니다(mm:ss 사용)',
+
+    // Distances
+    'distance.21K': '하프 마라톤',
+    'distance.42K': '마라톤',
+
+    // Session types
+    'session.easy': '이지',
+    'session.threshold': '서브스레숄드',
+    'session.long': '롱런',
+    'session.test': '테스트',
+    'session.rest': '휴식',
+    'session.race': '레이스',
+
+    // Paces
+    'pace.threshold': '서브스레숄드',
+    'pace.easy': '이지',
+    'pace.intervals.short': "짧은 Sub-T (3-4')",
+    'pace.intervals.medium': "중간 Sub-T (6-8')",
+    'pace.intervals.long': "긴 Sub-T (10-12')",
+
+    // Plan
+    'plan.title': '내 훈련 플랜',
+    'plan.week': '주',
+    'plan.block': '블록',
+    'plan.testWeek': '테스트 주간',
+    'plan.paces': '내 페이스',
+    'plan.intervals': 'NS 인터벌',
+    'plan.addRace': '레이스 추가',
+    'plan.recalculate': '다시 계산',
+
+    // Days
+    'day.monday': '월요일',
+    'day.tuesday': '화요일',
+    'day.wednesday': '수요일',
+    'day.thursday': '목요일',
+    'day.friday': '금요일',
+    'day.saturday': '토요일',
+    'day.sunday': '일요일',
+    'day.mon': '월',
+    'day.tue': '화',
+    'day.wed': '수',
+    'day.thu': '목',
+    'day.fri': '금',
+    'day.sat': '토',
+    'day.sun': '일',
+
+    // Races
+    'race.title': '레이스',
+    'race.add': '레이스 추가',
+    'race.name': '이름',
+    'race.date': '날짜',
+    'race.type': '유형',
+    'race.typeA': 'A 레이스(우선)',
+    'race.typeB': 'B 레이스(보조)',
+    'race.remove': '삭제',
+
+    // Intervals table
+    'intervals.type': '유형',
+    'intervals.structure': '구성',
+    'intervals.pace': '목표 페이스',
+    'intervals.recovery': '회복',
+    'intervals.byTime': '시간 기준',
+    'intervals.byDistance': '거리 기준',
+
+    // Methodology
+    'method.title': 'Norwegian Singles Method',
+    'method.principle1.title': '서브스레숄드 여유',
+    'method.principle1.desc':
+      '핵심 세션은 여유 있는 임계값 아래 페이스로 달리며, 주간 볼륨의 약 20-25%를 차지합니다.',
+    'method.principle2.title': '한계까지 밀지 않기',
+    'method.principle2.desc':
+      '더 할 수 있어도 멈출 수 있는 보수적이고 지속 가능한 페이스를 사용합니다.',
+    'method.principle3.title': '짧은 회복',
+    'method.principle3.desc':
+      '60초 회복으로 젖산이 약간 높은 상태를 유지합니다.',
+    'method.principle4.title': '반복 가능한 주간',
+    'method.principle4.desc':
+      '변화보다 일관성입니다. 같은 주간 구조를 반복하고, 체력이 좋아지면 페이스가 자연스럽게 올라갑니다.',
+
+    // Books / affiliate
+    'books.title': '추천 도서',
+    'books.subtitle': '훈련법을 더 깊게 이해할 수 있는 참고 도서입니다.',
+    'books.cta': 'Amazon에서 보기',
+    'books.affiliate': '제휴 링크',
+
+    // Footer
+    'footer.credit': 'Norwegian Singles 훈련법 기반',
+    'footer.disclaimer':
+      '독립적인 비공식 플래닝 도구입니다. 언급된 저자, 코치, 브랜드와 제휴, 보증, 승인 관계가 없습니다. 훈련 프로그램을 시작하기 전에 전문가와 상담하세요.',
+    'footer.dev': '제작',
+    'footer.support': '프로젝트 후원',
+    'footer.supportTagline':
+      '워치 전송, 캘린더 출력 등 향후 기능 개발을 도와주세요.',
+    'support.floatingMessage':
+      '무료 훈련 플래너가 도움이 되나요? 다음 기능 개발을 후원해 주세요',
+    'support.floatingButton': '커피 후원',
+    'support.floatingAria':
+      '무료 훈련 플래너가 도움이 되나요? 다음 기능 개발을 후원해 주세요',
+
+    // SEO
+    'seo.title': 'NSM 러닝 계산기 — Norwegian Singles 페이스와 훈련 플랜',
+    'seo.description':
+      'NSM 러닝과 Norwegian Singles Method를 위한 무료 계산기. 5K 또는 10K 기록으로 서브스레숄드 페이스, 주간 플랜, 마라톤 빌드업을 계산하세요.',
+
+    // SEO Content Section
+    'seo.content.h2': 'Norwegian Singles Method란?',
+    'seo.content.intro':
+      '<strong>Norwegian Singles Approach (NSA)</strong>, 또는 <strong>Norwegian Singles Method (NSM)</strong>는 노르웨이식 서브스레숄드 훈련 원칙을 하루 한 번의 세션으로 적용하는 방식입니다.',
+    'seo.content.doubleThreshold.title':
+      '더블 스레숄드에서 Norwegian Singles로',
+    'seo.content.doubleThreshold.text':
+      '원래 노르웨이식 훈련은 오전과 오후에 두 번의 임계값 세션을 수행합니다. 프로 선수에게는 효과적이지만 대부분의 러너에게는 어렵습니다. NSM은 조절된 서브스레숄드 강도, 짧은 회복, 높은 주간 일관성이라는 핵심 원칙을 하루 한 번 세션으로 단순화합니다.',
+    'seo.content.howItWorks.title': '훈련 방식',
+    'seo.content.howItWorks.text':
+      '기본 주간 구조는 반복 가능합니다. 화요일, 목요일, 토요일에 세 번의 서브스레숄드 세션을 하고 나머지는 이지런으로 채웁니다.',
+    'seo.content.howItWorks.rep3':
+      '<strong>3분 반복</strong> — 약 15K 레이스 노력, 60초 회복',
+    'seo.content.howItWorks.rep6':
+      '<strong>6분 반복</strong> — 약 30K 레이스 노력, 60-90초 회복',
+    'seo.content.howItWorks.rep10':
+      '<strong>10분 반복</strong> — 마라톤 노력에 가까운 페이스, 90-120초 회복',
+    'seo.content.howItWorks.paces':
+      '현재 <strong>5K 또는 10K 기록</strong>을 바탕으로 실전적인 훈련 페이스를 추정합니다. 핵심은 젖산 역치보다 아래에서 달려 회복 가능성을 유지하는 것입니다.',
+    'seo.content.weeklyPlans.title': '주 4.5-9시간 플랜',
+    'seo.content.weeklyPlans.text':
+      'NSM은 주 4.5-9시간 플랜을 제공합니다. 체력이 올라갈수록 반복 횟수와 이지런 시간이 늘어나며, 현재 플랜이 여러 주 동안 편안할 때 다음 단계로 이동합니다.',
+    'seo.content.marathon.title': '15주 마라톤 빌드업',
+    'seo.content.marathon.text':
+      '마라톤을 준비한다면 레이스 날짜를 입력해 15주 빌드업을 생성할 수 있습니다. 롱런, 점검 레이스, 마라톤 페이스 세션, 테이퍼가 포함됩니다.',
+    'seo.content.whoIsItFor.title': '누구에게 적합한가요?',
+    'seo.content.whoIsItFor.text':
+      'NSM은 5K 30분 러너부터 15분 이하 러너까지 다양한 수준에 맞게 조정됩니다. 첫 10K부터 마라톤 기록 향상까지 같은 구조로 확장할 수 있습니다.',
+
+    // Misc
+    loading: '불러오는 중...',
+    error: '오류',
+    save: '저장',
+    cancel: '취소',
+    edit: '수정',
+    delete: '삭제',
+  },
 } as const;
 
 export type TranslationKey = keyof typeof ui.es;
@@ -411,7 +624,10 @@ export type TranslationKey = keyof typeof ui.es;
  * Get translation for a key in the specified locale
  */
 export function t(locale: Locale, key: TranslationKey): string {
-  return ui[locale][key] || ui[defaultLocale][key] || key;
+  const translations = ui[locale] as Partial<Record<TranslationKey, string>>;
+  const fallback = ui[defaultLocale] as Record<TranslationKey, string>;
+
+  return translations[key] || fallback[key] || key;
 }
 
 /**

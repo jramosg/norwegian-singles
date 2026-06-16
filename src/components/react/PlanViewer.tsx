@@ -10,6 +10,7 @@ import { loadPlan, savePlan } from '../../lib/storage';
 import { createPlan } from '../../lib/plan-generator';
 import { encodePlanInput, decodePlanInput } from '../../lib/plan-url';
 import { sharePlanCard, type PlanCardData } from '../../lib/share-card';
+import { trackEvent } from '../../lib/analytics';
 import { formatPace } from '../../lib/paces';
 import {
   DAYS_OF_WEEK,
@@ -42,14 +43,14 @@ interface Props {
   locale: Locale;
 }
 
-const DAY_LABELS: Record<string, { en: string; es: string }> = {
-  monday: { en: 'Monday', es: 'Lunes' },
-  tuesday: { en: 'Tuesday', es: 'Martes' },
-  wednesday: { en: 'Wednesday', es: 'Miércoles' },
-  thursday: { en: 'Thursday', es: 'Jueves' },
-  friday: { en: 'Friday', es: 'Viernes' },
-  saturday: { en: 'Saturday', es: 'Sábado' },
-  sunday: { en: 'Sunday', es: 'Domingo' },
+const DAY_LABELS: Record<string, Record<Locale, string>> = {
+  monday: { en: 'Monday', es: 'Lunes', ko: '월요일' },
+  tuesday: { en: 'Tuesday', es: 'Martes', ko: '화요일' },
+  wednesday: { en: 'Wednesday', es: 'Miércoles', ko: '수요일' },
+  thursday: { en: 'Thursday', es: 'Jueves', ko: '목요일' },
+  friday: { en: 'Friday', es: 'Viernes', ko: '금요일' },
+  saturday: { en: 'Saturday', es: 'Sábado', ko: '토요일' },
+  sunday: { en: 'Sunday', es: 'Domingo', ko: '일요일' },
 };
 
 export default function PlanViewer({ locale }: Props) {
@@ -101,9 +102,11 @@ export default function PlanViewer({ locale }: Props) {
     try {
       if (navigator.share) {
         await navigator.share({ url });
+        trackEvent('plan_share', { locale, method: 'native' });
         return;
       }
       await navigator.clipboard.writeText(url);
+      trackEvent('plan_share', { locale, method: 'clipboard' });
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -122,27 +125,52 @@ export default function PlanViewer({ locale }: Props) {
         unitLabel: unit === 'km' ? 'min/km' : 'min/mi',
         rows: [
           {
-            label: locale === 'es' ? 'Interv. 3 min' : '3-min reps',
+            label:
+              locale === 'es'
+                ? 'Interv. 3 min'
+                : locale === 'ko'
+                  ? '3분 반복'
+                  : '3-min reps',
             value: formatPace(paces.rep3min, unit),
             color: 'var(--color-threshold)',
           },
           {
-            label: locale === 'es' ? 'Interv. 6 min' : '6-min reps',
+            label:
+              locale === 'es'
+                ? 'Interv. 6 min'
+                : locale === 'ko'
+                  ? '6분 반복'
+                  : '6-min reps',
             value: formatPace(paces.rep6min, unit),
             color: 'var(--color-threshold)',
           },
           {
-            label: locale === 'es' ? 'Interv. 10 min' : '10-min reps',
+            label:
+              locale === 'es'
+                ? 'Interv. 10 min'
+                : locale === 'ko'
+                  ? '10분 반복'
+                  : '10-min reps',
             value: formatPace(paces.rep10min, unit),
             color: 'var(--color-threshold)',
           },
           {
-            label: locale === 'es' ? 'Ritmo maratón' : 'Marathon pace',
+            label:
+              locale === 'es'
+                ? 'Ritmo maratón'
+                : locale === 'ko'
+                  ? '마라톤 페이스'
+                  : 'Marathon pace',
             value: formatPace(paces.marathonPace, unit),
             color: '#ef4444',
           },
           {
-            label: locale === 'es' ? 'Ritmo fácil' : 'Easy pace',
+            label:
+              locale === 'es'
+                ? 'Ritmo fácil'
+                : locale === 'ko'
+                  ? '이지 페이스'
+                  : 'Easy pace',
             value: formatPace(paces.easy, unit),
             color: '#22c55e',
           },
@@ -153,6 +181,10 @@ export default function PlanViewer({ locale }: Props) {
         })),
       };
       await sharePlanCard(card, locale, window.location.href);
+      trackEvent('plan_share_image', {
+        locale,
+        weeklyHours: plan.input.weeklyHours,
+      });
     } finally {
       setImgBusy(false);
     }
@@ -160,17 +192,58 @@ export default function PlanViewer({ locale }: Props) {
 
   if (loading) return <div className="skeleton" style={{ height: 300 }} />;
 
+  const text = {
+    en: {
+      empty: "You don't have a plan yet",
+      create: 'Create my plan',
+      paces: 'Paces',
+      marathon: 'Marathon',
+      share: 'Share',
+      copied: 'Copied',
+      image: 'Image',
+      sharePlan: 'Share plan',
+      shareImage: 'Share as image',
+      unit: 'Unit',
+      wucd: 'WU+CD incl.',
+      recovery: 'recovery',
+    },
+    es: {
+      empty: 'Aún no tienes un plan',
+      create: 'Crear mi plan',
+      paces: 'Ritmos',
+      marathon: 'Maratón',
+      share: 'Compartir',
+      copied: 'Copiado',
+      image: 'Imagen',
+      sharePlan: 'Compartir plan',
+      shareImage: 'Compartir como imagen',
+      unit: 'Unidad',
+      wucd: 'cal.+vuelta a calma incl.',
+      recovery: 'recup.',
+    },
+    ko: {
+      empty: '아직 플랜이 없습니다',
+      create: '플랜 만들기',
+      paces: '페이스',
+      marathon: '마라톤',
+      share: '공유',
+      copied: '복사됨',
+      image: '이미지',
+      sharePlan: '플랜 공유',
+      shareImage: '이미지로 공유',
+      unit: '단위',
+      wucd: '워밍업+쿨다운 포함',
+      recovery: '회복',
+    },
+  }[locale];
+
   if (!plan) {
     return (
       <div className="pv-empty">
         <div className="pv-empty-icon">📋</div>
-        <h3>
-          {locale === 'es'
-            ? 'Aún no tienes un plan'
-            : "You don't have a plan yet"}
-        </h3>
+        <h3>{text.empty}</h3>
         <a href={`/${locale}`} className="btn btn-primary">
-          {locale === 'es' ? 'Crear mi plan' : 'Create my plan'}
+          {text.create}
         </a>
         <style>{`.pv-empty{text-align:center;padding:var(--space-16) var(--space-4)}.pv-empty-icon{font-size:4rem;margin-bottom:var(--space-4)}.pv-empty h3{color:var(--color-text-secondary);margin-bottom:var(--space-6)}`}</style>
       </div>
@@ -180,11 +253,19 @@ export default function PlanViewer({ locale }: Props) {
   const { paces, input } = plan;
   const unitLabel = unit === 'km' ? 'min/km' : 'min/mi';
   const weekly = getPlanByHours(input.weeklyHours);
-  const nextPlan = (() => {
+  const { nextPlan, nextPlanUrl } = (() => {
     const tier = PLAN_HOURS.reduce((p, c) =>
       Math.abs(c - input.weeklyHours) < Math.abs(p - input.weeklyHours) ? c : p,
     );
-    return getNextPlan(tier as PlanHours);
+    const idx = PLAN_HOURS.indexOf(tier as PlanHours);
+    const nextHours =
+      idx >= 0 && idx < PLAN_HOURS.length - 1 ? PLAN_HOURS[idx + 1] : null;
+    return {
+      nextPlan: getNextPlan(tier as PlanHours),
+      nextPlanUrl: nextHours
+        ? `?${encodePlanInput({ ...input, weeklyHours: nextHours })}`
+        : null,
+    };
   })();
 
   const dayLabel = (day: string) => DAY_LABELS[day]?.[locale] ?? day;
@@ -233,8 +314,8 @@ export default function PlanViewer({ locale }: Props) {
       ? `${fmtSec(s.recoverySeconds)}–${fmtSec(s.recoverySecondsMax)}`
       : fmtSec(s.recoverySeconds);
     const note = s.intensityNote ? ` — ${s.intensityNote}` : '';
-    const wucd = locale === 'es' ? 'cal.+vuelta a calma incl.' : 'WU+CD incl.';
-    const recLabel = locale === 'es' ? 'recup.' : 'recovery';
+    const wucd = text.wucd;
+    const recLabel = text.recovery;
     return `${s.totalDurationMin} min total (${wucd}) · ${rec} ${recLabel}${note}`;
   };
 
@@ -242,13 +323,13 @@ export default function PlanViewer({ locale }: Props) {
 
   const tabs = [
     { id: 'week' as const, label: t('plan.week') },
-    { id: 'paces' as const, label: locale === 'es' ? 'Paces' : 'Paces' },
+    { id: 'paces' as const, label: text.paces },
     { id: 'taper' as const, label: t('taper.tab') },
     ...(hasMarathon
       ? [
           {
             id: 'marathon' as const,
-            label: locale === 'es' ? 'Maratón' : 'Marathon',
+            label: text.marathon,
           },
         ]
       : []),
@@ -270,7 +351,7 @@ export default function PlanViewer({ locale }: Props) {
             type="button"
             className={`pv-share-btn ${copied ? 'is-copied' : ''}`}
             onClick={handleShare}
-            aria-label={locale === 'es' ? 'Compartir plan' : 'Share plan'}
+            aria-label={text.sharePlan}
           >
             {copied ? (
               <svg
@@ -308,13 +389,7 @@ export default function PlanViewer({ locale }: Props) {
               </svg>
             )}
             <span className="pv-share-label">
-              {copied
-                ? locale === 'es'
-                  ? 'Copiado'
-                  : 'Copied'
-                : locale === 'es'
-                  ? 'Compartir'
-                  : 'Share'}
+              {copied ? text.copied : text.share}
             </span>
           </button>
           <button
@@ -322,9 +397,7 @@ export default function PlanViewer({ locale }: Props) {
             className="pv-share-btn"
             onClick={handleShareImage}
             disabled={imgBusy}
-            aria-label={
-              locale === 'es' ? 'Compartir como imagen' : 'Share as image'
-            }
+            aria-label={text.shareImage}
           >
             <svg
               className="pv-share-icon"
@@ -342,15 +415,9 @@ export default function PlanViewer({ locale }: Props) {
               <circle cx="8.5" cy="8.5" r="1.5" />
               <polyline points="21 15 16 10 5 21" />
             </svg>
-            <span className="pv-share-label">
-              {imgBusy ? '…' : locale === 'es' ? 'Imagen' : 'Image'}
-            </span>
+            <span className="pv-share-label">{imgBusy ? '…' : text.image}</span>
           </button>
-          <div
-            className="pv-unit-toggle"
-            role="group"
-            aria-label={locale === 'es' ? 'Unidad' : 'Unit'}
-          >
+          <div className="pv-unit-toggle" role="group" aria-label={text.unit}>
             {(['km', 'mile'] as const).map((u) => (
               <button
                 key={u}
@@ -409,13 +476,29 @@ export default function PlanViewer({ locale }: Props) {
               </div>
             );
           })}
-          {nextPlan && (
-            <div className="pv-next">
-              <span className="pv-next-label">
-                {locale === 'es' ? '→ Siguiente nivel:' : '→ Next level:'}
-              </span>{' '}
-              <span className="pv-next-val">{nextPlan.label}</span>
-            </div>
+          {nextPlan && nextPlanUrl && (
+            <a href={nextPlanUrl} className="pv-next">
+              <div className="pv-next-content">
+                <span className="pv-next-label">
+                  {locale === 'es' ? 'Siguiente nivel' : 'Next level'}
+                </span>
+                <span className="pv-next-val">{nextPlan.label}</span>
+              </div>
+              <svg
+                className="pv-next-icon"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </a>
           )}
         </div>
       )}
@@ -658,15 +741,32 @@ export default function PlanViewer({ locale }: Props) {
         .pv-day-pace { font-family: var(--font-mono); font-size: var(--text-sm); font-weight: var(--font-bold); color: var(--color-text-primary); }
         .pv-day-pace-unit { font-weight: var(--font-normal); color: var(--color-text-muted); font-size: var(--text-xs); }
         .pv-next {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
           margin-top: var(--space-2);
           padding: var(--space-3) var(--space-4);
-          background: rgba(239,68,68,0.06);
-          border: 1px dashed rgba(239,68,68,0.3);
+          background: var(--color-surface);
+          border: 1px solid var(--color-border);
           border-radius: var(--radius-md);
-          font-size: var(--text-sm);
+          text-decoration: none;
+          transition: border-color var(--transition-fast), background var(--transition-fast);
         }
-        .pv-next-label { color: var(--color-text-muted); }
-        .pv-next-val { font-weight: var(--font-semibold); color: var(--color-accent-primary); }
+        .pv-next:hover {
+          border-color: var(--color-accent-primary);
+          background: rgba(239,68,68,0.04);
+        }
+        .pv-next:hover .pv-next-icon { color: var(--color-accent-primary); }
+        .pv-next-content { display: flex; flex-direction: column; gap: 2px; }
+        .pv-next-label {
+          font-size: var(--text-xs);
+          font-weight: var(--font-semibold);
+          color: var(--color-text-muted);
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+        }
+        .pv-next-val { font-size: var(--text-sm); font-weight: var(--font-semibold); color: var(--color-accent-primary); }
+        .pv-next-icon { color: var(--color-text-muted); flex-shrink: 0; transition: color var(--transition-fast); }
         .pv-paces { display: grid; gap: var(--space-4); }
         .pv-pace-card {
           display: flex;
@@ -952,9 +1052,28 @@ function MarathonBuildTab({
   marathonDateObj.setHours(0, 0, 0, 0);
 
   const [expandedWeek, setExpandedWeek] = useState<number | null>(currentWeek);
+  const localeCode =
+    locale === 'es' ? 'es-ES' : locale === 'ko' ? 'ko-KR' : 'en-GB';
+  const text = {
+    en: {
+      title: 'Marathon Build',
+      weeks: 'wks',
+      starts: (date: string) => `Build starts ${date}.`,
+    },
+    es: {
+      title: 'Preparación Maratón',
+      weeks: 'sem.',
+      starts: (date: string) => `La preparación empieza el ${date}.`,
+    },
+    ko: {
+      title: '마라톤 빌드업',
+      weeks: '주',
+      starts: (date: string) => `빌드업은 ${date}에 시작합니다.`,
+    },
+  }[locale];
 
   const fmt = (d: Date) =>
-    d.toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-GB', {
+    d.toLocaleDateString(localeCode, {
       day: 'numeric',
       month: 'short',
     });
@@ -967,28 +1086,21 @@ function MarathonBuildTab({
       {/* Header */}
       <div className="mb-header">
         <div>
-          <div className="mb-header-title">
-            {locale === 'es' ? 'Preparación Maratón' : 'Marathon Build'}
-          </div>
+          <div className="mb-header-title">{text.title}</div>
           <div className="mb-header-date">
-            {marathonDateObj.toLocaleDateString(
-              locale === 'es' ? 'es-ES' : 'en-GB',
-              {
-                weekday: 'long',
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric',
-              },
-            )}
+            {marathonDateObj.toLocaleDateString(localeCode, {
+              weekday: 'long',
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric',
+            })}
           </div>
         </div>
         <div className="mb-header-badge">
           {notStarted ? (
             <>
               <span className="mb-badge-num">{weeksLeft}</span>
-              <span className="mb-badge-label">
-                {locale === 'es' ? 'sem.' : 'wks'}
-              </span>
+              <span className="mb-badge-label">{text.weeks}</span>
             </>
           ) : isFinished ? (
             <span className="mb-badge-done">✓</span>
@@ -1002,11 +1114,7 @@ function MarathonBuildTab({
       </div>
 
       {notStarted && (
-        <div className="mb-notice">
-          {locale === 'es'
-            ? `La preparación empieza el ${fmt(startDate)}.`
-            : `Build starts ${fmt(startDate)}.`}
-        </div>
+        <div className="mb-notice">{text.starts(fmt(startDate))}</div>
       )}
 
       {/* Week list */}

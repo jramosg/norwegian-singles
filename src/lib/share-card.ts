@@ -70,6 +70,11 @@ const T = {
     fiveK: '5K',
     tagline: 'Calculate yours free at',
   },
+  ko: {
+    subtitle: '내 서브스레숄드 페이스',
+    fiveK: '5K',
+    tagline: '무료로 계산하기',
+  },
 } as const;
 
 /** Draw the card onto a 1080×1350 canvas. */

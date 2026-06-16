@@ -15,6 +15,50 @@ interface VDOTResult {
 }
 import { DISTANCE_METERS } from '../types';
 
+export interface VDOTTrainingPaces {
+  easy: {
+    min: number;
+    max: number;
+  };
+  marathon: number;
+  threshold: number;
+  interval: number;
+  repetition: number;
+}
+
+const TRAINING_PACE_ANCHORS: { vdot: number; paces: VDOTTrainingPaces }[] = [
+  {
+    vdot: 32.3,
+    paces: {
+      easy: { min: 411, max: 451 },
+      marathon: 388.4,
+      threshold: 353,
+      interval: 317,
+      repetition: 302,
+    },
+  },
+  {
+    vdot: 42.6,
+    paces: {
+      easy: { min: 349, max: 383 },
+      marathon: 310,
+      threshold: 291,
+      interval: 267,
+      repetition: 252,
+    },
+  },
+  {
+    vdot: 58.4,
+    paces: {
+      easy: { min: 271, max: 299 },
+      marathon: 238,
+      threshold: 225,
+      interval: 207,
+      repetition: 192,
+    },
+  },
+];
+
 /**
  * Parse a time string (mm:ss or h:mm:ss) to seconds
  */
@@ -93,6 +137,10 @@ export function calculateVDOT(
   distanceMeters: number,
   timeSeconds: number,
 ): number {
+  return Math.round(calculateVDOTRaw(distanceMeters, timeSeconds) * 10) / 10;
+}
+
+function calculateVDOTRaw(distanceMeters: number, timeSeconds: number): number {
   const timeMinutes = timeSeconds / 60;
   const velocity = distanceMeters / timeMinutes; // meters per minute
 
@@ -109,7 +157,7 @@ export function calculateVDOT(
   // VDOT is the normalized value
   const vdot = vo2 / percentVO2max;
 
-  return Math.round(vdot * 10) / 10; // Round to 1 decimal
+  return vdot;
 }
 
 /**
@@ -123,15 +171,10 @@ export function calculateTimeFromVDOT(
   // Use binary search to find the time that produces the given VDOT
   let low = 1 * 60; // 1 minute
   let high = 6 * 3600; // 6 hours
-  const tolerance = 0.1;
 
-  while (high - low > 1) {
-    const mid = Math.floor((low + high) / 2);
-    const calculatedVdot = calculateVDOT(distanceMeters, mid);
-
-    if (Math.abs(calculatedVdot - vdot) < tolerance) {
-      return mid;
-    }
+  while (high - low > 0.01) {
+    const mid = (low + high) / 2;
+    const calculatedVdot = calculateVDOTRaw(distanceMeters, mid);
 
     if (calculatedVdot > vdot) {
       // Need slower time (higher seconds)
@@ -170,6 +213,39 @@ export function getVDOTFromRace(
  */
 export function estimateRaceTime(vdot: number, distance: Distance): number {
   return calculateTimeFromVDOT(vdot, DISTANCE_METERS[distance]);
+}
+
+export function getTrainingPacesFromVDOT(vdot: number): VDOTTrainingPaces {
+  const anchors = TRAINING_PACE_ANCHORS;
+  let lower = anchors[0];
+  let upper = anchors[1];
+
+  if (vdot <= anchors[0].vdot) {
+    [lower, upper] = [anchors[0], anchors[1]];
+  } else if (vdot >= anchors[anchors.length - 1].vdot) {
+    [lower, upper] = [anchors[anchors.length - 2], anchors[anchors.length - 1]];
+  } else {
+    for (let i = 0; i < anchors.length - 1; i++) {
+      if (vdot >= anchors[i].vdot && vdot <= anchors[i + 1].vdot) {
+        [lower, upper] = [anchors[i], anchors[i + 1]];
+        break;
+      }
+    }
+  }
+
+  const t = (vdot - lower.vdot) / (upper.vdot - lower.vdot);
+  const interpolate = (a: number, b: number) => a + (b - a) * t;
+
+  return {
+    easy: {
+      min: interpolate(lower.paces.easy.min, upper.paces.easy.min),
+      max: interpolate(lower.paces.easy.max, upper.paces.easy.max),
+    },
+    marathon: interpolate(lower.paces.marathon, upper.paces.marathon),
+    threshold: interpolate(lower.paces.threshold, upper.paces.threshold),
+    interval: interpolate(lower.paces.interval, upper.paces.interval),
+    repetition: interpolate(lower.paces.repetition, upper.paces.repetition),
+  };
 }
 
 /**

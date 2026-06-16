@@ -1,14 +1,17 @@
 ---
-/* This is a fallback. Fast redirect is handled by Nginx at the root. */
+/* Root redirect. Astro i18n still requires this page to exist. */
 ---
 
 <!doctype html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
     <meta http-equiv="refresh" content="0;url=/en/" />
+    <title>Norwegian Singles</title>
     <script is:inline>
       window.location.replace('/en/');
     </script>
   </head>
-  <body style="background: #0f172a;"> </body>
+  <body></body>
 </html>
