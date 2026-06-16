@@ -19,47 +19,47 @@ const pages: Record<Locale, SeoLandingPage[]> = {
   en: [
     {
       slug: 'nsa-pace-calculator',
-      title: 'NSA Pace Calculator — Norwegian Singles Training Paces',
+      title: 'NSA Pace Calculator: Norwegian Singles Training Paces',
       description:
         'Free NSA pace calculator for Norwegian Singles Approach runners. Estimate short, medium, long sub-threshold paces and easy pace from a 5K or 10K.',
       h1: 'NSA pace calculator for Norwegian Singles runners',
       intro:
-        'Use this <strong>NSA pace calculator</strong> to turn a recent 5K or 10K into practical Norwegian Singles Approach / Method training paces. The calculator gives short, medium, and long sub-threshold targets plus easy pace and a weekly plan.',
+        'Enter a recent 5K or 10K in the <strong>NSA pace calculator</strong>. You get short, medium, and long sub-threshold targets, easy pace, and a weekly plan.',
       howToName: 'Calculate NSA training paces',
     },
     {
       slug: 'norwegian-singles-calculator',
-      title: 'Norwegian Singles Calculator — NSA / NSM Pace Tool',
+      title: 'Norwegian Singles Calculator: NSA / NSM Pace Tool',
       description:
         'Free Norwegian Singles calculator for NSA / NSM runners. Estimate sub-threshold paces, easy pace, weekly sessions, and marathon builds.',
       h1: 'Norwegian Singles calculator',
       intro:
-        'Use this <strong>Norwegian Singles calculator</strong> to estimate practical NSA / NSM training paces from a recent race. It turns your 5K, 10K, half marathon, marathon, or custom distance into sub-threshold targets, easy pace, and a repeatable weekly plan.',
+        'Enter a 5K, 10K, half marathon, marathon, or custom distance in the <strong>Norwegian Singles calculator</strong>. You get sub-threshold targets, easy pace, and a weekly plan.',
       howToName: 'Use the Norwegian Singles calculator',
     },
     {
       slug: 'nsm-calculator',
-      title: 'NSM Calculator — Norwegian Singles Method Paces',
+      title: 'NSM Calculator: Norwegian Singles Method Paces',
       description:
         'Calculate Norwegian Singles Method paces for 3, 6, and 10-minute sub-threshold intervals from a recent race result.',
       h1: 'NSM calculator for Norwegian Singles Method runners',
       intro:
-        'This <strong>NSM calculator</strong> is built for runners using the Norwegian Singles Method. Enter a recent race result to estimate 3-minute, 6-minute, and 10-minute sub-threshold paces, plus easy pace and weekly training structure.',
+        'The <strong>NSM calculator</strong> turns a recent race result into 3-minute, 6-minute, and 10-minute sub-threshold paces, plus easy pace and a weekly structure.',
       howToName: 'Calculate NSM training paces',
     },
     {
       slug: 'nsm-running',
-      title: 'NSM Running — Norwegian Singles Method for Runners',
+      title: 'NSM Running: Norwegian Singles Method for Runners',
       description:
         'Learn NSM running basics and calculate Norwegian Singles Method paces for repeatable sub-threshold training weeks.',
       h1: 'NSM running guide and calculator',
       intro:
-        '<strong>NSM running</strong> keeps Norwegian-style threshold training practical: one controlled quality session per day, short recoveries, easy running around workouts, and pace targets based on your current race fitness.',
+        '<strong>NSM running</strong> keeps Norwegian-style threshold training manageable: one controlled quality session per day, short recoveries, easy running around workouts, and pace targets based on your current race fitness.',
       howToName: 'Start NSM running',
     },
     {
       slug: 'nsm-training-method',
-      title: 'NSM Training Method — Norwegian Singles Workouts',
+      title: 'NSM Training Method: Norwegian Singles Workouts',
       description:
         'Use the NSM training method with 3, 6, and 10-minute sub-threshold workouts, easy runs, and weekly plans.',
       h1: 'NSM training method for everyday runners',
@@ -69,67 +69,67 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'norwegian-method-calculator',
-      title: 'Norwegian Method Calculator — Single-Session Threshold Paces',
+      title: 'Norwegian Method Calculator: Single-Session Threshold Paces',
       description:
         'Estimate Norwegian Method-inspired threshold paces adapted into single-session NSA / NSM training weeks.',
       h1: 'Norwegian method calculator for recreational runners',
       intro:
-        'This <strong>Norwegian method calculator</strong> adapts double-threshold ideas into single-session NSA / NSM weeks. Enter a race result to get practical sub-threshold paces without needing professional training volume.',
+        'The <strong>Norwegian method calculator</strong> adapts double-threshold ideas into single-session NSA / NSM weeks. Enter a race result to get sub-threshold paces at normal training volume.',
       howToName: 'Calculate Norwegian method training paces',
     },
     {
       slug: 'sub-threshold-pace-calculator',
-      title: 'Sub-Threshold Pace Calculator — 3, 6, and 10-Minute Reps',
+      title: 'Sub-Threshold Pace Calculator: 3, 6, and 10-Minute Reps',
       description:
         'Calculate sub-threshold pace targets for short, medium, and long running intervals from a recent race result.',
       h1: 'Sub-threshold pace calculator',
       intro:
-        'Use this <strong>sub-threshold pace calculator</strong> to choose controlled workout targets for 3-minute, 6-minute, and 10-minute repetitions. It is built for runners who want repeatable threshold work rather than all-out intervals.',
+        'Use the <strong>sub-threshold pace calculator</strong> to choose targets for 3-minute, 6-minute, and 10-minute reps. Keep the work controlled enough to repeat next week.',
       howToName: 'Calculate sub-threshold pace',
     },
     {
       slug: 'norwegian-method-marathon-plan',
-      title: 'Norwegian Method Marathon Plan — NSA / NSM Build',
+      title: 'Norwegian Method Marathon Plan: NSA / NSM Build',
       description:
         'Build a marathon plan using Norwegian-style sub-threshold training, long runs, marathon-pace work, and tapering.',
       h1: 'Norwegian method marathon plan builder',
       intro:
-        'A <strong>Norwegian method marathon plan</strong> for non-professional runners should stay repeatable. This builder combines NSA / NSM sub-threshold workouts with long runs, marathon-pace sessions, and a 15-week countdown from race day.',
+        'A <strong>Norwegian method marathon plan</strong> needs a week you can repeat. Build a 15-week countdown with sub-threshold workouts, long runs, and marathon-pace sessions.',
       howToName: 'Build a Norwegian method marathon plan',
     },
     {
       slug: 'marius-bakken-pace-calculator',
-      title: 'Marius Bakken Pace Calculator — Norwegian Method Inspired',
+      title: 'Marius Bakken Pace Calculator: Norwegian Method Inspired',
       description:
         'Estimate Norwegian-style sub-threshold paces inspired by Marius Bakken training principles, adapted for single-session NSA / NSM weeks.',
       h1: 'Marius Bakken pace calculator for single-session training',
       intro:
-        'Looking for a <strong>Marius Bakken pace calculator</strong>? This tool adapts Norwegian-style threshold ideas into practical single-session NSA / NSM weeks. It estimates controlled sub-threshold targets from your current race fitness instead of prescribing double-threshold days.',
+        '<strong>Marius Bakken pace calculator</strong> notes help connect Norwegian threshold training with single-session NSA / NSM weeks. Enter a race result to get controlled sub-threshold targets from your current fitness.',
       howToName: 'Estimate Norwegian-style training paces',
     },
     {
       slug: 'norwegian-singles-method-book',
-      title: 'Norwegian Singles Method Book — Calculator Companion',
+      title: 'Norwegian Singles Method Book: Calculator Companion',
       description:
-        'Explore Norwegian Singles Method book references and use a free calculator to turn NSM concepts into practical paces and plans.',
+        'Explore Norwegian Singles Method book references and use a free calculator to turn NSM concepts into paces and plans.',
       h1: 'Norwegian Singles Method book and calculator',
       intro:
-        'Runners searching for the <strong>Norwegian Singles Method book</strong> often want to turn the ideas into day-to-day training. This independent calculator complements NSM references by estimating paces, weekly sessions, and marathon builds from your own race result.',
+        'The <strong>Norwegian Singles Method book</strong> gives the training idea. This calculator turns a recent race result into paces, weekly sessions, and marathon builds.',
       howToName: 'Apply Norwegian Singles Method book ideas',
     },
     {
       slug: 'norwegian-singles-training-plan',
-      title: 'Norwegian Singles Training Plan Generator — NSA / NSM',
+      title: 'Norwegian Singles Training Plan Generator: NSA / NSM',
       description:
         'Generate a Norwegian Singles training plan with 4.5-9 hour weekly structures, sub-threshold sessions, easy runs, and shareable plan links.',
       h1: 'Norwegian Singles training plan generator',
       intro:
-        'Create a <strong>Norwegian Singles training plan</strong> from your current fitness and target weekly hours. The planner builds repeatable NSA / NSM weeks with three sub-threshold workouts, easy runs, and paces you can actually execute.',
+        'Create a <strong>Norwegian Singles training plan</strong> from your current fitness and weekly hours. The planner builds NSA / NSM weeks with three sub-threshold workouts, easy runs, and paces you can hold.',
       howToName: 'Generate a Norwegian Singles training plan',
     },
     {
       slug: 'norwegian-singles-marathon-plan',
-      title: 'Norwegian Singles Marathon Plan — 15-Week NSA / NSM Build',
+      title: 'Norwegian Singles Marathon Plan: 15-Week NSA / NSM Build',
       description:
         'Build a 15-week Norwegian Singles marathon plan with sub-threshold sessions, marathon-pace work, long runs, tune-up races, and tapering.',
       h1: 'Norwegian Singles marathon plan builder',
@@ -139,7 +139,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'sub-threshold-running-calculator',
-      title: 'Sub-Threshold Running Calculator — NSA / NSM Pace Tool',
+      title: 'Sub-Threshold Running Calculator: NSA / NSM Pace Tool',
       description:
         'Calculate sub-threshold running paces for short, medium, and long intervals using a recent 5K or 10K performance.',
       h1: 'Sub-threshold running calculator',
@@ -149,47 +149,47 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'norwegian-method-recreational-runners',
-      title: 'Norwegian Method for Recreational Runners — Single Sessions',
+      title: 'Norwegian Method for Recreational Runners: Single Sessions',
       description:
         'Apply Norwegian-style threshold training as a recreational runner with single-session NSA / NSM weeks, conservative paces, and easy running.',
       h1: 'Norwegian method for recreational runners',
       intro:
-        'The <strong>Norwegian method for recreational runners</strong> works best when it is practical. This calculator focuses on single-session NSA / NSM weeks: controlled sub-threshold intervals, very easy running, and steady progression without double-threshold days.',
+        'The <strong>Norwegian method for recreational runners</strong> works with single-session NSA / NSM weeks: controlled sub-threshold intervals, easy running, and steady progression.',
       howToName: 'Start Norwegian-style training as a recreational runner',
     },
     {
       slug: 'subthreshold-calculator-alternative',
-      title: 'SubThreshold Calculator Alternative — NSA / NSM Planner',
+      title: 'SubThreshold Calculator Alternative: NSA / NSM Planner',
       description:
         'Compare Norwegian Singles calculator options and generate NSA / NSM paces, weekly plans, marathon builds, and shareable links in one tool.',
       h1: 'SubThreshold calculator alternative for NSA / NSM',
       intro:
-        'Looking for a <strong>SubThreshold calculator alternative</strong>? This independent Norwegian Singles planner focuses on fast pace calculation, visible weekly structure, marathon builds, and shareable plan URLs without requiring an account.',
+        'Use this <strong>SubThreshold calculator alternative</strong> for fast pace calculation, a visible weekly structure, marathon builds, and shareable plan URLs without an account.',
       howToName: 'Compare and generate an NSA / NSM plan',
     },
     {
       slug: 'lactrace-alternative-norwegian-singles',
-      title: 'LacTrace Alternative for Norwegian Singles — NSA / NSM Tool',
+      title: 'LacTrace Alternative for Norwegian Singles: NSA / NSM Tool',
       description:
         'A lightweight LacTrace alternative for runners who want Norwegian Singles paces, weekly plans, and marathon builds from a recent race result.',
       h1: 'LacTrace alternative for Norwegian Singles runners',
       intro:
-        'This <strong>LacTrace alternative</strong> is built for runners who want a simple NSA / NSM calculator first: enter a recent race, get sub-threshold paces, see the key sessions, and save or share the generated plan.',
+        'Use this <strong>LacTrace alternative</strong> to enter a recent race, get sub-threshold paces, see the key sessions, and save or share the generated plan.',
       howToName: 'Create a Norwegian Singles plan without account setup',
     },
     {
       slug: 'norwegian-singles-calculator-comparison',
-      title: 'Best Norwegian Singles Calculator — NSA / NSM Comparison',
+      title: 'Best Norwegian Singles Calculator: NSA / NSM Comparison',
       description:
         'Compare Norwegian Singles calculators and choose an NSA / NSM tool with pace cards, weekly plans, marathon planning, and shareable URLs.',
       h1: 'Best Norwegian Singles calculator features to look for',
       intro:
-        'The <strong>best Norwegian Singles calculator</strong> should do more than output paces. It should explain the weekly structure, show key sessions, support multiple race distances, generate shareable links, and make marathon planning straightforward.',
+        'A useful <strong>Norwegian Singles calculator</strong> shows the weekly structure, key sessions, race-distance options, shareable links, and marathon planning.',
       howToName: 'Choose a Norwegian Singles calculator',
     },
     {
       slug: 'nsa-training-plan-generator',
-      title: 'NSA Training Plan Generator — Norwegian Singles Approach',
+      title: 'NSA Training Plan Generator: Norwegian Singles Approach',
       description:
         'Generate an NSA training plan from 5K, 10K, half marathon, marathon, or custom race results with paces and weekly sessions.',
       h1: 'NSA training plan generator',
@@ -201,17 +201,17 @@ const pages: Record<Locale, SeoLandingPage[]> = {
   es: [
     {
       slug: 'calculadora-ritmos-nsa',
-      title: 'Calculadora NSA — Ritmos Norwegian Singles',
+      title: 'Calculadora NSA: Ritmos Norwegian Singles',
       description:
         'Calculadora NSA gratis para corredores Norwegian Singles. Estima ritmos sub-umbral cortos, medios, largos y ritmo fácil desde 5K o 10K.',
       h1: 'Calculadora de ritmos NSA para Norwegian Singles',
       intro:
-        'Usa esta <strong>calculadora NSA</strong> para convertir una marca reciente de 5K o 10K en ritmos prácticos de Norwegian Singles Approach / Method. Calcula ritmos sub-umbral cortos, medios y largos, además del ritmo fácil y una semana de entrenamiento.',
+        'Usa esta <strong>calculadora NSA</strong> para convertir una marca reciente de 5K o 10K en ritmos de Norwegian Singles Approach / Method. Calcula ritmos sub-umbral cortos, medios y largos, ritmo fácil y una semana de entrenamiento.',
       howToName: 'Calcular ritmos de entrenamiento NSA',
     },
     {
       slug: 'calculadora-norwegian-singles',
-      title: 'Calculadora Norwegian Singles — Ritmos NSA / NSM',
+      title: 'Calculadora Norwegian Singles: Ritmos NSA / NSM',
       description:
         'Calculadora Norwegian Singles gratis para corredores NSA/NSM. Estima ritmos sub-umbral, ritmo fácil, sesiones semanales y maratón.',
       h1: 'Calculadora Norwegian Singles',
@@ -221,7 +221,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'calculadora-nsm',
-      title: 'Calculadora NSM — Ritmos Norwegian Singles Method',
+      title: 'Calculadora NSM: Ritmos Norwegian Singles Method',
       description:
         'Calcula ritmos Norwegian Singles Method para intervalos sub-umbral de 3, 6 y 10 minutos desde una marca reciente.',
       h1: 'Calculadora NSM para Norwegian Singles Method',
@@ -231,77 +231,77 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'running-nsm',
-      title: 'Running NSM — Norwegian Singles Method para corredores',
+      title: 'Running NSM: Norwegian Singles Method para corredores',
       description:
         'Aprende las bases del running NSM y calcula ritmos Norwegian Singles Method para semanas sub-umbral repetibles.',
       h1: 'Guía running NSM y calculadora',
       intro:
-        'El <strong>running NSM</strong> hace práctico el entrenamiento de umbral de estilo noruego: una sesión de calidad controlada al día, recuperaciones cortas, rodajes fáciles alrededor de los entrenamientos y ritmos basados en tu forma actual.',
+        'El <strong>running NSM</strong> adapta el umbral de estilo noruego a una sesión de calidad controlada al día, recuperaciones cortas, rodajes fáciles y ritmos basados en tu forma actual.',
       howToName: 'Empezar con running NSM',
     },
     {
       slug: 'entrenamiento-nsm',
-      title: 'Entrenamiento NSM — Sesiones Norwegian Singles',
+      title: 'Entrenamiento NSM: Sesiones Norwegian Singles',
       description:
         'Aplica el entrenamiento NSM con intervalos sub-umbral de 3, 6 y 10 minutos, rodajes fáciles y planes semanales.',
       h1: 'Entrenamiento NSM para corredores populares',
       intro:
-        'El <strong>entrenamiento NSM</strong> organiza la semana alrededor de tres sesiones sub-umbral controladas: repeticiones largas de 10 minutos, medias de 6 minutos y cortas de 3 minutos. El objetivo es mejorar de forma sostenible, no correr intervalos al máximo.',
+        'El <strong>entrenamiento NSM</strong> organiza la semana alrededor de tres sesiones sub-umbral: repeticiones largas de 10 minutos, medias de 6 minutos y cortas de 3 minutos. Buscas mejora aeróbica con margen.',
       howToName: 'Aplicar el entrenamiento NSM',
     },
     {
       slug: 'calculadora-metodo-noruego',
-      title: 'Calculadora método noruego — Ritmos de umbral adaptados',
+      title: 'Calculadora método noruego: Ritmos de umbral adaptados',
       description:
         'Estima ritmos inspirados en el método noruego adaptados a semanas NSA / NSM de sesión única para corredores populares.',
       h1: 'Calculadora del método noruego para corredores populares',
       intro:
-        'Esta <strong>calculadora del método noruego</strong> adapta ideas de doble umbral a semanas NSA / NSM de sesión única. Introduce una marca para obtener ritmos sub-umbral prácticos sin necesitar volumen de atleta profesional.',
+        'La <strong>calculadora del método noruego</strong> adapta el doble umbral a semanas NSA / NSM de sesión única. Introduce una marca y calcula ritmos sub-umbral con volumen normal.',
       howToName: 'Calcular ritmos del método noruego',
     },
     {
       slug: 'calculadora-ritmos-sub-umbral',
-      title: 'Calculadora ritmos sub-umbral — Repeticiones 3, 6 y 10 min',
+      title: 'Calculadora ritmos sub-umbral: Repeticiones 3, 6 y 10 min',
       description:
         'Calcula ritmos sub-umbral para intervalos cortos, medios y largos desde una marca reciente de carrera.',
       h1: 'Calculadora de ritmos sub-umbral',
       intro:
-        'Usa esta <strong>calculadora de ritmos sub-umbral</strong> para elegir objetivos controlados en repeticiones de 3, 6 y 10 minutos. Está pensada para corredores que quieren trabajo de umbral repetible, no intervalos al límite.',
+        'Usa la <strong>calculadora de ritmos sub-umbral</strong> para elegir objetivos en repeticiones de 3, 6 y 10 minutos. Mantén la sesión controlada para poder repetirla la semana siguiente.',
       howToName: 'Calcular ritmos sub-umbral',
     },
     {
       slug: 'plan-maraton-metodo-noruego',
-      title: 'Plan maratón método noruego — Preparación NSA / NSM',
+      title: 'Plan maratón método noruego: Preparación NSA / NSM',
       description:
         'Crea un plan de maratón con entrenamiento sub-umbral de estilo noruego, tiradas largas, ritmo maratón y taper.',
       h1: 'Plan maratón con método noruego',
       intro:
-        'Un <strong>plan de maratón con método noruego</strong> para corredores populares debe ser repetible. Este generador combina sesiones sub-umbral NSA / NSM con tiradas largas, trabajo a ritmo maratón y una cuenta atrás de 15 semanas.',
+        'Un <strong>plan de maratón con método noruego</strong> necesita una semana que puedas repetir. Crea una cuenta atrás de 15 semanas con sesiones sub-umbral, tiradas largas y ritmo maratón.',
       howToName: 'Crear un plan maratón con método noruego',
     },
     {
       slug: 'calculadora-ritmos-marius-bakken',
-      title: 'Calculadora ritmos Marius Bakken — Método noruego',
+      title: 'Calculadora ritmos Marius Bakken: Método noruego',
       description:
         'Estima ritmos sub-umbral de estilo noruego inspirados en principios de Marius Bakken, adaptados a semanas NSA / NSM.',
       h1: 'Calculadora de ritmos Marius Bakken para sesiones únicas',
       intro:
-        'Si buscas una <strong>calculadora Marius Bakken</strong>, esta herramienta adapta ideas de umbral de estilo noruego a semanas NSA / NSM de sesión única. Estima ritmos sub-umbral controlados desde tu estado de forma actual.',
+        'La <strong>calculadora Marius Bakken</strong> conecta el trabajo de umbral noruego con semanas NSA / NSM de sesión única. Introduce una marca y calcula ritmos sub-umbral desde tu forma actual.',
       howToName: 'Estimar ritmos de estilo noruego',
     },
     {
       slug: 'libro-norwegian-singles-method',
-      title: 'Libro Norwegian Singles Method — Calculadora complementaria',
+      title: 'Libro Norwegian Singles Method: Calculadora complementaria',
       description:
         'Consulta referencias del libro Norwegian Singles Method y usa una calculadora gratis para convertir NSM en ritmos y planes.',
       h1: 'Libro Norwegian Singles Method y calculadora',
       intro:
-        'Quienes buscan el <strong>libro Norwegian Singles Method</strong> suelen querer aplicar las ideas al entrenamiento diario. Esta calculadora independiente complementa las referencias NSM estimando ritmos, semanas y preparación de maratón desde tu marca.',
+        'El <strong>libro Norwegian Singles Method</strong> explica la idea de entrenamiento. La calculadora convierte tu marca en ritmos, semanas y preparación de maratón.',
       howToName: 'Aplicar ideas del libro Norwegian Singles Method',
     },
     {
       slug: 'plan-entrenamiento-norwegian-singles',
-      title: 'Plan de entrenamiento Norwegian Singles — NSA / NSM',
+      title: 'Plan de entrenamiento Norwegian Singles: NSA / NSM',
       description:
         'Genera un plan Norwegian Singles de 4.5-9 horas semanales con sesiones sub-umbral, rodajes fáciles y enlace compartible.',
       h1: 'Generador de plan Norwegian Singles',
@@ -311,7 +311,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'plan-maraton-norwegian-singles',
-      title: 'Plan maratón Norwegian Singles — Preparación NSA / NSM',
+      title: 'Plan maratón Norwegian Singles: Preparación NSA / NSM',
       description:
         'Crea una preparación de maratón Norwegian Singles de 15 semanas con sesiones sub-umbral, ritmo maratón, tiradas largas y taper.',
       h1: 'Plan maratón Norwegian Singles',
@@ -321,7 +321,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'calculadora-sub-umbral-running',
-      title: 'Calculadora sub-umbral running — Ritmos NSA / NSM',
+      title: 'Calculadora sub-umbral running: Ritmos NSA / NSM',
       description:
         'Calcula ritmos sub-umbral de running para intervalos cortos, medios y largos desde una marca reciente de 5K o 10K.',
       h1: 'Calculadora sub-umbral running',
@@ -331,47 +331,47 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'metodo-noruego-corredores-populares',
-      title: 'Método noruego para corredores populares — Sesiones únicas',
+      title: 'Método noruego para corredores populares: Sesiones únicas',
       description:
         'Aplica entrenamiento de umbral de estilo noruego con semanas NSA / NSM de sesión única, ritmos conservadores y rodajes fáciles.',
       h1: 'Método noruego para corredores populares',
       intro:
-        'El <strong>método noruego para corredores populares</strong> necesita ser práctico. Esta calculadora se centra en semanas NSA / NSM de sesión única: intervalos sub-umbral controlados, rodajes muy fáciles y progresión sostenible.',
+        'El <strong>método noruego para corredores populares</strong> funciona mejor con semanas de sesión única: intervalos sub-umbral, rodajes fáciles y progresión estable.',
       howToName: 'Empezar entrenamiento noruego como corredor popular',
     },
     {
       slug: 'alternativa-calculadora-subthreshold',
-      title: 'Alternativa a SubThreshold Calculator — Planner NSA / NSM',
+      title: 'Alternativa a SubThreshold Calculator: Planner NSA / NSM',
       description:
         'Compara calculadoras Norwegian Singles y genera ritmos NSA / NSM, planes semanales, preparación maratón y enlaces compartibles.',
       h1: 'Alternativa a SubThreshold Calculator para NSA / NSM',
       intro:
-        '¿Buscas una <strong>alternativa a SubThreshold Calculator</strong>? Este planner independiente de Norwegian Singles prioriza cálculo rápido de ritmos, estructura semanal visible, preparación maratón y URLs compartibles sin crear cuenta.',
+        'Esta <strong>alternativa a SubThreshold Calculator</strong> calcula ritmos rápido, muestra la semana completa, prepara maratón y genera URLs compartibles sin crear cuenta.',
       howToName: 'Comparar y generar un plan NSA / NSM',
     },
     {
       slug: 'alternativa-lactrace-norwegian-singles',
-      title: 'Alternativa a LacTrace para Norwegian Singles — NSA / NSM',
+      title: 'Alternativa a LacTrace para Norwegian Singles: NSA / NSM',
       description:
         'Alternativa ligera a LacTrace para corredores que quieren ritmos Norwegian Singles, planes semanales y preparación maratón desde una marca reciente.',
       h1: 'Alternativa a LacTrace para corredores Norwegian Singles',
       intro:
-        'Esta <strong>alternativa a LacTrace</strong> está pensada para corredores que quieren una calculadora NSA / NSM sencilla: introduce una marca reciente, obtén ritmos sub-umbral, visualiza sesiones clave y comparte el plan.',
+        'Usa esta <strong>alternativa a LacTrace</strong> para introducir una marca reciente, obtener ritmos sub-umbral, ver sesiones clave y compartir el plan.',
       howToName: 'Crear un plan Norwegian Singles sin configuración de cuenta',
     },
     {
       slug: 'comparativa-calculadora-norwegian-singles',
-      title: 'Mejor calculadora Norwegian Singles — Comparativa NSA / NSM',
+      title: 'Mejor calculadora Norwegian Singles: Comparativa NSA / NSM',
       description:
         'Compara calculadoras Norwegian Singles y elige una herramienta NSA / NSM con ritmos, planes semanales, maratón y URLs compartibles.',
-      h1: 'Qué debe tener la mejor calculadora Norwegian Singles',
+      h1: 'Funciones útiles en una calculadora Norwegian Singles',
       intro:
-        'La <strong>mejor calculadora Norwegian Singles</strong> debe hacer más que mostrar ritmos. Tiene que explicar la semana, mostrar sesiones clave, aceptar varias distancias de carrera, generar enlaces compartibles y facilitar la preparación de maratón.',
+        'Una buena <strong>calculadora Norwegian Singles</strong> muestra la semana, las sesiones clave, varias distancias de carrera, enlaces compartibles y preparación de maratón.',
       howToName: 'Elegir una calculadora Norwegian Singles',
     },
     {
       slug: 'generador-plan-entrenamiento-nsa',
-      title: 'Generador de plan NSA — Norwegian Singles Approach',
+      title: 'Generador de plan NSA: Norwegian Singles Approach',
       description:
         'Genera un plan NSA desde 5K, 10K, media maratón, maratón o distancia personalizada con ritmos y sesiones semanales.',
       h1: 'Generador de plan de entrenamiento NSA',
@@ -383,7 +383,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
   ko: [
     {
       slug: 'nsa-pace-calculator',
-      title: 'NSA 페이스 계산기 — Norwegian Singles 훈련 페이스',
+      title: 'NSA 페이스 계산기: Norwegian Singles 훈련 페이스',
       description:
         'Norwegian Singles Approach 러너를 위한 무료 NSA 페이스 계산기. 5K 또는 10K 기록으로 서브스레숄드와 이지 페이스를 추정합니다.',
       h1: 'Norwegian Singles 러너를 위한 NSA 페이스 계산기',
@@ -393,7 +393,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'norwegian-singles-calculator',
-      title: 'Norwegian Singles 계산기 — NSA / NSM 페이스 도구',
+      title: 'Norwegian Singles 계산기: NSA / NSM 페이스 도구',
       description:
         'NSA/NSM 러너를 위한 무료 Norwegian Singles 계산기. 서브스레숄드 페이스, 이지 페이스, 주간 세션, 마라톤 빌드업을 추정합니다.',
       h1: 'Norwegian Singles 계산기',
@@ -403,7 +403,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'nsm-calculator',
-      title: 'NSM 계산기 — Norwegian Singles Method 페이스',
+      title: 'NSM 계산기: Norwegian Singles Method 페이스',
       description:
         '최근 레이스 기록으로 Norwegian Singles Method의 3분, 6분, 10분 서브스레숄드 페이스를 계산하세요.',
       h1: 'Norwegian Singles Method 러너를 위한 NSM 계산기',
@@ -413,7 +413,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'nsm-running',
-      title: 'NSM 러닝 — Norwegian Singles Method 러너 가이드',
+      title: 'NSM 러닝: Norwegian Singles Method 러너 가이드',
       description:
         'NSM 러닝의 기본 구조를 배우고 Norwegian Singles Method 서브스레숄드 페이스와 반복 가능한 주간 플랜을 계산하세요.',
       h1: 'NSM 러닝 가이드와 계산기',
@@ -423,7 +423,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'nsm-training',
-      title: 'NSM 훈련법 — Norwegian Singles Method 워크아웃',
+      title: 'NSM 훈련법: Norwegian Singles Method 워크아웃',
       description:
         'NSM 훈련법으로 3분, 6분, 10분 서브스레숄드 인터벌과 이지런을 주간 플랜에 적용하세요.',
       h1: '일반 러너를 위한 NSM 훈련법',
@@ -433,7 +433,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'norwegian-method-calculator',
-      title: '노르웨이식 훈련 계산기 — 단일 세션 임계값 페이스',
+      title: '노르웨이식 훈련 계산기: 단일 세션 임계값 페이스',
       description:
         '노르웨이식 임계값 훈련을 NSA/NSM 단일 세션 주간으로 적용해 서브스레숄드 페이스를 계산하세요.',
       h1: '일반 러너를 위한 노르웨이식 훈련 계산기',
@@ -443,7 +443,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'sub-threshold-pace-calculator',
-      title: '서브스레숄드 페이스 계산기 — 3, 6, 10분 반복',
+      title: '서브스레숄드 페이스 계산기: 3, 6, 10분 반복',
       description:
         '최근 레이스 기록으로 짧은, 중간, 긴 러닝 인터벌의 서브스레숄드 페이스 목표를 계산하세요.',
       h1: '서브스레숄드 페이스 계산기',
@@ -453,7 +453,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'norwegian-method-marathon-plan',
-      title: '노르웨이식 마라톤 플랜 — NSA / NSM 빌드업',
+      title: '노르웨이식 마라톤 플랜: NSA / NSM 빌드업',
       description:
         '노르웨이식 서브스레숄드 훈련, 롱런, 마라톤 페이스 훈련, 테이퍼를 결합한 마라톤 플랜을 만드세요.',
       h1: '노르웨이식 마라톤 플랜 빌더',
@@ -463,7 +463,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'marius-bakken-pace-calculator',
-      title: 'Marius Bakken 페이스 계산기 — 노르웨이식 훈련',
+      title: 'Marius Bakken 페이스 계산기: 노르웨이식 훈련',
       description:
         'Marius Bakken 훈련 원칙에서 영감을 받은 노르웨이식 서브스레숄드 페이스를 NSA/NSM 단일 세션 주간으로 적용합니다.',
       h1: '단일 세션 훈련을 위한 Marius Bakken 페이스 계산기',
@@ -473,7 +473,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'norwegian-singles-method-book',
-      title: 'Norwegian Singles Method 책 — 계산기 동반 도구',
+      title: 'Norwegian Singles Method 책: 계산기 동반 도구',
       description:
         'Norwegian Singles Method 책과 참고 자료를 확인하고, 무료 계산기로 NSM 개념을 실제 페이스와 플랜으로 바꾸세요.',
       h1: 'Norwegian Singles Method 책과 계산기',
@@ -483,7 +483,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'norwegian-singles-training-plan',
-      title: 'Norwegian Singles 훈련 플랜 생성기 — NSA / NSM',
+      title: 'Norwegian Singles 훈련 플랜 생성기: NSA / NSM',
       description:
         '서브스레숄드 세션, 이지런, 공유 가능한 링크가 포함된 주 4.5-9시간 Norwegian Singles 훈련 플랜을 생성하세요.',
       h1: 'Norwegian Singles 훈련 플랜 생성기',
@@ -493,7 +493,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'norwegian-singles-marathon-plan',
-      title: 'Norwegian Singles 마라톤 플랜 — 15주 NSA / NSM 빌드업',
+      title: 'Norwegian Singles 마라톤 플랜: 15주 NSA / NSM 빌드업',
       description:
         '서브스레숄드 세션, 마라톤 페이스 훈련, 롱런, 점검 레이스, 테이퍼가 포함된 15주 마라톤 플랜을 만드세요.',
       h1: 'Norwegian Singles 마라톤 플랜 빌더',
@@ -503,7 +503,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'sub-threshold-running-calculator',
-      title: '서브스레숄드 러닝 계산기 — NSA / NSM 페이스 도구',
+      title: '서브스레숄드 러닝 계산기: NSA / NSM 페이스 도구',
       description:
         '최근 5K 또는 10K 기록으로 짧은, 중간, 긴 인터벌용 서브스레숄드 러닝 페이스를 계산하세요.',
       h1: '서브스레숄드 러닝 계산기',
@@ -513,7 +513,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'norwegian-method-recreational-runners',
-      title: '일반 러너를 위한 노르웨이식 훈련 — 단일 세션',
+      title: '일반 러너를 위한 노르웨이식 훈련: 단일 세션',
       description:
         '일반 러너가 NSA/NSM 단일 세션 주간, 보수적 페이스, 이지런으로 노르웨이식 임계값 훈련을 적용하는 방법.',
       h1: '일반 러너를 위한 노르웨이식 훈련',
@@ -523,7 +523,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'subthreshold-calculator-alternative',
-      title: 'SubThreshold Calculator 대안 — NSA / NSM 플래너',
+      title: 'SubThreshold Calculator 대안: NSA / NSM 플래너',
       description:
         'Norwegian Singles 계산기 옵션을 비교하고 NSA/NSM 페이스, 주간 플랜, 마라톤 빌드업, 공유 링크를 한 도구에서 생성하세요.',
       h1: 'NSA / NSM을 위한 SubThreshold Calculator 대안',
@@ -533,7 +533,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'lactrace-alternative-norwegian-singles',
-      title: 'Norwegian Singles용 LacTrace 대안 — NSA / NSM 도구',
+      title: 'Norwegian Singles용 LacTrace 대안: NSA / NSM 도구',
       description:
         '최근 레이스 기록으로 Norwegian Singles 페이스, 주간 플랜, 마라톤 빌드업을 원하는 러너를 위한 가벼운 LacTrace 대안.',
       h1: 'Norwegian Singles 러너를 위한 LacTrace 대안',
@@ -543,7 +543,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'norwegian-singles-calculator-comparison',
-      title: '최고의 Norwegian Singles 계산기 — NSA / NSM 비교',
+      title: '최고의 Norwegian Singles 계산기: NSA / NSM 비교',
       description:
         'Norwegian Singles 계산기를 비교하고 페이스 카드, 주간 플랜, 마라톤 플랜, 공유 URL을 제공하는 NSA/NSM 도구를 선택하세요.',
       h1: '좋은 Norwegian Singles 계산기의 기준',
@@ -553,7 +553,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'nsa-training-plan-generator',
-      title: 'NSA 훈련 플랜 생성기 — Norwegian Singles Approach',
+      title: 'NSA 훈련 플랜 생성기: Norwegian Singles Approach',
       description:
         '5K, 10K, 하프, 마라톤 또는 사용자 지정 레이스 기록으로 페이스와 주간 세션이 포함된 NSA 플랜을 생성하세요.',
       h1: 'NSA 훈련 플랜 생성기',

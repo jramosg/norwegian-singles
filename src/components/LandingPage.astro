@@ -136,8 +136,7 @@ const sample = {
 const landingText = {
   en: {
     faqTitle: 'FAQ',
-    faqIntro:
-      'Quick answers about NSA, NSM, and using this independent calculator.',
+    faqIntro: 'Quick answers about NSA, NSM, and the calculator.',
     relatedTitle: 'Choose the right guide',
     relatedIntro: 'More useful pages, depending on what you want to do next.',
     paceTitle: 'Training paces',
@@ -157,8 +156,7 @@ const landingText = {
   },
   es: {
     faqTitle: 'Preguntas frecuentes',
-    faqIntro:
-      'Respuestas rápidas sobre NSA, NSM y el uso de esta calculadora independiente.',
+    faqIntro: 'Respuestas rápidas sobre NSA, NSM y la calculadora.',
     relatedTitle: 'Elige la guía adecuada',
     relatedIntro: 'Más páginas útiles según lo que quieras hacer ahora.',
     paceTitle: 'Ritmos de entrenamiento',
@@ -222,23 +220,23 @@ const educationText = {
   en: {
     title: 'How to use these paces',
     intro:
-      'The calculator gives conservative training targets for repeatable weeks, not race-effort interval goals.',
+      'The calculator gives conservative targets for weeks you can repeat.',
     cards: [
       {
         title: '3-minute reps',
-        text: 'Use these for the shortest sub-threshold workout of the week. They should feel controlled, quick, and repeatable.',
+        text: 'Use these for the shortest sub-threshold workout of the week. Keep them controlled and quick.',
       },
       {
         title: '6-minute reps',
-        text: 'Use these as the middle session: steadier than 3-minute reps, but still comfortably below threshold.',
+        text: 'Use these as the middle session. They sit steadier than the 3-minute reps.',
       },
       {
         title: '10-minute reps',
-        text: 'Use these for longer aerobic pressure. The pace should stay relaxed enough that the final rep is not a survival effort.',
+        text: 'Use these for longer aerobic pressure. Finish the final rep with room left.',
       },
       {
         title: 'Easy pace',
-        text: 'Easy runs should feel genuinely easy. If fatigue builds, slow them down before changing the sub-threshold paces.',
+        text: 'Easy runs stay easy enough that you recover for the next workout. If fatigue builds, slow them down first.',
       },
     ],
     nextTitle: 'Next step',
@@ -247,48 +245,47 @@ const educationText = {
         href: educationLinks.nsm,
         label: 'NSM calculator',
         eyebrow: 'Start here',
-        text: 'Use the plain NSM page when you only need paces and a weekly structure.',
+        text: 'Enter a race result and get 3, 6, and 10-minute paces.',
       },
       {
         href: educationLinks.method,
         label: 'Norwegian method calculator',
-        eyebrow: 'Compare terms',
-        text: 'Use this page when you are searching for Norwegian method or threshold wording.',
+        eyebrow: 'Compare',
+        text: 'See how single-session training fits Norwegian threshold ideas.',
       },
       {
         href: educationLinks.bakken,
         label: 'Marius Bakken pace notes',
         eyebrow: 'Background',
-        text: 'Use this page for the Bakken-style threshold context behind the pace targets.',
+        text: 'Connect the pace targets with Bakken-style threshold training.',
       },
       {
         href: educationLinks.marathon,
         label: 'Norwegian method marathon plan',
         eyebrow: 'Marathon',
-        text: 'Use this page when the goal is a marathon build instead of a weekly template.',
+        text: 'Build a 15-week marathon block around sub-threshold days.',
       },
     ],
   },
   es: {
     title: 'Cómo usar estos ritmos',
-    intro:
-      'La calculadora da objetivos conservadores para semanas repetibles, no ritmos de intervalos al máximo.',
+    intro: 'La calculadora da ritmos conservadores para semanas repetibles.',
     cards: [
       {
         title: 'Repeticiones de 3 min',
-        text: 'Úsalas para la sesión sub-umbral más corta de la semana. Deben sentirse controladas, rápidas y repetibles.',
+        text: 'Úsalas para la sesión sub-umbral más corta de la semana. Corre rápido, pero con control.',
       },
       {
         title: 'Repeticiones de 6 min',
-        text: 'Úsalas como sesión intermedia: más estables que las de 3 minutos, pero todavía claramente por debajo del umbral.',
+        text: 'Úsalas como sesión intermedia. Son más estables que las de 3 minutos.',
       },
       {
         title: 'Repeticiones de 10 min',
-        text: 'Úsalas para presión aeróbica más larga. El ritmo debe ser lo bastante relajado como para no sobrevivir la última repetición.',
+        text: 'Úsalas para presión aeróbica más larga. Termina la última repetición con margen.',
       },
       {
         title: 'Ritmo fácil',
-        text: 'Los rodajes fáciles deben sentirse realmente fáciles. Si acumulas fatiga, baja el ritmo antes de tocar los ritmos sub-umbral.',
+        text: 'El rodaje fácil tiene que dejarte recuperar para la siguiente sesión. Si acumulas fatiga, baja este ritmo primero.',
       },
     ],
     nextTitle: 'Siguiente paso',
@@ -297,25 +294,25 @@ const educationText = {
         href: educationLinks.nsm,
         label: 'Calculadora NSM',
         eyebrow: 'Empieza aquí',
-        text: 'Usa esta página si solo quieres ritmos y una estructura semanal clara.',
+        text: 'Introduce una marca y obtén ritmos para 3, 6 y 10 minutos.',
       },
       {
         href: educationLinks.method,
         label: 'Calculadora método noruego',
-        eyebrow: 'Comparar términos',
-        text: 'Usa esta página si buscas método noruego, umbral o doble umbral adaptado.',
+        eyebrow: 'Compara',
+        text: 'Conecta el método noruego con una semana de sesión única.',
       },
       {
         href: educationLinks.bakken,
         label: 'Ritmos Marius Bakken',
         eyebrow: 'Contexto',
-        text: 'Usa esta página para entender el origen noruego de los ritmos sub-umbral.',
+        text: 'Relaciona estos ritmos con el trabajo de umbral de Bakken.',
       },
       {
         href: educationLinks.marathon,
         label: 'Plan maratón método noruego',
         eyebrow: 'Maratón',
-        text: 'Usa esta página cuando el objetivo sea preparar un maratón.',
+        text: 'Monta un bloque de 15 semanas con días sub-umbral.',
       },
     ],
   },
@@ -338,7 +335,7 @@ const educationText = {
       },
       {
         title: '이지 페이스',
-        text: '이지런은 정말 쉽게 느껴져야 합니다. 피로가 쌓이면 서브스레숄드 페이스를 바꾸기 전에 이지런을 늦추세요.',
+        text: '이지런은 다음 운동을 회복할 수 있을 만큼 쉬워야 합니다. 피로가 쌓이면 이 페이스부터 늦추세요.',
       },
     ],
     nextTitle: '다음 단계',
@@ -379,90 +376,167 @@ const relatedGroups = {
   en: [
     {
       title: 'Pace calculators',
-      slugs: [
-        'nsm-calculator',
-        'sub-threshold-pace-calculator',
-        'marius-bakken-pace-calculator',
+      links: [
+        {
+          slug: 'nsm-calculator',
+          text: 'Race result in, 3/6/10-minute paces out.',
+        },
+        {
+          slug: 'sub-threshold-pace-calculator',
+          text: 'Use this when you care about threshold control.',
+        },
+        {
+          slug: 'marius-bakken-pace-calculator',
+          text: 'Bakken-style context for the pace targets.',
+        },
       ],
     },
     {
       title: 'Plans',
-      slugs: [
-        'norwegian-singles-training-plan',
-        'norwegian-method-marathon-plan',
+      links: [
+        {
+          slug: 'norwegian-singles-training-plan',
+          text: 'Turn the paces into a weekly structure.',
+        },
+        {
+          slug: 'norwegian-method-marathon-plan',
+          text: 'Build the same work into a marathon block.',
+        },
       ],
     },
     {
       title: 'Comparisons',
-      slugs: [
-        'norwegian-method-recreational-runners',
-        'subthreshold-calculator-alternative',
-        'norwegian-singles-calculator-comparison',
+      links: [
+        {
+          slug: 'norwegian-method-recreational-runners',
+          text: 'Adapt Norwegian threshold work to normal training weeks.',
+        },
+        {
+          slug: 'subthreshold-calculator-alternative',
+          text: 'Compare pace tools without creating an account.',
+        },
+        {
+          slug: 'norwegian-singles-calculator-comparison',
+          text: 'See which planner features matter before you choose one.',
+        },
       ],
     },
   ],
   es: [
     {
       title: 'Calculadoras de ritmos',
-      slugs: [
-        'calculadora-nsm',
-        'calculadora-ritmos-sub-umbral',
-        'calculadora-ritmos-marius-bakken',
+      links: [
+        {
+          slug: 'calculadora-nsm',
+          text: 'Marca de carrera dentro, ritmos de 3/6/10 minutos fuera.',
+        },
+        {
+          slug: 'calculadora-ritmos-sub-umbral',
+          text: 'Úsala si quieres controlar mejor la intensidad.',
+        },
+        {
+          slug: 'calculadora-ritmos-marius-bakken',
+          text: 'Contexto Bakken para entender de dónde salen los ritmos.',
+        },
       ],
     },
     {
       title: 'Planes',
-      slugs: [
-        'plan-entrenamiento-norwegian-singles',
-        'plan-maraton-metodo-noruego',
+      links: [
+        {
+          slug: 'plan-entrenamiento-norwegian-singles',
+          text: 'Convierte los ritmos en una semana de entrenamiento.',
+        },
+        {
+          slug: 'plan-maraton-metodo-noruego',
+          text: 'Lleva el trabajo sub-umbral a un bloque de maratón.',
+        },
       ],
     },
     {
       title: 'Comparativas',
-      slugs: [
-        'metodo-noruego-corredores-populares',
-        'alternativa-calculadora-subthreshold',
-        'comparativa-calculadora-norwegian-singles',
+      links: [
+        {
+          slug: 'metodo-noruego-corredores-populares',
+          text: 'Adapta el umbral noruego a semanas normales.',
+        },
+        {
+          slug: 'alternativa-calculadora-subthreshold',
+          text: 'Compara herramientas de ritmo sin crear una cuenta.',
+        },
+        {
+          slug: 'comparativa-calculadora-norwegian-singles',
+          text: 'Revisa qué funciones importan antes de elegir planner.',
+        },
       ],
     },
   ],
   ko: [
     {
       title: '페이스 계산기',
-      slugs: [
-        'nsm-calculator',
-        'sub-threshold-pace-calculator',
-        'marius-bakken-pace-calculator',
+      links: [
+        {
+          slug: 'nsm-calculator',
+          text: '레이스 기록으로 3/6/10분 페이스를 확인하세요.',
+        },
+        {
+          slug: 'sub-threshold-pace-calculator',
+          text: '운동 강도를 더 세밀하게 맞출 때 사용하세요.',
+        },
+        {
+          slug: 'marius-bakken-pace-calculator',
+          text: 'Bakken식 임계값 훈련 맥락을 확인하세요.',
+        },
       ],
     },
     {
       title: '훈련 플랜',
-      slugs: [
-        'norwegian-singles-training-plan',
-        'norwegian-method-marathon-plan',
+      links: [
+        {
+          slug: 'norwegian-singles-training-plan',
+          text: '계산한 페이스를 주간 훈련으로 바꾸세요.',
+        },
+        {
+          slug: 'norwegian-method-marathon-plan',
+          text: '서브스레숄드 훈련을 마라톤 블록에 넣어 보세요.',
+        },
       ],
     },
     {
       title: '비교와 배경',
-      slugs: [
-        'norwegian-method-recreational-runners',
-        'subthreshold-calculator-alternative',
-        'norwegian-singles-calculator-comparison',
+      links: [
+        {
+          slug: 'norwegian-method-recreational-runners',
+          text: '노르웨이식 임계값 훈련을 일반 주간에 맞춰 보세요.',
+        },
+        {
+          slug: 'subthreshold-calculator-alternative',
+          text: '계정 없이 쓸 수 있는 페이스 도구를 비교하세요.',
+        },
+        {
+          slug: 'norwegian-singles-calculator-comparison',
+          text: '플래너를 고르기 전에 필요한 기능을 확인하세요.',
+        },
       ],
     },
   ],
 }[locale]
   .map((group) => ({
     ...group,
-    pages: group.slugs
-      .map((slug) => {
-        const page = relatedPages.find((candidate) => candidate.slug === slug);
+    pages: group.links
+      .map((link) => {
+        const page = relatedPages.find(
+          (candidate) => candidate.slug === link.slug,
+        );
         if (!page || isCurrentHref(`/${locale}/${page.slug}/`)) {
           return undefined;
         }
-        return page;
+        return { ...page, summary: link.text };
       })
-      .filter((page): page is (typeof relatedPages)[number] => Boolean(page)),
+      .filter(
+        (page): page is (typeof relatedPages)[number] & { summary: string } =>
+          Boolean(page),
+      ),
   }))
   .filter((group) => group.pages.length > 0);
 ---
@@ -602,7 +676,7 @@ const relatedGroups = {
         <section class="pace-card-section section">
           <div class="container pace-card-container">
             <div class="pace-card-head">
-              <h2>{`${landingText.paceTitle} — ${paceCard.raceLabel}`}</h2>
+              <h2>{`${landingText.paceTitle}: ${paceCard.raceLabel}`}</h2>
               <p>{landingText.paceIntro}</p>
             </div>
             <div class="pace-grid">
@@ -706,7 +780,7 @@ const relatedGroups = {
                       <h4>
                         <a href={`/${locale}/${page.slug}/`}>{page.h1}</a>
                       </h4>
-                      <p>{page.description}</p>
+                      <p>{page.summary}</p>
                     </article>
                   ))}
                 </div>

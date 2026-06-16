@@ -169,13 +169,13 @@ export const ui = {
     'method.title': 'El Método Norwegian Singles',
     'method.principle1.title': 'Margen Sub-Umbral',
     'method.principle1.desc':
-      'El trabajo de calidad se realiza a ritmos sub-umbral (umbral relajado), representando el 20-25% del volumen.',
+      'Corre las sesiones clave por debajo del umbral. Manténlas cerca del 20-25% del volumen semanal.',
     'method.principle2.title': 'Nunca al fallo',
     'method.principle2.desc':
-      'Ritmos conservadores y sostenibles. Podrías hacer más, pero no lo haces.',
+      'Usa ritmos que puedas repetir semana tras semana. Termina con margen.',
     'method.principle3.title': 'Descansos cortos',
     'method.principle3.desc':
-      '60 segundos de recuperación para mantener el estado de lactato elevado.',
+      'Recupera unos 60 segundos para mantener la sesión continua.',
     'method.principle4.title': 'Semanas Repetibles',
     'method.principle4.desc':
       'Consistencia sobre variedad. Repite la misma estructura semanal y deja que el ritmo progrese con tu VDOT.',
@@ -190,7 +190,7 @@ export const ui = {
     // Footer
     'footer.credit': 'Basado en el método de entrenamiento Norwegian Singles',
     'footer.disclaimer':
-      'Herramienta independiente y no oficial. No está afiliada, avalada ni autorizada por autores, entrenadores o marcas mencionadas. Consulta con un profesional antes de iniciar cualquier programa de entrenamiento.',
+      'Herramienta no oficial. No tiene relación con los autores, entrenadores o marcas mencionadas. Consulta con un profesional antes de iniciar un plan.',
     'footer.dev': 'Desarrollado por',
     'footer.support': 'Apoyar el proyecto',
     'footer.supportTagline':
@@ -202,7 +202,7 @@ export const ui = {
       '¿Te gusta el planificador gratuito? Ayuda a impulsar las próximas funciones con un café',
 
     // SEO
-    'seo.title': 'Calculadora Norwegian Singles — Ritmos y planes NSA/NSM',
+    'seo.title': 'Calculadora Norwegian Singles, ritmos y planes NSA/NSM',
     'seo.description':
       'Calcula ritmos sub-umbral, semanas NSA/NSM de 4.5-9 h y preparación de maratón desde una marca reciente. Herramienta independiente Norwegian Singles.',
 
@@ -213,18 +213,18 @@ export const ui = {
     'seo.content.doubleThreshold.title':
       'Del doble umbral al Norwegian Singles',
     'seo.content.doubleThreshold.text':
-      'El <strong>Método Noruego</strong> original prescribe dos sesiones de umbral de lactato al día, una por la mañana y otra por la tarde. Aunque extraordinariamente efectivo para atletas profesionales, es impracticable para la mayoría de corredores. NSM destila los <strong>principios fisiológicos clave</strong> — intensidad sub-umbral controlada, recuperaciones cortas para mantener el lactato elevado, y alta consistencia semanal — en un formato de sesión única que se adapta a la vida normal.',
+      'El <strong>Método Noruego</strong> original usa dos sesiones de umbral al día, una por la mañana y otra por la tarde. La mayoría de corredores no puede sostener ese volumen. NSM conserva tres piezas: intensidad sub-umbral, recuperaciones cortas y una semana estable.',
     'seo.content.howItWorks.title': 'Cómo funciona el método',
     'seo.content.howItWorks.text':
       'Cada semana sigue la misma estructura repetible: <strong>tres sesiones sub-umbral</strong> (martes, jueves, sábado) más rodajes fáciles el resto de días. Las sesiones sub-umbral usan tres longitudes de intervalo diferentes:',
     'seo.content.howItWorks.rep3':
-      '<strong>Repeticiones de 3 minutos</strong> — a ritmo de carrera de ~15K, con 60 segundos de recuperación',
+      '<strong>Repeticiones de 3 minutos</strong>: ritmo cercano a 15K, con 60 segundos de recuperación',
     'seo.content.howItWorks.rep6':
-      '<strong>Repeticiones de 6 minutos</strong> — a ritmo de carrera de ~30K, con 60–90s de recuperación',
+      '<strong>Repeticiones de 6 minutos</strong>: ritmo cercano a 30K, con 60-90s de recuperación',
     'seo.content.howItWorks.rep10':
-      '<strong>Repeticiones de 10 minutos</strong> — cercano al ritmo de maratón, con 90–120s de recuperación',
+      '<strong>Repeticiones de 10 minutos</strong>: cerca del ritmo de maratón, con 90-120s de recuperación',
     'seo.content.howItWorks.paces':
-      'Los ritmos se estiman desde tu <strong>marca actual de 5K o 10K</strong> para darte objetivos prácticos de entrenamiento. La idea clave: corres a ritmos <strong>por debajo</strong> de tu umbral de lactato, nunca al fallo, maximizando las ganancias aeróbicas y minimizando el riesgo de lesión.',
+      'La calculadora usa tu <strong>marca actual de 5K o 10K</strong> para dar objetivos de entrenamiento. Corres por debajo del umbral de lactato y terminas con margen.',
     'seo.content.weeklyPlans.title': 'Planes semanales: 4.5 a 9 horas',
     'seo.content.weeklyPlans.text':
       'NSM ofrece planes estructurados de <strong>4.5 a 9 horas semanales</strong>, escalando el número de repeticiones y la duración de los rodajes fáciles conforme crece tu condición física. Progresar significa pasar al siguiente nivel de horas cuando el plan actual se sienta cómodo durante varias semanas consecutivas.',
@@ -233,7 +233,7 @@ export const ui = {
       'Para corredores que se preparan para un maratón, esta app genera una <strong>preparación de 15 semanas</strong> con tiradas largas progresivas, carreras de puesta a punto y <strong>sesiones específicas a ritmo maratón</strong> en las últimas semanas. Introduce la fecha de tu maratón y la app genera toda la cuenta atrás.',
     'seo.content.whoIsItFor.title': '¿Para quién es este método?',
     'seo.content.whoIsItFor.text':
-      'NSM está diseñado para corredores de <strong>todos los niveles</strong> — desde quienes corren un 5K en 30 minutos hasta atletas sub-15. Las tablas de ritmos cubren tiempos de 5K desde 15:00 hasta 30:00. Ya sea que entrenes para tu primer 10K o prepares un maratón, el método escala a tu condición física con la misma estructura probada.',
+      'NSM sirve para muchos niveles: desde 5K en 30 minutos hasta atletas sub-15. Las tablas cubren tiempos de 5K desde 15:00 hasta 30:00. Usa la misma estructura para preparar un 10K o un maratón.',
 
     // Misc
     loading: 'Cargando...',
@@ -372,27 +372,27 @@ export const ui = {
     'method.title': 'The Norwegian Singles Method',
     'method.principle1.title': 'The Sub-T Margin',
     'method.principle1.desc':
-      'Quality sessions are run at sub-threshold paces (relaxed threshold). They represent 20-25% of your volume.',
+      'Run key sessions below threshold. Keep them near 20-25% of weekly volume.',
     'method.principle2.title': 'Never to failure',
     'method.principle2.desc':
-      "Conservative and sustainable paces. You could do more, but you don't.",
+      'Use paces you can repeat week after week. Finish with room left.',
     'method.principle3.title': 'Short recoveries',
     'method.principle3.desc':
-      '60 seconds recovery to maintain elevated lactate state.',
+      'Recover around 60 seconds so the workout keeps moving.',
     'method.principle4.title': 'Repeatable Weeks',
     'method.principle4.desc':
       'Consistency over variety. Repeat a solid weekly structure and let your paces progress as your VDOT improves.',
 
     // Books / affiliate
     'books.title': 'Recommended books',
-    'books.subtitle': 'Go deeper into the method with these reference reads.',
+    'books.subtitle': 'Reference books for the method.',
     'books.cta': 'View on Amazon',
     'books.affiliate': 'Affiliate links',
 
     // Footer
     'footer.credit': 'Based on the Norwegian Singles training method',
     'footer.disclaimer':
-      'Independent, unofficial planning tool. It is not affiliated with, endorsed by, or authorized by any mentioned author, coach, or brand. Consult a professional before starting any training program.',
+      'Unofficial planning tool. It has no relationship with the authors, coaches, or brands mentioned. Consult a professional before starting a plan.',
     'footer.dev': 'Built by',
     'footer.support': 'Support the project',
     'footer.supportTagline':
@@ -404,7 +404,7 @@ export const ui = {
       'Enjoying the free training planner? Fuel the next features with a coffee',
 
     // SEO
-    'seo.title': 'Norwegian Singles Calculator — NSA / NSM Paces and Plans',
+    'seo.title': 'Norwegian Singles Calculator, NSA / NSM Paces and Plans',
     'seo.description':
       'Free Norwegian Singles calculator for NSA / NSM runners. Calculate sub-threshold paces from your 5K or 10K, 4.5-9h plans, and marathon builds.',
 
@@ -415,27 +415,27 @@ export const ui = {
     'seo.content.doubleThreshold.title':
       'From Double Threshold to Norwegian Singles',
     'seo.content.doubleThreshold.text':
-      'The original <strong>Norwegian Method</strong> prescribes two lactate threshold sessions per day, one in the morning and one in the evening. While extraordinarily effective for professional athletes, this is impractical for most runners. NSM distills the <strong>core physiological principles</strong> — controlled sub-threshold intensity, short recoveries to maintain elevated lactate, and high weekly consistency — into a single-session format that fits a normal life.',
+      'The original <strong>Norwegian Method</strong> uses two threshold sessions per day, one in the morning and one in the evening. Most runners cannot hold that volume. NSM keeps three pieces: sub-threshold intensity, short recoveries, and a stable week.',
     'seo.content.howItWorks.title': 'How the Method Works',
     'seo.content.howItWorks.text':
       'Every week follows the same repeatable structure: <strong>three sub-threshold workouts</strong> (Tuesday, Thursday, Saturday) plus easy runs on the other days. The sub-threshold sessions use three different interval lengths:',
     'seo.content.howItWorks.rep3':
-      '<strong>3-minute reps</strong> — at roughly 15K race effort, with 60-second recovery',
+      '<strong>3-minute reps</strong>: near 15K effort, with 60-second recovery',
     'seo.content.howItWorks.rep6':
-      '<strong>6-minute reps</strong> — at roughly 30K race effort, with 60–90s recovery',
+      '<strong>6-minute reps</strong>: near 30K effort, with 60-90s recovery',
     'seo.content.howItWorks.rep10':
-      '<strong>10-minute reps</strong> — close to marathon effort, with 90–120s recovery',
+      '<strong>10-minute reps</strong>: close to marathon effort, with 90-120s recovery',
     'seo.content.howItWorks.paces':
-      'Paces are estimated from your current <strong>5K or 10K race time</strong> to give practical workout targets. The key insight: you run at paces <strong>below</strong> your lactate threshold, never to failure, maximizing aerobic gains while minimizing injury risk.',
+      'The calculator uses your current <strong>5K or 10K race time</strong> to set workout targets. You run below lactate threshold and finish with room left.',
     'seo.content.weeklyPlans.title': 'Weekly Plans: 4.5 to 9 Hours',
     'seo.content.weeklyPlans.text':
-      'NSM provides structured plans ranging from <strong>4.5 to 9 hours per week</strong>, scaling the number of repetitions and easy run duration as your fitness grows. Progression means moving to the next hours tier when your current plan feels comfortable for several consecutive weeks — not by increasing pace.',
+      'NSM provides plans from <strong>4.5 to 9 hours per week</strong>. As fitness grows, the plan adds reps and easy-run time. Move to the next tier after several comfortable weeks.',
     'seo.content.marathon.title': 'Marathon Build: 15-Week Program',
     'seo.content.marathon.text':
       'For runners targeting a marathon, this app generates a <strong>15-week marathon build</strong> with progressive long runs, tune-up races, and <strong>marathon-pace specific sessions</strong> in the final weeks. Enter your marathon date and the app generates the entire countdown.',
     'seo.content.whoIsItFor.title': 'Who Is This For?',
     'seo.content.whoIsItFor.text':
-      "NSM is designed for runners of <strong>all levels</strong> — from those running a 30-minute 5K to sub-15 athletes. The pace tables cover 5K times from 15:00 to 30:00. Whether you're training for your first 10K or preparing for a marathon PB, the method scales to your fitness through the same proven structure.",
+      'NSM works for many levels: from a 30-minute 5K to sub-15 athletes. The tables cover 5K times from 15:00 to 30:00. Use the same structure for a first 10K or a marathon PB.',
 
     // Misc
     loading: 'Loading...',
@@ -575,7 +575,7 @@ export const ui = {
       '무료 훈련 플래너가 도움이 되나요? 다음 기능 개발을 후원해 주세요',
 
     // SEO
-    'seo.title': 'NSM 러닝 계산기 — Norwegian Singles 페이스와 훈련 플랜',
+    'seo.title': 'NSM 러닝 계산기, Norwegian Singles 페이스와 훈련 플랜',
     'seo.description':
       'NSM 러닝과 Norwegian Singles Method를 위한 무료 계산기. 5K 또는 10K 기록으로 서브스레숄드 페이스, 주간 플랜, 마라톤 빌드업을 계산하세요.',
 
@@ -591,11 +591,11 @@ export const ui = {
     'seo.content.howItWorks.text':
       '기본 주간 구조는 반복 가능합니다. 화요일, 목요일, 토요일에 세 번의 서브스레숄드 세션을 하고 나머지는 이지런으로 채웁니다.',
     'seo.content.howItWorks.rep3':
-      '<strong>3분 반복</strong> — 약 15K 레이스 노력, 60초 회복',
+      '<strong>3분 반복</strong>: 약 15K 레이스 노력, 60초 회복',
     'seo.content.howItWorks.rep6':
-      '<strong>6분 반복</strong> — 약 30K 레이스 노력, 60-90초 회복',
+      '<strong>6분 반복</strong>: 약 30K 레이스 노력, 60-90초 회복',
     'seo.content.howItWorks.rep10':
-      '<strong>10분 반복</strong> — 마라톤 노력에 가까운 페이스, 90-120초 회복',
+      '<strong>10분 반복</strong>: 마라톤 노력에 가까운 페이스, 90-120초 회복',
     'seo.content.howItWorks.paces':
       '현재 <strong>5K 또는 10K 기록</strong>을 바탕으로 실전적인 훈련 페이스를 추정합니다. 핵심은 젖산 역치보다 아래에서 달려 회복 가능성을 유지하는 것입니다.',
     'seo.content.weeklyPlans.title': '주 4.5-9시간 플랜',

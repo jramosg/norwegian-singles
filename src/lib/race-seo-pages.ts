@@ -213,7 +213,7 @@ function buildPage(entry: RaceEntry, locale: Locale): RaceSeoPage {
 
     return {
       slug: `${distSlug}-${tSlug}-training-paces`,
-      title: `${dt} ${distTitle} NSA Training Paces — Norwegian Singles`,
+      title: `${dt} ${distTitle} NSA Training Paces: Norwegian Singles`,
       description:
         `NSA / NSM training paces for a ${dt} ${distLabel} runner. ` +
         `Short sub-T: ${r3} · medium: ${r6} · long: ${r10} · easy: ${ez}.`,
@@ -262,7 +262,7 @@ function buildPage(entry: RaceEntry, locale: Locale): RaceSeoPage {
 
     return {
       slug: `${distSlug}-${tSlug}-training-paces`,
-      title: `${dt} ${distTitle} NSA 훈련 페이스 — Norwegian Singles`,
+      title: `${dt} ${distTitle} NSA 훈련 페이스: Norwegian Singles`,
       description:
         `${dt} ${distLabel} 러너를 위한 NSA / NSM 훈련 페이스. ` +
         `짧은 Sub-T: ${r3} · 중간: ${r6} · 긴: ${r10} · 이지: ${ez}.`,
@@ -311,7 +311,7 @@ function buildPage(entry: RaceEntry, locale: Locale): RaceSeoPage {
 
   return {
     slug: `ritmos-${distSlug}-${tSlug}`,
-    title: `Ritmos NSA ${distTitle} ${dt} — Norwegian Singles`,
+    title: `Ritmos NSA ${distTitle} ${dt}: Norwegian Singles`,
     description:
       `Ritmos NSA / NSM para ${distLabel} en ${dt}. ` +
       `Sub-T corto: ${r3} · medio: ${r6} · largo: ${r10} · fácil: ${ez}.`,

@@ -1,5 +1,5 @@
 /**
- * PlanViewer — React island
+ * PlanViewer: React island
  * Displays the weekly training plan, paces, and taper reference.
  */
 
@@ -313,7 +313,7 @@ export default function PlanViewer({ locale }: Props) {
     const rec = s.recoverySecondsMax
       ? `${fmtSec(s.recoverySeconds)}–${fmtSec(s.recoverySecondsMax)}`
       : fmtSec(s.recoverySeconds);
-    const note = s.intensityNote ? ` — ${s.intensityNote}` : '';
+    const note = s.intensityNote ? `: ${s.intensityNote}` : '';
     const wucd = text.wucd;
     const recLabel = text.recovery;
     return `${s.totalDurationMin} min total (${wucd}) · ${rec} ${recLabel}${note}`;
@@ -959,7 +959,7 @@ function mbSessionLabel(day: MarathonBuildDay): string {
     if (day.reps === 1) return `${day.distanceM / 1000}K*`;
     return `${day.reps}×${day.distanceM >= 1000 ? `${day.distanceM / 1000}K*` : `${day.distanceM}m*`}`;
   }
-  return '—';
+  return '-';
 }
 
 function mbSessionDetail(
@@ -969,7 +969,7 @@ function mbSessionDetail(
   unitLabel: string,
 ): React.ReactNode {
   if (day.kind === 'rest')
-    return <span style={{ color: 'var(--color-text-muted)' }}>—</span>;
+    return <span style={{ color: 'var(--color-text-muted)' }}>-</span>;
 
   if (day.kind === 'easy') {
     return (
