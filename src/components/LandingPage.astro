@@ -39,6 +39,10 @@ const t = useTranslations(locale);
 const relatedPages = getSeoPages(locale);
 const faqs = getVisibleFaqs(locale);
 const racePagesByDistance = getRacePagesByDistance(locale);
+const isSeoLanding = Boolean(seoHeading);
+const currentPath = Astro.url.pathname.replace(/\/$/, '');
+const isCurrentHref = (href: string) =>
+  href.split('#')[0].replace(/\/$/, '') === currentPath;
 const raceGroups = {
   en: [
     { key: '5K' as const, label: '5K' },
@@ -134,9 +138,8 @@ const landingText = {
     faqTitle: 'FAQ',
     faqIntro:
       'Quick answers about NSA, NSM, and using this independent calculator.',
-    relatedTitle: 'Related calculators and guides',
-    relatedIntro:
-      'Explore focused pages for NSA paces, plans, marathon builds, and comparisons.',
+    relatedTitle: 'Choose the right guide',
+    relatedIntro: 'More useful pages, depending on what you want to do next.',
     paceTitle: 'Training paces',
     paceIntro:
       'NSA / NSM paces calculated from your race time. Use the calculator above to confirm or fine-tune.',
@@ -156,9 +159,8 @@ const landingText = {
     faqTitle: 'Preguntas frecuentes',
     faqIntro:
       'Respuestas rápidas sobre NSA, NSM y el uso de esta calculadora independiente.',
-    relatedTitle: 'Calculadoras y guías relacionadas',
-    relatedIntro:
-      'Explora páginas específicas para ritmos NSA, planes, maratón y comparativas.',
+    relatedTitle: 'Elige la guía adecuada',
+    relatedIntro: 'Más páginas útiles según lo que quieras hacer ahora.',
     paceTitle: 'Ritmos de entrenamiento',
     paceIntro:
       'Ritmos NSA/NSM calculados desde tu marca. Úsalos como referencia y ajusta con la calculadora.',
@@ -177,9 +179,8 @@ const landingText = {
   ko: {
     faqTitle: '자주 묻는 질문',
     faqIntro: 'NSA, NSM, 이 독립 계산기 사용에 대한 빠른 답변입니다.',
-    relatedTitle: '관련 계산기와 가이드',
-    relatedIntro:
-      'NSA 페이스, 훈련 플랜, 마라톤 빌드업, NSM 러닝 가이드를 확인하세요.',
+    relatedTitle: '목적에 맞는 가이드 선택',
+    relatedIntro: '지금 필요한 목적에 따라 이어서 볼 수 있는 페이지입니다.',
     paceTitle: '훈련 페이스',
     paceIntro:
       '레이스 기록으로 계산한 NSA/NSM 페이스입니다. 위 계산기로 확인하거나 조정하세요.',
@@ -198,22 +199,22 @@ const landingText = {
 
 const educationLinks = {
   en: {
-    nsm: '/en/nsm-calculator/',
-    method: '/en/norwegian-method-calculator/',
-    bakken: '/en/marius-bakken-pace-calculator/',
-    marathon: '/en/norwegian-method-marathon-plan/',
+    nsm: '/en/nsm-calculator/#calculator',
+    method: '/en/norwegian-method-calculator/#guide',
+    bakken: '/en/marius-bakken-pace-calculator/#guide',
+    marathon: '/en/norwegian-method-marathon-plan/#guide',
   },
   es: {
-    nsm: '/es/calculadora-nsm/',
-    method: '/es/calculadora-metodo-noruego/',
-    bakken: '/es/calculadora-ritmos-marius-bakken/',
-    marathon: '/es/plan-maraton-metodo-noruego/',
+    nsm: '/es/calculadora-nsm/#calculator',
+    method: '/es/calculadora-metodo-noruego/#guide',
+    bakken: '/es/calculadora-ritmos-marius-bakken/#guide',
+    marathon: '/es/plan-maraton-metodo-noruego/#guide',
   },
   ko: {
-    nsm: '/ko/nsm-calculator/',
-    method: '/ko/norwegian-method-calculator/',
-    bakken: '/ko/marius-bakken-pace-calculator/',
-    marathon: '/ko/norwegian-method-marathon-plan/',
+    nsm: '/ko/nsm-calculator/#calculator',
+    method: '/ko/norwegian-method-calculator/#guide',
+    bakken: '/ko/marius-bakken-pace-calculator/#guide',
+    marathon: '/ko/norwegian-method-marathon-plan/#guide',
   },
 }[locale];
 
@@ -240,7 +241,33 @@ const educationText = {
         text: 'Easy runs should feel genuinely easy. If fatigue builds, slow them down before changing the sub-threshold paces.',
       },
     ],
-    linksHtml: `New to the method? Start with the <a href="${educationLinks.nsm}">NSM calculator</a>, compare the <a href="${educationLinks.method}">Norwegian method calculator</a>, read the <a href="${educationLinks.bakken}">Marius Bakken pace notes</a>, or build a <a href="${educationLinks.marathon}">Norwegian method marathon plan</a>.`,
+    nextTitle: 'Next step',
+    actions: [
+      {
+        href: educationLinks.nsm,
+        label: 'NSM calculator',
+        eyebrow: 'Start here',
+        text: 'Use the plain NSM page when you only need paces and a weekly structure.',
+      },
+      {
+        href: educationLinks.method,
+        label: 'Norwegian method calculator',
+        eyebrow: 'Compare terms',
+        text: 'Use this page when you are searching for Norwegian method or threshold wording.',
+      },
+      {
+        href: educationLinks.bakken,
+        label: 'Marius Bakken pace notes',
+        eyebrow: 'Background',
+        text: 'Use this page for the Bakken-style threshold context behind the pace targets.',
+      },
+      {
+        href: educationLinks.marathon,
+        label: 'Norwegian method marathon plan',
+        eyebrow: 'Marathon',
+        text: 'Use this page when the goal is a marathon build instead of a weekly template.',
+      },
+    ],
   },
   es: {
     title: 'Cómo usar estos ritmos',
@@ -264,7 +291,33 @@ const educationText = {
         text: 'Los rodajes fáciles deben sentirse realmente fáciles. Si acumulas fatiga, baja el ritmo antes de tocar los ritmos sub-umbral.',
       },
     ],
-    linksHtml: `Si estás empezando, usa la <a href="${educationLinks.nsm}">calculadora NSM</a>, compara la <a href="${educationLinks.method}">calculadora del método noruego</a>, revisa los <a href="${educationLinks.bakken}">ritmos inspirados en Marius Bakken</a> o crea un <a href="${educationLinks.marathon}">plan maratón con método noruego</a>.`,
+    nextTitle: 'Siguiente paso',
+    actions: [
+      {
+        href: educationLinks.nsm,
+        label: 'Calculadora NSM',
+        eyebrow: 'Empieza aquí',
+        text: 'Usa esta página si solo quieres ritmos y una estructura semanal clara.',
+      },
+      {
+        href: educationLinks.method,
+        label: 'Calculadora método noruego',
+        eyebrow: 'Comparar términos',
+        text: 'Usa esta página si buscas método noruego, umbral o doble umbral adaptado.',
+      },
+      {
+        href: educationLinks.bakken,
+        label: 'Ritmos Marius Bakken',
+        eyebrow: 'Contexto',
+        text: 'Usa esta página para entender el origen noruego de los ritmos sub-umbral.',
+      },
+      {
+        href: educationLinks.marathon,
+        label: 'Plan maratón método noruego',
+        eyebrow: 'Maratón',
+        text: 'Usa esta página cuando el objetivo sea preparar un maratón.',
+      },
+    ],
   },
   ko: {
     title: '이 페이스를 사용하는 방법',
@@ -288,9 +341,130 @@ const educationText = {
         text: '이지런은 정말 쉽게 느껴져야 합니다. 피로가 쌓이면 서브스레숄드 페이스를 바꾸기 전에 이지런을 늦추세요.',
       },
     ],
-    linksHtml: `처음이라면 <a href="${educationLinks.nsm}">NSM 계산기</a>에서 시작하고, <a href="${educationLinks.method}">노르웨이식 훈련 계산기</a>와 비교하거나, <a href="${educationLinks.bakken}">Marius Bakken 페이스 노트</a>를 확인하고, <a href="${educationLinks.marathon}">노르웨이식 마라톤 플랜</a>을 만들어 보세요.`,
+    nextTitle: '다음 단계',
+    actions: [
+      {
+        href: educationLinks.nsm,
+        label: 'NSM 계산기',
+        eyebrow: '처음 시작',
+        text: '페이스와 주간 구조만 빠르게 확인할 때 사용하세요.',
+      },
+      {
+        href: educationLinks.method,
+        label: '노르웨이식 훈련 계산기',
+        eyebrow: '용어 비교',
+        text: '노르웨이식 훈련이나 임계값 훈련으로 검색했다면 이 페이지가 맞습니다.',
+      },
+      {
+        href: educationLinks.bakken,
+        label: 'Marius Bakken 페이스 노트',
+        eyebrow: '배경',
+        text: '서브스레숄드 페이스의 노르웨이식 맥락을 볼 때 사용하세요.',
+      },
+      {
+        href: educationLinks.marathon,
+        label: '노르웨이식 마라톤 플랜',
+        eyebrow: '마라톤',
+        text: '목표가 주간 템플릿이 아니라 마라톤 빌드업일 때 사용하세요.',
+      },
+    ],
   },
 }[locale];
+
+const nextStepActions = educationText.actions.filter(
+  (action) => !isCurrentHref(action.href),
+);
+
+const relatedGroups = {
+  en: [
+    {
+      title: 'Pace calculators',
+      slugs: [
+        'nsm-calculator',
+        'sub-threshold-pace-calculator',
+        'marius-bakken-pace-calculator',
+      ],
+    },
+    {
+      title: 'Plans',
+      slugs: [
+        'norwegian-singles-training-plan',
+        'norwegian-method-marathon-plan',
+      ],
+    },
+    {
+      title: 'Comparisons',
+      slugs: [
+        'norwegian-method-recreational-runners',
+        'subthreshold-calculator-alternative',
+        'norwegian-singles-calculator-comparison',
+      ],
+    },
+  ],
+  es: [
+    {
+      title: 'Calculadoras de ritmos',
+      slugs: [
+        'calculadora-nsm',
+        'calculadora-ritmos-sub-umbral',
+        'calculadora-ritmos-marius-bakken',
+      ],
+    },
+    {
+      title: 'Planes',
+      slugs: [
+        'plan-entrenamiento-norwegian-singles',
+        'plan-maraton-metodo-noruego',
+      ],
+    },
+    {
+      title: 'Comparativas',
+      slugs: [
+        'metodo-noruego-corredores-populares',
+        'alternativa-calculadora-subthreshold',
+        'comparativa-calculadora-norwegian-singles',
+      ],
+    },
+  ],
+  ko: [
+    {
+      title: '페이스 계산기',
+      slugs: [
+        'nsm-calculator',
+        'sub-threshold-pace-calculator',
+        'marius-bakken-pace-calculator',
+      ],
+    },
+    {
+      title: '훈련 플랜',
+      slugs: [
+        'norwegian-singles-training-plan',
+        'norwegian-method-marathon-plan',
+      ],
+    },
+    {
+      title: '비교와 배경',
+      slugs: [
+        'norwegian-method-recreational-runners',
+        'subthreshold-calculator-alternative',
+        'norwegian-singles-calculator-comparison',
+      ],
+    },
+  ],
+}[locale]
+  .map((group) => ({
+    ...group,
+    pages: group.slugs
+      .map((slug) => {
+        const page = relatedPages.find((candidate) => candidate.slug === slug);
+        if (!page || isCurrentHref(`/${locale}/${page.slug}/`)) {
+          return undefined;
+        }
+        return page;
+      })
+      .filter((page): page is (typeof relatedPages)[number] => Boolean(page)),
+  }))
+  .filter((group) => group.pages.length > 0);
 ---
 
 <AppLayout
@@ -300,15 +474,27 @@ const educationText = {
   structuredData={[...(structuredData || []), faqStructuredData]}
 >
   <div class="landing">
-    <section class="hero">
+    <section class="hero" id="calculator">
       <div class="container hero-grid">
         <div class="hero-content">
           <p class="hero-kicker">Norwegian Singles Approach / Method</p>
-          <h1 class="hero-title">
-            {t('hero.title')}
-            <span class="hero-accent">{t('hero.titleAccent')}</span>
-          </h1>
-          <p class="hero-subtitle">{t('hero.subtitle')}</p>
+          {
+            isSeoLanding ? (
+              <h1 class="hero-title">{seoHeading}</h1>
+            ) : (
+              <h1 class="hero-title">
+                {t('hero.title')}
+                <span class="hero-accent">{t('hero.titleAccent')}</span>
+              </h1>
+            )
+          }
+          {
+            isSeoLanding && seoIntro ? (
+              <p class="hero-subtitle" set:html={seoIntro} />
+            ) : (
+              <p class="hero-subtitle">{t('hero.subtitle')}</p>
+            )
+          }
 
           <ul class="proof-list" aria-label="Calculator features">
             {proofBullets.map((item) => <li>{item}</li>)}
@@ -390,7 +576,20 @@ const educationText = {
           }
         </div>
 
-        <p class="education-links" set:html={educationText.linksHtml} />
+        <div class="next-step-panel">
+          <h3>{educationText.nextTitle}</h3>
+          <div class="next-step-grid">
+            {
+              nextStepActions.map((action) => (
+                <a class="next-step-link" href={action.href}>
+                  <span>{action.eyebrow}</span>
+                  <strong>{action.label}</strong>
+                  <em>{action.text}</em>
+                </a>
+              ))
+            }
+          </div>
+        </div>
       </div>
     </section>
 
@@ -433,7 +632,7 @@ const educationText = {
       )
     }
 
-    <section class="seo-content section">
+    <section class="seo-content section" id="guide">
       <div class="container seo-container">
         <h2>{seoHeading || t('seo.content.h2')}</h2>
         {
@@ -496,13 +695,22 @@ const educationText = {
           <p>{landingText.relatedIntro}</p>
         </div>
 
-        <div class="related-grid">
+        <div class="related-groups">
           {
-            relatedPages.map((page) => (
-              <a class="related-link" href={`/${locale}/${page.slug}/`}>
-                <strong>{page.h1}</strong>
-                <span>{page.description}</span>
-              </a>
+            relatedGroups.map((group) => (
+              <article class="related-group">
+                <h3>{group.title}</h3>
+                <div class="related-grid">
+                  {group.pages.map((page) => (
+                    <article class="related-link">
+                      <h4>
+                        <a href={`/${locale}/${page.slug}/`}>{page.h1}</a>
+                      </h4>
+                      <p>{page.description}</p>
+                    </article>
+                  ))}
+                </div>
+              </article>
             ))
           }
         </div>
@@ -960,20 +1168,73 @@ const educationText = {
     line-height: 1.55;
   }
 
-  .education-links {
-    max-width: 860px;
-    margin: var(--space-6) 0 0;
-    color: var(--color-text-secondary);
+  .next-step-panel {
+    margin-top: var(--space-8);
   }
 
-  .education-links a {
-    color: var(--color-accent);
-    font-weight: var(--font-semibold);
+  .next-step-panel h3 {
+    margin-bottom: var(--space-3);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    font-weight: var(--font-bold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .next-step-grid {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  @media (min-width: 760px) {
+    .next-step-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .next-step-link {
+    display: grid;
+    gap: var(--space-2);
+    min-height: 10rem;
+    padding: var(--space-5);
+    color: var(--color-text-primary);
+    background: rgba(17, 17, 19, 0.68);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
     text-decoration: none;
+    transition:
+      background var(--transition-fast),
+      border-color var(--transition-fast),
+      transform var(--transition-fast);
   }
 
-  .education-links a:hover {
-    text-decoration: underline;
+  .next-step-link:hover {
+    background: rgba(239, 68, 68, 0.08);
+    border-color: rgba(239, 68, 68, 0.36);
+    transform: translateY(-2px);
+  }
+
+  .next-step-link span,
+  .next-step-link em {
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    font-style: normal;
+  }
+
+  .next-step-link span {
+    font-weight: var(--font-bold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .next-step-link strong {
+    font-size: var(--text-base);
+    line-height: 1.25;
+  }
+
+  .next-step-link em {
+    color: var(--color-text-secondary);
+    line-height: 1.45;
   }
 
   .section-head {
@@ -1020,11 +1281,35 @@ const educationText = {
     color: var(--color-text-secondary);
   }
 
+  .related-groups {
+    display: grid;
+    gap: var(--space-12);
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+
+  .related-group {
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .related-group:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .related-group h3 {
+    margin-bottom: var(--space-5);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    font-weight: var(--font-bold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
   .related-grid {
     display: grid;
     gap: var(--space-3);
-    max-width: 1080px;
-    margin: 0 auto;
   }
 
   @media (min-width: 760px) {
@@ -1035,39 +1320,43 @@ const educationText = {
 
   @media (min-width: 1120px) {
     .related-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
   .related-link {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    min-height: 8.5rem;
-    padding: var(--space-5);
-    color: var(--color-text-primary);
+    min-height: 7rem;
+    padding: var(--space-4);
     background: rgba(255, 255, 255, 0.035);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    text-decoration: none;
     transition:
       background var(--transition-fast),
-      border-color var(--transition-fast),
-      transform var(--transition-fast);
+      border-color var(--transition-fast);
   }
 
   .related-link:hover {
     background: rgba(255, 255, 255, 0.055);
     border-color: var(--color-border-accent);
-    transform: translateY(-2px);
   }
 
-  .related-link strong {
+  .related-link h4 {
+    margin: 0 0 var(--space-2);
     font-size: var(--text-base);
     line-height: 1.3;
   }
 
-  .related-link span {
+  .related-link a {
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+
+  .related-link a:hover {
+    color: var(--color-accent-primary);
+  }
+
+  .related-link p {
+    margin: 0;
     color: var(--color-text-secondary);
     font-size: var(--text-sm);
     line-height: 1.5;
