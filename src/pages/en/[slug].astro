@@ -1,0 +1,33 @@
+---
+import LandingPage from '../../components/LandingPage.astro';
+import {
+  createSeoStructuredData,
+  getSeoPage,
+  getSeoPages,
+} from '../../lib/seo-pages';
+
+const locale = 'en';
+
+export function getStaticPaths() {
+  return getSeoPages('en').map((page) => ({
+    params: { slug: page.slug },
+    props: { page },
+  }));
+}
+
+const { page } = Astro.props;
+const foundPage = page || getSeoPage(locale, Astro.params.slug || '');
+
+if (!foundPage) {
+  return Astro.redirect(`/${locale}/`);
+}
+---
+
+<LandingPage
+  locale={locale}
+  title={foundPage.title}
+  description={foundPage.description}
+  seoHeading={foundPage.h1}
+  seoIntro={foundPage.intro}
+  structuredData={createSeoStructuredData(locale, foundPage)}
+/>

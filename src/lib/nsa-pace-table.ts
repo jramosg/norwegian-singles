@@ -2,15 +2,14 @@
  * NSM Pace Tables
  * Source: "NSM: Subthreshold Running Kept Simple" by James Copeland
  *
- * Table 1.4 — Sub-T paces for 3-min, 6-min, and 10-min repetitions.
- * Table 2.3 — Easy pace based on 5K time.
+ * Sub-T paces for 3-min, 6-min, and 10-min repetitions, plus easy pace.
  *
  * All paces in seconds per km.
  */
 
 // [5k_seconds, rep3min, rep6min, rep10min, easy_pace]
 const RAW_TABLE: [number, number, number, number, number][] = [
-  //                           Table 1.4                  Table 2.3
+  //                           Sub-T paces                Easy pace
   // 5K       rep3    rep6    rep10   easy
   [900, 193, 198, 205, 256], // 15:00 → 3:13, 3:18, 3:25, 4:16 (easy extrapolated)
   [920, 197, 202, 209, 262], // 15:20 → 3:17, 3:22, 3:29, 4:22
@@ -67,7 +66,7 @@ export interface SubTPaces {
   rep6min: number;
   /** Sub-T pace for 10-min repetitions (s/km) */
   rep10min: number;
-  /** Easy run pace (s/km) — from Table 2.3 */
+  /** Easy run pace (s/km). */
   easy: number;
   /**
    * Estimated marathon race pace (s/km).
@@ -78,7 +77,7 @@ export interface SubTPaces {
 }
 
 /**
- * Look up or interpolate paces from the official NSM tables.
+ * Look up or interpolate NSA/NSM-style training paces.
  * Accepts any 5K time in seconds; extrapolates beyond table bounds.
  */
 export function getSubTPaces(fiveKSeconds: number): SubTPaces {

@@ -24,7 +24,7 @@ export interface UserInput {
   marathonDate?: string;
 }
 
-/** Resolved training paces from NSM Table 1.4 */
+/** Resolved NSA/NSM-style training paces. */
 export interface TrainingPaces {
   /** 5K time used for the lookup (seconds) */
   fiveKSeconds: number;

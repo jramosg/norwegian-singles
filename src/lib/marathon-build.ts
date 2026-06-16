@@ -1,5 +1,5 @@
 /**
- * My Marathon Build — 15-Week Plan
+ * 15-week marathon build plan.
  * Source: "NSM: Subthreshold Running Kept Simple" by James Copeland
  *
  * Mon–Sun (indices 0–6). All durations in minutes.

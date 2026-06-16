@@ -53,6 +53,38 @@ export default function TrainingForm({ locale }: Props) {
     };
   }, [time5K, time10K, unit]);
 
+  const sessionPreview = useMemo(() => {
+    if (!preview) return [];
+
+    const dayNames =
+      locale === 'es'
+        ? ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
+        : ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+    return matchedPlan.days
+      .map((session, index) => ({ session, day: dayNames[index] }))
+      .filter(({ session }) => session.kind === 'subT')
+      .map(({ session, day }) => {
+        if (session.kind !== 'subT') return null;
+        const pace =
+          session.paceColumn === 'rep3min'
+            ? preview.rep3
+            : session.paceColumn === 'rep6min'
+              ? preview.rep6
+              : preview.rep10;
+        return {
+          day,
+          title: `${session.reps} x ${session.repDurationMin} min`,
+          detail:
+            locale === 'es'
+              ? `${session.totalDurationMin} min total`
+              : `${session.totalDurationMin} min total`,
+          pace,
+        };
+      })
+      .filter((item): item is NonNullable<typeof item> => Boolean(item));
+  }, [locale, matchedPlan.days, preview]);
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
@@ -257,6 +289,23 @@ export default function TrainingForm({ locale }: Props) {
                 color="var(--color-easy)"
               />
             </div>
+            <div className="tf-session-preview">
+              <p className="tf-preview-title tf-session-title">
+                {locale === 'es' ? 'Tus sesiones clave' : 'Your key sessions'}
+              </p>
+              <div className="tf-session-grid">
+                {sessionPreview.map((session) => (
+                  <div className="tf-session-card" key={session.day}>
+                    <span className="tf-session-day">{session.day}</span>
+                    <strong>{session.title}</strong>
+                    <span>{session.detail}</span>
+                    <em>
+                      {session.pace} {unitLabel}
+                    </em>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         )}
 
@@ -355,29 +404,99 @@ export default function TrainingForm({ locale }: Props) {
         }
         .tf-preview-grid {
           display: grid;
-          gap: var(--space-2);
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: var(--space-3);
         }
         .tf-pace-row {
+          min-height: 5.25rem;
           display: flex;
+          flex-direction: column;
           justify-content: space-between;
-          align-items: center;
-          padding: var(--space-1) 0;
-          border-bottom: 1px solid var(--color-border);
+          gap: var(--space-2);
+          padding: var(--space-3);
+          background: rgba(255,255,255,0.045);
+          border: 1px solid var(--color-border);
+          border-radius: var(--radius-md);
+          transition:
+            border-color var(--transition-fast),
+            transform var(--transition-fast),
+            background var(--transition-fast);
         }
-        .tf-pace-row:last-child { border-bottom: none; }
+        .tf-pace-row:hover {
+          background: rgba(255,255,255,0.065);
+          border-color: var(--color-border-accent);
+          transform: translateY(-2px);
+        }
         .tf-pace-label {
           font-size: var(--text-sm);
           color: var(--color-text-secondary);
         }
         .tf-pace-value {
           font-family: var(--font-mono);
-          font-size: var(--text-base);
+          font-size: var(--text-xl);
           font-weight: var(--font-bold);
+          animation: tf-preview-in 0.22s ease both;
         }
         .tf-pace-unit {
           font-size: var(--text-xs);
           color: var(--color-text-muted);
           margin-left: var(--space-1);
+        }
+        .tf-session-preview {
+          margin-top: var(--space-5);
+          padding-top: var(--space-4);
+          border-top: 1px solid var(--color-border);
+        }
+        .tf-session-title {
+          margin-bottom: var(--space-3);
+        }
+        .tf-session-grid {
+          display: grid;
+          gap: var(--space-2);
+        }
+        .tf-session-card {
+          display: grid;
+          grid-template-columns: 5.25rem 1fr auto;
+          gap: var(--space-2);
+          align-items: center;
+          padding: var(--space-3);
+          background: rgba(245,158,11,0.08);
+          border: 1px solid rgba(245,158,11,0.18);
+          border-radius: var(--radius-md);
+          font-size: var(--text-sm);
+        }
+        .tf-session-day {
+          color: var(--color-text-muted);
+          font-size: var(--text-xs);
+          font-weight: var(--font-bold);
+          text-transform: uppercase;
+        }
+        .tf-session-card strong {
+          color: var(--color-text-primary);
+        }
+        .tf-session-card span:not(.tf-session-day) {
+          display: none;
+          color: var(--color-text-muted);
+        }
+        .tf-session-card em {
+          color: var(--color-threshold);
+          font-family: var(--font-mono);
+          font-style: normal;
+          font-weight: var(--font-bold);
+          white-space: nowrap;
+        }
+        @media (max-width: 560px) {
+          .tf-row,
+          .tf-preview-grid {
+            grid-template-columns: 1fr;
+          }
+          .tf-session-card {
+            grid-template-columns: 1fr;
+            align-items: start;
+          }
+          .tf-session-card span:not(.tf-session-day) {
+            display: block;
+          }
         }
       `}</style>
     </div>
@@ -399,7 +518,7 @@ function PaceRow({
     <div className="tf-pace-row">
       <span className="tf-pace-label">{label}</span>
       <span>
-        <span className="tf-pace-value" style={{ color }}>
+        <span className="tf-pace-value" style={{ color }} key={value}>
           {value}
         </span>
         <span className="tf-pace-unit">{unit}</span>

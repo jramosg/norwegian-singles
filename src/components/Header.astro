@@ -1,6 +1,7 @@
 ---
 import type { Locale } from '../types';
 import { useTranslations, getPathInLocale, locales } from '../i18n/ui';
+import { getAlternateSeoPath } from '../lib/seo-pages';
 
 interface Props {
   locale: Locale;
@@ -9,6 +10,10 @@ interface Props {
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 const currentPath = Astro.url.pathname;
+
+const localizedPath = (lang: Locale) =>
+  getAlternateSeoPath(currentPath, locale, lang) ||
+  getPathInLocale(currentPath, lang);
 ---
 
 <header class="header glass">
@@ -28,7 +33,7 @@ const currentPath = Astro.url.pathname;
         {
           locales.map((lang) => (
             <a
-              href={getPathInLocale(currentPath, lang)}
+              href={localizedPath(lang)}
               class:list={['lang-btn', { 'is-active': lang === locale }]}
             >
               {lang.toUpperCase()}
@@ -99,7 +104,7 @@ const currentPath = Astro.url.pathname;
       {
         locales.map((lang) => (
           <a
-            href={getPathInLocale(currentPath, lang)}
+            href={localizedPath(lang)}
             class:list={['lang-btn', { 'is-active': lang === locale }]}
           >
             {lang.toUpperCase()}

@@ -61,7 +61,7 @@ describe('getSubTPaces — interpolation', () => {
   });
 });
 
-describe('getSubTPaces — easy pace (Table 2.3)', () => {
+describe('getSubTPaces — easy pace', () => {
   it('easy pace is slower than sub-T rep paces', () => {
     const p = getSubTPaces(1200); // 20:00 5K
     expect(p.easy).toBeGreaterThan(p.rep10min);

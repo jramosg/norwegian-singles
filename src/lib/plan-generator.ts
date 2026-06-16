@@ -8,7 +8,8 @@ import { parseTime } from './paces';
 
 /**
  * Create a training plan from user input.
- * Resolves 5K time (directly or estimated from 10K), looks up paces from NSM Table 1.4.
+ * Resolves 5K time directly or estimates it from 10K, then looks up
+ * NSA/NSM-style training paces.
  */
 export function createPlan(input: UserInput): SavedPlan {
   const fiveKSeconds = resolve5KSeconds(input);

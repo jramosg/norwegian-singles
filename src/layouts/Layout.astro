@@ -3,11 +3,13 @@ import '../styles/global.css';
 import '../styles/components.css';
 import '@fontsource-variable/inter';
 import { useTranslations } from '../i18n/ui';
+import { getAlternateSeoPath } from '../lib/seo-pages';
 
 interface Props {
   title?: string;
   description?: string;
   locale?: 'es' | 'en';
+  structuredData?: Record<string, unknown>[];
 }
 
 const { locale = 'es' } = Astro.props;
@@ -16,20 +18,32 @@ const t = useTranslations(locale);
 
 const title = Astro.props.title || t('seo.title');
 const description = Astro.props.description || t('seo.description');
+const structuredData = Astro.props.structuredData || [];
 
 const alternateLocale = locale === 'es' ? 'en' : 'es';
 const currentPath = Astro.url.pathname;
-const alternatePath = currentPath.replace(`/${locale}`, `/${alternateLocale}`);
+const alternatePath =
+  getAlternateSeoPath(currentPath, locale, alternateLocale) ||
+  currentPath.replace(`/${locale}`, `/${alternateLocale}`);
 const siteURL = 'https://norwegian-singles.app';
 
 const canonicalURL = new URL(currentPath, Astro.site || siteURL);
 const alternateURL = new URL(alternatePath, Astro.site || siteURL);
+const defaultURL = new URL(
+  locale === 'en' ? currentPath : alternatePath,
+  Astro.site || siteURL,
+);
 
 const schemaData = {
   '@context': 'https://schema.org',
-  '@type': 'WebApplication',
+  '@type': ['WebApplication', 'SoftwareApplication'],
   name: 'Norwegian Singles Method Calculator',
-  alternateName: ['NSM Calculator', 'Norwegian Method Training Planner'],
+  alternateName: [
+    'NSA Pace Calculator',
+    'NSM Calculator',
+    'Norwegian Singles Approach Calculator',
+    'Norwegian Method Training Planner',
+  ],
   url: siteURL,
   description: description,
   applicationCategory: 'HealthApplication',
@@ -46,24 +60,24 @@ const schemaData = {
   },
   about: {
     '@type': 'Thing',
-    name: 'Norwegian Singles Method',
+    name: 'Norwegian Singles Approach / Method',
     description:
-      "A sub-threshold running training system created by James Copeland (sirpoc), adapting Marius Bakken's elite double threshold method into single daily sessions for recreational and competitive runners.",
+      'A sub-threshold running approach that adapts Norwegian-style threshold principles into single-session training weeks for recreational and competitive runners.',
     sameAs: [],
   },
   keywords:
-    'Norwegian method, Norwegian Singles, NSM, sub-threshold, lactate threshold, Marius Bakken, James Copeland, sirpoc, double threshold, running training plan, 5K pace calculator, marathon training',
+    'NSA, NSM, Norwegian Singles Approach, Norwegian Singles Method, Norwegian method, sub-threshold, lactate threshold, double threshold, running training plan, 5K pace calculator, marathon training',
 };
 
 const faqEntries = [
   {
     en: {
       q: 'What is the Norwegian Singles Method (NSM)?',
-      a: "The Norwegian Singles Method is James Copeland's (sirpoc) adaptation of Marius Bakken's elite double threshold training system. It simplifies the Norwegian Method into single daily sub-threshold sessions — 3, 6, and 10-minute intervals with short recovery — maximizing aerobic gains while minimizing injury risk through controlled intensity and high consistency.",
+      a: 'The Norwegian Singles Method, also called the Norwegian Singles Approach (NSA), is a practical way to apply Norwegian-style sub-threshold training with single daily sessions. It commonly uses 3, 6, and 10-minute intervals with short recoveries, plus very easy running around the quality days.',
     },
     es: {
       q: '¿Qué es el método Norwegian Singles (NSM)?',
-      a: 'El Norwegian Singles Method es la adaptación de James Copeland (sirpoc) del sistema de doble umbral de Marius Bakken. Simplifica el Método Noruego en sesiones sub-umbral únicas diarias — intervalos de 3, 6 y 10 minutos con recuperaciones cortas — maximizando las ganancias aeróbicas y minimizando el riesgo de lesión.',
+      a: 'El Norwegian Singles Method, también llamado Norwegian Singles Approach (NSA), es una forma práctica de aplicar entrenamiento sub-umbral de estilo noruego con una sola sesión diaria. Suele usar intervalos de 3, 6 y 10 minutos con recuperaciones cortas, más rodajes muy fáciles alrededor de los días de calidad.',
     },
   },
   {
@@ -79,11 +93,11 @@ const faqEntries = [
   {
     en: {
       q: 'How do I calculate my sub-threshold pace?',
-      a: 'Enter your 5K race time (or 10K time) in the calculator and it automatically computes your three sub-threshold paces using Table 1.4 from the NSM book: 3-minute rep pace (~15K race effort), 6-minute rep pace (~30K effort), and 10-minute rep pace (close to marathon effort). It also calculates your easy pace from Table 2.3.',
+      a: 'Enter your 5K race time, or a 10K time if that is what you have. The calculator estimates three practical sub-threshold targets: 3-minute reps, 6-minute reps, and 10-minute reps, plus an easy pace for non-quality days.',
     },
     es: {
       q: '¿Cómo calculo mi ritmo sub-umbral?',
-      a: 'Introduce tu marca de 5K (o 10K) en la calculadora y automáticamente calcula tus tres ritmos sub-umbral usando la Tabla 1.4 del libro NSM: ritmo de repetición de 3 minutos (~esfuerzo de 15K), ritmo de 6 minutos (~esfuerzo de 30K), y ritmo de 10 minutos (cercano al ritmo de maratón). También calcula tu ritmo fácil de la Tabla 2.3.',
+      a: 'Introduce tu marca de 5K, o una marca de 10K si es lo que tienes. La calculadora estima tres ritmos sub-umbral prácticos: repeticiones de 3 minutos, 6 minutos y 10 minutos, además del ritmo fácil para los días sin calidad.',
     },
   },
   {
@@ -99,21 +113,21 @@ const faqEntries = [
   {
     en: {
       q: 'What book is the Norwegian Singles Method from?',
-      a: '"NSM: Subthreshold Running Kept Simple" by James Copeland. The book provides the complete pace tables, weekly training structures, tapering protocols, and a 15-week marathon build plan. This calculator implements the book\'s tables and plans digitally.',
+      a: '"NSM: Subthreshold Running Kept Simple" by James Copeland is one of the main references runners use for this method. This independent calculator helps runners turn recent race fitness into practical NSA/NSM paces and weekly plan structures.',
     },
     es: {
       q: '¿De qué libro viene el Norwegian Singles Method?',
-      a: '"NSM: Subthreshold Running Kept Simple" de James Copeland. El libro proporciona las tablas completas de ritmos, estructuras semanales de entrenamiento, protocolos de tapering y un plan de preparación de maratón de 15 semanas. Esta calculadora implementa las tablas y planes del libro digitalmente.',
+      a: '"NSM: Subthreshold Running Kept Simple" de James Copeland es una de las referencias principales que usan los corredores para este método. Esta calculadora independiente ayuda a convertir tu estado de forma reciente en ritmos NSA/NSM y estructuras semanales prácticas.',
     },
   },
   {
     en: {
       q: 'Can I use NSM to train for a marathon?',
-      a: 'Yes. This app includes the full 15-week "My Marathon Build" from the NSM book. Enter your marathon date and the app generates a progressive plan with sub-threshold sessions, marathon-pace specific workouts, tune-up races (parkrun, 10K, half marathon), and a proper taper leading to race day.',
+      a: 'Yes. Enter your marathon date and the app generates a 15-week build with sub-threshold sessions, marathon-pace specific workouts, tune-up races, and a taper leading to race day.',
     },
     es: {
       q: '¿Puedo usar NSM para preparar un maratón?',
-      a: 'Sí. Esta app incluye el plan completo de 15 semanas "My Marathon Build" del libro NSM. Introduce la fecha de tu maratón y la app genera un plan progresivo con sesiones sub-umbral, sesiones específicas a ritmo maratón, carreras de puesta a punto (parkrun, 10K, media maratón) y un tapering adecuado.',
+      a: 'Sí. Introduce la fecha de tu maratón y la app genera una preparación de 15 semanas con sesiones sub-umbral, sesiones específicas a ritmo maratón, carreras de puesta a punto y taper.',
     },
   },
   {
@@ -140,6 +154,8 @@ const faqData = {
     },
   })),
 };
+
+const allStructuredData = [schemaData, faqData, ...structuredData];
 ---
 
 <!doctype html>
@@ -155,8 +171,8 @@ const faqData = {
     <meta
       name="keywords"
       content={locale === 'es'
-        ? 'método noruego, Norwegian Singles, NSM, sub-umbral, entrenamiento umbral lactato, Marius Bakken, James Copeland, sirpoc, doble umbral, plan entrenamiento correr, calculadora ritmo 5K, preparación maratón, entrenamiento resistencia'
-        : 'Norwegian method, Norwegian Singles Method, NSM, sub-threshold, lactate threshold training, Marius Bakken, James Copeland, sirpoc, double threshold, running training plan, 5K pace calculator, marathon training, endurance training'}
+        ? 'NSA, NSM, Norwegian Singles Approach, Norwegian Singles Method, método noruego, sub-umbral, entrenamiento umbral lactato, doble umbral, plan entrenamiento correr, calculadora ritmo 5K, preparación maratón, entrenamiento resistencia'
+        : 'NSA, NSM, Norwegian Singles Approach, Norwegian Singles Method, Norwegian method, sub-threshold, lactate threshold training, double threshold, running training plan, 5K pace calculator, marathon training, endurance training'}
     />
 
     <!-- Preconnect to Buy Me a Coffee CDNs (floating widget) -->
@@ -174,7 +190,7 @@ const faqData = {
     <link rel="canonical" href={canonicalURL.href} />
     <link rel="alternate" hreflang={locale} href={canonicalURL.href} />
     <link rel="alternate" hreflang={alternateLocale} href={alternateURL.href} />
-    <link rel="alternate" hreflang="x-default" href={canonicalURL.href} />
+    <link rel="alternate" hreflang="x-default" href={defaultURL.href} />
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
@@ -192,16 +208,15 @@ const faqData = {
     <meta name="twitter:image" content={`${siteURL}/og-image.png`} />
 
     <!-- Structured Data -->
-    <script
-      type="application/ld+json"
-      is:inline
-      set:html={JSON.stringify(schemaData)}
-    />
-    <script
-      type="application/ld+json"
-      is:inline
-      set:html={JSON.stringify(faqData)}
-    />
+    {
+      allStructuredData.map((data) => (
+        <script
+          type="application/ld+json"
+          is:inline
+          set:html={JSON.stringify(data)}
+        />
+      ))
+    }
 
     <title>{title}</title>
   </head>
