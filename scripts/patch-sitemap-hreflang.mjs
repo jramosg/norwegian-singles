@@ -22,7 +22,7 @@ function escapeXml(value) {
 function pageUrl(file) {
   const path = relative(distDir, file).replace(/\\/g, '/');
   if (path === 'index.html') return `${site}/`;
-  return `${site}/${path.replace(/(?:^|\/)index\.html$/, '')}`;
+  return `${site}/${path.replace(/index\.html$/, '')}`;
 }
 
 function readAlternates(file) {
@@ -34,9 +34,7 @@ function readAlternates(file) {
 
   for (const match of head.matchAll(re)) {
     const [, hreflang, href] = match;
-    if (hreflang !== 'x-default') {
-      alternates.push({ hreflang, href });
-    }
+    alternates.push({ hreflang, href });
   }
   return alternates;
 }
