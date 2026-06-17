@@ -3,7 +3,7 @@
 import type { Locale } from '../types';
 
 export const defaultLocale: Locale = 'en';
-export const locales: Locale[] = ['en', 'es', 'ko'];
+export const locales: Locale[] = ['en', 'es', 'ko', 'de', 'fr'];
 
 export const languageLabels: Record<
   Locale,
@@ -35,6 +35,20 @@ export const languageLabels: Record<
     nativeName: '한국어',
     hreflang: 'ko',
     og: 'ko_KR',
+  },
+  de: {
+    code: 'DE',
+    name: 'German',
+    nativeName: 'Deutsch',
+    hreflang: 'de',
+    og: 'de_DE',
+  },
+  fr: {
+    code: 'FR',
+    name: 'French',
+    nativeName: 'Français',
+    hreflang: 'fr',
+    og: 'fr_FR',
   },
 };
 
@@ -404,9 +418,9 @@ export const ui = {
       'Enjoying the free training planner? Fuel the next features with a coffee',
 
     // SEO
-    'seo.title': 'Norwegian Singles Calculator, NSA / NSM Paces and Plans',
+    'seo.title': 'Norwegian Singles Calculator & App: NSA / NSM Paces & Plans',
     'seo.description':
-      'Free Norwegian Singles calculator for NSA / NSM runners. Calculate sub-threshold paces from your 5K or 10K, 4.5-9h plans, and marathon builds.',
+      'Free Norwegian Singles calculator and app for NSA / NSM runners. Calculate sub-threshold paces from your 5K or 10K, build 4.5-9h weekly plans, and a 15-week marathon plan.',
 
     // SEO Content Section
     'seo.content.h2': 'What is the Norwegian Singles Method?',
@@ -615,6 +629,412 @@ export const ui = {
     cancel: '취소',
     edit: '수정',
     delete: '삭제',
+  },
+  de: {
+    // Navigation
+    'nav.home': 'Start',
+    'nav.plan': 'Mein Plan',
+    'nav.method': 'Die Methode',
+
+    // Hero
+    'hero.title': 'Norwegian Singles',
+    'hero.titleAccent': 'NSA / NSM Rechner',
+    'hero.subtitle':
+      'Gib ein beliebiges Rennergebnis ein und erhalte NSA / NSM Sub-Threshold-Paces, deinen Jack-Daniels-VDOT-Wert mit Trainingszonen und einen 15-wöchigen Marathon-Aufbau.',
+    'hero.cta': 'Plan erstellen',
+
+    // Form
+    'form.title': 'Training einstellen',
+    'form.targetDistance': 'Zieldistanz',
+    'form.time5K': 'Aktuelle 5K-Zeit',
+    'form.time10K': 'Aktuelle 10K-Zeit',
+    'form.timePlaceholder': 'mm:ss',
+    'form.timeHint':
+      'Gib mindestens eine Zeit ein (5K oder 10K). Die andere schätzen wir automatisch.',
+    'form.trainingDays': 'Trainingstage',
+    'form.trainingDaysHint': 'Wir empfehlen 5-6 Tage für optimale Ergebnisse',
+    'form.daysPerWeek': 'Tage/Woche',
+    'form.unit': 'Pace-Einheit',
+    'unit.km': 'km',
+    'unit.mile': 'mi',
+    'form.previewThreshold': 'Sub-Threshold',
+    'form.previewEasy': 'Locker',
+    'form.submit': 'Plan generieren',
+    'form.validation.required': 'Gib mindestens eine Zeit ein',
+    'form.validation.format': 'Ungültiges Format (mm:ss verwenden)',
+
+    // Distances
+    'distance.5K': '5K',
+    'distance.10K': '10K',
+    'distance.21K': 'Halbmarathon',
+    'distance.42K': 'Marathon',
+
+    // Session types
+    'session.easy': 'Locker',
+    'session.threshold': 'Sub-Threshold',
+    'session.long': 'Langer Lauf',
+    'session.test': 'Test',
+    'session.rest': 'Ruhe',
+    'session.race': 'Rennen',
+
+    // Paces
+    'pace.threshold': 'Sub-Threshold',
+    'pace.easy': 'Locker',
+    'pace.unit': 'min/km',
+    'pace.intervals.short': "Kurze Sub-T (3-4')",
+    'pace.intervals.medium': "Mittlere Sub-T (6-8')",
+    'pace.intervals.long': "Lange Sub-T (10-12')",
+
+    // Plan
+    'plan.title': 'Dein Trainingsplan',
+    'plan.week': 'Woche',
+    'plan.block': 'Block',
+    'plan.testWeek': 'Testwoche',
+    'plan.paces': 'Deine Paces',
+    'plan.intervals': 'NS-Intervalle',
+    'plan.addRace': 'Rennen hinzufügen',
+    'plan.recalculate': 'Neu berechnen',
+
+    // Tapering
+    'taper.tab': 'Tapering',
+    'taper.title.10k': 'Taper auf 10K (Rennwoche)',
+    'taper.title.recovery10k': 'Erholung nach 10K',
+    'taper.title.half': 'Taper auf Halbmarathon (Rennwoche)',
+    'taper.title.recoveryHalf': 'Erholung nach Halbmarathon',
+    'taper.desc.easy_normal': 'Locker wie in einer normalen Woche',
+    'taper.desc.subt_normal': 'Normales Sub-T-Training',
+    'taper.desc.10k_taper_thursday':
+      '6–8 × 3 min @ ~HM-Pace, letzte 2 Wdh. im 10K-Zieltempo',
+    'taper.desc.easy_shorter_30': 'Sehr locker, 30 % kürzer als normal',
+    'taper.desc.easy_shorter_40': 'Sehr locker, 40 % kürzer als normal',
+    'taper.desc.race': 'Rennen',
+    'taper.desc.easy_shorter_20_25': 'Locker, 20–25 % kürzer als normal',
+    'taper.desc.3x10_mp_reduced': '3 × 10 min @ MP (reduzierte Intensität)',
+    'taper.desc.scheduled_normal_workout': 'Geplantes normales Training',
+    'taper.desc.normal_long_run': 'Normaler langer Lauf',
+    'taper.desc.half_taper_thursday':
+      '6–8 × 3 min @ MP, letzte 2 Wdh. im HM-Zieltempo',
+    'taper.desc.easy_shorter_50': 'Sehr locker, 50 % kürzer als normal',
+    'taper.desc.easy_shorter_30_40': 'Sehr locker, 30–40 % kürzer als normal',
+    'taper.desc.easy_or_shorter_30': 'Locker oder 30 % kürzer als normal',
+    'taper.desc.3x6_mp_reduced': '3 × 6 min @ MP (reduzierte Intensität)',
+    'taper.desc.long_run_or_15_shorter':
+      'Langer Lauf (oder 15 % kürzer bei Ermüdung)',
+
+    // Days
+    'day.monday': 'Montag',
+    'day.tuesday': 'Dienstag',
+    'day.wednesday': 'Mittwoch',
+    'day.thursday': 'Donnerstag',
+    'day.friday': 'Freitag',
+    'day.saturday': 'Samstag',
+    'day.sunday': 'Sonntag',
+    'day.mon': 'Mo',
+    'day.tue': 'Di',
+    'day.wed': 'Mi',
+    'day.thu': 'Do',
+    'day.fri': 'Fr',
+    'day.sat': 'Sa',
+    'day.sun': 'So',
+
+    // Races
+    'race.title': 'Rennen',
+    'race.add': 'Rennen hinzufügen',
+    'race.name': 'Name',
+    'race.date': 'Datum',
+    'race.type': 'Typ',
+    'race.typeA': 'Rennen A (Priorität)',
+    'race.typeB': 'Rennen B (sekundär)',
+    'race.remove': 'Entfernen',
+
+    // Intervals table
+    'intervals.type': 'Typ',
+    'intervals.structure': 'Struktur',
+    'intervals.pace': 'Zieltempo',
+    'intervals.recovery': 'Pause',
+    'intervals.byTime': 'Nach Zeit',
+    'intervals.byDistance': 'Nach Distanz',
+
+    // Methodology
+    'method.title': 'Die Norwegian Singles Method',
+    'method.principle1.title': 'Der Sub-T-Spielraum',
+    'method.principle1.desc':
+      'Laufe die Schlüsseleinheiten unter der Schwelle. Halte sie bei rund 20-25 % des Wochenumfangs.',
+    'method.principle2.title': 'Nie bis zur Erschöpfung',
+    'method.principle2.desc':
+      'Nutze Paces, die du Woche für Woche wiederholen kannst. Beende die Einheit mit Reserve.',
+    'method.principle3.title': 'Kurze Pausen',
+    'method.principle3.desc':
+      'Erhole dich rund 60 Sekunden, damit die Einheit in Fluss bleibt.',
+    'method.principle4.title': 'Wiederholbare Wochen',
+    'method.principle4.desc':
+      'Konstanz vor Abwechslung. Wiederhole eine solide Wochenstruktur und lass deine Paces mit steigendem VDOT mitwachsen.',
+
+    // Books / affiliate
+    'books.title': 'Empfohlene Bücher',
+    'books.subtitle': 'Referenzbücher zur Methode.',
+    'books.cta': 'Bei Amazon ansehen',
+    'books.affiliate': 'Affiliate-Links',
+
+    // Footer
+    'footer.credit': 'Basierend auf der Norwegian-Singles-Trainingsmethode',
+    'footer.disclaimer':
+      'Inoffizielles Planungstool. Es steht in keiner Verbindung zu den genannten Autoren, Trainern oder Marken. Konsultiere vor Beginn eines Plans eine Fachperson.',
+    'footer.dev': 'Entwickelt von',
+    'footer.support': 'Projekt unterstützen',
+    'footer.supportTagline':
+      'Hilf, künftige Funktionen wie Senden an die Uhr, Kalenderdruck und mehr zu finanzieren.',
+    'support.floatingMessage':
+      'Gefällt dir der kostenlose Trainingsplaner? Unterstütze die nächsten Funktionen mit einem Kaffee',
+    'support.floatingButton': 'Spendier mir einen Kaffee',
+    'support.floatingAria':
+      'Gefällt dir der kostenlose Trainingsplaner? Unterstütze die nächsten Funktionen mit einem Kaffee',
+
+    // SEO
+    'seo.title': 'Norwegian Singles Rechner: NSA / NSM Paces und Pläne',
+    'seo.description':
+      'Kostenloser Norwegian Singles Rechner für NSA / NSM. Berechne Sub-Threshold-Paces aus deiner 5K oder 10K, 4.5-9h-Pläne und Marathon-Aufbauten.',
+
+    // SEO Content Section
+    'seo.content.h2': 'Was ist die Norwegian Singles Method?',
+    'seo.content.intro':
+      'Der <strong>Norwegian Singles Approach (NSA)</strong>, auch <strong>Norwegian Singles Method (NSM)</strong> genannt, überträgt norwegische Sub-Threshold-Prinzipien in <strong>einzelne Tageseinheiten</strong>, die für Hobbyläufer machbar sind.',
+    'seo.content.doubleThreshold.title':
+      'Vom Double Threshold zu Norwegian Singles',
+    'seo.content.doubleThreshold.text':
+      'Die ursprüngliche <strong>norwegische Methode</strong> nutzt zwei Schwelleneinheiten pro Tag, eine morgens und eine abends. Die meisten Läufer schaffen diesen Umfang nicht. NSM behält drei Bausteine: Sub-Threshold-Intensität, kurze Pausen und eine stabile Woche.',
+    'seo.content.howItWorks.title': 'So funktioniert die Methode',
+    'seo.content.howItWorks.text':
+      'Jede Woche folgt derselben wiederholbaren Struktur: <strong>drei Sub-Threshold-Einheiten</strong> (Dienstag, Donnerstag, Samstag) plus lockere Läufe an den übrigen Tagen. Die Sub-Threshold-Einheiten nutzen drei verschiedene Intervalllängen:',
+    'seo.content.howItWorks.rep3':
+      '<strong>3-Minuten-Intervalle</strong>: nahe 15K-Belastung, mit 60 Sekunden Pause',
+    'seo.content.howItWorks.rep6':
+      '<strong>6-Minuten-Intervalle</strong>: nahe 30K-Belastung, mit 60-90 s Pause',
+    'seo.content.howItWorks.rep10':
+      '<strong>10-Minuten-Intervalle</strong>: nahe Marathon-Belastung, mit 90-120 s Pause',
+    'seo.content.howItWorks.paces':
+      'Der Rechner nutzt deine aktuelle <strong>5K- oder 10K-Zeit</strong>, um Trainingsziele festzulegen. Du läufst unter der Laktatschwelle und beendest die Einheit mit Reserve.',
+    'seo.content.weeklyPlans.title': 'Wochenpläne: 4.5 bis 9 Stunden',
+    'seo.content.weeklyPlans.text':
+      'NSM bietet Pläne von <strong>4.5 bis 9 Stunden pro Woche</strong>. Mit wachsender Form kommen mehr Intervalle und lockere Laufzeit hinzu. Wechsle zur nächsten Stufe nach mehreren komfortablen Wochen.',
+    'seo.content.marathon.title': 'Marathon-Aufbau: 15-Wochen-Programm',
+    'seo.content.marathon.text':
+      'Für Läufer mit Marathonziel erstellt diese App einen <strong>15-wöchigen Marathon-Aufbau</strong> mit progressiven langen Läufen, Tune-up-Rennen und <strong>marathonspezifischen Einheiten</strong> in den letzten Wochen. Gib dein Marathondatum ein und die App erstellt den gesamten Countdown.',
+    'seo.content.whoIsItFor.title': 'Für wen ist das gedacht?',
+    'seo.content.whoIsItFor.text':
+      'NSM funktioniert für viele Niveaus: von einer 30-Minuten-5K bis zu Sub-15-Athleten. Die Tabellen decken 5K-Zeiten von 15:00 bis 30:00 ab. Nutze dieselbe Struktur für eine erste 10K oder eine Marathon-Bestzeit.',
+
+    // Misc
+    loading: 'Lädt...',
+    error: 'Fehler',
+    save: 'Speichern',
+    cancel: 'Abbrechen',
+    edit: 'Bearbeiten',
+    delete: 'Löschen',
+  },
+  fr: {
+    // Navigation
+    'nav.home': 'Accueil',
+    'nav.plan': 'Mon plan',
+    'nav.method': 'La méthode',
+
+    // Hero
+    'hero.title': 'Norwegian Singles',
+    'hero.titleAccent': 'Calculateur NSA / NSM',
+    'hero.subtitle':
+      "Saisis n'importe quel résultat de course pour obtenir tes allures sous-seuil NSA / NSM, ton score VDOT de Jack Daniels avec les zones d'entraînement et un plan marathon de 15 semaines.",
+    'hero.cta': 'Créer mon plan',
+
+    // Form
+    'form.title': 'Configure ton entraînement',
+    'form.targetDistance': 'Distance cible',
+    'form.time5K': 'Temps actuel 5K',
+    'form.time10K': 'Temps actuel 10K',
+    'form.timePlaceholder': 'mm:ss',
+    'form.timeHint':
+      "Saisis au moins un temps (5K ou 10K). Nous estimerons l'autre automatiquement.",
+    'form.trainingDays': "Jours d'entraînement",
+    'form.trainingDaysHint':
+      'Nous recommandons 5-6 jours pour des résultats optimaux',
+    'form.daysPerWeek': 'jours/semaine',
+    'form.unit': "Unité d'allure",
+    'unit.km': 'km',
+    'unit.mile': 'mi',
+    'form.previewThreshold': 'Sous-seuil',
+    'form.previewEasy': 'Facile',
+    'form.submit': 'Générer le plan',
+    'form.validation.required': 'Saisis au moins un temps',
+    'form.validation.format': 'Format invalide (utilise mm:ss)',
+
+    // Distances
+    'distance.5K': '5K',
+    'distance.10K': '10K',
+    'distance.21K': 'Semi-marathon',
+    'distance.42K': 'Marathon',
+
+    // Session types
+    'session.easy': 'Facile',
+    'session.threshold': 'Sous-seuil',
+    'session.long': 'Sortie longue',
+    'session.test': 'Test',
+    'session.rest': 'Repos',
+    'session.race': 'Course',
+
+    // Paces
+    'pace.threshold': 'Sous-seuil',
+    'pace.easy': 'Facile',
+    'pace.unit': 'min/km',
+    'pace.intervals.short': "Sous-S courts (3-4')",
+    'pace.intervals.medium': "Sous-S moyens (6-8')",
+    'pace.intervals.long': "Sous-S longs (10-12')",
+
+    // Plan
+    'plan.title': "Ton plan d'entraînement",
+    'plan.week': 'Semaine',
+    'plan.block': 'Bloc',
+    'plan.testWeek': 'Semaine test',
+    'plan.paces': 'Tes allures',
+    'plan.intervals': 'Intervalles NS',
+    'plan.addRace': 'Ajouter une course',
+    'plan.recalculate': 'Recalculer',
+
+    // Tapering
+    'taper.tab': 'Affûtage',
+    'taper.title.10k': 'Affûtage vers le 10K (semaine de course)',
+    'taper.title.recovery10k': 'Récupération après le 10K',
+    'taper.title.half': 'Affûtage vers le semi (semaine de course)',
+    'taper.title.recoveryHalf': 'Récupération après le semi',
+    'taper.desc.easy_normal': 'Facile comme une semaine normale',
+    'taper.desc.subt_normal': 'Séance sous-seuil normale',
+    'taper.desc.10k_taper_thursday':
+      '6–8 × 3 min @ ~allure semi, 2 dernières répét. à allure objectif 10K',
+    'taper.desc.easy_shorter_30': 'Très facile, 30 % plus court que normal',
+    'taper.desc.easy_shorter_40': 'Très facile, 40 % plus court que normal',
+    'taper.desc.race': 'Course',
+    'taper.desc.easy_shorter_20_25': 'Facile, 20–25 % plus court que normal',
+    'taper.desc.3x10_mp_reduced': '3 × 10 min @ AM (intensité réduite)',
+    'taper.desc.scheduled_normal_workout': 'Séance normale prévue',
+    'taper.desc.normal_long_run': 'Sortie longue normale',
+    'taper.desc.half_taper_thursday':
+      '6–8 × 3 min @ AM, 2 dernières répét. à allure objectif semi',
+    'taper.desc.easy_shorter_50': 'Très facile, 50 % plus court que normal',
+    'taper.desc.easy_shorter_30_40':
+      'Très facile, 30–40 % plus court que normal',
+    'taper.desc.easy_or_shorter_30': 'Facile ou 30 % plus court que normal',
+    'taper.desc.3x6_mp_reduced': '3 × 6 min @ AM (intensité réduite)',
+    'taper.desc.long_run_or_15_shorter':
+      'Sortie longue (ou 15 % plus courte si fatigue)',
+
+    // Days
+    'day.monday': 'Lundi',
+    'day.tuesday': 'Mardi',
+    'day.wednesday': 'Mercredi',
+    'day.thursday': 'Jeudi',
+    'day.friday': 'Vendredi',
+    'day.saturday': 'Samedi',
+    'day.sunday': 'Dimanche',
+    'day.mon': 'Lun',
+    'day.tue': 'Mar',
+    'day.wed': 'Mer',
+    'day.thu': 'Jeu',
+    'day.fri': 'Ven',
+    'day.sat': 'Sam',
+    'day.sun': 'Dim',
+
+    // Races
+    'race.title': 'Courses',
+    'race.add': 'Ajouter une course',
+    'race.name': 'Nom',
+    'race.date': 'Date',
+    'race.type': 'Type',
+    'race.typeA': 'Course A (priorité)',
+    'race.typeB': 'Course B (secondaire)',
+    'race.remove': 'Supprimer',
+
+    // Intervals table
+    'intervals.type': 'Type',
+    'intervals.structure': 'Structure',
+    'intervals.pace': 'Allure cible',
+    'intervals.recovery': 'Récupération',
+    'intervals.byTime': 'Par temps',
+    'intervals.byDistance': 'Par distance',
+
+    // Methodology
+    'method.title': 'La Norwegian Singles Method',
+    'method.principle1.title': 'La marge sous-seuil',
+    'method.principle1.desc':
+      'Cours les séances clés sous le seuil. Garde-les autour de 20-25 % du volume hebdomadaire.',
+    'method.principle2.title': "Jamais jusqu'à l'échec",
+    'method.principle2.desc':
+      'Utilise des allures que tu peux répéter semaine après semaine. Termine avec de la réserve.',
+    'method.principle3.title': 'Récupérations courtes',
+    'method.principle3.desc':
+      'Récupère environ 60 secondes pour que la séance reste fluide.',
+    'method.principle4.title': 'Semaines répétables',
+    'method.principle4.desc':
+      'La régularité avant la variété. Répète une structure hebdomadaire solide et laisse tes allures progresser avec ton VDOT.',
+
+    // Books / affiliate
+    'books.title': 'Livres recommandés',
+    'books.subtitle': 'Livres de référence sur la méthode.',
+    'books.cta': 'Voir sur Amazon',
+    'books.affiliate': "Liens d'affiliation",
+
+    // Footer
+    'footer.credit': "Basé sur la méthode d'entraînement Norwegian Singles",
+    'footer.disclaimer':
+      "Outil de planification non officiel. Il n'a aucun lien avec les auteurs, entraîneurs ou marques mentionnés. Consulte un professionnel avant de commencer un plan.",
+    'footer.dev': 'Développé par',
+    'footer.support': 'Soutenir le projet',
+    'footer.supportTagline':
+      "Aide à financer les futures fonctions comme l'envoi à la montre, l'impression du calendrier et plus.",
+    'support.floatingMessage':
+      'Tu aimes ce planificateur gratuit ? Soutiens les prochaines fonctions avec un café',
+    'support.floatingButton': 'Offre-moi un café',
+    'support.floatingAria':
+      'Tu aimes ce planificateur gratuit ? Soutiens les prochaines fonctions avec un café',
+
+    // SEO
+    'seo.title': 'Calculateur Norwegian Singles : allures et plans NSA / NSM',
+    'seo.description':
+      'Calculateur Norwegian Singles gratuit pour NSA / NSM. Calcule tes allures sous-seuil à partir de ton 5K ou 10K, des plans de 4.5-9h et un plan marathon.',
+
+    // SEO Content Section
+    'seo.content.h2': "Qu'est-ce que la Norwegian Singles Method ?",
+    'seo.content.intro':
+      "La <strong>Norwegian Singles Approach (NSA)</strong>, aussi appelée <strong>Norwegian Singles Method (NSM)</strong>, applique les principes norvégiens d'entraînement sous-seuil dans des <strong>séances uniques quotidiennes</strong> accessibles aux coureurs de tous niveaux.",
+    'seo.content.doubleThreshold.title':
+      'Du double seuil aux Norwegian Singles',
+    'seo.content.doubleThreshold.text':
+      'La <strong>méthode norvégienne</strong> originale utilise deux séances de seuil par jour, une le matin et une le soir. La plupart des coureurs ne peuvent pas tenir ce volume. NSM conserve trois éléments : intensité sous-seuil, récupérations courtes et une semaine stable.',
+    'seo.content.howItWorks.title': 'Comment fonctionne la méthode',
+    'seo.content.howItWorks.text':
+      "Chaque semaine suit la même structure répétable : <strong>trois séances sous-seuil</strong> (mardi, jeudi, samedi) plus des footings faciles les autres jours. Les séances sous-seuil utilisent trois longueurs d'intervalle différentes :",
+    'seo.content.howItWorks.rep3':
+      "<strong>Intervalles de 3 minutes</strong> : proche de l'effort 15K, avec 60 secondes de récupération",
+    'seo.content.howItWorks.rep6':
+      "<strong>Intervalles de 6 minutes</strong> : proche de l'effort 30K, avec 60-90 s de récupération",
+    'seo.content.howItWorks.rep10':
+      "<strong>Intervalles de 10 minutes</strong> : proche de l'effort marathon, avec 90-120 s de récupération",
+    'seo.content.howItWorks.paces':
+      "Le calculateur utilise ton <strong>temps actuel sur 5K ou 10K</strong> pour fixer les cibles d'entraînement. Tu cours sous le seuil lactique et tu termines avec de la réserve.",
+    'seo.content.weeklyPlans.title': 'Plans hebdomadaires : 4.5 à 9 heures',
+    'seo.content.weeklyPlans.text':
+      'NSM propose des plans de <strong>4.5 à 9 heures par semaine</strong>. À mesure que la forme progresse, le plan ajoute des intervalles et du temps de footing. Passe au palier suivant après plusieurs semaines confortables.',
+    'seo.content.marathon.title': 'Plan marathon : programme de 15 semaines',
+    'seo.content.marathon.text':
+      "Pour les coureurs visant un marathon, cette app génère un <strong>plan marathon de 15 semaines</strong> avec des sorties longues progressives, des courses de préparation et des <strong>séances à allure marathon</strong> dans les dernières semaines. Saisis la date de ton marathon et l'app génère tout le compte à rebours.",
+    'seo.content.whoIsItFor.title': 'Pour qui est-ce fait ?',
+    'seo.content.whoIsItFor.text':
+      "NSM fonctionne pour de nombreux niveaux : d'un 5K en 30 minutes aux athlètes sous les 15 minutes. Les tables couvrent des temps 5K de 15:00 à 30:00. Utilise la même structure pour un premier 10K ou un record sur marathon.",
+
+    // Misc
+    loading: 'Chargement...',
+    error: 'Erreur',
+    save: 'Enregistrer',
+    cancel: 'Annuler',
+    edit: 'Modifier',
+    delete: 'Supprimer',
   },
 } as const;
 

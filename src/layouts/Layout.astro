@@ -51,9 +51,12 @@ const schemaData = {
   name: 'Norwegian Singles Method Calculator',
   alternateName: [
     'Norwegian Singles Calculator',
+    'Norwegian Singles App',
+    'Norwegian Singles Method App',
     'NSA Pace Calculator',
     'NSM Calculator',
     'NSM Pace Calculator',
+    'NSM Running',
     'Norwegian Singles Approach Calculator',
     'Norwegian Singles Method Calculator',
     'Norwegian Method Training Planner',
@@ -104,7 +107,11 @@ const allStructuredData = [schemaData, ...structuredData];
         ? 'NSA, NSM, calculadora Norwegian Singles, Norwegian Singles Method, calculadora NSM, método noruego, sub-umbral, calculadora ritmos Marius Bakken, James Copeland Norwegian Singles, plan entrenamiento correr, calculadora ritmo 5K, preparación maratón'
         : locale === 'ko'
           ? 'NSM 러닝, NSM 훈련법, Norwegian Singles Method, Norwegian Singles 계산기, NSM 계산기, 서브스레숄드 러닝, 노르웨이식 훈련, 마라톤 훈련 플랜, 5K 페이스 계산기'
-          : 'NSA, NSM, Norwegian Singles calculator, Norwegian Singles Approach, Norwegian Singles Method, NSM calculator, NSM running, Norwegian method calculator, sub-threshold pace calculator, Marius Bakken pace calculator, James Copeland Norwegian Singles, running training plan, 5K pace calculator, marathon training'}
+          : locale === 'de'
+            ? 'NSA, NSM, Norwegian Singles Rechner, Norwegian Singles Method, NSM Rechner, norwegische Methode, Sub-Threshold, Schwellentraining, Marius Bakken Pace-Rechner, James Copeland Norwegian Singles, Laufplan, 5K Pace-Rechner, Marathontraining, Norwegian Singles App'
+            : locale === 'fr'
+              ? 'NSA, NSM, calculateur Norwegian Singles, Norwegian Singles Method, calculateur NSM, méthode norvégienne, sous-seuil, allure seuil, calculateur Marius Bakken, James Copeland Norwegian Singles, plan entraînement course, calculateur allure 5K, entraînement marathon, application Norwegian Singles'
+              : 'NSA, NSM, Norwegian Singles calculator, Norwegian Singles app, Norwegian Singles Approach, Norwegian Singles Method, NSM calculator, NSM running, Norwegian method calculator, sub-threshold pace calculator, Marius Bakken pace calculator, James Copeland Norwegian Singles, running training plan, 5K pace calculator, marathon training'}
     />
 
     <!-- Favicon -->
@@ -185,7 +192,7 @@ const allStructuredData = [schemaData, ...structuredData];
       (function () {
         const path = window.location.pathname;
         const locale = path.split('/')[1];
-        if (locale === 'en' || locale === 'es' || locale === 'ko') {
+        if (['en', 'es', 'ko', 'de', 'fr'].includes(locale)) {
           localStorage.setItem('ns-locale', locale);
         }
       })();

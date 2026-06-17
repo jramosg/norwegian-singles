@@ -227,6 +227,26 @@ const pages: Record<Locale, SeoLandingPage[]> = {
         'The <strong>VDOT running formula</strong> converts a race result into a fitness score and uses that score to assign training paces across all five zones. Enter any distance and time to see your VDOT, zone targets, and predicted times for common race distances.',
       howToName: 'Apply the VDOT running formula',
     },
+    {
+      slug: 'norwegian-singles-app',
+      title: 'Norwegian Singles App: Free NSA / NSM Calculator & Planner',
+      description:
+        'Free Norwegian Singles app for NSA / NSM runners. Calculate sub-threshold paces, build weekly plans and a 15-week marathon block right in your browser — no download.',
+      h1: 'Norwegian Singles app',
+      intro:
+        'This free <strong>Norwegian Singles app</strong> runs in any browser — no install, no account. Enter a recent 5K or 10K to get NSA / NSM sub-threshold paces, a repeatable weekly plan, and a 15-week marathon build you can save and share.',
+      howToName: 'Use the Norwegian Singles app',
+    },
+    {
+      slug: 'james-copeland-norwegian-singles',
+      title: 'James Copeland Norwegian Singles: Method Calculator',
+      description:
+        'Turn the James Copeland Norwegian Singles Method into real paces and plans. Free calculator for the sub-threshold single-session approach popularised by Copeland (sirpoc).',
+      h1: 'James Copeland Norwegian Singles Method calculator',
+      intro:
+        '<strong>James Copeland</strong> (known online as sirpoc) documented the <strong>Norwegian Singles Method</strong> — repeatable sub-threshold single sessions for everyday runners. This independent calculator turns a recent race result into the 3, 6, and 10-minute paces and weekly structure described in his work.',
+      howToName: 'Apply the James Copeland Norwegian Singles Method',
+    },
   ],
   es: [
     {
@@ -440,6 +460,26 @@ const pages: Record<Locale, SeoLandingPage[]> = {
         'La <strong>fórmula VDOT de running</strong> convierte una marca en una puntuación de forma física y asigna ritmos de entrenamiento para cada zona. Introduce cualquier distancia y tiempo para ver tu VDOT, los cinco objetivos de zona y los tiempos equivalentes en distancias habituales.',
       howToName: 'Aplicar la fórmula VDOT de running',
     },
+    {
+      slug: 'app-norwegian-singles',
+      title: 'App Norwegian Singles: Calculadora y planificador NSA / NSM',
+      description:
+        'App Norwegian Singles gratis para corredores NSA / NSM. Calcula ritmos sub-umbral, crea planes semanales y un bloque de maratón de 15 semanas en el navegador, sin descargar nada.',
+      h1: 'App Norwegian Singles',
+      intro:
+        'Esta <strong>app Norwegian Singles</strong> gratuita funciona en cualquier navegador, sin instalar y sin cuenta. Introduce una marca reciente de 5K o 10K para obtener ritmos sub-umbral NSA / NSM, un plan semanal repetible y una preparación de maratón de 15 semanas que puedes guardar y compartir.',
+      howToName: 'Usar la app Norwegian Singles',
+    },
+    {
+      slug: 'james-copeland-norwegian-singles',
+      title: 'James Copeland Norwegian Singles: Calculadora del método',
+      description:
+        'Convierte el Norwegian Singles Method de James Copeland en ritmos y planes reales. Calculadora gratis del enfoque sub-umbral de sesión única popularizado por Copeland (sirpoc).',
+      h1: 'Calculadora del método Norwegian Singles de James Copeland',
+      intro:
+        '<strong>James Copeland</strong> (conocido como sirpoc) documentó el <strong>Norwegian Singles Method</strong>: sesiones únicas sub-umbral repetibles para corredores populares. Esta calculadora independiente convierte una marca reciente en los ritmos de 3, 6 y 10 minutos y la estructura semanal de su método.',
+      howToName: 'Aplicar el método Norwegian Singles de James Copeland',
+    },
   ],
   ko: [
     {
@@ -652,6 +692,492 @@ const pages: Record<Locale, SeoLandingPage[]> = {
         '<strong>VDOT 러닝 공식</strong>은 레이스 기록을 체력 점수로 변환하고 그 점수에 따라 5가지 훈련 구역 페이스를 할당합니다. 어떤 거리와 시간이든 입력하면 VDOT, 구역별 목표 페이스, 주요 레이스 등가 기록을 확인할 수 있습니다.',
       howToName: 'VDOT 러닝 공식 적용하기',
     },
+    {
+      slug: 'norwegian-singles-app',
+      title: 'Norwegian Singles 앱: 무료 NSA / NSM 계산기 및 플래너',
+      description:
+        'NSA / NSM 러너를 위한 무료 Norwegian Singles 앱. 다운로드 없이 브라우저에서 서브스레숄드 페이스, 주간 플랜, 15주 마라톤 빌드업을 계산하세요.',
+      h1: 'Norwegian Singles 앱',
+      intro:
+        '이 무료 <strong>Norwegian Singles 앱</strong>은 설치나 계정 없이 어떤 브라우저에서도 작동합니다. 최근 5K 또는 10K 기록을 입력하면 NSA / NSM 서브스레숄드 페이스, 반복 가능한 주간 플랜, 저장·공유 가능한 15주 마라톤 빌드업을 얻을 수 있습니다.',
+      howToName: 'Norwegian Singles 앱 사용하기',
+    },
+    {
+      slug: 'james-copeland-norwegian-singles',
+      title: 'James Copeland Norwegian Singles: 방법 계산기',
+      description:
+        'James Copeland의 Norwegian Singles Method를 실제 페이스와 플랜으로 바꾸세요. Copeland(sirpoc)가 대중화한 단일 세션 서브스레숄드 방식을 위한 무료 계산기.',
+      h1: 'James Copeland Norwegian Singles Method 계산기',
+      intro:
+        '<strong>James Copeland</strong>(온라인에서 sirpoc로 알려짐)는 일반 러너를 위한 반복 가능한 단일 세션 서브스레숄드 훈련인 <strong>Norwegian Singles Method</strong>를 정리했습니다. 이 독립 계산기는 최근 레이스 기록을 그의 방법에 나오는 3분, 6분, 10분 페이스와 주간 구조로 바꿉니다.',
+      howToName: 'James Copeland Norwegian Singles Method 적용하기',
+    },
+  ],
+  de: [
+    {
+      slug: 'nsa-pace-rechner',
+      title: 'NSA Pace-Rechner: Norwegian Singles Trainingspaces',
+      description:
+        'Kostenloser NSA Pace-Rechner für Norwegian Singles Approach. Schätze kurze, mittlere und lange Sub-Threshold-Paces sowie das lockere Tempo aus einer 5K oder 10K.',
+      h1: 'NSA Pace-Rechner für Norwegian Singles Läufer',
+      intro:
+        'Gib eine aktuelle 5K oder 10K in den <strong>NSA Pace-Rechner</strong> ein. Du erhältst kurze, mittlere und lange Sub-Threshold-Ziele, lockeres Tempo und einen Wochenplan.',
+      howToName: 'NSA Trainingspaces berechnen',
+    },
+    {
+      slug: 'norwegian-singles-rechner',
+      title: 'Norwegian Singles Rechner: NSA / NSM Pace-Tool',
+      description:
+        'Kostenloser Norwegian Singles Rechner für NSA / NSM. Schätze Sub-Threshold-Paces, lockeres Tempo, Wocheneinheiten und Marathon-Aufbauten.',
+      h1: 'Norwegian Singles Rechner',
+      intro:
+        'Gib eine 5K, 10K, Halbmarathon, Marathon oder eigene Distanz in den <strong>Norwegian Singles Rechner</strong> ein. Du erhältst Sub-Threshold-Ziele, lockeres Tempo und einen Wochenplan.',
+      howToName: 'Den Norwegian Singles Rechner nutzen',
+    },
+    {
+      slug: 'nsm-rechner',
+      title: 'NSM Rechner: Norwegian Singles Method Paces',
+      description:
+        'Berechne Norwegian Singles Method Paces für 3-, 6- und 10-Minuten-Sub-Threshold-Intervalle aus einem aktuellen Rennergebnis.',
+      h1: 'NSM Rechner für Norwegian Singles Method Läufer',
+      intro:
+        'Der <strong>NSM Rechner</strong> macht aus einem aktuellen Rennergebnis 3-, 6- und 10-Minuten-Sub-Threshold-Paces plus lockeres Tempo und eine Wochenstruktur.',
+      howToName: 'NSM Trainingspaces berechnen',
+    },
+    {
+      slug: 'nsm-running',
+      title: 'NSM Running: Norwegian Singles Method für Läufer',
+      description:
+        'Lerne die Grundlagen von NSM Running und berechne Norwegian Singles Method Paces für wiederholbare Sub-Threshold-Wochen.',
+      h1: 'NSM Running Guide und Rechner',
+      intro:
+        '<strong>NSM Running</strong> hält norwegisches Schwellentraining machbar: eine kontrollierte Qualitätseinheit pro Tag, kurze Pausen, lockeres Laufen drumherum und Pace-Ziele aus deiner aktuellen Form.',
+      howToName: 'Mit NSM Running starten',
+    },
+    {
+      slug: 'nsm-trainingsmethode',
+      title: 'NSM Trainingsmethode: Norwegian Singles Einheiten',
+      description:
+        'Nutze die NSM Trainingsmethode mit 3-, 6- und 10-Minuten-Sub-Threshold-Einheiten, lockeren Läufen und Wochenplänen.',
+      h1: 'NSM Trainingsmethode für Hobbyläufer',
+      intro:
+        'Die <strong>NSM Trainingsmethode</strong> baut die Woche um drei kontrollierte Sub-Threshold-Einheiten: lange 10-Minuten-, mittlere 6-Minuten- und kurze 3-Minuten-Intervalle. Ziel ist nachhaltige aerobe Entwicklung, nicht maximaler Intervall-Stress.',
+      howToName: 'Die NSM Trainingsmethode anwenden',
+    },
+    {
+      slug: 'norwegische-methode-rechner',
+      title: 'Norwegische Methode Rechner: Schwellenpaces für Einzeleinheiten',
+      description:
+        'Schätze von der norwegischen Methode inspirierte Schwellenpaces, übertragen in NSA / NSM Wochen mit Einzeleinheiten.',
+      h1: 'Norwegische Methode Rechner für Hobbyläufer',
+      intro:
+        'Der <strong>Rechner für die norwegische Methode</strong> überträgt Double-Threshold-Ideen in NSA / NSM Wochen mit Einzeleinheiten. Gib ein Rennergebnis ein und erhalte Sub-Threshold-Paces bei normalem Umfang.',
+      howToName: 'Trainingspaces der norwegischen Methode berechnen',
+    },
+    {
+      slug: 'sub-threshold-pace-rechner',
+      title: 'Sub-Threshold Pace-Rechner: 3-, 6- und 10-Minuten-Intervalle',
+      description:
+        'Berechne Sub-Threshold-Pace-Ziele für kurze, mittlere und lange Laufintervalle aus einem aktuellen Rennergebnis.',
+      h1: 'Sub-Threshold Pace-Rechner',
+      intro:
+        'Nutze den <strong>Sub-Threshold Pace-Rechner</strong>, um Ziele für 3-, 6- und 10-Minuten-Intervalle zu wählen. Halte die Arbeit so kontrolliert, dass du sie nächste Woche wiederholen kannst.',
+      howToName: 'Sub-Threshold-Pace berechnen',
+    },
+    {
+      slug: 'norwegische-methode-marathonplan',
+      title: 'Norwegische Methode Marathonplan: NSA / NSM Aufbau',
+      description:
+        'Baue einen Marathonplan mit norwegischem Sub-Threshold-Training, langen Läufen, Marathon-Pace-Arbeit und Tapering.',
+      h1: 'Marathonplan-Builder nach norwegischer Methode',
+      intro:
+        'Ein <strong>Marathonplan nach norwegischer Methode</strong> braucht eine wiederholbare Woche. Baue einen 15-Wochen-Countdown mit Sub-Threshold-Einheiten, langen Läufen und Marathon-Pace-Einheiten.',
+      howToName: 'Einen Marathonplan nach norwegischer Methode bauen',
+    },
+    {
+      slug: 'marius-bakken-pace-rechner',
+      title:
+        'Marius Bakken Pace-Rechner: Inspiriert von der norwegischen Methode',
+      description:
+        'Schätze norwegische Sub-Threshold-Paces inspiriert von Marius-Bakken-Prinzipien, übertragen in NSA / NSM Wochen mit Einzeleinheiten.',
+      h1: 'Marius Bakken Pace-Rechner für Einzeleinheiten',
+      intro:
+        '<strong>Marius Bakken Pace-Rechner</strong>-Notizen verbinden norwegisches Schwellentraining mit NSA / NSM Wochen aus Einzeleinheiten. Gib ein Rennergebnis ein und erhalte kontrollierte Sub-Threshold-Ziele aus deiner aktuellen Form.',
+      howToName: 'Norwegische Trainingspaces schätzen',
+    },
+    {
+      slug: 'norwegian-singles-method-buch',
+      title: 'Norwegian Singles Method Buch: Rechner-Begleiter',
+      description:
+        'Entdecke Referenzen zum Norwegian Singles Method Buch und nutze einen kostenlosen Rechner, der NSM-Konzepte in Paces und Pläne übersetzt.',
+      h1: 'Norwegian Singles Method Buch und Rechner',
+      intro:
+        'Das <strong>Norwegian Singles Method Buch</strong> liefert die Trainingsidee. Dieser Rechner macht aus einem aktuellen Rennergebnis Paces, Wocheneinheiten und Marathon-Aufbauten.',
+      howToName: 'Ideen aus dem Norwegian Singles Method Buch anwenden',
+    },
+    {
+      slug: 'norwegian-singles-trainingsplan',
+      title: 'Norwegian Singles Trainingsplan-Generator: NSA / NSM',
+      description:
+        'Erstelle einen Norwegian Singles Trainingsplan mit 4.5-9-Stunden-Wochen, Sub-Threshold-Einheiten, lockeren Läufen und teilbaren Plan-Links.',
+      h1: 'Norwegian Singles Trainingsplan-Generator',
+      intro:
+        'Erstelle einen <strong>Norwegian Singles Trainingsplan</strong> aus deiner aktuellen Form und deinen Wochenstunden. Der Planer baut NSA / NSM Wochen mit drei Sub-Threshold-Einheiten, lockeren Läufen und haltbaren Paces.',
+      howToName: 'Einen Norwegian Singles Trainingsplan erstellen',
+    },
+    {
+      slug: 'norwegian-singles-marathonplan',
+      title: 'Norwegian Singles Marathonplan: 15-Wochen NSA / NSM Aufbau',
+      description:
+        'Baue einen 15-wöchigen Norwegian Singles Marathonplan mit Sub-Threshold-Einheiten, Marathon-Pace-Arbeit, langen Läufen, Tune-up-Rennen und Tapering.',
+      h1: 'Norwegian Singles Marathonplan-Builder',
+      intro:
+        'Nutze diesen <strong>Norwegian Singles Marathonplan</strong>-Builder für einen 15-Wochen-Countdown ab deinem Renndatum. Er kombiniert NSA / NSM Sub-Threshold-Training mit langen Läufen, marathonspezifischen Einheiten, Tune-up-Rennen und Tapering.',
+      howToName: 'Einen Norwegian Singles Marathonplan bauen',
+    },
+    {
+      slug: 'sub-threshold-running-rechner',
+      title: 'Sub-Threshold Running Rechner: NSA / NSM Pace-Tool',
+      description:
+        'Berechne Sub-Threshold-Laufpaces für kurze, mittlere und lange Intervalle aus einer aktuellen 5K oder 10K.',
+      h1: 'Sub-Threshold Running Rechner',
+      intro:
+        'Dieser <strong>Sub-Threshold Running Rechner</strong> schätzt kontrollierte Trainingspaces für Läufer mit NSA, NSM oder norwegischem Schwellentraining. Gib ein Rennergebnis ein und erhalte Intervallziele und einen lockeren Pace-Bereich für wiederholbare Wochen.',
+      howToName: 'Sub-Threshold-Laufpaces berechnen',
+    },
+    {
+      slug: 'norwegische-methode-hobbylaeufer',
+      title: 'Norwegische Methode für Hobbyläufer: Einzeleinheiten',
+      description:
+        'Wende norwegisches Schwellentraining als Hobbyläufer an, mit NSA / NSM Wochen aus Einzeleinheiten, konservativen Paces und lockerem Laufen.',
+      h1: 'Norwegische Methode für Hobbyläufer',
+      intro:
+        'Die <strong>norwegische Methode für Hobbyläufer</strong> funktioniert mit NSA / NSM Wochen aus Einzeleinheiten: kontrollierte Sub-Threshold-Intervalle, lockeres Laufen und stetige Steigerung.',
+      howToName: 'Als Hobbyläufer norwegisch trainieren',
+    },
+    {
+      slug: 'subthreshold-rechner-alternative',
+      title: 'SubThreshold Calculator Alternative: NSA / NSM Planer',
+      description:
+        'Vergleiche Norwegian Singles Rechner und erstelle NSA / NSM Paces, Wochenpläne, Marathon-Aufbauten und teilbare Links in einem Tool.',
+      h1: 'SubThreshold Calculator Alternative für NSA / NSM',
+      intro:
+        'Nutze diese <strong>SubThreshold Calculator Alternative</strong> für schnelle Pace-Berechnung, eine sichtbare Wochenstruktur, Marathon-Aufbauten und teilbare Plan-URLs ohne Account.',
+      howToName: 'Einen NSA / NSM Plan vergleichen und erstellen',
+    },
+    {
+      slug: 'lactrace-alternative-norwegian-singles',
+      title: 'LacTrace Alternative für Norwegian Singles: NSA / NSM Tool',
+      description:
+        'Eine leichte LacTrace-Alternative für Läufer, die Norwegian Singles Paces, Wochenpläne und Marathon-Aufbauten aus einem aktuellen Rennergebnis wollen.',
+      h1: 'LacTrace Alternative für Norwegian Singles Läufer',
+      intro:
+        'Nutze diese <strong>LacTrace Alternative</strong>, um ein aktuelles Rennen einzugeben, Sub-Threshold-Paces zu erhalten, die Schlüsseleinheiten zu sehen und den Plan zu speichern oder zu teilen.',
+      howToName: 'Einen Norwegian Singles Plan ohne Account erstellen',
+    },
+    {
+      slug: 'norwegian-singles-rechner-vergleich',
+      title: 'Bester Norwegian Singles Rechner: NSA / NSM Vergleich',
+      description:
+        'Vergleiche Norwegian Singles Rechner und wähle ein NSA / NSM Tool mit Pace-Karten, Wochenplänen, Marathonplanung und teilbaren URLs.',
+      h1: 'Worauf du beim besten Norwegian Singles Rechner achten solltest',
+      intro:
+        'Ein nützlicher <strong>Norwegian Singles Rechner</strong> zeigt die Wochenstruktur, die Schlüsseleinheiten, Renndistanz-Optionen, teilbare Links und Marathonplanung.',
+      howToName: 'Einen Norwegian Singles Rechner wählen',
+    },
+    {
+      slug: 'nsa-trainingsplan-generator',
+      title: 'NSA Trainingsplan-Generator: Norwegian Singles Approach',
+      description:
+        'Erstelle einen NSA Trainingsplan aus 5K-, 10K-, Halbmarathon-, Marathon- oder eigenen Rennergebnissen mit Paces und Wocheneinheiten.',
+      h1: 'NSA Trainingsplan-Generator',
+      intro:
+        'Nutze diesen <strong>NSA Trainingsplan-Generator</strong>, um ein aktuelles Rennen in eine wiederholbare Norwegian Singles Approach Woche zu verwandeln. Er unterstützt 5K, 10K, Halbmarathon, Marathon und eigene Distanzen.',
+      howToName: 'Einen NSA Trainingsplan erstellen',
+    },
+    {
+      slug: 'vdot-rechner',
+      title: 'VDOT Rechner: Jack Daniels Laufpaces & Renn-Äquivalente',
+      description:
+        'Kostenloser VDOT Rechner nach der Formel von Jack Daniels. Gib ein Rennergebnis ein und erhalte Easy-, Marathon-, Threshold-, Interval- und Repetition-Paces sowie äquivalente Zeiten.',
+      h1: 'VDOT Lauf-Rechner',
+      intro:
+        'Gib ein Rennergebnis in den <strong>VDOT Rechner</strong> ein und erhalte deinen VDOT-Wert, alle fünf Jack-Daniels-Trainingszonen (Easy, Marathon, Threshold, Interval, Repetition) und äquivalente Renn-Vorhersagen. Dasselbe Formular erstellt deinen kompletten NSM-Wochenplan.',
+      howToName: 'VDOT und Trainingspaces berechnen',
+    },
+    {
+      slug: 'jack-daniels-lauf-rechner',
+      title: 'Jack Daniels Lauf-Rechner: VDOT Trainingszonen',
+      description:
+        'Berechne Jack-Daniels-VDOT-Trainingspaces (Easy, Threshold, Interval, Repetition) aus einer 5K, 10K, einem Halbmarathon oder Marathon.',
+      h1: 'Jack Daniels Lauf-Rechner',
+      intro:
+        'Der <strong>Jack Daniels Lauf-Rechner</strong> nimmt ein Rennergebnis, berechnet deinen VDOT und zeigt Trainingspaces für jede Zone: Easy, Marathon, Threshold, Interval und Repetition. Füge deine Wochenstunden hinzu für einen kompletten NSM-Plan.',
+      howToName: 'Jack-Daniels-VDOT-Trainingspaces berechnen',
+    },
+    {
+      slug: 'vdot-lauf-formel',
+      title: 'VDOT Lauf-Formel: Trainingspaces & äquivalente Rennen',
+      description:
+        'Nutze die VDOT Lauf-Formel, um Trainingspaces zu berechnen und äquivalente Rennzeiten aus deiner aktuellen Form vorherzusagen.',
+      h1: 'VDOT Lauf-Formel Rechner',
+      intro:
+        'Die <strong>VDOT Lauf-Formel</strong> wandelt ein Rennergebnis in einen Formwert um und weist darauf basierend Trainingspaces in allen fünf Zonen zu. Gib eine beliebige Distanz und Zeit ein, um VDOT, Zonenziele und Vorhersagen für gängige Distanzen zu sehen.',
+      howToName: 'Die VDOT Lauf-Formel anwenden',
+    },
+    {
+      slug: 'norwegian-singles-app',
+      title: 'Norwegian Singles App: Kostenloser NSA / NSM Rechner & Planer',
+      description:
+        'Kostenlose Norwegian Singles App für NSA / NSM Läufer. Berechne Sub-Threshold-Paces, baue Wochenpläne und einen 15-Wochen-Marathonblock direkt im Browser — kein Download.',
+      h1: 'Norwegian Singles App',
+      intro:
+        'Diese kostenlose <strong>Norwegian Singles App</strong> läuft in jedem Browser — keine Installation, kein Account. Gib eine aktuelle 5K oder 10K ein für NSA / NSM Sub-Threshold-Paces, einen wiederholbaren Wochenplan und einen 15-Wochen-Marathon-Aufbau, den du speichern und teilen kannst.',
+      howToName: 'Die Norwegian Singles App nutzen',
+    },
+    {
+      slug: 'james-copeland-norwegian-singles',
+      title: 'James Copeland Norwegian Singles: Methoden-Rechner',
+      description:
+        'Verwandle die Norwegian Singles Method von James Copeland in echte Paces und Pläne. Kostenloser Rechner für den Sub-Threshold-Ansatz mit Einzeleinheiten, bekannt durch Copeland (sirpoc).',
+      h1: 'James Copeland Norwegian Singles Method Rechner',
+      intro:
+        '<strong>James Copeland</strong> (online als sirpoc bekannt) dokumentierte die <strong>Norwegian Singles Method</strong> — wiederholbare Sub-Threshold-Einzeleinheiten für Hobbyläufer. Dieser unabhängige Rechner macht aus einem aktuellen Rennergebnis die 3-, 6- und 10-Minuten-Paces und die Wochenstruktur seiner Methode.',
+      howToName: 'Die James Copeland Norwegian Singles Method anwenden',
+    },
+  ],
+  fr: [
+    {
+      slug: 'calculateur-allures-nsa',
+      title: 'Calculateur NSA : allures Norwegian Singles',
+      description:
+        "Calculateur NSA gratuit pour les coureurs Norwegian Singles. Estime les allures sous-seuil courtes, moyennes, longues et l'allure facile à partir d'un 5K ou 10K.",
+      h1: "Calculateur d'allures NSA pour Norwegian Singles",
+      intro:
+        "Saisis un 5K ou 10K récent dans le <strong>calculateur NSA</strong>. Tu obtiens des cibles sous-seuil courtes, moyennes et longues, l'allure facile et un plan hebdomadaire.",
+      howToName: "Calculer les allures d'entraînement NSA",
+    },
+    {
+      slug: 'calculateur-norwegian-singles',
+      title: 'Calculateur Norwegian Singles : allures NSA / NSM',
+      description:
+        "Calculateur Norwegian Singles gratuit pour NSA / NSM. Estime les allures sous-seuil, l'allure facile, les séances hebdomadaires et les plans marathon.",
+      h1: 'Calculateur Norwegian Singles',
+      intro:
+        "Saisis un 5K, 10K, semi-marathon, marathon ou une distance personnalisée dans le <strong>calculateur Norwegian Singles</strong>. Tu obtiens des cibles sous-seuil, l'allure facile et un plan hebdomadaire.",
+      howToName: 'Utiliser le calculateur Norwegian Singles',
+    },
+    {
+      slug: 'calculateur-nsm',
+      title: 'Calculateur NSM : allures Norwegian Singles Method',
+      description:
+        "Calcule les allures Norwegian Singles Method pour les intervalles sous-seuil de 3, 6 et 10 minutes à partir d'un résultat récent.",
+      h1: 'Calculateur NSM pour Norwegian Singles Method',
+      intro:
+        "Le <strong>calculateur NSM</strong> transforme un résultat de course récent en allures sous-seuil de 3, 6 et 10 minutes, plus l'allure facile et une structure hebdomadaire.",
+      howToName: "Calculer les allures d'entraînement NSM",
+    },
+    {
+      slug: 'nsm-running',
+      title: 'NSM Running : Norwegian Singles Method pour coureurs',
+      description:
+        'Apprends les bases du NSM running et calcule les allures Norwegian Singles Method pour des semaines sous-seuil répétables.',
+      h1: 'Guide NSM running et calculateur',
+      intro:
+        "Le <strong>NSM running</strong> garde l'entraînement de seuil norvégien gérable : une séance de qualité contrôlée par jour, des récupérations courtes, du footing facile autour et des allures basées sur ta forme actuelle.",
+      howToName: 'Démarrer le NSM running',
+    },
+    {
+      slug: 'methode-entrainement-nsm',
+      title: "Méthode d'entraînement NSM : séances Norwegian Singles",
+      description:
+        "Applique la méthode d'entraînement NSM avec des intervalles sous-seuil de 3, 6 et 10 minutes, des footings faciles et des plans hebdomadaires.",
+      h1: "Méthode d'entraînement NSM pour coureurs amateurs",
+      intro:
+        "La <strong>méthode d'entraînement NSM</strong> organise la semaine autour de trois séances sous-seuil contrôlées : longues répét. de 10 min, moyennes de 6 min et courtes de 3 min. Objectif : un développement aérobie durable, pas un effort maximal.",
+      howToName: "Appliquer la méthode d'entraînement NSM",
+    },
+    {
+      slug: 'calculateur-methode-norvegienne',
+      title: 'Calculateur méthode norvégienne : allures seuil en séance unique',
+      description:
+        'Estime des allures de seuil inspirées de la méthode norvégienne, adaptées en semaines NSA / NSM à séance unique.',
+      h1: 'Calculateur de la méthode norvégienne pour coureurs amateurs',
+      intro:
+        'Le <strong>calculateur de la méthode norvégienne</strong> adapte les idées du double seuil en semaines NSA / NSM à séance unique. Saisis un résultat pour obtenir des allures sous-seuil à volume normal.',
+      howToName: 'Calculer les allures de la méthode norvégienne',
+    },
+    {
+      slug: 'calculateur-allure-sous-seuil',
+      title: 'Calculateur allure sous-seuil : répét. 3, 6 et 10 min',
+      description:
+        "Calcule des cibles d'allure sous-seuil pour des intervalles courts, moyens et longs à partir d'un résultat de course récent.",
+      h1: "Calculateur d'allure sous-seuil",
+      intro:
+        "Utilise le <strong>calculateur d'allure sous-seuil</strong> pour choisir des cibles sur des répét. de 3, 6 et 10 min. Garde le travail assez contrôlé pour le répéter la semaine suivante.",
+      howToName: "Calculer l'allure sous-seuil",
+    },
+    {
+      slug: 'plan-marathon-methode-norvegienne',
+      title: 'Plan marathon méthode norvégienne : préparation NSA / NSM',
+      description:
+        "Construis un plan marathon avec un entraînement sous-seuil norvégien, des sorties longues, du travail à allure marathon et de l'affûtage.",
+      h1: 'Générateur de plan marathon méthode norvégienne',
+      intro:
+        "Un <strong>plan marathon méthode norvégienne</strong> a besoin d'une semaine répétable. Construis un compte à rebours de 15 semaines avec des séances sous-seuil, des sorties longues et des séances à allure marathon.",
+      howToName: 'Construire un plan marathon méthode norvégienne',
+    },
+    {
+      slug: 'calculateur-allures-marius-bakken',
+      title: 'Calculateur allures Marius Bakken : inspiré méthode norvégienne',
+      description:
+        'Estime des allures sous-seuil norvégiennes inspirées des principes de Marius Bakken, adaptées en semaines NSA / NSM à séance unique.',
+      h1: "Calculateur d'allures Marius Bakken pour séance unique",
+      intro:
+        "Les notes du <strong>calculateur d'allures Marius Bakken</strong> relient l'entraînement de seuil norvégien aux semaines NSA / NSM à séance unique. Saisis un résultat pour obtenir des cibles sous-seuil contrôlées depuis ta forme actuelle.",
+      howToName: "Estimer des allures d'entraînement norvégiennes",
+    },
+    {
+      slug: 'livre-norwegian-singles-method',
+      title: 'Livre Norwegian Singles Method : calculateur compagnon',
+      description:
+        'Explore les références du livre Norwegian Singles Method et utilise un calculateur gratuit pour transformer les concepts NSM en allures et plans.',
+      h1: 'Livre Norwegian Singles Method et calculateur',
+      intro:
+        "Le <strong>livre Norwegian Singles Method</strong> donne l'idée d'entraînement. Ce calculateur transforme un résultat récent en allures, séances hebdomadaires et plans marathon.",
+      howToName: 'Appliquer les idées du livre Norwegian Singles Method',
+    },
+    {
+      slug: 'plan-entrainement-norwegian-singles',
+      title: 'Générateur de plan Norwegian Singles : NSA / NSM',
+      description:
+        'Génère un plan Norwegian Singles de 4.5-9 heures par semaine avec des séances sous-seuil, des footings faciles et des liens de plan partageables.',
+      h1: "Générateur de plan d'entraînement Norwegian Singles",
+      intro:
+        "Crée un <strong>plan d'entraînement Norwegian Singles</strong> depuis ta forme actuelle et tes heures hebdomadaires. Le planificateur construit des semaines NSA / NSM avec trois séances sous-seuil, des footings faciles et des allures tenables.",
+      howToName: "Générer un plan d'entraînement Norwegian Singles",
+    },
+    {
+      slug: 'plan-marathon-norwegian-singles',
+      title:
+        'Plan marathon Norwegian Singles : préparation NSA / NSM de 15 semaines',
+      description:
+        'Construis un plan marathon Norwegian Singles de 15 semaines avec séances sous-seuil, travail à allure marathon, sorties longues, courses de préparation et affûtage.',
+      h1: 'Générateur de plan marathon Norwegian Singles',
+      intro:
+        "Utilise ce générateur de <strong>plan marathon Norwegian Singles</strong> pour créer un compte à rebours de 15 semaines depuis ta date de course. Il combine l'entraînement sous-seuil NSA / NSM avec sorties longues, séances spécifiques marathon, courses de préparation et affûtage.",
+      howToName: 'Construire un plan marathon Norwegian Singles',
+    },
+    {
+      slug: 'calculateur-running-sous-seuil',
+      title: "Calculateur running sous-seuil : outil d'allures NSA / NSM",
+      description:
+        "Calcule des allures de running sous-seuil pour des intervalles courts, moyens et longs à partir d'un 5K ou 10K récent.",
+      h1: 'Calculateur running sous-seuil',
+      intro:
+        "Ce <strong>calculateur running sous-seuil</strong> estime des allures d'entraînement contrôlées pour les coureurs en NSA, NSM ou entraînement de seuil norvégien. Saisis un résultat pour obtenir des cibles d'intervalle et une plage d'allure facile.",
+      howToName: 'Calculer des allures de running sous-seuil',
+    },
+    {
+      slug: 'methode-norvegienne-coureurs-amateurs',
+      title: 'Méthode norvégienne pour coureurs amateurs : séances uniques',
+      description:
+        "Applique l'entraînement de seuil norvégien en tant que coureur amateur avec des semaines NSA / NSM à séance unique, des allures prudentes et du footing facile.",
+      h1: 'Méthode norvégienne pour coureurs amateurs',
+      intro:
+        'La <strong>méthode norvégienne pour coureurs amateurs</strong> fonctionne avec des semaines NSA / NSM à séance unique : intervalles sous-seuil contrôlés, footing facile et progression régulière.',
+      howToName: "Démarrer l'entraînement norvégien en amateur",
+    },
+    {
+      slug: 'alternative-calculateur-subthreshold',
+      title: 'Alternative à SubThreshold Calculator : planificateur NSA / NSM',
+      description:
+        'Compare les calculateurs Norwegian Singles et génère des allures NSA / NSM, des plans hebdomadaires, des plans marathon et des liens partageables dans un seul outil.',
+      h1: 'Alternative à SubThreshold Calculator pour NSA / NSM',
+      intro:
+        "Utilise cette <strong>alternative à SubThreshold Calculator</strong> pour un calcul d'allures rapide, une structure hebdomadaire visible, des plans marathon et des URL de plan partageables sans compte.",
+      howToName: 'Comparer et générer un plan NSA / NSM',
+    },
+    {
+      slug: 'alternative-lactrace-norwegian-singles',
+      title: 'Alternative à LacTrace pour Norwegian Singles : outil NSA / NSM',
+      description:
+        'Une alternative légère à LacTrace pour les coureurs qui veulent des allures Norwegian Singles, des plans hebdomadaires et des plans marathon depuis un résultat récent.',
+      h1: 'Alternative à LacTrace pour coureurs Norwegian Singles',
+      intro:
+        'Utilise cette <strong>alternative à LacTrace</strong> pour saisir une course récente, obtenir des allures sous-seuil, voir les séances clés et enregistrer ou partager le plan généré.',
+      howToName: 'Créer un plan Norwegian Singles sans compte',
+    },
+    {
+      slug: 'comparatif-calculateur-norwegian-singles',
+      title: 'Meilleur calculateur Norwegian Singles : comparatif NSA / NSM',
+      description:
+        "Compare les calculateurs Norwegian Singles et choisis un outil NSA / NSM avec cartes d'allures, plans hebdomadaires, planification marathon et URL partageables.",
+      h1: "Les fonctions d'un bon calculateur Norwegian Singles",
+      intro:
+        'Un <strong>calculateur Norwegian Singles</strong> utile montre la structure hebdomadaire, les séances clés, les options de distance, les liens partageables et la planification marathon.',
+      howToName: 'Choisir un calculateur Norwegian Singles',
+    },
+    {
+      slug: 'generateur-plan-entrainement-nsa',
+      title: 'Générateur de plan NSA : Norwegian Singles Approach',
+      description:
+        'Génère un plan NSA depuis un 5K, 10K, semi-marathon, marathon ou une distance personnalisée avec des allures et des séances hebdomadaires.',
+      h1: "Générateur de plan d'entraînement NSA",
+      intro:
+        'Utilise ce <strong>générateur de plan NSA</strong> pour transformer une course récente en une semaine Norwegian Singles Approach répétable. Il accepte 5K, 10K, semi, marathon et distances personnalisées.',
+      howToName: "Générer un plan d'entraînement NSA",
+    },
+    {
+      slug: 'calculateur-vdot',
+      title: 'Calculateur VDOT : allures Jack Daniels & équivalences de course',
+      description:
+        'Calculateur VDOT gratuit basé sur la formule de Jack Daniels. Saisis un résultat pour obtenir les allures Facile, Marathon, Seuil, Intervalle et Répétition et les temps équivalents.',
+      h1: 'Calculateur VDOT de running',
+      intro:
+        "Saisis un résultat dans le <strong>calculateur VDOT</strong> pour obtenir ton score VDOT, les cinq zones d'entraînement Jack Daniels (Facile, Marathon, Seuil, Intervalle, Répétition) et des prédictions de course équivalentes. Le même formulaire génère ton plan NSM hebdomadaire.",
+      howToName: "Calculer le VDOT et les allures d'entraînement",
+    },
+    {
+      slug: 'calculateur-jack-daniels-running',
+      title: "Calculateur Jack Daniels Running : zones d'entraînement VDOT",
+      description:
+        "Calcule les allures d'entraînement VDOT de Jack Daniels (Facile, Seuil, Intervalle, Répétition) à partir d'un 5K, 10K, semi ou marathon.",
+      h1: 'Calculateur Jack Daniels running',
+      intro:
+        'Le <strong>calculateur Jack Daniels running</strong> prend un résultat, calcule ton VDOT et affiche les allures de chaque zone : Facile, Marathon, Seuil, Intervalle et Répétition. Ajoute tes heures hebdomadaires pour obtenir le plan NSM complet.',
+      howToName: "Calculer les allures d'entraînement VDOT Jack Daniels",
+    },
+    {
+      slug: 'formule-vdot-running',
+      title: "Formule VDOT Running : allures d'entraînement & équivalences",
+      description:
+        "Utilise la formule VDOT de running pour calculer des allures d'entraînement et prédire des temps de course équivalents depuis ta forme actuelle.",
+      h1: 'Calculateur de la formule VDOT de running',
+      intro:
+        "La <strong>formule VDOT de running</strong> convertit un résultat en score de forme et attribue des allures d'entraînement pour chaque zone. Saisis une distance et un temps pour voir ton VDOT, les cibles par zone et les temps équivalents.",
+      howToName: 'Appliquer la formule VDOT de running',
+    },
+    {
+      slug: 'application-norwegian-singles',
+      title: 'Application Norwegian Singles : calculateur NSA / NSM gratuit',
+      description:
+        'Application Norwegian Singles gratuite pour NSA / NSM. Calcule les allures sous-seuil, crée des plans hebdomadaires et un bloc marathon de 15 semaines dans le navigateur — sans téléchargement.',
+      h1: 'Application Norwegian Singles',
+      intro:
+        'Cette <strong>application Norwegian Singles</strong> gratuite fonctionne dans tout navigateur — sans installation ni compte. Saisis un 5K ou 10K récent pour obtenir des allures sous-seuil NSA / NSM, un plan hebdomadaire répétable et un plan marathon de 15 semaines à enregistrer et partager.',
+      howToName: "Utiliser l'application Norwegian Singles",
+    },
+    {
+      slug: 'james-copeland-norwegian-singles',
+      title: 'James Copeland Norwegian Singles : calculateur de la méthode',
+      description:
+        "Transforme la Norwegian Singles Method de James Copeland en allures et plans réels. Calculateur gratuit pour l'approche sous-seuil à séance unique popularisée par Copeland (sirpoc).",
+      h1: 'Calculateur de la méthode Norwegian Singles de James Copeland',
+      intro:
+        '<strong>James Copeland</strong> (connu en ligne sous le nom de sirpoc) a documenté la <strong>Norwegian Singles Method</strong> — des séances uniques sous-seuil répétables pour coureurs amateurs. Ce calculateur indépendant transforme un résultat récent en allures de 3, 6 et 10 minutes et en structure hebdomadaire de sa méthode.',
+      howToName: 'Appliquer la méthode Norwegian Singles de James Copeland',
+    },
   ],
 };
 
@@ -681,6 +1207,64 @@ export function getVisibleFaqs(locale: Locale): SeoFaq[] {
       {
         q: 'Marius Bakken 공식 계산기인가요?',
         a: '아니요. 공식 Marius Bakken 도구가 아닙니다. 노르웨이식 임계값 훈련 원칙을 일반 러너용 단일 세션 주간으로 적용합니다.',
+      },
+    ];
+  }
+
+  if (locale === 'de') {
+    return [
+      {
+        q: 'Bedeuten NSA und NSM dasselbe?',
+        a: 'Ja. Diese App nutzt NSA für Norwegian Singles Approach und NSM für Norwegian Singles Method. Approach und Method werden als dasselbe Trainingskonzept behandelt.',
+      },
+      {
+        q: 'Ist diese App offiziell?',
+        a: 'Nein. Es ist ein unabhängiges, inoffizielles Tool, das Läufern hilft, Paces zu schätzen und Norwegian-Singles-Wochen zu organisieren.',
+      },
+      {
+        q: 'Welche Rennergebnisse kann ich eingeben?',
+        a: 'Du kannst eine 5K, 10K, einen Halbmarathon, Marathon oder eine eigene Distanz eingeben.',
+      },
+      {
+        q: 'Kann ich es für das Marathontraining nutzen?',
+        a: 'Ja. Mit einem Marathondatum erstellt die App einen 15-Wochen-Aufbau mit Sub-Threshold-Einheiten, Marathon-Pace-Arbeit, langen Läufen und Tapering.',
+      },
+      {
+        q: 'Wie hängt das mit James Copeland zusammen?',
+        a: 'James Copeland ist der Autor der Norwegian Singles Method. Dieser unabhängige Rechner hilft, aktuelle Form in praktische Paces und Wochenstrukturen zu übersetzen, die mit NSM kompatibel sind.',
+      },
+      {
+        q: 'Ist das ein Marius-Bakken-Rechner?',
+        a: 'Es ist kein offizielles Marius-Bakken-Tool. Es überträgt norwegische Schwellenprinzipien in Wochen mit Einzeleinheiten für Hobbyläufer.',
+      },
+    ];
+  }
+
+  if (locale === 'fr') {
+    return [
+      {
+        q: 'NSA et NSM signifient-ils la même chose ?',
+        a: "Oui. Cette app utilise NSA pour Norwegian Singles Approach et NSM pour Norwegian Singles Method. Approach et Method sont traités comme le même concept d'entraînement.",
+      },
+      {
+        q: 'Cette app est-elle officielle ?',
+        a: "Non. C'est un outil indépendant et non officiel qui aide les coureurs à estimer des allures et à organiser des semaines Norwegian Singles.",
+      },
+      {
+        q: 'Quels résultats de course puis-je saisir ?',
+        a: 'Tu peux saisir un 5K, 10K, semi-marathon, marathon ou une distance personnalisée.',
+      },
+      {
+        q: "Puis-je l'utiliser pour le marathon ?",
+        a: "Oui. Si tu ajoutes une date de marathon, l'app génère un plan de 15 semaines avec séances sous-seuil, travail à allure marathon, sorties longues et affûtage.",
+      },
+      {
+        q: 'Quel est le lien avec James Copeland ?',
+        a: "James Copeland est l'auteur de la Norwegian Singles Method. Ce calculateur indépendant aide à transformer ta forme récente en allures et structures hebdomadaires pratiques compatibles avec NSM.",
+      },
+      {
+        q: 'Est-ce un calculateur Marius Bakken ?',
+        a: "Ce n'est pas un outil officiel de Marius Bakken. Il adapte les principes de seuil norvégiens en semaines à séance unique pour coureurs amateurs.",
       },
     ];
   }
@@ -784,7 +1368,16 @@ export function createSeoStructuredData(
         {
           '@type': 'ListItem',
           position: 1,
-          name: locale === 'es' ? 'Inicio' : locale === 'ko' ? '홈' : 'Home',
+          name:
+            locale === 'es'
+              ? 'Inicio'
+              : locale === 'ko'
+                ? '홈'
+                : locale === 'de'
+                  ? 'Start'
+                  : locale === 'fr'
+                    ? 'Accueil'
+                    : 'Home',
           item: `${site}/${locale}/`,
         },
         {
@@ -808,13 +1401,21 @@ export function createSeoStructuredData(
               ? 'Introduce tu marca'
               : locale === 'ko'
                 ? '레이스 기록 입력'
-                : 'Enter your race time',
+                : locale === 'de'
+                  ? 'Gib deine Rennzeit ein'
+                  : locale === 'fr'
+                    ? 'Saisis ton temps de course'
+                    : 'Enter your race time',
           text:
             locale === 'es'
               ? 'Añade una marca reciente de 5K o 10K.'
               : locale === 'ko'
                 ? '최근 5K 또는 10K 기록을 입력하세요.'
-                : 'Add a recent 5K or 10K result.',
+                : locale === 'de'
+                  ? 'Füge ein aktuelles 5K- oder 10K-Ergebnis hinzu.'
+                  : locale === 'fr'
+                    ? 'Ajoute un résultat récent sur 5K ou 10K.'
+                    : 'Add a recent 5K or 10K result.',
         },
         {
           '@type': 'HowToStep',
@@ -823,13 +1424,21 @@ export function createSeoStructuredData(
               ? 'Elige horas semanales'
               : locale === 'ko'
                 ? '주간 훈련 시간 선택'
-                : 'Choose weekly training hours',
+                : locale === 'de'
+                  ? 'Wähle die Wochenstunden'
+                  : locale === 'fr'
+                    ? 'Choisis tes heures hebdomadaires'
+                    : 'Choose weekly training hours',
           text:
             locale === 'es'
               ? 'Selecciona el volumen semanal que puedes repetir.'
               : locale === 'ko'
                 ? '꾸준히 반복할 수 있는 주간 볼륨을 선택하세요.'
-                : 'Select the weekly volume you can repeat consistently.',
+                : locale === 'de'
+                  ? 'Wähle den Wochenumfang, den du konstant wiederholen kannst.'
+                  : locale === 'fr'
+                    ? 'Choisis le volume hebdomadaire que tu peux répéter régulièrement.'
+                    : 'Select the weekly volume you can repeat consistently.',
         },
         {
           '@type': 'HowToStep',
@@ -838,13 +1447,21 @@ export function createSeoStructuredData(
               ? 'Genera ritmos y plan'
               : locale === 'ko'
                 ? '페이스와 플랜 생성'
-                : 'Generate paces and plan',
+                : locale === 'de'
+                  ? 'Paces und Plan generieren'
+                  : locale === 'fr'
+                    ? 'Génère les allures et le plan'
+                    : 'Generate paces and plan',
           text:
             locale === 'es'
               ? 'Obtén ritmos sub-umbral, ritmo fácil y una semana NSA/NSM.'
               : locale === 'ko'
                 ? '서브스레숄드 페이스, 이지 페이스, NSA/NSM 주간을 확인하세요.'
-                : 'Get sub-threshold paces, easy pace, and an NSA/NSM week.',
+                : locale === 'de'
+                  ? 'Erhalte Sub-Threshold-Paces, lockeres Tempo und eine NSA/NSM-Woche.'
+                  : locale === 'fr'
+                    ? "Obtiens des allures sous-seuil, l'allure facile et une semaine NSA/NSM."
+                    : 'Get sub-threshold paces, easy pace, and an NSA/NSM week.',
         },
       ],
     },

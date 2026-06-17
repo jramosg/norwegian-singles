@@ -44,13 +44,55 @@ interface Props {
 }
 
 const DAY_LABELS: Record<string, Record<Locale, string>> = {
-  monday: { en: 'Monday', es: 'Lunes', ko: '월요일' },
-  tuesday: { en: 'Tuesday', es: 'Martes', ko: '화요일' },
-  wednesday: { en: 'Wednesday', es: 'Miércoles', ko: '수요일' },
-  thursday: { en: 'Thursday', es: 'Jueves', ko: '목요일' },
-  friday: { en: 'Friday', es: 'Viernes', ko: '금요일' },
-  saturday: { en: 'Saturday', es: 'Sábado', ko: '토요일' },
-  sunday: { en: 'Sunday', es: 'Domingo', ko: '일요일' },
+  monday: {
+    en: 'Monday',
+    es: 'Lunes',
+    ko: '월요일',
+    de: 'Montag',
+    fr: 'Lundi',
+  },
+  tuesday: {
+    en: 'Tuesday',
+    es: 'Martes',
+    ko: '화요일',
+    de: 'Dienstag',
+    fr: 'Mardi',
+  },
+  wednesday: {
+    en: 'Wednesday',
+    es: 'Miércoles',
+    ko: '수요일',
+    de: 'Mittwoch',
+    fr: 'Mercredi',
+  },
+  thursday: {
+    en: 'Thursday',
+    es: 'Jueves',
+    ko: '목요일',
+    de: 'Donnerstag',
+    fr: 'Jeudi',
+  },
+  friday: {
+    en: 'Friday',
+    es: 'Viernes',
+    ko: '금요일',
+    de: 'Freitag',
+    fr: 'Vendredi',
+  },
+  saturday: {
+    en: 'Saturday',
+    es: 'Sábado',
+    ko: '토요일',
+    de: 'Samstag',
+    fr: 'Samedi',
+  },
+  sunday: {
+    en: 'Sunday',
+    es: 'Domingo',
+    ko: '일요일',
+    de: 'Sonntag',
+    fr: 'Dimanche',
+  },
 };
 
 export default function PlanViewer({ locale }: Props) {
@@ -234,6 +276,34 @@ export default function PlanViewer({ locale }: Props) {
       unit: '단위',
       wucd: '워밍업+쿨다운 포함',
       recovery: '회복',
+    },
+    de: {
+      empty: 'Du hast noch keinen Plan',
+      create: 'Plan erstellen',
+      paces: 'Paces',
+      marathon: 'Marathon',
+      share: 'Teilen',
+      copied: 'Kopiert',
+      image: 'Bild',
+      sharePlan: 'Plan teilen',
+      shareImage: 'Als Bild teilen',
+      unit: 'Einheit',
+      wucd: 'inkl. Ein-/Auslaufen',
+      recovery: 'Pause',
+    },
+    fr: {
+      empty: "Tu n'as pas encore de plan",
+      create: 'Créer mon plan',
+      paces: 'Allures',
+      marathon: 'Marathon',
+      share: 'Partager',
+      copied: 'Copié',
+      image: 'Image',
+      sharePlan: 'Partager le plan',
+      shareImage: 'Partager en image',
+      unit: 'Unité',
+      wucd: 'éch.+retour au calme incl.',
+      recovery: 'récup.',
     },
   }[locale];
 
@@ -1053,7 +1123,15 @@ function MarathonBuildTab({
 
   const [expandedWeek, setExpandedWeek] = useState<number | null>(currentWeek);
   const localeCode =
-    locale === 'es' ? 'es-ES' : locale === 'ko' ? 'ko-KR' : 'en-GB';
+    locale === 'es'
+      ? 'es-ES'
+      : locale === 'ko'
+        ? 'ko-KR'
+        : locale === 'de'
+          ? 'de-DE'
+          : locale === 'fr'
+            ? 'fr-FR'
+            : 'en-GB';
   const text = {
     en: {
       title: 'Marathon Build',
@@ -1069,6 +1147,16 @@ function MarathonBuildTab({
       title: '마라톤 빌드업',
       weeks: '주',
       starts: (date: string) => `빌드업은 ${date}에 시작합니다.`,
+    },
+    de: {
+      title: 'Marathon-Aufbau',
+      weeks: 'Wo.',
+      starts: (date: string) => `Aufbau startet am ${date}.`,
+    },
+    fr: {
+      title: 'Plan marathon',
+      weeks: 'sem.',
+      starts: (date: string) => `Le plan commence le ${date}.`,
     },
   }[locale];
 

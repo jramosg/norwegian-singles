@@ -13,7 +13,7 @@ export type Distance =
   | '1600M'
   | '1500M';
 export type RaceDistance = Distance | 'custom';
-export type Locale = 'en' | 'es' | 'ko';
+export type Locale = 'en' | 'es' | 'ko' | 'de' | 'fr';
 export type Unit = 'km' | 'mile';
 
 export const DISTANCE_METERS: Record<Distance, number> = {

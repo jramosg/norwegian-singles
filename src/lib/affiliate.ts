@@ -21,6 +21,8 @@ const TAGS = {
   es: 'jramosg-21', // amazon.es
   com: 'jramosg-20', // amazon.com (US)
   uk: 'jramosg00-21', // amazon.co.uk
+  de: 'jramosg-21', // amazon.de — TODO: replace with your real amazon.de tag
+  fr: 'jramosg-21', // amazon.fr — TODO: replace with your real amazon.fr tag
 } as const;
 
 // Map app locale -> Amazon marketplace (TLD + tag).
@@ -31,6 +33,8 @@ const MARKETPLACE: Record<Locale, { tld: string; tag: string }> = {
   es: { tld: 'es', tag: TAGS.es },
   en: { tld: 'com', tag: TAGS.com },
   ko: { tld: 'com', tag: TAGS.com },
+  de: { tld: 'de', tag: TAGS.de },
+  fr: { tld: 'fr', tag: TAGS.fr },
 };
 
 export interface Book {

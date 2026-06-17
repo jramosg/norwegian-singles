@@ -62,6 +62,18 @@ const raceGroups = {
     { key: 'HM' as const, label: '하프 마라톤' },
     { key: 'marathon' as const, label: '마라톤' },
   ],
+  de: [
+    { key: '5K' as const, label: '5K' },
+    { key: '10K' as const, label: '10K' },
+    { key: 'HM' as const, label: 'Halbmarathon' },
+    { key: 'marathon' as const, label: 'Marathon' },
+  ],
+  fr: [
+    { key: '5K' as const, label: '5K' },
+    { key: '10K' as const, label: '10K' },
+    { key: 'HM' as const, label: 'Semi-marathon' },
+    { key: 'marathon' as const, label: 'Marathon' },
+  ],
 }[locale];
 const faqStructuredData = {
   '@context': 'https://schema.org',
@@ -94,6 +106,18 @@ const proofBullets = {
     '주 4.5-9시간 플랜',
     '15주 마라톤 빌드업',
     'VDOT 점수 + 훈련 구역',
+  ],
+  de: [
+    'Paces aus 5K oder 10K',
+    '4.5-9h-Wochenpläne',
+    '15-Wochen-Marathon-Aufbau',
+    'VDOT-Wert + Trainingszonen',
+  ],
+  fr: [
+    'Allures depuis 5K ou 10K',
+    'Plans de 4.5-9h/semaine',
+    'Plan marathon de 15 semaines',
+    "Score VDOT + zones d'entraînement",
   ],
 }[locale];
 
@@ -129,6 +153,28 @@ const sample = {
       ['목', '5 x 6분', '4:15/km'],
       ['토', '9 x 3분', '4:04/km'],
       ['일', '75분 이지', '5:35/km'],
+    ],
+  },
+  de: {
+    eyebrow: 'Sofort-Beispiel',
+    title: 'NSA / NSM Woche',
+    input: '20:00 5K · 6 h/Woche',
+    days: [
+      ['Di', '3 x 10 min', '4:28/km'],
+      ['Do', '5 x 6 min', '4:15/km'],
+      ['Sa', '9 x 3 min', '4:04/km'],
+      ['So', '75 min locker', '5:35/km'],
+    ],
+  },
+  fr: {
+    eyebrow: 'Exemple instantané',
+    title: 'Semaine NSA / NSM',
+    input: '5K 20:00 · 6 h/semaine',
+    days: [
+      ['Mar', '3 x 10 min', '4:28/km'],
+      ['Jeu', '5 x 6 min', '4:15/km'],
+      ['Sam', '9 x 3 min', '4:04/km'],
+      ['Dim', '75 min facile', '5:35/km'],
     ],
   },
 }[locale];
@@ -193,6 +239,47 @@ const landingText = {
     lookupTitle: '레이스 기록별 NSA 훈련 페이스',
     lookupIntro: '기록을 선택해 계산된 서브스레숄드 훈련 페이스를 확인하세요.',
   },
+  de: {
+    faqTitle: 'FAQ',
+    faqIntro: 'Kurze Antworten zu NSA, NSM und dem Rechner.',
+    relatedTitle: 'Wähle den passenden Guide',
+    relatedIntro:
+      'Weitere nützliche Seiten, je nachdem, was du als Nächstes willst.',
+    paceTitle: 'Trainingspaces',
+    paceIntro:
+      'NSA / NSM Paces aus deiner Rennzeit. Nutze den Rechner oben zur Bestätigung oder Feinjustierung.',
+    shortSubT: 'Kurze Sub-T',
+    mediumSubT: 'Mittlere Sub-T',
+    longSubT: 'Lange Sub-T',
+    easyPace: 'Lockeres Tempo',
+    rep3: '3-min-Intervalle',
+    rep6: '6-min-Intervalle',
+    rep10: '10-min-Intervalle',
+    easyRunning: 'lockeres Laufen',
+    lookupTitle: 'NSA Trainingspaces nach Rennzeit',
+    lookupIntro:
+      'Wähle deine Rennzeit, um die berechneten Sub-Threshold-Trainingspaces zu sehen.',
+  },
+  fr: {
+    faqTitle: 'FAQ',
+    faqIntro: 'Réponses rapides sur NSA, NSM et le calculateur.',
+    relatedTitle: 'Choisis le bon guide',
+    relatedIntro: "D'autres pages utiles selon ce que tu veux faire ensuite.",
+    paceTitle: "Allures d'entraînement",
+    paceIntro:
+      'Allures NSA / NSM calculées depuis ton temps de course. Utilise le calculateur ci-dessus pour confirmer ou ajuster.',
+    shortSubT: 'Sous-S court',
+    mediumSubT: 'Sous-S moyen',
+    longSubT: 'Sous-S long',
+    easyPace: 'Allure facile',
+    rep3: 'répét. 3 min',
+    rep6: 'répét. 6 min',
+    rep10: 'répét. 10 min',
+    easyRunning: 'footing facile',
+    lookupTitle: "Allures d'entraînement NSA par temps de course",
+    lookupIntro:
+      'Sélectionne ton temps de course pour voir les allures sous-seuil calculées.',
+  },
 }[locale];
 
 const educationLinks = {
@@ -213,6 +300,18 @@ const educationLinks = {
     method: '/ko/norwegian-method-calculator/#guide',
     bakken: '/ko/marius-bakken-pace-calculator/#guide',
     marathon: '/ko/norwegian-method-marathon-plan/#guide',
+  },
+  de: {
+    nsm: '/de/nsm-rechner/#calculator',
+    method: '/de/norwegische-methode-rechner/#guide',
+    bakken: '/de/marius-bakken-pace-rechner/#guide',
+    marathon: '/de/norwegische-methode-marathonplan/#guide',
+  },
+  fr: {
+    nsm: '/fr/calculateur-nsm/#calculator',
+    method: '/fr/calculateur-methode-norvegienne/#guide',
+    bakken: '/fr/calculateur-allures-marius-bakken/#guide',
+    marathon: '/fr/plan-marathon-methode-norvegienne/#guide',
   },
 }[locale];
 
@@ -366,6 +465,106 @@ const educationText = {
       },
     ],
   },
+  de: {
+    title: 'So nutzt du diese Paces',
+    intro:
+      'Der Rechner gibt konservative Ziele für Wochen, die du wiederholen kannst.',
+    cards: [
+      {
+        title: '3-Minuten-Intervalle',
+        text: 'Für die kürzeste Sub-Threshold-Einheit der Woche. Halte sie kontrolliert und zügig.',
+      },
+      {
+        title: '6-Minuten-Intervalle',
+        text: 'Als mittlere Einheit. Sie laufen ruhiger als die 3-Minuten-Intervalle.',
+      },
+      {
+        title: '10-Minuten-Intervalle',
+        text: 'Für längeren aeroben Druck. Beende die letzte Wiederholung mit Reserve.',
+      },
+      {
+        title: 'Lockeres Tempo',
+        text: 'Lockere Läufe bleiben locker genug, dass du dich für die nächste Einheit erholst. Bei Ermüdung zuerst hier langsamer werden.',
+      },
+    ],
+    nextTitle: 'Nächster Schritt',
+    actions: [
+      {
+        href: educationLinks.nsm,
+        label: 'NSM Rechner',
+        eyebrow: 'Hier starten',
+        text: 'Gib ein Rennergebnis ein und erhalte 3-, 6- und 10-Minuten-Paces.',
+      },
+      {
+        href: educationLinks.method,
+        label: 'Rechner norwegische Methode',
+        eyebrow: 'Vergleich',
+        text: 'Sieh, wie Einzelsession-Training zu norwegischen Schwellenideen passt.',
+      },
+      {
+        href: educationLinks.bakken,
+        label: 'Marius Bakken Pace-Notizen',
+        eyebrow: 'Hintergrund',
+        text: 'Verbinde die Pace-Ziele mit Bakken-artigem Schwellentraining.',
+      },
+      {
+        href: educationLinks.marathon,
+        label: 'Marathonplan norwegische Methode',
+        eyebrow: 'Marathon',
+        text: 'Baue einen 15-Wochen-Marathonblock um Sub-Threshold-Tage.',
+      },
+    ],
+  },
+  fr: {
+    title: 'Comment utiliser ces allures',
+    intro:
+      'Le calculateur donne des cibles prudentes pour des semaines répétables.',
+    cards: [
+      {
+        title: 'Intervalles de 3 minutes',
+        text: 'Pour la séance sous-seuil la plus courte de la semaine. Garde-les contrôlés et rapides.',
+      },
+      {
+        title: 'Intervalles de 6 minutes',
+        text: 'Comme séance intermédiaire. Plus stables que les répét. de 3 minutes.',
+      },
+      {
+        title: 'Intervalles de 10 minutes',
+        text: 'Pour une pression aérobie plus longue. Termine la dernière répét. avec de la réserve.',
+      },
+      {
+        title: 'Allure facile',
+        text: 'Les footings faciles restent assez faciles pour récupérer avant la séance suivante. En cas de fatigue, ralentis-les en premier.',
+      },
+    ],
+    nextTitle: 'Étape suivante',
+    actions: [
+      {
+        href: educationLinks.nsm,
+        label: 'Calculateur NSM',
+        eyebrow: 'Commence ici',
+        text: 'Saisis un résultat et obtiens des allures de 3, 6 et 10 minutes.',
+      },
+      {
+        href: educationLinks.method,
+        label: 'Calculateur méthode norvégienne',
+        eyebrow: 'Comparer',
+        text: "Vois comment l'entraînement en séance unique rejoint les idées de seuil norvégiennes.",
+      },
+      {
+        href: educationLinks.bakken,
+        label: "Notes d'allures Marius Bakken",
+        eyebrow: 'Contexte',
+        text: "Relie les cibles d'allure au travail de seuil façon Bakken.",
+      },
+      {
+        href: educationLinks.marathon,
+        label: 'Plan marathon méthode norvégienne',
+        eyebrow: 'Marathon',
+        text: 'Construis un bloc marathon de 15 semaines autour des jours sous-seuil.',
+      },
+    ],
+  },
 }[locale];
 
 const nextStepActions = educationText.actions.filter(
@@ -384,6 +583,10 @@ const relatedGroups = {
         {
           slug: 'nsm-calculator',
           text: 'Race result in, 3/6/10-minute paces out.',
+        },
+        {
+          slug: 'norwegian-singles-app',
+          text: 'The free browser app: paces, weekly plan, and marathon build.',
         },
         {
           slug: 'sub-threshold-pace-calculator',
@@ -423,6 +626,10 @@ const relatedGroups = {
           slug: 'norwegian-singles-calculator-comparison',
           text: 'See which planner features matter before you choose one.',
         },
+        {
+          slug: 'james-copeland-norwegian-singles',
+          text: 'How the James Copeland (sirpoc) method maps to these paces.',
+        },
       ],
     },
   ],
@@ -437,6 +644,10 @@ const relatedGroups = {
         {
           slug: 'calculadora-nsm',
           text: 'Marca de carrera dentro, ritmos de 3/6/10 minutos fuera.',
+        },
+        {
+          slug: 'app-norwegian-singles',
+          text: 'La app gratis en el navegador: ritmos, plan semanal y maratón.',
         },
         {
           slug: 'calculadora-ritmos-sub-umbral',
@@ -476,6 +687,10 @@ const relatedGroups = {
           slug: 'comparativa-calculadora-norwegian-singles',
           text: 'Revisa qué funciones importan antes de elegir planner.',
         },
+        {
+          slug: 'james-copeland-norwegian-singles',
+          text: 'Cómo se traduce el método de James Copeland (sirpoc) a estos ritmos.',
+        },
       ],
     },
   ],
@@ -490,6 +705,10 @@ const relatedGroups = {
         {
           slug: 'nsm-calculator',
           text: '레이스 기록으로 3/6/10분 페이스를 확인하세요.',
+        },
+        {
+          slug: 'norwegian-singles-app',
+          text: '브라우저에서 쓰는 무료 앱: 페이스, 주간 플랜, 마라톤 빌드업.',
         },
         {
           slug: 'sub-threshold-pace-calculator',
@@ -528,6 +747,124 @@ const relatedGroups = {
         {
           slug: 'norwegian-singles-calculator-comparison',
           text: '플래너를 고르기 전에 필요한 기능을 확인하세요.',
+        },
+        {
+          slug: 'james-copeland-norwegian-singles',
+          text: 'James Copeland(sirpoc)의 방법이 이 페이스로 어떻게 연결되는지.',
+        },
+      ],
+    },
+  ],
+  de: [
+    {
+      title: 'Pace-Rechner',
+      links: [
+        {
+          slug: 'vdot-rechner',
+          text: 'Rennergebnis rein, VDOT-Wert und alle fünf Trainingszonen raus.',
+        },
+        {
+          slug: 'nsm-rechner',
+          text: 'Rennergebnis rein, 3/6/10-Minuten-Paces raus.',
+        },
+        {
+          slug: 'norwegian-singles-app',
+          text: 'Die kostenlose Browser-App: Paces, Wochenplan und Marathon-Aufbau.',
+        },
+        {
+          slug: 'sub-threshold-pace-rechner',
+          text: 'Nutze ihn, wenn dir Schwellenkontrolle wichtig ist.',
+        },
+        {
+          slug: 'marius-bakken-pace-rechner',
+          text: 'Bakken-Kontext für die Pace-Ziele.',
+        },
+      ],
+    },
+    {
+      title: 'Pläne',
+      links: [
+        {
+          slug: 'norwegian-singles-trainingsplan',
+          text: 'Mach aus den Paces eine Wochenstruktur.',
+        },
+        {
+          slug: 'norwegische-methode-marathonplan',
+          text: 'Bringe dieselbe Arbeit in einen Marathonblock.',
+        },
+      ],
+    },
+    {
+      title: 'Vergleiche',
+      links: [
+        {
+          slug: 'norwegische-methode-hobbylaeufer',
+          text: 'Passe norwegische Schwellenarbeit an normale Wochen an.',
+        },
+        {
+          slug: 'subthreshold-rechner-alternative',
+          text: 'Vergleiche Pace-Tools ohne Account.',
+        },
+        {
+          slug: 'james-copeland-norwegian-singles',
+          text: 'Wie die Methode von James Copeland (sirpoc) zu diesen Paces passt.',
+        },
+      ],
+    },
+  ],
+  fr: [
+    {
+      title: "Calculateurs d'allures",
+      links: [
+        {
+          slug: 'calculateur-vdot',
+          text: 'Résultat en entrée, score VDOT et cinq zones en sortie.',
+        },
+        {
+          slug: 'calculateur-nsm',
+          text: 'Résultat de course en entrée, allures de 3/6/10 min en sortie.',
+        },
+        {
+          slug: 'application-norwegian-singles',
+          text: "L'app gratuite dans le navigateur : allures, plan et marathon.",
+        },
+        {
+          slug: 'calculateur-allure-sous-seuil',
+          text: 'À utiliser quand le contrôle du seuil compte.',
+        },
+        {
+          slug: 'calculateur-allures-marius-bakken',
+          text: "Contexte façon Bakken pour les cibles d'allure.",
+        },
+      ],
+    },
+    {
+      title: 'Plans',
+      links: [
+        {
+          slug: 'plan-entrainement-norwegian-singles',
+          text: 'Transforme les allures en structure hebdomadaire.',
+        },
+        {
+          slug: 'plan-marathon-methode-norvegienne',
+          text: 'Intègre le même travail dans un bloc marathon.',
+        },
+      ],
+    },
+    {
+      title: 'Comparatifs',
+      links: [
+        {
+          slug: 'methode-norvegienne-coureurs-amateurs',
+          text: 'Adapte le seuil norvégien à des semaines normales.',
+        },
+        {
+          slug: 'alternative-calculateur-subthreshold',
+          text: "Compare les outils d'allure sans créer de compte.",
+        },
+        {
+          slug: 'james-copeland-norwegian-singles',
+          text: 'Comment la méthode de James Copeland (sirpoc) rejoint ces allures.',
         },
       ],
     },

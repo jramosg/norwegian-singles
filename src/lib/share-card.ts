@@ -75,6 +75,16 @@ const T = {
     fiveK: '5K',
     tagline: '무료로 계산하기',
   },
+  de: {
+    subtitle: 'Meine Sub-Threshold-Paces',
+    fiveK: '5K',
+    tagline: 'Kostenlos berechnen auf',
+  },
+  fr: {
+    subtitle: 'Mes allures sous-seuil',
+    fiveK: '5K',
+    tagline: 'Calculez les vôtres gratuitement sur',
+  },
 } as const;
 
 /** Draw the card onto a 1080×1350 canvas. */

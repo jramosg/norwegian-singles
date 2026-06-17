@@ -1,0 +1,60 @@
+---
+import LandingPage from '../../components/LandingPage.astro';
+import RaceInputPage from '../../components/RaceInputPage.astro';
+import {
+  createSeoStructuredData,
+  getSeoPage,
+  getSeoPages,
+} from '../../lib/seo-pages';
+import {
+  createRaceSeoStructuredData,
+  getRacePage,
+  getRacePages,
+} from '../../lib/race-seo-pages';
+
+const locale = 'de';
+
+export function getStaticPaths() {
+  const seoPages = getSeoPages('de').map((page) => ({
+    params: { slug: page.slug },
+    props: { page, racePage: null },
+  }));
+  const racePages = getRacePages('de').map((page) => ({
+    params: { slug: page.slug },
+    props: { page: null, racePage: page },
+  }));
+  return [...seoPages, ...racePages];
+}
+
+const { page, racePage } = Astro.props;
+const foundPage = page || getSeoPage(locale, Astro.params.slug || '');
+const foundRacePage = racePage || getRacePage(locale, Astro.params.slug || '');
+
+if (!foundPage && !foundRacePage) {
+  return Astro.redirect(`/${locale}/`);
+}
+
+const activePage = foundPage || foundRacePage!;
+const structuredData = foundRacePage
+  ? createRaceSeoStructuredData(locale, foundRacePage)
+  : createSeoStructuredData(locale, foundPage!);
+---
+
+{
+  foundRacePage ? (
+    <RaceInputPage
+      locale={locale}
+      page={foundRacePage}
+      structuredData={structuredData}
+    />
+  ) : (
+    <LandingPage
+      locale={locale}
+      title={activePage.title}
+      description={activePage.description}
+      seoHeading={activePage.h1}
+      seoIntro={activePage.intro}
+      structuredData={structuredData}
+    />
+  )
+}

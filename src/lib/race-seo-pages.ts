@@ -138,20 +138,40 @@ function distanceForEntry(distance: RaceDistKey): Distance {
 function equivalentLabels(locale: Locale): Record<Distance, string> {
   return {
     '42K':
-      locale === 'es' ? 'Maratón' : locale === 'ko' ? '마라톤' : 'Marathon',
+      locale === 'es'
+        ? 'Maratón'
+        : locale === 'ko'
+          ? '마라톤'
+          : locale === 'fr'
+            ? 'Marathon'
+            : 'Marathon',
     '21K':
       locale === 'es'
         ? 'Media maratón'
         : locale === 'ko'
           ? '하프 마라톤'
-          : 'Half marathon',
+          : locale === 'de'
+            ? 'Halbmarathon'
+            : locale === 'fr'
+              ? 'Semi-marathon'
+              : 'Half marathon',
     '15K': '15K',
     '10K': '10K',
     '5K': '5K',
-    '2MI': '2 miles',
+    '2MI':
+      locale === 'fr' ? '2 miles' : locale === 'de' ? '2 Meilen' : '2 miles',
     '3200M': '3200 m',
     '3K': '3K',
-    '1MI': locale === 'es' ? '1 milla' : locale === 'ko' ? '1마일' : '1 mile',
+    '1MI':
+      locale === 'es'
+        ? '1 milla'
+        : locale === 'ko'
+          ? '1마일'
+          : locale === 'de'
+            ? '1 Meile'
+            : locale === 'fr'
+              ? '1 mile'
+              : '1 mile',
     '1600M': '1600 m',
     '1500M': '1500 m',
   };
@@ -289,6 +309,103 @@ function buildPage(entry: RaceEntry, locale: Locale): RaceSeoPage {
     };
   }
 
+  if (locale === 'de') {
+    const distTitle =
+      distance === 'HM'
+        ? 'Halbmarathon'
+        : distance === 'marathon'
+          ? 'Marathon'
+          : distance;
+    const distLabel =
+      distance === 'HM'
+        ? 'Halbmarathon'
+        : distance === 'marathon'
+          ? 'Marathon'
+          : distance;
+    const distSlug =
+      distance === 'HM'
+        ? 'halbmarathon'
+        : distance === 'marathon'
+          ? 'marathon'
+          : distance.toLowerCase();
+
+    return {
+      slug: `${distSlug}-${tSlug}-trainingspaces`,
+      title: `${dt} ${distTitle} NSA Trainingspaces: Norwegian Singles`,
+      description:
+        `NSA / NSM Trainingspaces für einen ${dt} ${distLabel}-Läufer. ` +
+        `Kurze Sub-T: ${r3} · mittlere: ${r6} · lange: ${r10} · locker: ${ez}.`,
+      h1: `${dt} ${distLabel} NSA / NSM Trainingspaces`,
+      intro:
+        `Diese <strong>NSA / NSM Trainingspaces</strong> basieren auf einem ` +
+        `${dt} ${distLabel}. Kurze Intervalle (3 min) zielen auf ${r3}, ` +
+        `mittlere (6 min) ${r6}, lange (10 min) ${r10}, und lockeres Laufen ` +
+        `bleibt um ${ez}. Öffne den Beispielplan oder nutze den Rechner ` +
+        `unten, um auf deine echte Zeit anzupassen.`,
+      howToName: `NSA Trainingspaces aus einem ${dt} ${distLabel} berechnen`,
+      paceCard: {
+        raceLabel: `${dt} ${distTitle}`,
+        rep3min: r3,
+        rep6min: r6,
+        rep10min: r10,
+        easy: ez,
+      },
+      distanceKey: distance,
+      raceDistance,
+      raceTime: time,
+      displayTime: dt,
+      equivalents,
+    };
+  }
+
+  if (locale === 'fr') {
+    const distTitle =
+      distance === 'HM'
+        ? 'Semi-marathon'
+        : distance === 'marathon'
+          ? 'Marathon'
+          : distance;
+    const distLabel =
+      distance === 'HM'
+        ? 'semi-marathon'
+        : distance === 'marathon'
+          ? 'marathon'
+          : distance;
+    const distSlug =
+      distance === 'HM'
+        ? 'semi-marathon'
+        : distance === 'marathon'
+          ? 'marathon'
+          : distance.toLowerCase();
+
+    return {
+      slug: `allures-${distSlug}-${tSlug}`,
+      title: `Allures NSA ${distTitle} ${dt} : Norwegian Singles`,
+      description:
+        `Allures NSA / NSM pour un ${distLabel} en ${dt}. ` +
+        `Sous-S court : ${r3} · moyen : ${r6} · long : ${r10} · facile : ${ez}.`,
+      h1: `Allures NSA / NSM pour un ${distLabel} en ${dt}`,
+      intro:
+        `Ces <strong>allures NSA / NSM</strong> sont calculées pour un ` +
+        `${distLabel} en ${dt}. Intervalles courts (3 min) à ${r3}, ` +
+        `moyens (6 min) à ${r6}, longs (10 min) à ${r10}, et footing facile ` +
+        `autour de ${ez}. Utilise le calculateur pour ajuster à ton résultat réel.`,
+      howToName: `Calculer les allures NSA pour un ${distLabel} en ${dt}`,
+      paceCard: {
+        raceLabel: `${distTitle} ${dt}`,
+        rep3min: r3,
+        rep6min: r6,
+        rep10min: r10,
+        easy: ez,
+      },
+      distanceKey: distance,
+      raceDistance,
+      raceTime: time,
+      displayTime: dt,
+      equivalents,
+    };
+  }
+
   // ES
   const distTitle =
     distance === 'HM'
@@ -341,6 +458,8 @@ const RACE_PAGES: Record<Locale, RaceSeoPage[]> = {
   en: RACE_ENTRIES.map((e) => buildPage(e, 'en')),
   es: RACE_ENTRIES.map((e) => buildPage(e, 'es')),
   ko: RACE_ENTRIES.map((e) => buildPage(e, 'ko')),
+  de: RACE_ENTRIES.map((e) => buildPage(e, 'de')),
+  fr: RACE_ENTRIES.map((e) => buildPage(e, 'fr')),
 };
 
 export function getRacePages(locale: Locale): RaceSeoPage[] {
@@ -410,7 +529,16 @@ export function createRaceSeoStructuredData(
         {
           '@type': 'ListItem',
           position: 1,
-          name: locale === 'es' ? 'Inicio' : locale === 'ko' ? '홈' : 'Home',
+          name:
+            locale === 'es'
+              ? 'Inicio'
+              : locale === 'ko'
+                ? '홈'
+                : locale === 'de'
+                  ? 'Start'
+                  : locale === 'fr'
+                    ? 'Accueil'
+                    : 'Home',
           item: `${site}/${locale}/`,
         },
         {
@@ -434,13 +562,21 @@ export function createRaceSeoStructuredData(
               ? 'Introduce tu marca'
               : locale === 'ko'
                 ? '레이스 기록 입력'
-                : 'Enter your race time',
+                : locale === 'de'
+                  ? 'Gib deine Rennzeit ein'
+                  : locale === 'fr'
+                    ? 'Saisis ton temps de course'
+                    : 'Enter your race time',
           text:
             locale === 'es'
               ? 'Añade una marca reciente para confirmar los ritmos.'
               : locale === 'ko'
                 ? '페이스를 확인할 최근 기록을 입력하세요.'
-                : 'Add a recent result to confirm these paces.',
+                : locale === 'de'
+                  ? 'Füge ein aktuelles Ergebnis hinzu, um diese Paces zu bestätigen.'
+                  : locale === 'fr'
+                    ? 'Ajoute un résultat récent pour confirmer ces allures.'
+                    : 'Add a recent result to confirm these paces.',
         },
         {
           '@type': 'HowToStep',
@@ -449,13 +585,21 @@ export function createRaceSeoStructuredData(
               ? 'Elige horas semanales'
               : locale === 'ko'
                 ? '주간 훈련 시간 선택'
-                : 'Choose weekly training hours',
+                : locale === 'de'
+                  ? 'Wähle die Wochenstunden'
+                  : locale === 'fr'
+                    ? 'Choisis tes heures hebdomadaires'
+                    : 'Choose weekly training hours',
           text:
             locale === 'es'
               ? 'Selecciona el volumen semanal que puedes repetir.'
               : locale === 'ko'
                 ? '꾸준히 반복할 수 있는 주간 볼륨을 선택하세요.'
-                : 'Select the weekly volume you can repeat consistently.',
+                : locale === 'de'
+                  ? 'Wähle den Wochenumfang, den du konstant wiederholen kannst.'
+                  : locale === 'fr'
+                    ? 'Choisis le volume hebdomadaire que tu peux répéter régulièrement.'
+                    : 'Select the weekly volume you can repeat consistently.',
         },
         {
           '@type': 'HowToStep',
@@ -464,13 +608,21 @@ export function createRaceSeoStructuredData(
               ? 'Genera ritmos y plan'
               : locale === 'ko'
                 ? '페이스와 플랜 생성'
-                : 'Generate paces and plan',
+                : locale === 'de'
+                  ? 'Paces und Plan generieren'
+                  : locale === 'fr'
+                    ? 'Génère les allures et le plan'
+                    : 'Generate paces and plan',
           text:
             locale === 'es'
               ? 'Obtén ritmos sub-umbral, ritmo fácil y una semana NSA/NSM.'
               : locale === 'ko'
                 ? '서브스레숄드 페이스, 이지 페이스, NSA/NSM 주간을 확인하세요.'
-                : 'Get sub-threshold paces, easy pace, and an NSA/NSM week.',
+                : locale === 'de'
+                  ? 'Erhalte Sub-Threshold-Paces, lockeres Tempo und eine NSA/NSM-Woche.'
+                  : locale === 'fr'
+                    ? "Obtiens des allures sous-seuil, l'allure facile et une semaine NSA/NSM."
+                    : 'Get sub-threshold paces, easy pace, and an NSA/NSM week.',
         },
       ],
     },
