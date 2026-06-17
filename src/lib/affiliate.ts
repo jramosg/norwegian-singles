@@ -21,8 +21,8 @@ const TAGS = {
   es: 'jramosg-21', // amazon.es
   com: 'jramosg-20', // amazon.com (US)
   uk: 'jramosg00-21', // amazon.co.uk
-  de: 'jramosg-21', // amazon.de — TODO: replace with your real amazon.de tag
-  fr: 'jramosg-21', // amazon.fr — TODO: replace with your real amazon.fr tag
+  de: 'jramosg0c-21', // amazon.de
+  fr: 'jramosg09-21', // amazon.fr
 } as const;
 
 // Map app locale -> Amazon marketplace (TLD + tag).
