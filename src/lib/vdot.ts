@@ -1,9 +1,6 @@
 /**
  * VDOT Calculator
- * Based on Jack Daniels' running formula
- *
- * VDOT represents the oxygen consumption ability of a runner and is used
- * to predict race performances and calculate training paces.
+ * Based on Jack Daniels' running formula, matching vdoto2.com's implementation.
  */
 
 import type { Distance, ParsedTime } from '../types';
@@ -26,38 +23,28 @@ export interface VDOTTrainingPaces {
   repetition: number;
 }
 
-const TRAINING_PACE_ANCHORS: { vdot: number; paces: VDOTTrainingPaces }[] = [
-  {
-    vdot: 32.3,
-    paces: {
-      easy: { min: 411, max: 451 },
-      marathon: 388.4,
-      threshold: 353,
-      interval: 317,
-      repetition: 302,
-    },
-  },
-  {
-    vdot: 42.6,
-    paces: {
-      easy: { min: 349, max: 383 },
-      marathon: 310,
-      threshold: 291,
-      interval: 267,
-      repetition: 252,
-    },
-  },
-  {
-    vdot: 58.4,
-    paces: {
-      easy: { min: 271, max: 299 },
-      marathon: 238,
-      threshold: 225,
-      interval: 207,
-      repetition: 192,
-    },
-  },
-];
+// Polynomial inverse of the VO2-velocity relationship (vdoto2.com _getPaceVelocity)
+function paceVelocity(vo2: number): number {
+  return 29.54 + 5.000663 * vo2 - 0.007546 * vo2 * vo2;
+}
+
+// Runners below this VDOT get adjusted training paces (vdoto2.com _SlowVdotLimit)
+const SLOW_VDOT_LIMIT = 39;
+
+function isSlowVdot(vdot: number): boolean {
+  return vdot > 0 && vdot < SLOW_VDOT_LIMIT;
+}
+
+// Adjusted VDOT for slow runners (vdoto2.com _getSRVDOT)
+function slowRunnerVdot(vdot: number): number {
+  return (vdot * 2) / 3 + 13;
+}
+
+// Returns pace in seconds per km for a given VDOT and effort fraction
+function effortPaceSecondsPerKm(vdot: number, fraction: number): number {
+  const velocity = paceVelocity(vdot * fraction); // m/min
+  return (1000 / velocity) * 60; // s/km
+}
 
 /**
  * Parse a time string (mm:ss or h:mm:ss) to seconds
@@ -141,51 +128,35 @@ export function calculateVDOT(
 }
 
 function calculateVDOTRaw(distanceMeters: number, timeSeconds: number): number {
-  const timeMinutes = timeSeconds / 60;
-  const velocity = distanceMeters / timeMinutes; // meters per minute
-
-  // VO2 calculation (oxygen consumption)
-  const vo2 = -4.6 + 0.182258 * velocity + 0.000104 * velocity * velocity;
-
-  // Percentage of VO2max based on race duration
-  // This models the dropoff in sustainable VO2 percentage as race gets longer
-  const percentVO2max =
+  const t = timeSeconds / 60; // minutes
+  const v = distanceMeters / t; // m/min
+  const vo2 = 0.182258 * v + 0.000104 * v * v - 4.6;
+  // Coefficients match vdoto2.com exactly
+  const pctVO2max =
     0.8 +
-    0.1894393 * Math.exp(-0.012778 * timeMinutes) +
-    0.2989558 * Math.exp(-0.1932605 * timeMinutes);
-
-  // VDOT is the normalized value
-  const vdot = vo2 / percentVO2max;
-
-  return vdot;
+    0.298956 * Math.exp(-0.193261 * t) +
+    0.189439 * Math.exp(-0.012778 * t);
+  return vo2 / pctVO2max;
 }
 
-/**
- * Calculate race time from VDOT and distance
- * Inverts the VDOT calculation using numerical methods
- */
+// Newton's method matching vdoto2.com getPredictedRaceTime — returns seconds
 export function calculateTimeFromVDOT(
   vdot: number,
   distanceMeters: number,
 ): number {
-  // Use binary search to find the time that produces the given VDOT
-  let low = 1 * 60; // 1 minute
-  let high = 6 * 3600; // 6 hours
-
-  while (high - low > 0.01) {
-    const mid = (low + high) / 2;
-    const calculatedVdot = calculateVDOTRaw(distanceMeters, mid);
-
-    if (calculatedVdot > vdot) {
-      // Need slower time (higher seconds)
-      low = mid;
-    } else {
-      // Need faster time (lower seconds)
-      high = mid;
-    }
+  let t = distanceMeters / (4 * vdot); // initial estimate in minutes
+  for (let i = 0; i < 3; i++) {
+    const e = Math.exp(-0.193261 * t);
+    const r = 0.298956 * e + Math.exp(-0.012778 * t) * 0.189439 + 0.8;
+    const o = (vdot * r) ** 2 * -0.0075 + vdot * r * 5.000663 + 29.54;
+    const c = 0.298956 * e * 0.19326;
+    const s = c - Math.exp(-0.012778 * t) * 0.189439 * -0.012778;
+    const l = r * s * vdot * -0.007546 * 3;
+    const a = s * vdot * 5.000663 + l;
+    const denom = (distanceMeters * a) / (o * o) + 1;
+    t -= (t - distanceMeters / o) / denom;
   }
-
-  return Math.round((low + high) / 2);
+  return Math.round(t * 60);
 }
 
 /**
@@ -216,35 +187,28 @@ export function estimateRaceTime(vdot: number, distance: Distance): number {
 }
 
 export function getTrainingPacesFromVDOT(vdot: number): VDOTTrainingPaces {
-  const anchors = TRAINING_PACE_ANCHORS;
-  let lower = anchors[0];
-  let upper = anchors[1];
+  // Slow runners use an adjusted VDOT for easy/interval/repetition
+  const adjustedVdot = isSlowVdot(vdot) ? slowRunnerVdot(vdot) : vdot;
+  // Threshold uses average of adjusted and actual VDOT for slow runners
+  const thresholdVdot = isSlowVdot(vdot)
+    ? (slowRunnerVdot(vdot) + vdot) / 2
+    : vdot;
 
-  if (vdot <= anchors[0].vdot) {
-    [lower, upper] = [anchors[0], anchors[1]];
-  } else if (vdot >= anchors[anchors.length - 1].vdot) {
-    [lower, upper] = [anchors[anchors.length - 2], anchors[anchors.length - 1]];
-  } else {
-    for (let i = 0; i < anchors.length - 1; i++) {
-      if (vdot >= anchors[i].vdot && vdot <= anchors[i + 1].vdot) {
-        [lower, upper] = [anchors[i], anchors[i + 1]];
-        break;
-      }
-    }
-  }
+  const interval = effortPaceSecondsPerKm(adjustedVdot, 0.975);
+  // Repetition is 15 s/km faster than interval (1000m/400m * 6min/60 * 60s)
+  const repetition = interval - 15;
 
-  const t = (vdot - lower.vdot) / (upper.vdot - lower.vdot);
-  const interpolate = (a: number, b: number) => a + (b - a) * t;
+  const marathonSeconds = calculateTimeFromVDOT(vdot, 42195);
 
   return {
     easy: {
-      min: interpolate(lower.paces.easy.min, upper.paces.easy.min),
-      max: interpolate(lower.paces.easy.max, upper.paces.easy.max),
+      min: effortPaceSecondsPerKm(adjustedVdot, 0.7),
+      max: effortPaceSecondsPerKm(adjustedVdot, 0.62),
     },
-    marathon: interpolate(lower.paces.marathon, upper.paces.marathon),
-    threshold: interpolate(lower.paces.threshold, upper.paces.threshold),
-    interval: interpolate(lower.paces.interval, upper.paces.interval),
-    repetition: interpolate(lower.paces.repetition, upper.paces.repetition),
+    marathon: marathonSeconds / 42.195,
+    threshold: effortPaceSecondsPerKm(thresholdVdot, 0.88),
+    interval,
+    repetition,
   };
 }
 
