@@ -11,8 +11,14 @@ import {
   type Locale,
   type RaceDistance,
   type Unit,
+  type Distance,
 } from '../../types';
-import { parseTime, formatPace } from '../../lib/paces';
+import { parseTime, formatPace, formatTime } from '../../lib/paces';
+import {
+  calculateVDOT,
+  getTrainingPacesFromVDOT,
+  estimateRaceTime,
+} from '../../lib/vdot';
 import { createPlan, resolve5KSeconds } from '../../lib/plan-generator';
 import { savePlan } from '../../lib/storage';
 import { encodePlanInput } from '../../lib/plan-url';
@@ -93,6 +99,16 @@ const RACE_OPTIONS = [
 const minCustomDistance = (unit: Unit) =>
   unit === 'mile' ? MIN_CUSTOM_DISTANCE_METERS / 1609.344 : 0.8;
 
+const EQUIV_DISTANCES: Distance[] = ['42K', '21K', '15K', '10K', '5K'];
+
+const EQUIV_LABELS: Record<string, Record<Locale, string>> = {
+  '42K': { en: 'Marathon', es: 'Maratón', ko: '마라톤' },
+  '21K': { en: 'Half Marathon', es: 'Media Maratón', ko: '하프 마라톤' },
+  '15K': { en: '15K', es: '15K', ko: '15K' },
+  '10K': { en: '10K', es: '10K', ko: '10K' },
+  '5K': { en: '5K', es: '5K', ko: '5K' },
+};
+
 export default function TrainingForm({ locale }: Props) {
   const [raceDistance, setRaceDistance] = useState<RaceDistance>('5K');
   const [raceTime, setRaceTime] = useState('');
@@ -104,6 +120,7 @@ export default function TrainingForm({ locale }: Props) {
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [distanceOpen, setDistanceOpen] = useState(false);
+  const [vdotTab, setVdotTab] = useState<'training' | 'equivalent'>('training');
   const startedRef = useRef(false);
   const hoursId = useId();
   const raceDistanceId = useId();
@@ -226,6 +243,39 @@ export default function TrainingForm({ locale }: Props) {
       .filter((item): item is NonNullable<typeof item> => Boolean(item));
   }, [locale, matchedPlan.days, preview]);
 
+  const vdotPreview = useMemo(() => {
+    if (!raceTime) return null;
+    try {
+      const totalSeconds = parseTime(raceTime);
+      if (!totalSeconds || totalSeconds <= 0) return null;
+
+      let distMeters: number;
+      if (raceDistance === 'custom') {
+        if (!Number.isFinite(customDistance) || customDistance <= 0)
+          return null;
+        distMeters =
+          customDistance * (customDistanceUnit === 'mile' ? 1609.344 : 1000);
+      } else {
+        distMeters = DISTANCE_METERS[raceDistance];
+      }
+      if (distMeters < MIN_CUSTOM_DISTANCE_METERS) return null;
+
+      const vdot = calculateVDOT(distMeters, totalSeconds);
+      if (!vdot || vdot <= 0) return null;
+
+      const paces = getTrainingPacesFromVDOT(vdot);
+      const raceEquivalents = EQUIV_DISTANCES.map((distance) => {
+        const secs = estimateRaceTime(vdot, distance);
+        const paceKm = secs / (DISTANCE_METERS[distance] / 1000);
+        return { label: EQUIV_LABELS[distance][locale], secs, paceKm };
+      });
+
+      return { vdot, paces, raceEquivalents };
+    } catch {
+      return null;
+    }
+  }, [raceDistance, raceTime, customDistance, customDistanceUnit, locale]);
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
@@ -306,6 +356,16 @@ export default function TrainingForm({ locale }: Props) {
       easyLabel: 'Easy pace',
       marathonDateLabel: 'Marathon date (optional)',
       marathonDateHint: 'Generates a 15-week build plan.',
+      vdotTraining: 'Training',
+      vdotEquivalent: 'Equivalent',
+      vdotType: 'Type',
+      vdotEasy: 'Easy',
+      vdotMarathon: 'Marathon',
+      vdotThreshold: 'Threshold',
+      vdotInterval: 'Interval',
+      vdotRepetition: 'Repetition',
+      vdotRace: 'Race',
+      vdotTime: 'Time',
     },
     es: {
       title: 'Configura tu plan',
@@ -326,6 +386,16 @@ export default function TrainingForm({ locale }: Props) {
       easyLabel: 'Ritmo fácil',
       marathonDateLabel: 'Fecha del maratón (opcional)',
       marathonDateHint: 'Genera un plan de 15 semanas.',
+      vdotTraining: 'Entrenamiento',
+      vdotEquivalent: 'Equivalente',
+      vdotType: 'Tipo',
+      vdotEasy: 'Fácil',
+      vdotMarathon: 'Maratón',
+      vdotThreshold: 'Umbral',
+      vdotInterval: 'Intervalo',
+      vdotRepetition: 'Repetición',
+      vdotRace: 'Carrera',
+      vdotTime: 'Tiempo',
     },
     ko: {
       title: '플랜 설정',
@@ -346,6 +416,16 @@ export default function TrainingForm({ locale }: Props) {
       easyLabel: '이지 페이스',
       marathonDateLabel: '마라톤 날짜(선택)',
       marathonDateHint: '15주 빌드업 플랜을 생성합니다.',
+      vdotTraining: '훈련',
+      vdotEquivalent: '등가',
+      vdotType: '유형',
+      vdotEasy: '이지',
+      vdotMarathon: '마라톤',
+      vdotThreshold: '역치',
+      vdotInterval: '인터벌',
+      vdotRepetition: '반복',
+      vdotRace: '레이스',
+      vdotTime: '시간',
     },
   }[locale];
 
@@ -513,6 +593,103 @@ export default function TrainingForm({ locale }: Props) {
             ))}
           </div>
         </div>
+
+        {/* VDOT Preview */}
+        {vdotPreview && (
+          <div className="tf-vdot" aria-live="polite">
+            <div className="tf-vdot-header">
+              <div className="tf-vdot-badge">
+                <span className="tf-vdot-num">{vdotPreview.vdot}</span>
+                <span className="tf-vdot-badge-label">VDOT</span>
+              </div>
+              <div className="tf-vdot-tabs">
+                <button
+                  type="button"
+                  className={`tf-vdot-tab ${vdotTab === 'training' ? 'is-active' : ''}`}
+                  onClick={() => setVdotTab('training')}
+                >
+                  {T.vdotTraining}
+                </button>
+                <button
+                  type="button"
+                  className={`tf-vdot-tab ${vdotTab === 'equivalent' ? 'is-active' : ''}`}
+                  onClick={() => setVdotTab('equivalent')}
+                >
+                  {T.vdotEquivalent}
+                </button>
+              </div>
+            </div>
+
+            {vdotTab === 'training' && (
+              <table className="tf-vdot-table">
+                <thead>
+                  <tr>
+                    <th>{T.vdotType}</th>
+                    <th>{unitLabel}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="tf-vdot-zone-easy">
+                    <td>{T.vdotEasy}</td>
+                    <td className="tf-vdot-pace">
+                      {formatPace(vdotPreview.paces.easy.min, unit)} ~{' '}
+                      {formatPace(vdotPreview.paces.easy.max, unit)}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>{T.vdotMarathon}</td>
+                    <td className="tf-vdot-pace tf-vdot-pace-neutral">
+                      {formatPace(vdotPreview.paces.marathon, unit)}
+                    </td>
+                  </tr>
+                  <tr className="tf-vdot-zone-threshold">
+                    <td>{T.vdotThreshold}</td>
+                    <td className="tf-vdot-pace">
+                      {formatPace(vdotPreview.paces.threshold, unit)}
+                    </td>
+                  </tr>
+                  <tr className="tf-vdot-zone-interval">
+                    <td>{T.vdotInterval}</td>
+                    <td className="tf-vdot-pace">
+                      {formatPace(vdotPreview.paces.interval, unit)}
+                    </td>
+                  </tr>
+                  <tr className="tf-vdot-zone-interval">
+                    <td>{T.vdotRepetition}</td>
+                    <td className="tf-vdot-pace">
+                      {formatPace(vdotPreview.paces.repetition, unit)}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            )}
+
+            {vdotTab === 'equivalent' && (
+              <table className="tf-vdot-table">
+                <thead>
+                  <tr>
+                    <th>{T.vdotRace}</th>
+                    <th>{T.vdotTime}</th>
+                    <th>{unitLabel}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {vdotPreview.raceEquivalents.map(
+                    ({ label, secs, paceKm }) => (
+                      <tr key={label}>
+                        <td>{label}</td>
+                        <td className="tf-vdot-mono">{formatTime(secs)}</td>
+                        <td className="tf-vdot-mono">
+                          {formatPace(paceKm, unit)}
+                        </td>
+                      </tr>
+                    ),
+                  )}
+                </tbody>
+              </table>
+            )}
+          </div>
+        )}
 
         {/* Pace Preview */}
         {preview && (
@@ -790,6 +967,108 @@ export default function TrainingForm({ locale }: Props) {
           font-weight: var(--font-bold);
           white-space: nowrap;
         }
+        /* ── VDOT preview ─────────────────────────────────────── */
+        .tf-vdot {
+          margin-top: var(--space-6);
+          background: var(--color-bg-glass);
+          border: 1px solid var(--color-border);
+          border-radius: var(--radius-lg);
+          overflow: hidden;
+          animation: tf-preview-in 0.28s cubic-bezier(0.22,1,0.36,1) both;
+        }
+        .tf-vdot-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: var(--space-3) var(--space-4);
+          border-bottom: 1px solid var(--color-border);
+          background: rgba(255,255,255,0.02);
+        }
+        .tf-vdot-badge {
+          display: flex;
+          align-items: baseline;
+          gap: var(--space-2);
+        }
+        .tf-vdot-num {
+          font-family: var(--font-mono);
+          font-size: var(--text-2xl);
+          font-weight: var(--font-bold);
+          color: var(--color-accent-primary);
+          line-height: 1;
+        }
+        .tf-vdot-badge-label {
+          font-size: var(--text-xs);
+          font-weight: var(--font-bold);
+          color: var(--color-text-muted);
+          text-transform: uppercase;
+          letter-spacing: 0.12em;
+        }
+        .tf-vdot-tabs {
+          display: flex;
+          background: var(--color-surface);
+          border: 1px solid var(--color-border);
+          border-radius: var(--radius-md);
+          overflow: hidden;
+        }
+        .tf-vdot-tab {
+          padding: var(--space-1) var(--space-4);
+          font-size: var(--text-xs);
+          font-weight: var(--font-bold);
+          color: var(--color-text-muted);
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          transition: all var(--transition-fast);
+          text-transform: uppercase;
+          letter-spacing: 0.07em;
+        }
+        .tf-vdot-tab.is-active {
+          background: var(--color-accent-primary);
+          color: #fff;
+        }
+        .tf-vdot-table {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: var(--text-sm);
+        }
+        .tf-vdot-table thead tr {
+          background: rgba(255,255,255,0.025);
+        }
+        .tf-vdot-table th {
+          padding: var(--space-2) var(--space-4);
+          text-align: left;
+          font-size: var(--text-xs);
+          font-weight: var(--font-semibold);
+          color: var(--color-text-muted);
+          text-transform: uppercase;
+          letter-spacing: 0.07em;
+          border-bottom: 1px solid var(--color-border);
+        }
+        .tf-vdot-table td {
+          padding: var(--space-2) var(--space-4);
+          border-bottom: 1px solid rgba(255,255,255,0.035);
+          color: var(--color-text-secondary);
+          font-weight: var(--font-semibold);
+          transition: background var(--transition-fast);
+        }
+        .tf-vdot-table tr:last-child td { border-bottom: none; }
+        .tf-vdot-table tr:hover td {
+          background: rgba(255,255,255,0.03);
+        }
+        .tf-vdot-pace,
+        .tf-vdot-mono {
+          font-family: var(--font-mono);
+          font-weight: var(--font-bold);
+          color: var(--color-text-primary);
+        }
+        .tf-vdot-pace-neutral { color: var(--color-text-secondary) !important; }
+        /* Zone row backgrounds + pace colors */
+        .tf-vdot-zone-easy td { background: rgba(34,197,94,0.045); }
+        .tf-vdot-zone-easy .tf-vdot-pace { color: var(--color-easy); }
+        .tf-vdot-zone-threshold td { background: rgba(245,158,11,0.045); }
+        .tf-vdot-zone-threshold .tf-vdot-pace { color: var(--color-threshold); }
+        .tf-vdot-zone-interval td { background: rgba(239,68,68,0.045); }
+        .tf-vdot-zone-interval .tf-vdot-pace { color: var(--color-accent-primary); }
         @media (max-width: 560px) {
           .tf-row,
           .tf-preview-grid {

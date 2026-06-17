@@ -197,6 +197,36 @@ const pages: Record<Locale, SeoLandingPage[]> = {
         'Use this <strong>NSA training plan generator</strong> to convert a recent race into a repeatable Norwegian Singles Approach week. It supports 5K, 10K, half marathon, marathon, and custom race distances.',
       howToName: 'Generate an NSA training plan',
     },
+    {
+      slug: 'vdot-calculator',
+      title: 'VDOT Calculator: Jack Daniels Running Paces & Race Equivalents',
+      description:
+        "Free VDOT calculator based on Jack Daniels' running formula. Enter any race result to get Easy, Marathon, Threshold, Interval, and Repetition paces and equivalent times for five race distances.",
+      h1: 'VDOT running calculator',
+      intro:
+        'Enter any race result in the <strong>VDOT calculator</strong> to get your VDOT score, all five Jack Daniels training zones (Easy, Marathon, Threshold, Interval, Repetition), and equivalent race-time predictions. The same form generates your full NSM weekly plan.',
+      howToName: 'Calculate VDOT and training paces',
+    },
+    {
+      slug: 'jack-daniels-running-calculator',
+      title: 'Jack Daniels Running Calculator: VDOT Training Zones',
+      description:
+        'Calculate Jack Daniels VDOT training paces (Easy, Threshold, Interval, and Repetition) from a 5K, 10K, half marathon, or marathon result.',
+      h1: 'Jack Daniels running calculator',
+      intro:
+        'The <strong>Jack Daniels running calculator</strong> takes a race result, computes your VDOT, and shows training paces for every zone: Easy, Marathon, Threshold, Interval, and Repetition. Add your weekly hours to get a full NSM plan.',
+      howToName: 'Calculate Jack Daniels VDOT training paces',
+    },
+    {
+      slug: 'vdot-running-formula',
+      title: 'VDOT Running Formula: Training Paces & Equivalent Races',
+      description:
+        'Use the VDOT running formula to calculate training paces and predict equivalent race times from your current fitness.',
+      h1: 'VDOT running formula calculator',
+      intro:
+        'The <strong>VDOT running formula</strong> converts a race result into a fitness score and uses that score to assign training paces across all five zones. Enter any distance and time to see your VDOT, zone targets, and predicted times for common race distances.',
+      howToName: 'Apply the VDOT running formula',
+    },
   ],
   es: [
     {
@@ -379,6 +409,37 @@ const pages: Record<Locale, SeoLandingPage[]> = {
         'Usa este <strong>generador de plan NSA</strong> para convertir una carrera reciente en una semana repetible de Norwegian Singles Approach. Acepta 5K, 10K, media maratón, maratón y distancias personalizadas.',
       howToName: 'Generar un plan de entrenamiento NSA',
     },
+    {
+      slug: 'calculadora-vdot',
+      title:
+        'Calculadora VDOT: Ritmos de entrenamiento y equivalencias de carrera',
+      description:
+        'Calculadora VDOT gratuita basada en la fórmula de Jack Daniels. Calcula ritmos Fácil, Maratón, Umbral, Intervalo y Repetición, y equivalencias de carrera desde cualquier marca.',
+      h1: 'Calculadora VDOT de running',
+      intro:
+        'Introduce cualquier marca en la <strong>calculadora VDOT</strong> para obtener tu puntuación VDOT, las cinco zonas de entrenamiento Jack Daniels (Fácil, Maratón, Umbral, Intervalo, Repetición) y predicciones de carrera equivalentes. El mismo formulario genera tu plan NSM semanal.',
+      howToName: 'Calcular VDOT y ritmos de entrenamiento',
+    },
+    {
+      slug: 'calculadora-jack-daniels-running',
+      title: 'Calculadora Jack Daniels Running: Zonas de entrenamiento VDOT',
+      description:
+        'Calcula los ritmos de entrenamiento VDOT de Jack Daniels (Fácil, Umbral, Intervalo y Repetición) desde una marca de 5K, 10K, media maratón o maratón.',
+      h1: 'Calculadora Jack Daniels running',
+      intro:
+        'La <strong>calculadora Jack Daniels running</strong> toma una marca, calcula tu VDOT y muestra ritmos para cada zona: Fácil, Maratón, Umbral, Intervalo y Repetición. Añade tus horas semanales y obtienes el plan NSM completo.',
+      howToName: 'Calcular ritmos de entrenamiento VDOT Jack Daniels',
+    },
+    {
+      slug: 'formula-vdot-running',
+      title: 'Fórmula VDOT Running: Ritmos de entrenamiento y equivalencias',
+      description:
+        'Usa la fórmula VDOT de running para calcular ritmos de entrenamiento y predecir tiempos de carrera equivalentes desde tu forma física actual.',
+      h1: 'Calculadora de la fórmula VDOT de running',
+      intro:
+        'La <strong>fórmula VDOT de running</strong> convierte una marca en una puntuación de forma física y asigna ritmos de entrenamiento para cada zona. Introduce cualquier distancia y tiempo para ver tu VDOT, los cinco objetivos de zona y los tiempos equivalentes en distancias habituales.',
+      howToName: 'Aplicar la fórmula VDOT de running',
+    },
   ],
   ko: [
     {
@@ -560,6 +621,36 @@ const pages: Record<Locale, SeoLandingPage[]> = {
       intro:
         '<strong>NSA 훈련 플랜 생성기</strong>로 최근 레이스 기록을 반복 가능한 Norwegian Singles Approach 주간으로 바꾸세요. 5K, 10K, 하프, 마라톤, 사용자 지정 거리를 지원합니다.',
       howToName: 'NSA 훈련 플랜 생성하기',
+    },
+    {
+      slug: 'vdot-calculator',
+      title: 'VDOT 계산기: 잭 대니얼스 훈련 페이스 및 레이스 등가',
+      description:
+        '잭 대니얼스 공식 기반 무료 VDOT 계산기. 어떤 레이스 기록에서도 이지, 마라톤, 역치, 인터벌, 반복 페이스와 레이스 등가를 계산하세요.',
+      h1: 'VDOT 러닝 계산기',
+      intro:
+        '<strong>VDOT 계산기</strong>에 어떤 레이스 기록이든 입력하면 VDOT 점수, 잭 대니얼스 5가지 훈련 구역(이지, 마라톤, 역치, 인터벌, 반복), 레이스 등가 예측을 확인할 수 있습니다. 같은 양식으로 전체 NSM 주간 플랜을 생성할 수 있습니다.',
+      howToName: 'VDOT 및 훈련 페이스 계산하기',
+    },
+    {
+      slug: 'jack-daniels-running-calculator',
+      title: '잭 대니얼스 러닝 계산기: VDOT 훈련 구역',
+      description:
+        '5K, 10K, 하프, 마라톤 기록으로 잭 대니얼스 VDOT 훈련 페이스(이지, 역치, 인터벌, 반복)를 계산하세요.',
+      h1: '잭 대니얼스 러닝 계산기',
+      intro:
+        '<strong>잭 대니얼스 러닝 계산기</strong>는 레이스 기록으로 VDOT를 계산하고 모든 구역의 훈련 페이스(이지, 마라톤, 역치, 인터벌, 반복)를 보여줍니다. 주간 훈련 시간을 추가하면 전체 NSM 플랜을 생성할 수 있습니다.',
+      howToName: '잭 대니얼스 VDOT 훈련 페이스 계산하기',
+    },
+    {
+      slug: 'vdot-running-formula',
+      title: 'VDOT 러닝 공식: 훈련 페이스 및 레이스 등가',
+      description:
+        'VDOT 러닝 공식으로 현재 체력에서 훈련 페이스를 계산하고 레이스 등가 기록을 예측하세요.',
+      h1: 'VDOT 러닝 공식 계산기',
+      intro:
+        '<strong>VDOT 러닝 공식</strong>은 레이스 기록을 체력 점수로 변환하고 그 점수에 따라 5가지 훈련 구역 페이스를 할당합니다. 어떤 거리와 시간이든 입력하면 VDOT, 구역별 목표 페이스, 주요 레이스 등가 기록을 확인할 수 있습니다.',
+      howToName: 'VDOT 러닝 공식 적용하기',
     },
   ],
 };
