@@ -81,19 +81,19 @@ const proofBullets = {
     'Paces from 5K or 10K',
     '4.5-9h weekly plans',
     '15-week marathon build',
-    'Shareable plan URL',
+    'VDOT score + training zones',
   ],
   es: [
     'Ritmos desde 5K o 10K',
     'Planes semanales de 4.5-9 h',
     'Preparación maratón de 15 semanas',
-    'URL compartible del plan',
+    'Puntuación VDOT y zonas de entrenamiento',
   ],
   ko: [
     '5K 또는 10K 기반 페이스',
     '주 4.5-9시간 플랜',
     '15주 마라톤 빌드업',
-    '공유 가능한 플랜 URL',
+    'VDOT 점수 + 훈련 구역',
   ],
 }[locale];
 
@@ -378,6 +378,10 @@ const relatedGroups = {
       title: 'Pace calculators',
       links: [
         {
+          slug: 'vdot-calculator',
+          text: 'Race result in, VDOT score and all five training zones out.',
+        },
+        {
           slug: 'nsm-calculator',
           text: 'Race result in, 3/6/10-minute paces out.',
         },
@@ -427,6 +431,10 @@ const relatedGroups = {
       title: 'Calculadoras de ritmos',
       links: [
         {
+          slug: 'calculadora-vdot',
+          text: 'Marca dentro, puntuación VDOT y cinco zonas de entrenamiento fuera.',
+        },
+        {
           slug: 'calculadora-nsm',
           text: 'Marca de carrera dentro, ritmos de 3/6/10 minutos fuera.',
         },
@@ -475,6 +483,10 @@ const relatedGroups = {
     {
       title: '페이스 계산기',
       links: [
+        {
+          slug: 'vdot-calculator',
+          text: '레이스 기록으로 VDOT 점수와 5가지 훈련 구역을 확인하세요.',
+        },
         {
           slug: 'nsm-calculator',
           text: '레이스 기록으로 3/6/10분 페이스를 확인하세요.',

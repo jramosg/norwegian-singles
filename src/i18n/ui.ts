@@ -50,7 +50,7 @@ export const ui = {
     'hero.title': 'Calculadora Norwegian Singles',
     'hero.titleAccent': 'NSA / NSM',
     'hero.subtitle':
-      'Genera ritmos sub-umbral, semanas de 4.5-9h y preparación de maratón desde tu marca de 5K o 10K.',
+      'Introduce cualquier marca para obtener ritmos sub-umbral NSA / NSM, tu puntuación VDOT de Jack Daniels con todas las zonas de entrenamiento, y un plan de maratón de 15 semanas.',
     'hero.cta': 'Crear mi plan',
 
     // Form
@@ -253,7 +253,7 @@ export const ui = {
     'hero.title': 'Norwegian Singles',
     'hero.titleAccent': 'NSA / NSM Calculator',
     'hero.subtitle':
-      'Calculate sub-threshold paces, 4.5-9h training weeks, and a 15-week marathon build from your 5K or 10K.',
+      'Enter any race to get NSA / NSM sub-threshold paces, your Jack Daniels VDOT score and training zones, and a 15-week marathon build.',
     'hero.cta': 'Create my plan',
 
     // Form
@@ -455,7 +455,7 @@ export const ui = {
     'hero.title': 'Norwegian Singles',
     'hero.titleAccent': 'NSA / NSM 계산기',
     'hero.subtitle':
-      '5K 또는 10K 기록으로 서브스레숄드 페이스, 주 4.5-9시간 훈련 주간, 15주 마라톤 빌드업을 계산하세요.',
+      '어떤 레이스 기록이든 입력하면 NSA / NSM 서브스레숄드 페이스, Jack Daniels VDOT 점수와 훈련 구역, 15주 마라톤 빌드업 플랜을 받을 수 있습니다.',
     'hero.cta': '플랜 만들기',
 
     // Form
