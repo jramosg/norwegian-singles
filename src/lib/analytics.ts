@@ -3,7 +3,9 @@ export type AnalyticsEvent =
   | 'training_plan_generate'
   | 'language_change'
   | 'plan_share'
-  | 'plan_share_image';
+  | 'plan_share_image'
+  | 'affiliate_click'
+  | 'support_click';
 
 type AnalyticsPayload = Record<string, string | number | boolean | undefined>;
 

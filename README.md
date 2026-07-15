@@ -21,7 +21,8 @@ The application intelligently adapts training volume and interval structure base
 - **Framework**: [Astro](https://astro.build/) (Static Site Generation + Islands Architecture)
 - **Frontend**: [React](https://reactjs.org/) (Form logic & interactive Plan Viewer)
 - **Styling**: Modern CSS variables, mobile-first design.
-- **i18n**: Native Astro internationalization (English & Spanish).
+- **i18n**: Native Astro internationalization (English, Spanish, Korean,
+  German, and French).
 - **Architecture**: Clean separation between calculation logic (`lib`) and UI (`components`).
 
 ## 📁 Project Structure
@@ -44,6 +45,22 @@ The application intelligently adapts training volume and interval structure base
 | `pnpm dev` | Starts local dev server at `localhost:4321` |
 | `pnpm build` | Build your production site to `./dist/` |
 | `pnpm preview` | Preview your build locally |
+
+## 💶 Monetization
+
+Amazon links use locale-specific Associates tags from
+`src/lib/affiliate.ts`. Confirm that every tag belongs to the intended
+Associates account before deployment.
+
+Affiliate and support clicks are recorded without cookies by Nginx. Inspect
+them on the server with:
+
+```shell
+docker logs norwegian-singles 2>&1 | grep '^monetization '
+```
+
+Amazon Associates remains the source of truth for ordered items, dispatched
+items, conversion rate, and commission income.
 
 ## 🧪 Methodology Details
 - **VDOT Calculations**: Based on Jack Daniels' oxygen power formula.

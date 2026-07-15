@@ -1,0 +1,29 @@
+---
+import type { Locale } from '../types';
+import BookRecommendations from './BookRecommendations.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<div data-plan-revenue hidden>
+  <BookRecommendations locale={locale} placement="plan" />
+</div>
+
+<script>
+  const revealPlanRevenue = () => {
+    document
+      .querySelectorAll<HTMLElement>('[data-plan-revenue]')
+      .forEach((element) => {
+        element.hidden = false;
+      });
+  };
+
+  if (document.documentElement.dataset.planReady === 'true') {
+    revealPlanRevenue();
+  }
+  window.addEventListener('nsm:plan-ready', revealPlanRevenue);
+</script>

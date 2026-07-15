@@ -126,6 +126,8 @@ export default function PlanViewer({ locale }: Props) {
     if (saved) {
       setPlan(saved);
       setUnit(saved.input.unit);
+      document.documentElement.dataset.planReady = 'true';
+      window.dispatchEvent(new CustomEvent('nsm:plan-ready'));
       // Make sure the URL carries the plan so it can be shared from anywhere.
       if (!fromUrl) {
         const qs = encodePlanInput(saved.input);

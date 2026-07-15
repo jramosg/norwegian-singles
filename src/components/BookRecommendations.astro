@@ -1,15 +1,11 @@
 ---
 /**
- * Book Recommendations Component
- *
- * Affiliate-linked book recommendations. Each card is a single clickable link.
- * Links are marketplace-aware (see src/lib/affiliate.ts) and labelled as
- * affiliate links per FTC/Amazon disclosure requirements.
+ * Commercial recommendations shown after users understand the product value.
+ * Links are marketplace-aware and tracked by Layout.astro.
  */
 
 import { Image } from 'astro:assets';
 import type { Locale } from '../types';
-import { useTranslations } from '../i18n/ui';
 import { books, amazonUrl } from '../lib/affiliate';
 import Icon from './Icon.astro';
 
@@ -23,59 +19,215 @@ const coverMap: Record<string, ImageMetadata> = {
 
 interface Props {
   locale: Locale;
+  placement?: 'landing' | 'plan';
 }
 
-const { locale } = Astro.props;
-const t = useTranslations(locale);
+const { locale, placement = 'landing' } = Astro.props;
+
+const copy = {
+  en: {
+    eyebrow: 'Recommended next step',
+    title: 'Go deeper than the calculator',
+    subtitle:
+      'The calculator gives you the paces. These books explain how to apply them week after week.',
+    cta: 'Check price on Amazon',
+    paid: 'Paid link',
+    disclosure:
+      'As an Amazon Associate I earn from qualifying purchases. You pay the same price.',
+    supportPrompt: 'Prefer to support the free calculator directly?',
+    supportCta: 'Support the project',
+    books: {
+      nsm: {
+        badge: 'Best match for this plan',
+        description:
+          'Weekly structures, session progression and practical NSM guidance.',
+      },
+      bakken: {
+        badge: 'Threshold principles',
+        description:
+          'The training ideas and physiology behind the Norwegian approach.',
+      },
+    },
+  },
+  es: {
+    eyebrow: 'Siguiente paso recomendado',
+    title: 'Profundiza más allá de la calculadora',
+    subtitle:
+      'La calculadora te da los ritmos. Estos libros explican cómo aplicarlos semana tras semana.',
+    cta: 'Consultar precio en Amazon',
+    paid: 'Enlace remunerado',
+    disclosure:
+      'Como afiliado de Amazon, obtengo ingresos por compras que cumplen los requisitos. Tú pagas el mismo precio.',
+    supportPrompt: '¿Prefieres apoyar directamente la calculadora gratuita?',
+    supportCta: 'Apoyar el proyecto',
+    books: {
+      nsm: {
+        badge: 'El más útil para este plan',
+        description:
+          'Estructuras semanales, progresión de sesiones y aplicación práctica de NSM.',
+      },
+      bakken: {
+        badge: 'Principios de umbral',
+        description:
+          'Las ideas de entrenamiento y la fisiología del enfoque noruego.',
+      },
+    },
+  },
+  ko: {
+    eyebrow: '추천하는 다음 단계',
+    title: '계산기 너머의 원리를 알아보세요',
+    subtitle:
+      '계산기는 페이스를 알려 줍니다. 이 책들은 매주 훈련에 적용하는 방법을 설명합니다.',
+    cta: 'Amazon에서 가격 확인',
+    paid: '유료 링크',
+    disclosure:
+      'Amazon Associates 활동을 통해 적격 구매에서 수수료를 받을 수 있으며 구매 가격은 동일합니다.',
+    supportPrompt: '무료 계산기를 직접 후원하고 싶으신가요?',
+    supportCta: '프로젝트 후원',
+    books: {
+      nsm: {
+        badge: '이 플랜에 가장 적합',
+        description: '주간 구조, 세션 진행 방식, 실전 NSM 훈련 지침.',
+      },
+      bakken: {
+        badge: '역치 훈련 원리',
+        description: '노르웨이식 접근법의 훈련 아이디어와 생리학.',
+      },
+    },
+  },
+  de: {
+    eyebrow: 'Empfohlener nächster Schritt',
+    title: 'Mehr verstehen als nur die Rechnerwerte',
+    subtitle:
+      'Der Rechner liefert die Paces. Diese Bücher erklären die Anwendung von Woche zu Woche.',
+    cta: 'Preis bei Amazon prüfen',
+    paid: 'Bezahlter Link',
+    disclosure:
+      'Als Amazon-Partner verdiene ich an qualifizierten Verkäufen. Du zahlst denselben Preis.',
+    supportPrompt: 'Möchtest du den kostenlosen Rechner direkt unterstützen?',
+    supportCta: 'Projekt unterstützen',
+    books: {
+      nsm: {
+        badge: 'Beste Ergänzung zu diesem Plan',
+        description:
+          'Wochenstrukturen, Trainingsprogression und praktische NSM-Anleitung.',
+      },
+      bakken: {
+        badge: 'Schwellenprinzipien',
+        description:
+          'Trainingsideen und Physiologie hinter dem norwegischen Ansatz.',
+      },
+    },
+  },
+  fr: {
+    eyebrow: 'Prochaine étape recommandée',
+    title: 'Va plus loin que le calculateur',
+    subtitle:
+      'Le calculateur donne les allures. Ces livres expliquent comment les appliquer semaine après semaine.',
+    cta: 'Voir le prix sur Amazon',
+    paid: 'Lien rémunéré',
+    disclosure:
+      'En tant que Partenaire Amazon, je réalise un bénéfice sur les achats remplissant les conditions requises. Le prix reste identique pour toi.',
+    supportPrompt: 'Tu préfères soutenir directement le calculateur gratuit ?',
+    supportCta: 'Soutenir le projet',
+    books: {
+      nsm: {
+        badge: 'Le meilleur complément à ce plan',
+        description:
+          'Structures hebdomadaires, progression des séances et application pratique du NSM.',
+      },
+      bakken: {
+        badge: 'Principes du seuil',
+        description:
+          "Les idées d'entraînement et la physiologie de l'approche norvégienne.",
+      },
+    },
+  },
+}[locale];
 ---
 
-<section class="books-section section">
-  <div class="container">
+<section
+  class:list={[
+    'books-section',
+    'section',
+    { 'books-section--plan': placement === 'plan' },
+  ]}
+  aria-labelledby={`books-title-${placement}`}
+>
+  <div class="container books-container">
     <div class="books-head">
-      <h2 class="section-title">{t('books.title')}</h2>
-      <p class="books-subtitle">{t('books.subtitle')}</p>
+      {placement === 'plan' && <p class="books-eyebrow">{copy.eyebrow}</p>}
+      <h2 id={`books-title-${placement}`} class="section-title">
+        {copy.title}
+      </h2>
+      <p class="books-subtitle">{copy.subtitle}</p>
     </div>
 
     <div class="books-grid">
       {
-        books.map((book) => (
-          <a
-            class="book-card"
-            href={amazonUrl(book.asin, locale)}
-            target="_blank"
-            rel="sponsored nofollow noopener"
-          >
-            <div class="book-cover-wrap">
-              {book.cover && coverMap[book.cover] ? (
-                <Image
-                  src={coverMap[book.cover]}
-                  alt={book.title}
-                  class="book-cover"
-                  width={88}
-                  densities={[1.5, 2]}
-                  loading="lazy"
-                />
-              ) : (
-                <Icon name="book-open" size={32} />
-              )}
-            </div>
-            <div class="book-body">
-              <h3>{book.title}</h3>
-              {book.author && <p class="book-author">{book.author}</p>}
-              <span class="book-cta">
-                {t('books.cta')}
-                <Icon name="arrow-right" size={16} />
-              </span>
-            </div>
-          </a>
-        ))
+        books.map((book) => {
+          const bookCopy = copy.books[book.key];
+
+          return (
+            <a
+              class="book-card"
+              href={amazonUrl(book.asin, locale)}
+              target="_blank"
+              rel="sponsored nofollow noopener noreferrer"
+              data-monetization="affiliate"
+              data-placement={placement}
+              data-item={book.key}
+            >
+              <div class="book-cover-wrap">
+                {book.cover && coverMap[book.cover] ? (
+                  <Image
+                    src={coverMap[book.cover]}
+                    alt=""
+                    class="book-cover"
+                    width={96}
+                    densities={[1.5, 2]}
+                    loading="lazy"
+                  />
+                ) : (
+                  <Icon name="book-open" size={32} />
+                )}
+              </div>
+              <div class="book-body">
+                <span class="book-badge">{bookCopy.badge}</span>
+                <h3>{book.title}</h3>
+                {book.author && <p class="book-author">{book.author}</p>}
+                <p class="book-description">{bookCopy.description}</p>
+                <span class="book-cta">
+                  {copy.cta}
+                  <Icon name="arrow-right" size={16} />
+                </span>
+                <small class="book-paid">{copy.paid}</small>
+              </div>
+            </a>
+          );
+        })
       }
     </div>
 
     <p class="books-affiliate">
       <Icon name="book-open" size={13} />
-      {t('books.affiliate')}
+      {copy.disclosure}
     </p>
+
+    <div class="books-support">
+      <span>{copy.supportPrompt}</span>
+      <a
+        href="https://buymeacoffee.com/jramosg"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-monetization="support"
+        data-placement={`books-${placement}`}
+        data-item="buy-me-a-coffee"
+      >
+        {copy.supportCta}
+        <Icon name="arrow-right" size={14} />
+      </a>
+    </div>
   </div>
 </section>
 
@@ -85,114 +237,229 @@ const t = useTranslations(locale);
     border-top: 1px solid var(--color-border);
   }
 
+  .books-section--plan {
+    margin-top: var(--space-16);
+    background:
+      radial-gradient(
+        circle at 50% 0%,
+        rgba(239, 68, 68, 0.11),
+        transparent 48%
+      ),
+      var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-2xl);
+  }
+
+  .books-container {
+    max-width: 920px;
+  }
+
   .books-head {
+    max-width: 680px;
+    margin: 0 auto var(--space-10);
     text-align: center;
-    margin-bottom: var(--space-10);
+  }
+
+  .books-eyebrow {
+    margin: 0 0 var(--space-2);
+    color: var(--color-accent-primary);
+    font-size: var(--text-xs);
+    font-weight: var(--font-bold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
 
   .section-title {
-    margin-bottom: var(--space-2);
+    margin-bottom: var(--space-3);
   }
 
   .books-subtitle {
-    color: var(--color-text-secondary);
     margin: 0;
+    color: var(--color-text-secondary);
   }
 
   .books-grid {
     display: grid;
     gap: var(--space-5);
-    max-width: 780px;
-    margin: 0 auto;
   }
 
-  @media (min-width: 640px) {
+  @media (min-width: 720px) {
     .books-grid {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
   .book-card {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto 1fr;
     gap: var(--space-5);
-    align-items: center;
+    align-items: start;
+    min-width: 0;
     padding: var(--space-5);
+    color: inherit;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-2xl);
+    border-radius: var(--radius-xl);
     text-decoration: none;
-    color: inherit;
-    transition: all var(--transition-base);
+    transition:
+      transform var(--transition-base),
+      border-color var(--transition-base),
+      background var(--transition-base),
+      box-shadow var(--transition-base);
   }
 
-  .book-card:hover {
-    border-color: var(--color-border-accent);
+  .book-card:hover,
+  .book-card:focus-visible {
+    color: inherit;
     background: var(--color-surface-hover);
-    transform: translateY(-4px);
+    border-color: rgba(239, 68, 68, 0.45);
     box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+  }
+
+  .book-card:focus-visible {
+    outline: 3px solid rgba(239, 68, 68, 0.32);
+    outline-offset: 3px;
   }
 
   .book-cover-wrap {
-    flex-shrink: 0;
     display: flex;
+    flex-shrink: 0;
     align-items: center;
     justify-content: center;
     color: var(--color-text-muted);
   }
 
   .book-cover {
-    width: 88px;
+    width: 96px;
     height: auto;
     border-radius: var(--radius-md);
-    object-fit: cover;
     box-shadow: var(--shadow-lg);
     transition: transform var(--transition-base);
   }
 
   .book-card:hover .book-cover {
-    transform: scale(1.04) rotate(-1deg);
+    transform: rotate(-1deg) scale(1.025);
   }
 
   .book-body {
     min-width: 0;
   }
 
+  .book-badge {
+    display: inline-flex;
+    margin-bottom: var(--space-2);
+    padding: 0.2rem 0.5rem;
+    color: #fecaca;
+    background: rgba(239, 68, 68, 0.13);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    border-radius: var(--radius-full);
+    font-size: 0.68rem;
+    font-weight: var(--font-bold);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
   .book-card h3 {
+    margin-bottom: var(--space-1);
     font-size: var(--text-lg);
     line-height: 1.25;
-    margin-bottom: var(--space-1);
+  }
+
+  .book-author,
+  .book-description {
+    font-size: var(--text-sm);
   }
 
   .book-author {
-    font-size: var(--text-sm);
-    color: var(--color-text-secondary);
     margin: 0 0 var(--space-3);
+    color: var(--color-text-muted);
+  }
+
+  .book-description {
+    margin: 0 0 var(--space-4);
+    color: var(--color-text-secondary);
+    line-height: 1.45;
   }
 
   .book-cta {
     display: inline-flex;
     align-items: center;
     gap: var(--space-1);
-    font-size: var(--text-sm);
-    font-weight: var(--font-semibold);
     color: var(--color-accent-primary);
-  }
-
-  .book-cta :global(svg) {
-    transition: transform var(--transition-base);
+    font-size: var(--text-sm);
+    font-weight: var(--font-bold);
   }
 
   .book-card:hover .book-cta :global(svg) {
     transform: translateX(3px);
   }
 
+  .book-cta :global(svg) {
+    transition: transform var(--transition-base);
+  }
+
+  .book-paid {
+    display: block;
+    margin-top: var(--space-2);
+    color: var(--color-text-muted);
+    font-size: 0.65rem;
+  }
+
   .books-affiliate {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     gap: var(--space-2);
-    margin-top: var(--space-8);
-    font-size: var(--text-xs);
+    max-width: 660px;
+    margin: var(--space-6) auto 0;
     color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    text-align: center;
+  }
+
+  .books-affiliate :global(svg) {
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+
+  .books-support {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2) var(--space-4);
+    margin-top: var(--space-6);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .books-support a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-weight: var(--font-bold);
+  }
+
+  @media (max-width: 460px) {
+    .book-card {
+      grid-template-columns: 72px 1fr;
+      gap: var(--space-4);
+      padding: var(--space-4);
+    }
+
+    .book-cover {
+      width: 72px;
+    }
+
+    .books-section--plan {
+      margin-right: calc(var(--space-4) * -1);
+      margin-left: calc(var(--space-4) * -1);
+      border-right: 0;
+      border-left: 0;
+      border-radius: 0;
+    }
   }
 </style>

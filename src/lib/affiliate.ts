@@ -8,10 +8,8 @@
  * This module maps the app locale to an Amazon marketplace + the tag for
  * that marketplace, so the link "depends on where the user enters from".
  *
- * ⚠️ REPLACE the placeholder tags below with YOUR real Associates tags.
- *    The tag in shopping URLs (e.g. `googshopes-21`) belongs to Amazon's
- *    own Google Shopping account, not to you — using it pays Amazon, not you.
- *    Get your tags at https://afiliados.amazon.es (one signup per country).
+ * Verify that every tag below belongs to your Associates account. A tag from
+ * another account earns commission for that account, not for this site.
  */
 
 import type { Locale } from '../types';
@@ -38,6 +36,7 @@ const MARKETPLACE: Record<Locale, { tld: string; tag: string }> = {
 };
 
 export interface Book {
+  key: 'nsm' | 'bakken';
   /** ASIN (books) or ISBN-10. Shared across marketplaces. */
   asin: string;
   title: string;
@@ -47,12 +46,14 @@ export interface Book {
 
 export const books: Book[] = [
   {
+    key: 'nsm',
     asin: 'B0G4D8438Z',
     title: 'Norwegian Singles Method',
     author: 'James Copeland',
     cover: '/book-nsm.jpg',
   },
   {
+    key: 'bakken',
     asin: '8269471100',
     title: 'The Norwegian Method Applied',
     author: 'Marius Bakken, MD',

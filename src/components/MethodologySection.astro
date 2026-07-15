@@ -87,6 +87,31 @@ const notesTitle = {
   de: 'Methodik-Hinweise',
   fr: 'Notes méthodologiques',
 }[locale];
+
+const guideLink = {
+  en: {
+    href: '/en/nsm-training-method/',
+    label: 'Read the complete NSM method guide',
+  },
+  es: {
+    href: '/es/entrenamiento-nsm/',
+    label: 'Leer la guía completa del método NSM',
+  },
+  ko: {
+    href: '/ko/nsm-training/',
+    label: 'NSM 훈련법 전체 가이드 보기',
+  },
+  de: {
+    href: '/de/nsm-trainingsmethode/',
+    label: 'Den vollständigen NSM-Leitfaden lesen',
+  },
+  fr: {
+    href: '/fr/methode-entrainement-nsm/',
+    label: 'Lire le guide complet de la méthode NSM',
+  },
+}[locale];
+const isGuidePage =
+  Astro.url.pathname.replace(/\/$/, '') === guideLink.href.replace(/\/$/, '');
 ---
 
 <div class="methodology-section">
@@ -107,6 +132,15 @@ const notesTitle = {
               </article>
             ))}
           </div>
+
+          {!isGuidePage && (
+            <div class="method-guide-link">
+              <a href={guideLink.href}>
+                {guideLink.label}
+                <Icon name="arrow-right" size={16} />
+              </a>
+            </div>
+          )}
         </div>
       </section>
     )
@@ -139,6 +173,20 @@ const notesTitle = {
   .principles-grid {
     display: grid;
     gap: var(--space-6);
+  }
+
+  .method-guide-link {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-8);
+  }
+
+  .method-guide-link a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    font-weight: var(--font-bold);
   }
 
   @media (min-width: 640px) {

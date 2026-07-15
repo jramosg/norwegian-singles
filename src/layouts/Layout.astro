@@ -20,12 +20,14 @@ const t = useTranslations(locale);
 const title = Astro.props.title || t('seo.title');
 const description = Astro.props.description || t('seo.description');
 const structuredData = Astro.props.structuredData || [];
-const floatingSupportMessage = t('support.floatingMessage');
-const floatingSupportButton = t('support.floatingButton');
-const floatingSupportAria = t('support.floatingAria');
 
 const currentPath = Astro.url.pathname;
 const siteURL = 'https://norwegian-singles.app';
+const pathParts = currentPath.split('/').filter(Boolean);
+const isAppPage =
+  pathParts[0] === locale &&
+  (pathParts.length === 1 ||
+    (pathParts.length === 2 && pathParts[1] === 'plan'));
 
 const canonicalURL = new URL(currentPath, Astro.site || siteURL);
 const localeUrls = locales.map((lang) => {
@@ -60,8 +62,6 @@ const schemaData = {
     'Norwegian Singles Approach Calculator',
     'Norwegian Singles Method Calculator',
     'Norwegian Method Training Planner',
-    'Marius Bakken Pace Calculator',
-    'James Copeland Norwegian Singles Calculator',
   ],
   url: siteURL,
   description: description,
@@ -74,7 +74,7 @@ const schemaData = {
   },
   author: {
     '@type': 'Person',
-    name: 'Jonramos',
+    name: 'Jon Ramos',
     url: 'https://jonramos.dev',
   },
   about: {
@@ -85,10 +85,13 @@ const schemaData = {
     sameAs: [],
   },
   keywords:
-    'NSA, NSM, Norwegian Singles calculator, Norwegian Singles Approach, Norwegian Singles Method, NSM calculator, NSM running, Norwegian method calculator, sub-threshold pace calculator, Marius Bakken pace calculator, James Copeland Norwegian Singles, running training plan, 5K pace calculator, marathon training',
+    'NSA, NSM, Norwegian Singles calculator, Norwegian Singles Approach, Norwegian Singles Method, NSM calculator, NSM running, Norwegian method calculator, sub-threshold pace calculator, running training plan, 5K pace calculator, marathon training',
 };
 
-const allStructuredData = [schemaData, ...structuredData];
+const allStructuredData = [
+  ...(isAppPage ? [schemaData] : []),
+  ...structuredData,
+];
 ---
 
 <!doctype html>
@@ -101,18 +104,6 @@ const allStructuredData = [schemaData, ...structuredData];
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#ef4444" />
     <meta name="author" content="Jon Ramos" />
-    <meta
-      name="keywords"
-      content={locale === 'es'
-        ? 'NSA, NSM, calculadora Norwegian Singles, Norwegian Singles Method, calculadora NSM, método noruego, sub-umbral, calculadora ritmos Marius Bakken, James Copeland Norwegian Singles, plan entrenamiento correr, calculadora ritmo 5K, preparación maratón'
-        : locale === 'ko'
-          ? 'NSM 러닝, NSM 훈련법, Norwegian Singles Method, Norwegian Singles 계산기, NSM 계산기, 서브스레숄드 러닝, 노르웨이식 훈련, 마라톤 훈련 플랜, 5K 페이스 계산기'
-          : locale === 'de'
-            ? 'NSA, NSM, Norwegian Singles Rechner, Norwegian Singles Method, NSM Rechner, norwegische Methode, Sub-Threshold, Schwellentraining, Marius Bakken Pace-Rechner, James Copeland Norwegian Singles, Laufplan, 5K Pace-Rechner, Marathontraining, Norwegian Singles App'
-            : locale === 'fr'
-              ? 'NSA, NSM, calculateur Norwegian Singles, Norwegian Singles Method, calculateur NSM, méthode norvégienne, sous-seuil, allure seuil, calculateur Marius Bakken, James Copeland Norwegian Singles, plan entraînement course, calculateur allure 5K, entraînement marathon, application Norwegian Singles'
-              : 'NSA, NSM, Norwegian Singles calculator, Norwegian Singles app, Norwegian Singles Approach, Norwegian Singles Method, NSM calculator, NSM running, Norwegian method calculator, sub-threshold pace calculator, Marius Bakken pace calculator, James Copeland Norwegian Singles, running training plan, 5K pace calculator, marathon training'}
-    />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -165,28 +156,6 @@ const allStructuredData = [schemaData, ...structuredData];
   <body>
     <slot />
 
-    <a
-      class="floating-support"
-      href="https://buymeacoffee.com/jramosg"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={floatingSupportAria}
-    >
-      <span class="floating-support-message" aria-hidden="true">
-        {floatingSupportMessage}
-      </span>
-      <span aria-hidden="true">☕</span>
-      <span class="floating-support-text">{floatingSupportButton}</span>
-    </a>
-
-    <script is:inline>
-      window.setTimeout(() => {
-        document
-          .querySelector('.floating-support-message')
-          ?.classList.add('is-hidden');
-      }, 6000);
-    </script>
-
     <!-- Language persistence script -->
     <script is:inline>
       (function () {
@@ -196,6 +165,44 @@ const allStructuredData = [schemaData, ...structuredData];
           localStorage.setItem('ns-locale', locale);
         }
       })();
+    </script>
+
+    <script>
+      import { trackEvent } from '../lib/analytics';
+
+      document.addEventListener('click', (event) => {
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+
+        const link = target.closest<HTMLAnchorElement>('[data-monetization]');
+        if (!link) return;
+
+        const kind = link.dataset.monetization;
+        if (kind !== 'affiliate' && kind !== 'support') return;
+
+        const placement = link.dataset.placement || 'unknown';
+        const item = link.dataset.item || 'unknown';
+        const payload = {
+          locale: document.documentElement.dataset.locale,
+          placement,
+          item,
+          path: window.location.pathname,
+        };
+
+        trackEvent(
+          kind === 'affiliate' ? 'affiliate_click' : 'support_click',
+          payload,
+        );
+
+        const params = new URLSearchParams({
+          type: kind,
+          placement,
+          item,
+          locale: payload.locale || 'unknown',
+          path: payload.path,
+        });
+        navigator.sendBeacon(`/events/outbound?${params.toString()}`);
+      });
     </script>
   </body>
 </html>

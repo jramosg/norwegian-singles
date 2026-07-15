@@ -59,7 +59,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'nsm-training-method',
-      title: 'NSM Training Method: Norwegian Singles Workouts',
+      title: 'NSM Method: Norwegian Singles Training Guide & Workouts',
       description:
         'Use the NSM training method with 3, 6, and 10-minute sub-threshold workouts, easy runs, and weekly plans.',
       h1: 'NSM training method for everyday runners',
@@ -99,7 +99,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'marius-bakken-pace-calculator',
-      title: 'Marius Bakken Pace Calculator: Norwegian Method Inspired',
+      title: 'Marius Bakken Pace Calculator (Unofficial): Threshold Paces',
       description:
         'Estimate Norwegian-style sub-threshold paces inspired by Marius Bakken training principles, adapted for single-session NSA / NSM weeks.',
       h1: 'Marius Bakken pace calculator for single-session training',
