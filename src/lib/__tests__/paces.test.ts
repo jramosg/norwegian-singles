@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { formatPace, parseTime, formatTime } from '../paces';
+import { formatPace, parseTime, formatTime, formatTimeInput } from '../paces';
 
 describe('formatPace', () => {
   it('formats seconds per km as mm:ss', () => {
@@ -46,5 +46,22 @@ describe('formatTime', () => {
 
   it('formats seconds as h:mm:ss when >= 1 hour', () => {
     expect(formatTime(3661)).toBe('1:01:01');
+  });
+});
+
+describe('formatTimeInput', () => {
+  it('formats numeric input as mm:ss', () => {
+    expect(formatTimeInput('500')).toBe('5:00');
+    expect(formatTimeInput('2000')).toBe('20:00');
+    expect(formatTimeInput('20:00')).toBe('20:00');
+  });
+
+  it('formats marathon input as h:mm:ss when needed', () => {
+    expect(formatTimeInput('13000', true)).toBe('1:30:00');
+    expect(formatTimeInput('1:30:00', true)).toBe('1:30:00');
+  });
+
+  it('removes non-numeric characters', () => {
+    expect(formatTimeInput('2a000')).toBe('20:00');
   });
 });

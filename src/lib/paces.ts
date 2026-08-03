@@ -46,6 +46,32 @@ export function parseTime(timeStr: string): number | null {
 }
 
 /**
+ * Add time separators to digits entered in a mobile-friendly time field.
+ * The last two digits are seconds; marathon inputs may also include hours.
+ */
+export function formatTimeInput(value: string, includeHours = false): string {
+  const digits = value.replace(/\D/g, '');
+
+  if (!digits) return '';
+
+  if (value.includes(':')) return value.replace(/[^\d:]/g, '');
+
+  if (includeHours && digits.length > 4) {
+    const minuteSecond = digits.slice(-4);
+    return `${digits.slice(0, -4)}:${minuteSecond.slice(
+      0,
+      2,
+    )}:${minuteSecond.slice(2)}`;
+  }
+
+  if (digits.length > 2) {
+    return `${digits.slice(0, -2)}:${digits.slice(-2)}`;
+  }
+
+  return digits;
+}
+
+/**
  * Format total seconds as mm:ss (or h:mm:ss when >= 1 hour).
  */
 export function formatTime(totalSeconds: number): string {

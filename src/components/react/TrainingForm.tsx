@@ -13,7 +13,12 @@ import {
   type Unit,
   type Distance,
 } from '../../types';
-import { parseTime, formatPace, formatTime } from '../../lib/paces';
+import {
+  parseTime,
+  formatPace,
+  formatTime,
+  formatTimeInput,
+} from '../../lib/paces';
 import {
   calculateVDOT,
   getTrainingPacesFromVDOT,
@@ -602,7 +607,14 @@ export default function TrainingForm({ locale }: Props) {
               className="form-input"
               placeholder={raceTimePlaceholder}
               value={raceTime}
-              onChange={(e) => setRaceTime(e.target.value)}
+              onChange={(e) =>
+                setRaceTime(
+                  formatTimeInput(
+                    e.target.value,
+                    raceDistance === '42K' || raceDistance === '21K',
+                  ),
+                )
+              }
             />
           </div>
         </div>
