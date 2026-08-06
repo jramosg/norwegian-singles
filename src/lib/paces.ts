@@ -54,8 +54,6 @@ export function formatTimeInput(value: string, includeHours = false): string {
 
   if (!digits) return '';
 
-  if (value.includes(':')) return value.replace(/[^\d:]/g, '');
-
   if (includeHours && digits.length > 4) {
     const minuteSecond = digits.slice(-4);
     return `${digits.slice(0, -4)}:${minuteSecond.slice(

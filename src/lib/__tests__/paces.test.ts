@@ -54,6 +54,7 @@ describe('formatTimeInput', () => {
     expect(formatTimeInput('500')).toBe('5:00');
     expect(formatTimeInput('2000')).toBe('20:00');
     expect(formatTimeInput('20:00')).toBe('20:00');
+    expect(formatTimeInput('1:500')).toBe('15:00');
   });
 
   it('formats marathon input as h:mm:ss when needed', () => {
@@ -61,7 +62,7 @@ describe('formatTimeInput', () => {
     expect(formatTimeInput('1:30:00', true)).toBe('1:30:00');
   });
 
-  it('removes non-numeric characters', () => {
+  it('accepts colon-formatted input', () => {
     expect(formatTimeInput('2a000')).toBe('20:00');
   });
 });
