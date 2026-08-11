@@ -5,6 +5,7 @@ import {
   getWeekStartDate,
   getCurrentBuildWeek,
   getWeeksToMarathon,
+  getMarathonSpecificDurationMin,
 } from '../marathon-build';
 
 describe('MARATHON_BUILD structure', () => {
@@ -271,6 +272,8 @@ describe('Week 13 MP Introduction', () => {
     expect(sun.kind).toBe('marathon_specific');
     if (sun.kind === 'marathon_specific') {
       expect(sun.distanceM).toBe(10000);
+      expect(getMarathonSpecificDurationMin(sun, 241)).toBe(90);
+      expect(getMarathonSpecificDurationMin(sun, 301)).toBe(100);
     }
   });
 });

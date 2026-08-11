@@ -44,6 +44,8 @@ export interface MBMarathonSpecificDay {
   distanceM: number;
   recoverySeconds: number;
   totalDurationMin: number;
+  /** Fixed warm-up and cool-down time for MP-dependent duration estimates */
+  warmupCooldownMin?: number;
   /** e.g. "92→93→100% MP progressive, no rest" */
   paceNote?: string;
 }
@@ -388,7 +390,8 @@ export const MARATHON_BUILD: MarathonBuildWeek[] = [
         reps: 1,
         distanceM: 10000,
         recoverySeconds: 0,
-        totalDurationMin: 75,
+        totalDurationMin: 90,
+        warmupCooldownMin: 50,
         paceNote: '25 min WU + 10 km @ current MP + 25 min CD',
       } as MBMarathonSpecificDay,
     ],
@@ -456,6 +459,25 @@ export const MARATHON_BUILD: MarathonBuildWeek[] = [
 // ---------------------------------------------------------------------------
 // Helper utilities
 // ---------------------------------------------------------------------------
+
+/**
+ * Estimate a marathon-specific session duration from the current MP.
+ * Sessions without a fixed warm-up/cool-down value retain their plan total.
+ */
+export function getMarathonSpecificDurationMin(
+  day: MBMarathonSpecificDay,
+  marathonPaceSecondsPerKm: number,
+): number {
+  if (day.warmupCooldownMin === undefined) return day.totalDurationMin;
+
+  const workSeconds =
+    (day.reps * day.distanceM * marathonPaceSecondsPerKm) / 1000;
+  const recoverySeconds = Math.max(0, day.reps - 1) * day.recoverySeconds;
+
+  return Math.round(
+    day.warmupCooldownMin + (workSeconds + recoverySeconds) / 60,
+  );
+}
 
 /**
  * Calculate the Monday of week 1 for a given marathon date.

@@ -36,6 +36,7 @@ import {
   getWeekStartDate,
   getCurrentBuildWeek,
   getWeeksToMarathon,
+  getMarathonSpecificDurationMin,
 } from '../../lib/marathon-build';
 import type { MarathonBuildDay } from '../../lib/marathon-build';
 
@@ -1085,6 +1086,10 @@ function mbSessionDetail(
 
   if (day.kind === 'marathon_specific') {
     const pace = formatPace(paces.marathonPace, unit);
+    const totalDurationMin = getMarathonSpecificDurationMin(
+      day,
+      paces.marathonPace,
+    );
     const repLabel =
       day.reps === 1
         ? `${day.distanceM >= 1000 ? `${day.distanceM / 1000} km` : `${day.distanceM} m`} @ MP`
@@ -1096,7 +1101,10 @@ function mbSessionDetail(
           {pace} <span className="mb-day-unit">{unitLabel}</span>
         </div>
         {day.paceNote && <div className="mb-day-meta">{day.paceNote}</div>}
-        <div className="mb-day-meta">{day.totalDurationMin} min total</div>
+        <div className="mb-day-meta">
+          {day.warmupCooldownMin !== undefined ? '~' : ''}
+          {totalDurationMin} min total
+        </div>
       </>
     );
   }
