@@ -1,6 +1,6 @@
 ---
 import type { Locale } from '../types';
-import BookRecommendations from './BookRecommendations.astro';
+import Recommendations from './Recommendations.astro';
 
 interface Props {
   locale: Locale;
@@ -10,7 +10,7 @@ const { locale } = Astro.props;
 ---
 
 <div data-plan-revenue hidden>
-  <BookRecommendations locale={locale} placement="plan" />
+  <Recommendations locale={locale} placement="plan" />
 </div>
 
 <script>

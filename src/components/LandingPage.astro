@@ -2,7 +2,7 @@
 import AppLayout from '../layouts/AppLayout.astro';
 import TrainingForm from './react/TrainingForm';
 import MethodologySection from './MethodologySection.astro';
-import BookRecommendations from './BookRecommendations.astro';
+import Recommendations from './Recommendations.astro';
 import { useTranslations } from '../i18n/ui';
 import { getSeoPages, getVisibleFaqs } from '../lib/seo-pages';
 import { getRacePagesByDistance } from '../lib/race-seo-pages';
@@ -1018,7 +1018,7 @@ const relatedGroups = {
 
     <MethodologySection locale={locale} />
 
-    <BookRecommendations locale={locale} />
+    <Recommendations locale={locale} />
 
     {
       paceCard && (

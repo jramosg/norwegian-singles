@@ -1,0 +1,655 @@
+---
+/**
+ * Gear and reading recommendations shown after users understand
+ * the product value. Links use Global Earning (single link per product).
+ */
+
+import { Image } from 'astro:assets';
+import type { Locale } from '../types';
+import { gear, books } from '../lib/affiliate';
+import Icon from './Icon.astro';
+
+import coospoHrm from '../assets/coospo-hrm.jpg';
+import corosHrm from '../assets/coros-hrm.jpg';
+import garminHrm200 from '../assets/garmin-hrm200.jpg';
+import garminFr165 from '../assets/garmin-fr165.jpg';
+import nsmCover from '../assets/book-nsm.jpg';
+import bakkenCover from '../assets/book-bakken.jpg';
+
+const imageMap: Record<string, ImageMetadata> = {
+  '/coospo-hrm.jpg': coospoHrm,
+  '/coros-hrm.jpg': corosHrm,
+  '/garmin-hrm200.jpg': garminHrm200,
+  '/garmin-fr165.jpg': garminFr165,
+  '/book-nsm.jpg': nsmCover,
+  '/book-bakken.jpg': bakkenCover,
+};
+
+interface Props {
+  locale: Locale;
+  placement?: 'landing' | 'plan';
+}
+
+const { locale, placement = 'landing' } = Astro.props;
+
+const copy = {
+  en: {
+    eyebrow: 'Recommended gear & reading',
+    title: 'Everything you need to get started',
+    subtitle:
+      'The right equipment and the theory behind the Norwegian method.',
+    cta: 'Check price on Amazon',
+    kindle: 'Kindle edition',
+    paid: 'Paid link',
+    disclosure:
+      'As an Amazon Associate I earn from qualifying purchases. You pay the same price.',
+    supportPrompt: 'Prefer to support the free calculator directly?',
+    supportCta: 'Support the project',
+    gear: {
+      coospo: {
+        badge: 'Budget pick',
+        description:
+          'Chest strap with Bluetooth + ANT+. Accurate heart rate data for every session.',
+      },
+      coros: {
+        badge: 'Arm-band',
+        description:
+          'Advanced optical sensor, 80-day battery, auto-wear detection.',
+      },
+      'garmin-hrm': {
+        badge: 'Chest strap',
+        description:
+          'Water-resistant, washable band, up to 1 year battery. Precise HR for NSM training.',
+      },
+      'garmin-fr165': {
+        badge: 'GPS running watch',
+        description:
+          'Lightweight with AMOLED display, real-time pace, distance and HR data.',
+      },
+    },
+    books: {
+      nsm: {
+        badge: 'Best match for this plan',
+        description:
+          'Weekly structures, session progression and practical NSM guidance.',
+      },
+      bakken: {
+        badge: 'Threshold principles',
+        description:
+          'The training ideas and physiology behind the Norwegian approach.',
+      },
+    },
+  },
+  es: {
+    eyebrow: 'Equipo y lecturas recomendadas',
+    title: 'Todo lo que necesitas para empezar',
+    subtitle:
+      'El equipo correcto y la teoría detrás del método noruego.',
+    cta: 'Consultar precio en Amazon',
+    kindle: 'Edición Kindle',
+    paid: 'Enlace remunerado',
+    disclosure:
+      'Como afiliado de Amazon, obtengo ingresos por compras que cumplen los requisitos. Tú pagas el mismo precio.',
+    supportPrompt: '¿Prefieres apoyar directamente la calculadora gratuita?',
+    supportCta: 'Apoyar el proyecto',
+    gear: {
+      coospo: {
+        badge: 'Relación calidad-precio',
+        description:
+          'Correa torácica con Bluetooth + ANT+. Datos precisos de frecuencia cardíaca.',
+      },
+      coros: {
+        badge: 'Brazalete',
+        description:
+          'Sensor óptico avanzado, 80 días de batería, detección automática de uso.',
+      },
+      'garmin-hrm': {
+        badge: 'Correa torácica',
+        description:
+          'Resistente al agua, correa lavable, hasta 1 año de batería. HR precisa para NSM.',
+      },
+      'garmin-fr165': {
+        badge: 'Reloj GPS running',
+        description:
+          'Ligero con pantalla AMOLED, ritmo, distancia y datos de FC en tiempo real.',
+      },
+    },
+    books: {
+      nsm: {
+        badge: 'El más útil para este plan',
+        description:
+          'Estructuras semanales, progresión de sesiones y aplicación práctica de NSM.',
+      },
+      bakken: {
+        badge: 'Principios de umbral',
+        description:
+          'Las ideas de entrenamiento y la fisiología del enfoque noruego.',
+      },
+    },
+  },
+  ko: {
+    eyebrow: '추천 장비 및 읽을거리',
+    title: '시작하는 데 필요한 모든 것',
+    subtitle:
+      '올바른 장비와 노르웨이 방법론의 이론.',
+    cta: 'Amazon에서 가격 확인',
+    kindle: '킨들 에디션',
+    paid: '유료 링크',
+    disclosure:
+      'Amazon Associates 활동을 통해 적격 구매에서 수수료를 받을 수 있으며 구매 가격은 동일합니다.',
+    supportPrompt: '무료 계산기를 직접 후원하고 싶으신가요?',
+    supportCta: '프로젝트 후원',
+    gear: {
+      coospo: {
+        badge: '가성비 추천',
+        description:
+          'Bluetooth + ANT+ 가슴 스트랩. 모든 세션에서 정확한 심박수 데이터.',
+      },
+      coros: {
+        badge: '암밴드',
+        description:
+          '고급 광학 센서, 80일 배터리, 자동 착용 감지.',
+      },
+      'garmin-hrm': {
+        badge: '가슴 스트랩',
+        description:
+          '방수, 세탁 가능한 밴드, 최대 1년 배터리. NSM 훈련에 정확한 HR.',
+      },
+      'garmin-fr165': {
+        badge: 'GPS 러닝 워치',
+        description:
+          '가벼운 AMOLED 디스플레이, 실시간 페이스, 거리 및 HR 데이터.',
+      },
+    },
+    books: {
+      nsm: {
+        badge: '이 플랜에 가장 적합',
+        description: '주간 구조, 세션 진행 방식, 실전 NSM 훈련 지침.',
+      },
+      bakken: {
+        badge: '역치 훈련 원리',
+        description: '노르웨이식 접근법의 훈련 아이디어와 생리학.',
+      },
+    },
+  },
+  de: {
+    eyebrow: 'Empfohlenes Equipment & Lectüre',
+    title: 'Alles, um loszulegen',
+    subtitle:
+      'Die richtige Ausrüstung und die Theorie hinter der norwegischen Methode.',
+    cta: 'Preis bei Amazon prüfen',
+    kindle: 'Kindle-Ausgabe',
+    paid: 'Bezahlter Link',
+    disclosure:
+      'Als Amazon-Partner verdiene ich an qualifizierten Verkäufen. Du zahlst denselben Preis.',
+    supportPrompt: 'Möchtest du den kostenlosen Rechner direkt unterstützen?',
+    supportCta: 'Projekt unterstützen',
+    gear: {
+      coospo: {
+        badge: 'Preis-Leistungs-Tipp',
+        description:
+          'Brustgurt mit Bluetooth + ANT+. Genaue Herzfrequenzdaten für jede Einheit.',
+      },
+      coros: {
+        badge: 'Armband',
+        description:
+          'Fortschrittlicher optischer Sensor, 80 Tage Akku, automatische Tragerkennung.',
+      },
+      'garmin-hrm': {
+        badge: 'Brustgurt',
+        description:
+          'Wasserdicht, waschbarer Gurt, bis zu 1 Jahr Akku. Präzise HF für NSM-Training.',
+      },
+      'garmin-fr165': {
+        badge: 'GPS-Laufuhr',
+        description:
+          'Leicht mit AMOLED-Display, Echtzeit-Pace, Distanz- und HF-Daten.',
+      },
+    },
+    books: {
+      nsm: {
+        badge: 'Beste Ergänzung zu diesem Plan',
+        description:
+          'Wochenstrukturen, Trainingsprogression und praktische NSM-Anleitung.',
+      },
+      bakken: {
+        badge: 'Schwellenprinzipien',
+        description:
+          'Trainingsideen und Physiologie hinter dem norwegischen Ansatz.',
+      },
+    },
+  },
+  fr: {
+    eyebrow: 'Matériel et lectures recommandés',
+    title: 'Tout ce qu\'il faut pour commencer',
+    subtitle:
+      'Le bon équipement et la théorie derrière la méthode norvégienne.',
+    cta: 'Voir le prix sur Amazon',
+    kindle: 'Édition Kindle',
+    paid: 'Lien rémunéré',
+    disclosure:
+      'En tant que Partenaire Amazon, je réalise un bénéfice sur les achats remplissant les conditions requises. Le prix reste identique pour toi.',
+    supportPrompt: 'Tu préfères soutenir directement le calculateur gratuit ?',
+    supportCta: 'Soutenir le projet',
+    gear: {
+      coospo: {
+        badge: 'Rapport qualité-prix',
+        description:
+          'Ceinture cardio Bluetooth + ANT+. Données de FC précises pour chaque séance.',
+      },
+      coros: {
+        badge: 'Bracelet',
+        description:
+          'Capteur optique avancé, 80 jours d\'autonomie, détection automatique.',
+      },
+      'garmin-hrm': {
+        badge: 'Ceinture cardio',
+        description:
+          'Étanche, bandoulière lavable, jusqu\'à 1 an d\'autonomie. FC précise pour NSM.',
+      },
+      'garmin-fr165': {
+        badge: 'Montre GPS running',
+        description:
+          'Légère avec écran AMOLED, allure, distance et données FC en temps réel.',
+      },
+    },
+    books: {
+      nsm: {
+        badge: 'Le meilleur complément à ce plan',
+        description:
+          'Structures hebdomadaires, progression des séances et application pratique du NSM.',
+      },
+      bakken: {
+        badge: 'Principes du seuil',
+        description:
+          'Les idées d\'entraînement et la physiologie de l\'approche norvégienne.',
+      },
+    },
+  },
+}[locale];
+---
+
+<section
+  class:list={[
+    'recs-section',
+    'section',
+    { 'recs-section--plan': placement === 'plan' },
+  ]}
+  aria-labelledby={`recs-title-${placement}`}
+>
+  <div class="container recs-container">
+    <div class="recs-head">
+      {placement === 'plan' && <p class="recs-eyebrow">{copy.eyebrow}</p>}
+      <h2 id={`recs-title-${placement}`} class="section-title">
+        {copy.title}
+      </h2>
+      <p class="recs-subtitle">{copy.subtitle}</p>
+    </div>
+
+    <div class="recs-grid">
+      {
+        gear.map((item) => (
+          <a
+            class="rec-card"
+            href={item.link}
+            target="_blank"
+            rel="sponsored nofollow noopener noreferrer"
+            data-monetization="affiliate"
+            data-placement={placement}
+            data-item={item.key}
+          >
+            <div class="rec-cover-wrap">
+              {item.cover && imageMap[item.cover] ? (
+                <Image
+                  src={imageMap[item.cover]}
+                  alt=""
+                  class="rec-cover"
+                  width={96}
+                  densities={[1.5, 2]}
+                  loading="lazy"
+                />
+              ) : (
+                <Icon name={item.icon} size={32} />
+              )}
+            </div>
+            <div class="rec-body">
+              <span class="rec-badge">{copy.gear[item.key]?.badge}</span>
+              <h3>{item.title}</h3>
+              <p class="rec-description">{copy.gear[item.key]?.description}</p>
+              <span class="rec-cta">
+                {copy.cta}
+                <Icon name="arrow-right" size={16} />
+              </span>
+              <small class="rec-paid">{copy.paid}</small>
+            </div>
+          </a>
+        ))
+      }
+      {
+        books.map((book) => (
+          <a
+            class="rec-card"
+            href={book.link}
+            target="_blank"
+            rel="sponsored nofollow noopener noreferrer"
+            data-monetization="affiliate"
+            data-placement={placement}
+            data-item={book.key}
+          >
+            <div class="rec-cover-wrap">
+              {book.cover && imageMap[book.cover] ? (
+                <Image
+                  src={imageMap[book.cover]}
+                  alt=""
+                  class="rec-cover rec-cover--book"
+                  width={96}
+                  densities={[1.5, 2]}
+                  loading="lazy"
+                />
+              ) : (
+                <Icon name="book-open" size={32} />
+              )}
+            </div>
+            <div class="rec-body">
+              <span class="rec-badge">{copy.books[book.key]?.badge}</span>
+              <h3>{book.title}</h3>
+              {book.author && <p class="rec-author">{book.author}</p>}
+              <p class="rec-description">{copy.books[book.key]?.description}</p>
+              <div class="rec-ctas">
+                <span class="rec-cta">
+                  {copy.cta}
+                  <Icon name="arrow-right" size={16} />
+                </span>
+                {book.kindleLink && (
+                  <span class="rec-cta rec-cta--secondary">
+                    {copy.kindle}
+                    <Icon name="arrow-right" size={16} />
+                  </span>
+                )}
+              </div>
+              <small class="rec-paid">{copy.paid}</small>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+
+    <p class="recs-affiliate">
+      <Icon name="book-open" size={13} />
+      {copy.disclosure}
+    </p>
+
+    <div class="recs-support">
+      <span>{copy.supportPrompt}</span>
+      <a
+        href="https://buymeacoffee.com/jramosg"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-monetization="support"
+        data-placement={`books-${placement}`}
+        data-item="buy-me-a-coffee"
+      >
+        {copy.supportCta}
+        <Icon name="arrow-right" size={14} />
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .recs-section {
+    padding: var(--space-16) 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .recs-section--plan {
+    margin-top: var(--space-16);
+    background:
+      radial-gradient(
+        circle at 50% 0%,
+        rgba(239, 68, 68, 0.11),
+        transparent 48%
+      ),
+      var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-2xl);
+  }
+
+  .recs-container {
+    max-width: 920px;
+  }
+
+  .recs-head {
+    max-width: 680px;
+    margin: 0 auto var(--space-10);
+    text-align: center;
+  }
+
+  .recs-eyebrow {
+    margin: 0 0 var(--space-2);
+    color: var(--color-accent-primary);
+    font-size: var(--text-xs);
+    font-weight: var(--font-bold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .section-title {
+    margin-bottom: var(--space-3);
+  }
+
+  .recs-subtitle {
+    margin: 0;
+    color: var(--color-text-secondary);
+  }
+
+  .recs-grid {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  @media (min-width: 720px) {
+    .recs-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .rec-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-5);
+    align-items: start;
+    min-width: 0;
+    padding: var(--space-5);
+    color: inherit;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    text-decoration: none;
+    transition:
+      transform var(--transition-base),
+      border-color var(--transition-base),
+      background var(--transition-base),
+      box-shadow var(--transition-base);
+  }
+
+  .rec-card:hover,
+  .rec-card:focus-visible {
+    color: inherit;
+    background: var(--color-surface-hover);
+    border-color: rgba(239, 68, 68, 0.45);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+  }
+
+  .rec-card:focus-visible {
+    outline: 3px solid rgba(239, 68, 68, 0.32);
+    outline-offset: 3px;
+  }
+
+  .rec-cover-wrap {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 96px;
+    height: 96px;
+    color: var(--color-text-muted);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .rec-cover {
+    width: 96px;
+    height: 96px;
+    object-fit: contain;
+    border-radius: var(--radius-md);
+    transition: transform var(--transition-base);
+  }
+
+  .rec-cover--book {
+    box-shadow: var(--shadow-lg);
+  }
+
+  .rec-card:hover .rec-cover {
+    transform: rotate(-1deg) scale(1.025);
+  }
+
+  .rec-body {
+    min-width: 0;
+  }
+
+  .rec-badge {
+    display: inline-flex;
+    margin-bottom: var(--space-2);
+    padding: 0.2rem 0.5rem;
+    color: #fecaca;
+    background: rgba(239, 68, 68, 0.13);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    border-radius: var(--radius-full);
+    font-size: 0.68rem;
+    font-weight: var(--font-bold);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .rec-card h3 {
+    margin-bottom: var(--space-1);
+    font-size: var(--text-lg);
+    line-height: 1.25;
+  }
+
+  .rec-author,
+  .rec-description {
+    font-size: var(--text-sm);
+  }
+
+  .rec-author {
+    margin: 0 0 var(--space-3);
+    color: var(--color-text-muted);
+  }
+
+  .rec-description {
+    margin: 0 0 var(--space-4);
+    color: var(--color-text-secondary);
+    line-height: 1.45;
+  }
+
+  .rec-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .rec-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    color: var(--color-accent-primary);
+    font-size: var(--text-sm);
+    font-weight: var(--font-bold);
+  }
+
+  .rec-cta--secondary {
+    color: var(--color-text-secondary);
+  }
+
+  .rec-card:hover .rec-cta :global(svg) {
+    transform: translateX(3px);
+  }
+
+  .rec-cta :global(svg) {
+    transition: transform var(--transition-base);
+  }
+
+  .rec-paid {
+    display: block;
+    margin-top: var(--space-2);
+    color: var(--color-text-muted);
+    font-size: 0.65rem;
+  }
+
+  .recs-affiliate {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: var(--space-2);
+    max-width: 660px;
+    margin: var(--space-6) auto 0;
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    text-align: center;
+  }
+
+  .recs-affiliate :global(svg) {
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+
+  .recs-support {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2) var(--space-4);
+    margin-top: var(--space-6);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .recs-support a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-weight: var(--font-bold);
+  }
+
+  @media (max-width: 460px) {
+    .rec-card {
+      grid-template-columns: 72px 1fr;
+      gap: var(--space-4);
+      padding: var(--space-4);
+    }
+
+    .rec-cover-wrap {
+      width: 72px;
+      height: 72px;
+    }
+
+    .rec-cover {
+      width: 72px;
+      height: 72px;
+    }
+
+    .recs-section--plan {
+      margin-right: calc(var(--space-4) * -1);
+      margin-left: calc(var(--space-4) * -1);
+      border-right: 0;
+      border-left: 0;
+      border-radius: 0;
+    }
+  }
+</style>
