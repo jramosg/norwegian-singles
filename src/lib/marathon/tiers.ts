@@ -12,7 +12,7 @@ import type { TierId } from './types';
 
 export interface TierSpec {
   id: TierId;
-  /** Number in the tier name, in km — the peak weekly volume. */
+  /** Number in the tier name, in km, the peak weekly volume. */
   nominalKm: number;
   /** Published suitability band, km. The generated peak sits inside it. */
   bandMinKm: number;

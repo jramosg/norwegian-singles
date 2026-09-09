@@ -1,5 +1,5 @@
 /**
- * TrainingForm — React island
+ * TrainingForm, React island
  * Collects a race result, weekly hours, and unit, then saves plan and redirects.
  */
 

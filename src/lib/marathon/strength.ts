@@ -123,7 +123,7 @@ export function strengthForWeek(
       ? '2 sets x 6 reps, maximal height, minimal ground contact'
       : '3 sets x 8 reps, maximal height, minimal ground contact';
     // Only ever on a quality day, and only when the next day is not itself a
-    // quality day — being fresh is the whole point of a plyometric session.
+    // quality day, being fresh is the whole point of a plyometric session.
     const days = qualityPositions
       .filter((p) => !qualityPositions.includes(p + 1))
       .slice(0, maintaining ? 1 : 2);
@@ -142,7 +142,7 @@ export function strengthForWeek(
   }
 
   // Hill sprints are the least fatiguing of the three and survive closest to
-  // race day — but never during marathon week.
+  // race day, but never during marathon week.
   if (options.hillSprints && !isRaceWeek) {
     const { prescription, dose } = hillSprintPrescription(
       tier,

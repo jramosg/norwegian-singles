@@ -4,12 +4,28 @@ services:
     container_name: norwegian-singles
     restart: always
     ports:
-      - '${PORT:-4321}:80'
+      - '${PORT:-4321}:4321'
     environment:
       - NODE_ENV=production
+      - HOST=0.0.0.0
+      - PORT=4321
+    # Secrets (Stripe keys, the token signing secret, the mail API key) are
+    # written to .env by the deploy workflow. The container needs them at
+    # runtime, which the old static image never did.
+    env_file:
+      - .env
+    volumes:
+      # Orders and fitness history must outlive `docker-compose down`.
+      - ./data:/app/data
     healthcheck:
-      test: ['CMD', 'curl', '-f', 'http://localhost:80/']
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "fetch('http://127.0.0.1:4321/en/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 10s
+      start_period: 15s

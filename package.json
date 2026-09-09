@@ -15,17 +15,21 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.8",
+    "@astrojs/node": "10.1.4",
     "@astrojs/react": "^5.0.1",
     "@astrojs/sitemap": "^3.7.1",
     "@astrojs/ts-plugin": "^1.10.7",
     "@fontsource-variable/inter": "^5.2.8",
-    "astro": "^6.0.8",
+    "astro": "^6.4.8",
+    "better-sqlite3": "^13.0.3",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "sharp": "^0.35.1",
+    "stripe": "^22.6.1",
     "typescript": "^5.9.3"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0",
     "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",
     "prettier": "3.7.4",

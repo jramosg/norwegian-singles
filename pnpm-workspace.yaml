@@ -1,0 +1,16 @@
+# Native and platform-binary packages need their install scripts to run.
+# pnpm blocks them by default, which is the ERR_PNPM_IGNORED_BUILDS the
+# Dockerfile's pnpm pin warns about.
+#
+# The key differs by pnpm major, so both are declared: pnpm 11 reads
+# `allowBuilds`, pnpm 10 reads `onlyBuiltDependencies`, and pnpm 9 (pinned in
+# the Dockerfile and in CI) reads the `pnpm` field in package.json.
+allowBuilds:
+  better-sqlite3: true
+  esbuild: true
+  sharp: true
+
+onlyBuiltDependencies:
+  - better-sqlite3
+  - esbuild
+  - sharp

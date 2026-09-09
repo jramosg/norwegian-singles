@@ -177,7 +177,7 @@ export function qualityMinutes(
 /**
  * Test weeks: two in the base phase and one closing the supportive phase.
  * On these weeks the third session becomes a parkrun / time trial, and the
- * plan offers a fitness check-in. Never mandatory — the session ships with a
+ * plan offers a fitness check-in. Never mandatory, the session ships with a
  * self-administered substitute.
  */
 export function isTestWeek(

@@ -1,0 +1,86 @@
+# Reference reverse-proxy config for the VPS host.
+#
+# The container used to BE nginx serving a static dist/. It is now a Node
+# process, so nginx moves out of the image and onto the host, where TLS and
+# the vhost already live. Nothing in the repo installs this file — copy it to
+# the server, add your certificates, and reload nginx.
+#
+# Two behaviours that used to live in the image are now handled by the app
+# itself and must NOT be duplicated here:
+#   - the `/` -> `/en/` redirect  (src/pages/index.astro, a real 301)
+#   - the `/events/outbound` beacon (src/pages/events/outbound.ts, 204 +
+#     the `monetization ...` log line the docs grep for)
+
+upstream norwegian_singles {
+    server 127.0.0.1:4321;
+    keepalive 16;
+}
+
+server {
+    listen 80;
+    server_name norwegian-singles.app www.norwegian-singles.app;
+    return 301 https://norwegian-singles.app$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name norwegian-singles.app;
+
+    # ssl_certificate     /etc/letsencrypt/live/norwegian-singles.app/fullchain.pem;
+    # ssl_certificate_key /etc/letsencrypt/live/norwegian-singles.app/privkey.pem;
+
+    # Security headers, previously set inside the image.
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_types text/plain text/css application/javascript application/json
+               image/svg+xml application/xml;
+
+    client_max_body_size 1m;
+
+    # Stripe posts a raw body whose signature is verified byte for byte, so
+    # nothing may rewrite or buffer-mangle it.
+    location = /api/stripe-webhook {
+        proxy_pass http://norwegian_singles;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_request_buffering off;
+        proxy_buffering off;
+    }
+
+    # Hashed build assets: safe to cache forever.
+    location /_astro/ {
+        proxy_pass http://norwegian_singles;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        add_header Cache-Control "public, max-age=31536000, immutable";
+    }
+
+    # A paid plan lives behind a secret token in the URL. Keep it out of
+    # caches, out of search engines, and out of referrer headers.
+    location ~ ^/[a-z]{2}/marathon/p/ {
+        proxy_pass http://norwegian_singles;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        add_header Cache-Control "no-store" always;
+        add_header X-Robots-Tag "noindex, nofollow" always;
+        add_header Referrer-Policy "no-referrer" always;
+    }
+
+    location / {
+        proxy_pass http://norwegian_singles;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Connection "";
+        proxy_read_timeout 30s;
+    }
+}

@@ -16,10 +16,10 @@ export type TierId = 'singles75' | 'singles95' | 'singles120' | 'singles140';
 export type PlanLength = 12 | 15 | 18;
 
 /**
- * P1 base   — everything subthreshold, no marathon-pace work
- * P2 supportive — 2 subT + a moderate marathon-specific session
- * P3 specific   — 1 subT + one big marathon-specific session (2 quality)
- * P4 taper      — reduced volume, intensity retained in small doses
+ * P1 base  , everything subthreshold, no marathon-pace work
+ * P2 supportive, 2 subT + a moderate marathon-specific session
+ * P3 specific  , 1 subT + one big marathon-specific session (2 quality)
+ * P4 taper     , reduced volume, intensity retained in small doses
  */
 export type PhaseId = 'base' | 'supportive' | 'specific' | 'taper';
 
@@ -114,7 +114,7 @@ export interface SessionContext {
   phase: PhaseId;
   /** 1-based week number within the whole build. */
   weekNumber: number;
-  /** 0-based index of this week within its phase — drives progression. */
+  /** 0-based index of this week within its phase, drives progression. */
   weekInPhase: number;
   /** Total weeks in this phase. */
   phaseWeeks: number;
@@ -165,7 +165,7 @@ export type FitnessSource = 'race' | 'time_trial' | 'checkin' | 'manual';
 
 export interface FitnessEstimate {
   vdot: number;
-  /** 5K equivalent in seconds — the key into the NSM pace table. */
+  /** 5K equivalent in seconds, the key into the NSM pace table. */
   fiveKEquivalentSec: number;
   source: FitnessSource;
   /** ISO timestamp. */
@@ -237,7 +237,7 @@ export interface SecondRun {
  *
  * The subthreshold cue is the one that matters: finish around 7 out of 10,
  * feeling like there was room for another rep or two. That is how the
- * intensity is actually controlled day to day — and it is also the primary
+ * intensity is actually controlled day to day, and it is also the primary
  * evidence for a fitness check-in, which is why it is part of the plan data
  * rather than a footnote.
  */
@@ -288,7 +288,7 @@ export interface PlannedWeek {
   isDeload: boolean;
   /** The X session is a test/parkrun this week, and a check-in is offered. */
   isTestWeek: boolean;
-  /** True when the week ends the phase — where the check-in card appears. */
+  /** True when the week ends the phase, where the check-in card appears. */
   isPhaseBoundary: boolean;
   days: PlannedDay[];
 }

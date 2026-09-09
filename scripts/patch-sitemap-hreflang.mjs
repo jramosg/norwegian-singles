@@ -1,8 +1,14 @@
 import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
-const distDir = new URL('../dist/', import.meta.url).pathname;
-const site = 'https://norwegian-singles.app';
+// With an adapter attached, prerendered HTML and the sitemap both live under
+// dist/client. Pointing this at dist/ makes every lookup miss and turns the
+// whole script into a silent no-op.
+const distDir = new URL('../dist/client/', import.meta.url).pathname;
+const site = (process.env.SITE_URL || 'https://norwegian-singles.app').replace(
+  /\/$/,
+  '',
+);
 
 function walk(dir) {
   return readdirSync(dir).flatMap((entry) => {

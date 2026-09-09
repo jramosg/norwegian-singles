@@ -22,7 +22,9 @@ jobs:
       - name: Build Docker image
         run: |
           # Build the Docker image
-          docker build -t norwegian-singles:latest .
+          docker build \
+            --build-arg PUBLIC_STRIPE_PUBLISHABLE_KEY="${{ secrets.PUBLIC_STRIPE_PUBLISHABLE_KEY }}" \
+            -t norwegian-singles:latest .
 
           # Save the image as a tar file for transfer
           docker save norwegian-singles:latest -o norwegian-singles.tar
@@ -43,6 +45,19 @@ jobs:
           cat > deployment-package/.env << EOF
           PORT=${{ secrets.SITE_PORT || 4321 }}
           SITE_URL=${{ secrets.SITE_URL }}
+          # Server-side secrets. The static image never needed these; the Node
+          # runtime does, and docker-compose reads them via env_file.
+          STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}
+          STRIPE_WEBHOOK_SECRET=${{ secrets.STRIPE_WEBHOOK_SECRET }}
+          STRIPE_PRICE_SINGLES75=${{ secrets.STRIPE_PRICE_SINGLES75 }}
+          STRIPE_PRICE_SINGLES95=${{ secrets.STRIPE_PRICE_SINGLES95 }}
+          STRIPE_PRICE_SINGLES120=${{ secrets.STRIPE_PRICE_SINGLES120 }}
+          STRIPE_PRICE_SINGLES140=${{ secrets.STRIPE_PRICE_SINGLES140 }}
+          STRIPE_PRICE_BUNDLE=${{ secrets.STRIPE_PRICE_BUNDLE }}
+          PLAN_TOKEN_SECRET=${{ secrets.PLAN_TOKEN_SECRET }}
+          RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
+          MAIL_FROM=${{ secrets.MAIL_FROM }}
+          MAIL_REPLY_TO=${{ secrets.MAIL_REPLY_TO }}
           EOF
           echo "✅ Created .env file from GitHub secrets"
 
@@ -196,7 +211,7 @@ jobs:
               # Test health endpoint if available (following redirects)
               # We use the port from .env or default to 4321
               CHECK_PORT=$(grep PORT .env | cut -d'=' -f2 || echo 4321)
-              if curl -f -sL http://localhost:$CHECK_PORT/ >/dev/null 2>&1; then
+              if curl -f -sL http://localhost:$CHECK_PORT/en/ >/dev/null 2>&1; then
                 echo "✅ Health check passed on port $CHECK_PORT!"
               else
                 echo "⚠️  Health check endpoint not responding yet (this might be normal during startup)"

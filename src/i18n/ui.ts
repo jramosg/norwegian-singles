@@ -66,7 +66,7 @@ export const ui = {
     'hero.title': 'Calculadora Norwegian Singles',
     'hero.titleAccent': 'NSA / NSM',
     'hero.subtitle':
-      'Introduce cualquier marca para obtener ritmos sub-umbral NSA / NSM, tu puntuación VDOT de Jack Daniels con todas las zonas de entrenamiento, y un plan de maratón de 15 semanas.',
+      'Introduce cualquier marca para obtener ritmos sub-umbral NSA / NSM, tu puntuación VDOT de Jack Daniels con todas las zonas de entrenamiento, y tu taper de semana de carrera.',
     'hero.cta': 'Crear mi plan',
 
     // Form
@@ -220,7 +220,7 @@ export const ui = {
     // SEO
     'seo.title': 'Calculadora Norwegian Singles, ritmos y planes NSA/NSM',
     'seo.description':
-      'Calcula ritmos sub-umbral, semanas NSA/NSM de 4.5-9 h y preparación de maratón desde una marca reciente. Herramienta independiente Norwegian Singles.',
+      'Calcula ritmos sub-umbral, tu VDOT, semanas NSA/NSM de 4.5-9 h y tu taper de semana de carrera desde una marca reciente. Herramienta independiente.',
 
     // SEO Content Section
     'seo.content.h2': '¿Qué es el Norwegian Singles Method?',
@@ -244,9 +244,10 @@ export const ui = {
     'seo.content.weeklyPlans.title': 'Planes semanales: 4.5 a 9 horas',
     'seo.content.weeklyPlans.text':
       'NSM ofrece planes estructurados de <strong>4.5 a 9 horas semanales</strong>, escalando el número de repeticiones y la duración de los rodajes fáciles conforme crece tu condición física. Progresar significa pasar al siguiente nivel de horas cuando el plan actual se sienta cómodo durante varias semanas consecutivas.',
-    'seo.content.marathon.title': 'Preparación Maratón: programa de 15 semanas',
+    'seo.content.marathon.title':
+      'Planes de Maratón: cuatro niveles de volumen',
     'seo.content.marathon.text':
-      'Para corredores que se preparan para un maratón, esta app genera una <strong>preparación de 15 semanas</strong> con tiradas largas progresivas, carreras de puesta a punto y <strong>sesiones específicas a ritmo maratón</strong> en las últimas semanas. Introduce la fecha de tu maratón y la app genera toda la cuenta atrás.',
+      'La calculadora gratuita ya te da ritmos sub-umbral, tu VDOT y una estructura semanal repetible. Para una preparación completa hacia el día de la carrera, consulta los <a href="/es/planes-maraton/">planes de maratón</a>: cuatro niveles de volumen, de Singles 75 a Singles 140, cada uno disponible en 12, 15 o 18 semanas con una <strong>base sub-umbral</strong>, una fase de apoyo al maratón, una fase <strong>específica de maratón</strong> y un taper.',
     'seo.content.whoIsItFor.title': '¿Para quién es este método?',
     'seo.content.whoIsItFor.text':
       'NSM sirve para muchos niveles: desde 5K en 30 minutos hasta atletas sub-15. Las tablas cubren tiempos de 5K desde 15:00 hasta 30:00. Usa la misma estructura para preparar un 10K o un maratón.',
@@ -270,7 +271,7 @@ export const ui = {
     'hero.title': 'Norwegian Singles',
     'hero.titleAccent': 'NSA / NSM Calculator',
     'hero.subtitle':
-      'Enter any race to get NSA / NSM sub-threshold paces, your Jack Daniels VDOT score and training zones, and a 15-week marathon build.',
+      'Enter any race to get NSA / NSM sub-threshold paces, your Jack Daniels VDOT score and training zones, and a race-week taper.',
     'hero.cta': 'Create my plan',
 
     // Form
@@ -423,7 +424,7 @@ export const ui = {
     // SEO
     'seo.title': 'Norwegian Singles Calculator & App: NSA / NSM Paces & Plans',
     'seo.description':
-      'Free Norwegian Singles calculator and app for NSA / NSM runners. Calculate sub-threshold paces from your 5K or 10K, build 4.5-9h weekly plans, and a 15-week marathon plan.',
+      'Free Norwegian Singles calculator for NSA / NSM runners. Calculate sub-threshold paces from your 5K or 10K, build 4.5-9h weekly plans, and a race-week taper.',
 
     // SEO Content Section
     'seo.content.h2': 'What is the Norwegian Singles Method?',
@@ -447,9 +448,9 @@ export const ui = {
     'seo.content.weeklyPlans.title': 'Weekly Plans: 4.5 to 9 Hours',
     'seo.content.weeklyPlans.text':
       'NSM provides plans from <strong>4.5 to 9 hours per week</strong>. As fitness grows, the plan adds reps and easy-run time. Move to the next tier after several comfortable weeks.',
-    'seo.content.marathon.title': 'Marathon Build: 15-Week Program',
+    'seo.content.marathon.title': 'Marathon Plans: Four Volume Tiers',
     'seo.content.marathon.text':
-      'For runners targeting a marathon, this app generates a <strong>15-week marathon build</strong> with progressive long runs, tune-up races, and <strong>marathon-pace specific sessions</strong> in the final weeks. Enter your marathon date and the app generates the entire countdown.',
+      'The free calculator already gives you sub-threshold paces, your VDOT, and a repeatable weekly structure. For a full build toward race day, see the <a href="/en/marathon-plans/">marathon plans</a>: four volume tiers, from Singles 75 to Singles 140, each available in 12, 15 or 18 weeks with a <strong>sub-threshold base</strong>, a marathon-supportive phase, a <strong>marathon-specific phase</strong>, and a taper.',
     'seo.content.whoIsItFor.title': 'Who Is This For?',
     'seo.content.whoIsItFor.text':
       'NSM works for many levels: from a 30-minute 5K to sub-15 athletes. The tables cover 5K times from 15:00 to 30:00. Use the same structure for a first 10K or a marathon PB.',
@@ -472,7 +473,7 @@ export const ui = {
     'hero.title': 'Norwegian Singles',
     'hero.titleAccent': 'NSA / NSM 계산기',
     'hero.subtitle':
-      '어떤 레이스 기록이든 입력하면 NSA / NSM 서브스레숄드 페이스, Jack Daniels VDOT 점수와 훈련 구역, 15주 마라톤 빌드업 플랜을 받을 수 있습니다.',
+      '어떤 레이스 기록이든 입력하면 NSA / NSM 서브스레숄드 페이스, Jack Daniels VDOT 점수와 훈련 구역, 레이스 주간 테이퍼를 받을 수 있습니다.',
     'hero.cta': '플랜 만들기',
 
     // Form
@@ -594,7 +595,7 @@ export const ui = {
     // SEO
     'seo.title': 'NSM 러닝 계산기, Norwegian Singles 페이스와 훈련 플랜',
     'seo.description':
-      'NSM 러닝과 Norwegian Singles Method를 위한 무료 계산기. 5K 또는 10K 기록으로 서브스레숄드 페이스, 주간 플랜, 마라톤 빌드업을 계산하세요.',
+      'NSM 러닝과 Norwegian Singles Method를 위한 무료 계산기. 5K 또는 10K 기록으로 서브스레숄드 페이스, VDOT, 주간 플랜, 레이스 주간 테이퍼를 계산하세요.',
 
     // SEO Content Section
     'seo.content.h2': 'Norwegian Singles Method란?',
@@ -618,9 +619,9 @@ export const ui = {
     'seo.content.weeklyPlans.title': '주 4.5-9시간 플랜',
     'seo.content.weeklyPlans.text':
       'NSM은 주 4.5-9시간 플랜을 제공합니다. 체력이 올라갈수록 반복 횟수와 이지런 시간이 늘어나며, 현재 플랜이 여러 주 동안 편안할 때 다음 단계로 이동합니다.',
-    'seo.content.marathon.title': '15주 마라톤 빌드업',
+    'seo.content.marathon.title': '마라톤 플랜: 4단계 볼륨',
     'seo.content.marathon.text':
-      '마라톤을 준비한다면 레이스 날짜를 입력해 15주 빌드업을 생성할 수 있습니다. 롱런, 점검 레이스, 마라톤 페이스 세션, 테이퍼가 포함됩니다.',
+      '무료 계산기는 이미 서브스레숄드 페이스, VDOT, 반복 가능한 주간 구조를 제공합니다. 레이스 당일을 위한 완전한 빌드업이 필요하다면 <a href="/ko/marathon-plans/">마라톤 플랜</a>을 확인하세요. Singles 75부터 Singles 140까지 4단계 볼륨으로 제공되며, 각각 12주, 15주, 18주 중에서 선택할 수 있고 <strong>서브스레숄드 베이스</strong>, 마라톤 서포트 단계, <strong>마라톤 특화</strong> 단계, 테이퍼로 구성됩니다.',
     'seo.content.whoIsItFor.title': '누구에게 적합한가요?',
     'seo.content.whoIsItFor.text':
       'NSM은 5K 30분 러너부터 15분 이하 러너까지 다양한 수준에 맞게 조정됩니다. 첫 10K부터 마라톤 기록 향상까지 같은 구조로 확장할 수 있습니다.',
@@ -643,7 +644,7 @@ export const ui = {
     'hero.title': 'Norwegian Singles',
     'hero.titleAccent': 'NSA / NSM Rechner',
     'hero.subtitle':
-      'Gib ein beliebiges Rennergebnis ein und erhalte NSA / NSM Sub-Threshold-Paces, deinen Jack-Daniels-VDOT-Wert mit Trainingszonen und einen 15-wöchigen Marathon-Aufbau.',
+      'Gib ein beliebiges Rennergebnis ein und erhalte NSA / NSM Sub-Threshold-Paces, deinen Jack-Daniels-VDOT-Wert mit Trainingszonen und einen Taper für die Rennwoche.',
     'hero.cta': 'Plan erstellen',
 
     // Form
@@ -796,7 +797,7 @@ export const ui = {
     // SEO
     'seo.title': 'Norwegian Singles Rechner: NSA / NSM Paces und Pläne',
     'seo.description':
-      'Kostenloser Norwegian Singles Rechner für NSA / NSM. Berechne Sub-Threshold-Paces aus deiner 5K oder 10K, 4.5-9h-Pläne und Marathon-Aufbauten.',
+      'Kostenloser Norwegian Singles Rechner für NSA / NSM. Berechne Sub-Threshold-Paces, VDOT, 4.5-9h-Pläne und deinen Taper für die Rennwoche.',
 
     // SEO Content Section
     'seo.content.h2': 'Was ist die Norwegian Singles Method?',
@@ -820,9 +821,9 @@ export const ui = {
     'seo.content.weeklyPlans.title': 'Wochenpläne: 4.5 bis 9 Stunden',
     'seo.content.weeklyPlans.text':
       'NSM bietet Pläne von <strong>4.5 bis 9 Stunden pro Woche</strong>. Mit wachsender Form kommen mehr Intervalle und lockere Laufzeit hinzu. Wechsle zur nächsten Stufe nach mehreren komfortablen Wochen.',
-    'seo.content.marathon.title': 'Marathon-Aufbau: 15-Wochen-Programm',
+    'seo.content.marathon.title': 'Marathonpläne: vier Umfangsstufen',
     'seo.content.marathon.text':
-      'Für Läufer mit Marathonziel erstellt diese App einen <strong>15-wöchigen Marathon-Aufbau</strong> mit progressiven langen Läufen, Tune-up-Rennen und <strong>marathonspezifischen Einheiten</strong> in den letzten Wochen. Gib dein Marathondatum ein und die App erstellt den gesamten Countdown.',
+      'Der kostenlose Rechner liefert bereits Sub-Threshold-Paces, deinen VDOT-Wert und eine wiederholbare Wochenstruktur. Für einen vollständigen Aufbau bis zum Renntag findest du die <a href="/de/marathonplaene/">Marathonpläne</a>: vier Umfangsstufen von Singles 75 bis Singles 140, jede in 12, 15 oder 18 Wochen, mit einer <strong>Sub-Threshold-Grundlage</strong>, einer marathon-unterstützenden Phase, einer <strong>marathonspezifischen Phase</strong> und einem Taper.',
     'seo.content.whoIsItFor.title': 'Für wen ist das gedacht?',
     'seo.content.whoIsItFor.text':
       'NSM funktioniert für viele Niveaus: von einer 30-Minuten-5K bis zu Sub-15-Athleten. Die Tabellen decken 5K-Zeiten von 15:00 bis 30:00 ab. Nutze dieselbe Struktur für eine erste 10K oder eine Marathon-Bestzeit.',
@@ -846,7 +847,7 @@ export const ui = {
     'hero.title': 'Norwegian Singles',
     'hero.titleAccent': 'Calculateur NSA / NSM',
     'hero.subtitle':
-      "Saisis n'importe quel résultat de course pour obtenir tes allures sous-seuil NSA / NSM, ton score VDOT de Jack Daniels avec les zones d'entraînement et un plan marathon de 15 semaines.",
+      "Saisis n'importe quel résultat de course pour obtenir tes allures sous-seuil NSA / NSM, ton score VDOT de Jack Daniels avec les zones d'entraînement et ton affûtage de semaine de course.",
     'hero.cta': 'Créer mon plan',
 
     // Form
@@ -1001,7 +1002,7 @@ export const ui = {
     // SEO
     'seo.title': 'Calculateur Norwegian Singles : allures et plans NSA / NSM',
     'seo.description':
-      'Calculateur Norwegian Singles gratuit pour NSA / NSM. Calcule tes allures sous-seuil à partir de ton 5K ou 10K, des plans de 4.5-9h et un plan marathon.',
+      'Calculateur Norwegian Singles gratuit pour NSA / NSM. Calcule tes allures sous-seuil, ton VDOT, des plans de 4.5-9h et ton affûtage de semaine de course.',
 
     // SEO Content Section
     'seo.content.h2': "Qu'est-ce que la Norwegian Singles Method ?",
@@ -1025,9 +1026,9 @@ export const ui = {
     'seo.content.weeklyPlans.title': 'Plans hebdomadaires : 4.5 à 9 heures',
     'seo.content.weeklyPlans.text':
       'NSM propose des plans de <strong>4.5 à 9 heures par semaine</strong>. À mesure que la forme progresse, le plan ajoute des intervalles et du temps de footing. Passe au palier suivant après plusieurs semaines confortables.',
-    'seo.content.marathon.title': 'Plan marathon : programme de 15 semaines',
+    'seo.content.marathon.title': 'Plans marathon : quatre paliers de volume',
     'seo.content.marathon.text':
-      "Pour les coureurs visant un marathon, cette app génère un <strong>plan marathon de 15 semaines</strong> avec des sorties longues progressives, des courses de préparation et des <strong>séances à allure marathon</strong> dans les dernières semaines. Saisis la date de ton marathon et l'app génère tout le compte à rebours.",
+      'Le calculateur gratuit te donne déjà tes allures sous-seuil, ton VDOT et une structure hebdomadaire répétable. Pour une préparation complète jusqu\'au jour de la course, consulte les <a href="/fr/plans-marathon/">plans marathon</a> : quatre paliers de volume, de Singles 75 à Singles 140, chacun disponible en 12, 15 ou 18 semaines avec une <strong>base sous-seuil</strong>, une phase de soutien marathon, une phase <strong>spécifique marathon</strong> et un affûtage.',
     'seo.content.whoIsItFor.title': 'Pour qui est-ce fait ?',
     'seo.content.whoIsItFor.text':
       "NSM fonctionne pour de nombreux niveaux : d'un 5K en 30 minutes aux athlètes sous les 15 minutes. Les tables couvrent des temps 5K de 15:00 à 30:00. Utilise la même structure pour un premier 10K ou un record sur marathon.",

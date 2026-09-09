@@ -335,7 +335,7 @@ describe('fitness re-pricing', () => {
           baseInput(tier, length, { fitness: fitnessHigh }),
         );
 
-        // Structure — the sequence of session ids per day — is unchanged.
+        // Structure, the sequence of session ids per day, is unchanged.
         for (let w = 0; w < planLow.weeks.length; w++) {
           const idsLow = planLow.weeks[w].days.map((d) => d.sessionId);
           const idsHigh = planHigh.weeks[w].days.map((d) => d.sessionId);

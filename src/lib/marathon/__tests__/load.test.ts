@@ -185,7 +185,7 @@ describe('weekly quality load across every generated plan', () => {
       return weeklyQualityLoad(week, resolver);
     };
     // Absolute quality volume rises with the tier, while the *share* stays
-    // in the same band — which is the whole point of tiering.
+    // in the same band, which is the whole point of tiering.
     expect(shareFor('singles140').qualityM).toBeGreaterThan(
       shareFor('singles75').qualityM,
     );

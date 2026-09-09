@@ -1,7 +1,7 @@
 /**
  * Weekly quality load.
  *
- * Total quality should sit around a quarter of weekly volume — but kilometres
+ * Total quality should sit around a quarter of weekly volume, but kilometres
  * are not interchangeable. Thirty per cent of the week at subthreshold is
  * sustainable; thirty per cent at VO2max would wreck anyone. So quality is
  * weighted by physiological cost per kilometre before the share is taken,
@@ -42,9 +42,14 @@ export function intensityWeight(anchor: PaceAnchor): number {
  * The share ramps across the build rather than sitting at the top from week
  * one.
  */
-export const QUALITY_SHARE_CEILING = 0.25;
-const QUALITY_SHARE_FROM = 0.17;
-const QUALITY_SHARE_TO = 0.23;
+export const QUALITY_SHARE_CEILING = 0.3;
+/**
+ * Calibrated against Copeland's base weeks, which carry roughly 29 km of
+ * subthreshold work, about 30% of the week. All of it is at weight 1.0, so
+ * the weighting lets that pass while still refusing 30% of VO2max work.
+ */
+const QUALITY_SHARE_FROM = 0.2;
+const QUALITY_SHARE_TO = 0.27;
 
 /** A down week takes load off, not just distance. */
 const DELOAD_QUALITY_FACTOR = 0.85;
@@ -68,7 +73,7 @@ export function weeklyQualityBudgetM(
 /**
  * How the week's quality budget is divided between its sessions. The
  * X-session takes the smallest slice because its cost per kilometre is the
- * highest — which is the whole reason the budget is weighted.
+ * highest, which is the whole reason the budget is weighted.
  */
 export const SLOT_BUDGET_SHARE: Record<string, number> = {
   subT_long: 0.4,
@@ -85,7 +90,7 @@ export const SLOT_BUDGET_SHARE: Record<string, number> = {
  * Deliberately a fixed reference rather than the runner's own subthreshold
  * pace: the dose must not depend on current fitness, or a fitness update
  * would change which *session* a runner does rather than only the pace they
- * run it at — and "your structure stays, your paces move" is the promise the
+ * run it at, and "your structure stays, your paces move" is the promise the
  * whole product rests on.
  */
 export const REFERENCE_SUBT_PACE_SEC = 270;

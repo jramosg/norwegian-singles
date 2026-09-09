@@ -5,7 +5,7 @@
  * requirement, not decoration: it is most of what separates a training plan
  * from a spreadsheet of intervals.
  *
- * This file is the schema of record — other locales are typed against it.
+ * This file is the schema of record; other locales are typed against it.
  */
 
 import type { MarathonCopy } from './copy.en';
@@ -23,7 +23,7 @@ export const marathonCopyFr: MarathonCopy = {
   'rpe.test': "À fond. C'est une course, traite-la comme telle.",
   'alt.label': 'Ou, à la place',
   'alt.reason.no_event':
-    "Les tests sont optionnels. Pas de parkrun, pas de course, ou pas envie de courir vite — prends ceci et mets à jour ta forme d'après tes séances.",
+    "Les tests sont optionnels. Pas de parkrun, pas de course, ou pas envie de courir vite ? Prends ceci et mets à jour ta forme d'après tes séances.",
   'alt.reason.no_hill':
     'Pas de côte disponible ? Ceci fait le même travail sur le plat.',
   // -------------------------------------------------------------------------
@@ -66,7 +66,7 @@ export const marathonCopyFr: MarathonCopy = {
   // Marathon-specific
   // -------------------------------------------------------------------------
   'why.ms.blocks':
-    "Des blocs à allure marathon avec de courts footings entre eux. Fractionnée ainsi, tu peux tenir l'allure objectif bien plus longtemps qu'une sortie continue ne le permet — c'est justement l'objectif à ce stade.",
+    "Des blocs à allure marathon avec de courts footings entre eux. Fractionnée ainsi, tu peux tenir l'allure objectif bien plus longtemps qu'une sortie continue ne le permet, ce qui est justement l'objectif à ce stade.",
   'why.ms.continuous':
     "Un bloc ininterrompu à allure marathon au sein d'une sortie plus longue. Ce qui se rapproche le plus d'une répétition générale de course : même allure, même ravitaillement, même monotonie.",
   'why.ms.alternating':
@@ -76,7 +76,7 @@ export const marathonCopyFr: MarathonCopy = {
   'why.ms.long_specific':
     "La séance pour laquelle cette phase existe : une sortie longue dont la majeure partie se court à l'allure de course ou tout près, sur des jambes déjà fatiguées.",
   'why.ms.progressive_blocks':
-    "Quatre blocs qui montent progressivement vers l'allure marathon. Chacun est plus difficile que le précédent tandis que la fatigue s'accumule — l'exigence spécifique des 10 derniers kilomètres.",
+    "Quatre blocs qui montent progressivement vers l'allure marathon. Chacun est plus difficile que le précédent tandis que la fatigue s'accumule, ce qui correspond à l'exigence spécifique des 10 derniers kilomètres.",
 
   // -------------------------------------------------------------------------
   // Taper
@@ -89,7 +89,7 @@ export const marathonCopyFr: MarathonCopy = {
     "Semaine de course. Une poignée d'efforts d'une minute pour réveiller les jambes : rien ici ne construit de la forme, cela évite seulement de te sentir à plat le matin de la course.",
 
   // -------------------------------------------------------------------------
-  // Substitutions — every session has an answer for a bad week
+  // Substitutions: every session has an answer for a bad week
   // -------------------------------------------------------------------------
   'sub.treadmill':
     "Tapis de course : garde la fourchette d'allure avec 1 % d'inclinaison et cours les mêmes durées.",
@@ -110,8 +110,8 @@ export const marathonCopyFr: MarathonCopy = {
   // Week labels
   // -------------------------------------------------------------------------
   'week.label.base': 'Base sous-seuil',
-  'week.label.supportive': 'Soutien marathon',
-  'week.label.specific': 'Spécifique marathon',
+  'week.label.supportive': "Construction de l'allure de course",
+  'week.label.specific': 'Simulation de course',
   'week.label.taper': 'Affûtage',
   'week.label.deload': 'Semaine allégée',
   'week.label.test': 'Semaine test',

@@ -2,7 +2,7 @@
  * The session catalog.
  *
  * Every session is data plus a `build` that scales it to the tier and the
- * week. Sessions never carry a pace — only an anchor — so the same archetype
+ * week. Sessions never carry a pace, only an anchor, so the same archetype
  * serves a 3:00 and a 5:00 marathoner.
  *
  * Sources of the archetypes: Bakken's published subthreshold and X-session
@@ -178,15 +178,20 @@ const SUBT: SessionArchetype[] = [
     kind: 'subT',
     family: 'long',
     phases: ['base', 'supportive'],
+    // A continuous run that switches gears is a session you have to already
+    // know your paces to execute. It has no place in week two.
+    minQualityMin: 34,
     whyKey: 'why.subt.continuous',
     substitutionKeys: ['sub.treadmill'],
     build: (ctx) => {
       const blocks: Effort[] = [];
-      const total = Math.max(3, Math.round(ctx.qualityMin / 4));
+      const total = Math.max(4, Math.round(ctx.qualityMin / 4));
       for (let i = 0; i < total; i++) {
+        // Top and bottom of the subthreshold range, not two adjacent gears:
+        // the contrast has to be big enough to feel.
         blocks.push({
           durationSec: min(4),
-          anchor: subT(i % 2 === 0 ? 'rep10min' : 'rep6min'),
+          anchor: subT(i % 2 === 0 ? 'rep10min' : 'rep3min'),
         });
       }
       return wrap(ctx, {
@@ -335,7 +340,7 @@ const SUBT: SessionArchetype[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// X-sessions — the third session of the base phase
+// X-sessions, the third session of the base phase
 // ---------------------------------------------------------------------------
 
 const X_SESSIONS: SessionArchetype[] = [
@@ -394,7 +399,7 @@ const X_SESSIONS: SessionArchetype[] = [
         ctx,
         {
           kind: 'interval',
-          count: repsForWork(ctx, 700, 3, 6),
+          count: repsForWork(ctx, 700, 3, 8),
           work: { distanceM: 700, anchor: effort('above_threshold') },
           recovery: { kind: 'jog', distanceM: 700 },
         },

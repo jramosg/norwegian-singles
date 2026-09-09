@@ -1,7 +1,7 @@
 /**
  * Prices for the marathon plans.
  *
- * NOTE: these amounts are placeholders pending a decision — they are
+ * NOTE: these amounts are placeholders pending a decision, they are
  * deliberately in one place so changing them is a one-line edit, and the
  * Stripe Price IDs are read from the environment rather than hardcoded so
  * test and live mode can differ.

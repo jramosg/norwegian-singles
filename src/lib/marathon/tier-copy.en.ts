@@ -2,7 +2,7 @@
  * English source copy for the marathon plan sales pages.
  *
  * This file is the schema of record for the other locales. Everything here
- * describes something the engine actually does — if a claim stops being true,
+ * describes something the engine actually does. If a claim stops being true,
  * the claim comes out.
  */
 
@@ -37,6 +37,7 @@ export interface MarathonCopyShared {
   disclaimer: string;
   medicalNote: string;
   chooseTierHeading: string;
+  notForHeading: string;
   chooseLengthHeading: string;
   lengthNote: string;
   phasesHeading: string;
@@ -79,7 +80,7 @@ export const tierCopyEn: Record<TierId, TierPageCopy> = {
       'Norwegian Singles Marathon Plan: 75 km/week (47 mi) | 12, 15 or 18 weeks',
     description:
       'A sub-threshold marathon plan peaking at 75 km (47 mi) per week, in 12, 15 or 18 weeks. Paces computed from your own race result, in km or miles.',
-    h1: 'Singles 75 — a marathon plan peaking at 75 km a week',
+    h1: 'Singles 75: a marathon plan peaking at 75 km a week',
     intro:
       'The entry point to sub-threshold marathon training. Six running days, two sub-threshold sessions and one X-session a week, and a long run that grows to 30 km. Enough volume to race a marathon properly without the training taking over your life.',
     whoFor: [
@@ -88,7 +89,7 @@ export const tierCopyEn: Record<TierId, TierPageCopy> = {
       'You have six days a week to run and no interest in doubling',
     ],
     notFor: [
-      'If you are already running 90 km a week, start at Singles 95 — this one will feel too easy to be worth paying for',
+      'You are already running 90 km a week. Start at Singles 95, because this one will feel too easy to be worth paying for',
       'If you are running under 45 km a week, spend a few months building base first. No plan fixes a missing foundation',
     ],
     weeklyShape:
@@ -102,7 +103,7 @@ export const tierCopyEn: Record<TierId, TierPageCopy> = {
       'Norwegian Singles Marathon Plan: 95 km/week (59 mi) | 12, 15 or 18 weeks',
     description:
       'A sub-threshold marathon plan peaking at 95 km (59 mi) per week, in 12, 15 or 18 weeks. Paces computed from your own race result, in km or miles.',
-    h1: 'Singles 95 — a marathon plan peaking at 95 km a week',
+    h1: 'Singles 95: a marathon plan peaking at 95 km a week',
     intro:
       'The tier most people who want a personal best belong in. Seven running days, longer sub-threshold sessions than Singles 75, and marathon-specific weekend work that builds to 20 km at race pace inside a long run.',
     whoFor: [
@@ -111,8 +112,8 @@ export const tierCopyEn: Record<TierId, TierPageCopy> = {
       'Chasing a Boston, London or other championship qualifying time',
     ],
     notFor: [
-      'If this would be a big jump from your current volume, take Singles 75 for one build and come here next time',
-      'If you are consistently over 110 km a week, Singles 120 will fit you better',
+      'This would be a big jump from what you run now. Take Singles 75 for one build and come here for the next one',
+      'You are consistently over 110 km a week, in which case Singles 120 fits you better',
     ],
     weeklyShape:
       'Two sub-threshold sessions and one X-session a week across seven running days, with the long run growing to 32 km. In the marathon-specific phase the week drops to two quality sessions: one big weekend session and one sub-threshold session three to four days away from it.',
@@ -125,7 +126,7 @@ export const tierCopyEn: Record<TierId, TierPageCopy> = {
       'Norwegian Singles Marathon Plan: 120 km/week (75 mi) | 12, 15 or 18 weeks',
     description:
       'A sub-threshold marathon plan peaking at 120 km (75 mi) per week, in 12, 15 or 18 weeks. Paces computed from your own race result, in km or miles.',
-    h1: 'Singles 120 — a marathon plan peaking at 120 km a week',
+    h1: 'Singles 120: a marathon plan peaking at 120 km a week',
     intro:
       'High volume, still one main session a day. Seven running days with one or two second runs a week, sub-threshold sessions of 30-40 minutes of quality, and marathon-specific sessions that reach 20 km at race pace.',
     whoFor: [
@@ -134,8 +135,8 @@ export const tierCopyEn: Record<TierId, TierPageCopy> = {
       'Happy to add a short second run when the week calls for it',
     ],
     notFor: [
-      'If 120 km a week would be a personal record for volume, do not learn that during a marathon build',
-      'If your life cannot absorb 9-11 hours of running a week, Singles 95 will produce a better race',
+      '120 km a week would be a personal record for volume. A marathon build is the wrong place to find out how that goes',
+      'Your week cannot absorb 9 to 11 hours of running. Singles 95 will produce a better race than a tier you keep missing sessions in',
     ],
     weeklyShape:
       'Seven running days plus roughly one second run, a long run to 34 km, and 30-40 minutes of sub-threshold work per session. Second runs split a big easy day rather than adding to it.',
@@ -148,20 +149,20 @@ export const tierCopyEn: Record<TierId, TierPageCopy> = {
       'Norwegian Singles Marathon Plan: 140 km/week (87 mi) | 12, 15 or 18 weeks',
     description:
       'A sub-threshold marathon plan peaking at 140 km (87 mi) per week, in 12, 15 or 18 weeks. Paces computed from your own race result, in km or miles.',
-    h1: 'Singles 140 — a marathon plan peaking at 140 km a week',
+    h1: 'Singles 140: a marathon plan peaking at 140 km a week',
     intro:
       'The most volume this method carries while staying recognisably singles training. Two to three second runs a week, sub-threshold sessions of 35-45 minutes of quality, and a long run to 38 km.',
     whoFor: [
       'You have sustained 120 km a week or more for months at a time',
       'Racing near the front of your age group or chasing a fast absolute time',
-      'You have the recovery habits — sleep, food, low life stress — that this volume demands',
+      'You have the recovery habits (sleep, food, low life stress) that this volume demands',
     ],
     notFor: [
-      'Almost everyone. Volume is not the variable most runners are missing, and this tier assumes years of it behind you',
-      'If you are unsure whether you belong here, you belong in Singles 120',
+      'Almost everyone. Volume is rarely the variable a runner is actually missing, and this tier assumes years of it already behind you',
+      'You are unsure whether you belong here, in which case you belong in Singles 120',
     ],
     weeklyShape:
-      'Seven running days with two to three second runs, a long run to 38 km, and the largest sub-threshold doses in the range. The marathon-specific phase still holds to two quality sessions a week — at this volume the weekend session is hard enough on its own.',
+      'Seven running days with two to three second runs, a long run to 38 km, and the largest sub-threshold doses in the range. The last phase still holds to two quality sessions a week, because at this volume the weekend session is hard enough on its own.',
   },
 };
 
@@ -178,7 +179,8 @@ export const sharedCopyEn: MarathonCopyShared = {
     'These plans are based on the published principles of the Norwegian Singles Method and on Marius Bakken’s writing about marathon training. They are not official, not affiliated with, and not endorsed by Bakken, James Copeland, or any other coach. The sessions are generated by our own engine.',
   medicalNote:
     'Training advice, not medical advice. If you are injured, ill, or unsure whether this volume suits you, talk to a doctor or physiotherapist before starting.',
-  chooseTierHeading: 'Which tier fits you',
+  chooseTierHeading: 'This one is for you if',
+  notForHeading: 'Pick a different tier if',
   chooseLengthHeading: 'How long have you got',
   lengthNote:
     'Every tier comes in all three lengths, and the phases scale with the length rather than being cut off the end. If your race is 14 weeks away, take the 12-week plan and keep building for two more weeks first.',
@@ -187,15 +189,15 @@ export const sharedCopyEn: MarathonCopyShared = {
     {
       name: 'Sub-threshold base',
       weeks: 'Weeks 1-6 of 18',
-      body: 'Everything quality is sub-threshold, long reps included from the first week, plus a long run that grows steadily. The third session each week is the X-session: hills, 45/15s, short intervals, or a parkrun. No marathon-pace work at all yet — there is no point rehearsing a pace you have not yet earned.',
+      body: 'Everything quality is sub-threshold, long reps included from the first week, plus a long run that grows steadily. The third session each week is the X-session: hills, 45/15s, short intervals, or a parkrun. No marathon-pace work at all yet, because there is no point rehearsing a pace you have not yet earned.',
     },
     {
-      name: 'Marathon-supportive',
+      name: 'Race-pace build',
       weeks: 'Weeks 7-11 of 18',
       body: 'The two sub-threshold sessions stay. The third becomes a moderate marathon-specific session on the weekend: blocks at marathon pace, a continuous marathon-pace block inside a longer run, or a progression. The long run is still an easy run.',
     },
     {
-      name: 'Marathon-specific',
+      name: 'Race simulation',
       weeks: 'Weeks 12-15 of 18',
       body: 'The weekend session gets hard enough that two quality sessions is the whole week. The big marathon-specific session becomes the long run, and one sub-threshold session sits three to four days away from it. Everything else is easy. This is the phase the race is won in.',
     },
@@ -258,7 +260,7 @@ export const sharedCopyEn: MarathonCopyShared = {
     'The full plan, every week, every session, with your own pace bands',
     'All three lengths of your tier: 12, 15 and 18 weeks',
     'A one-line reason for every session, and a substitute for every one that needs a hill, a track or an event',
-    'Fitness check-ins that do not need a race — update your paces from how the sessions actually went',
+    'Fitness check-ins that do not need a race: update your paces from how the sessions actually went',
     'An optional strength track: heavy lifting, plyometrics and hill sprints, placed so they do not wreck the running',
     'Printable sheets, CSV, and a calendar feed that stays current',
     'Lifetime access from any device, and every improvement we make later',
@@ -279,7 +281,7 @@ export const sharedCopyEn: MarathonCopyShared = {
     },
     {
       q: 'What happens when I get fitter mid-build?',
-      a: 'You run a check-in — a few questions about how the last sessions felt, or a 5K result if you have one — and every remaining week re-prices around the new estimate. Weeks you have already run keep the paces you ran them at.',
+      a: 'You run a check-in (a few questions about how the last sessions felt, or a 5K result if you have one) and every remaining week re-prices around the new estimate. Weeks you have already run keep the paces you ran them at.',
     },
     {
       q: 'Do I need a race to update my fitness?',

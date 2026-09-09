@@ -5,7 +5,7 @@
  * requirement, not decoration: it is most of what separates a training plan
  * from a spreadsheet of intervals.
  *
- * This file is the schema of record — other locales are typed against it.
+ * This file is the schema of record; other locales are typed against it.
  */
 
 import type { MarathonCopy } from './copy.en';
@@ -13,7 +13,7 @@ import type { MarathonCopy } from './copy.en';
 export const marathonCopyDe: MarathonCopy = {
   'rpe.label': 'Anstrengung',
   'rpe.subt':
-    'Beende die Einheit bei etwa 7 von 10. Du solltest das Gefühl haben, dass noch eine oder zwei Wiederholungen drin gewesen wären — wenn nicht, war das Tempo zu hoch.',
+    'Beende die Einheit bei etwa 7 von 10. Du solltest das Gefühl haben, dass noch eine oder zwei Wiederholungen drin gewesen wären. Wenn nicht, war das Tempo zu hoch.',
   'rpe.x':
     'Hart, 8 bis 9 von 10, aber nie ein Wettkampf. Brich die Einheit ab, wenn das Tempo wegbricht.',
   'rpe.ms':
@@ -23,7 +23,7 @@ export const marathonCopyDe: MarathonCopy = {
   'rpe.test': 'Volle Kraft. Das ist ein Wettkampf, also behandle ihn so.',
   'alt.label': 'Oder stattdessen',
   'alt.reason.no_event':
-    'Tests sind optional. Kein parkrun, kein Wettkampf, oder keine Lust zu racen — nimm das hier und aktualisiere deine Form danach, wie sich die Einheiten angefühlt haben.',
+    'Tests sind optional. Kein parkrun, kein Wettkampf, oder keine Lust zu racen? Nimm das hier und aktualisiere deine Form danach, wie sich die Einheiten angefühlt haben.',
   'alt.reason.no_hill':
     'Kein passender Berg? Das erfüllt denselben Zweck in der Ebene.',
   // -------------------------------------------------------------------------
@@ -50,13 +50,13 @@ export const marathonCopyDe: MarathonCopy = {
   'why.x.hills_short':
     'Kurze Bergsprints sind Krafttraining, getarnt als Laufen: nahezu maximale Kraft bei fast keiner Belastung, weshalb sie so wenig Verletzungsrisiko bergen.',
   'why.x.hills_200':
-    'Zweihundert Meter bergauf, oberhalb der Schwelle — ein Klassiker von Bakken. Der Berg übernimmt die Kraftarbeit, während das reduzierte Tempo das Risiko niedrig hält.',
+    'Zweihundert Meter bergauf, oberhalb der Schwelle, ein Klassiker von Bakken. Der Berg übernimmt die Kraftarbeit, während das reduzierte Tempo das Risiko niedrig hält.',
   'why.x.hills_long':
     'Längere Bergwiederholungen bleiben lange genug oberhalb der Schwelle, um zu wirken, während die Steigung dein Tempo begrenzt und deine Beine schont.',
   'why.x.4515_progressive':
     'Starte knapp unter der Schwelle und beende die Einheit darüber. Dieselbe Einheit wie die kontrollierte Version, aber am Ende hast du ein wirklich hartes Tempo angefasst.',
   'why.x.vo2':
-    'Eine kleine Dosis Arbeit oberhalb der Schwelle. Das ist kein VO2max-Block — es hält nur den obersten Bereich wach, während die Schwellenarbeit die Hauptlast trägt.',
+    'Eine kleine Dosis Arbeit oberhalb der Schwelle. Das ist kein VO2max-Block: Es hält nur den obersten Bereich wach, während die Schwellenarbeit die Hauptlast trägt.',
   'why.x.long_rest':
     'Lange lockere Pausen machen daraus zehn einzelne hochwertige Belastungen statt einer zermürbenden Einheit. Du erreichst bei jeder Wiederholung fast 5K-Tempo und bist trotzdem an einem Tag erholt.',
   'why.test':
@@ -66,7 +66,7 @@ export const marathonCopyDe: MarathonCopy = {
   // Marathon-specific
   // -------------------------------------------------------------------------
   'why.ms.blocks':
-    'Blöcke im Marathon-Pace mit kurzen Trabpausen dazwischen. Aufgeteilt kannst du das Zieltempo viel länger halten, als es ein durchgehender Lauf erlaubt — genau das ist in dieser frühen Phase der Sinn.',
+    'Blöcke im Marathon-Pace mit kurzen Trabpausen dazwischen. Aufgeteilt kannst du das Zieltempo viel länger halten, als es ein durchgehender Lauf erlaubt, und genau das ist in dieser frühen Phase der Sinn.',
   'why.ms.continuous':
     'Ein ununterbrochener Block im Marathon-Pace innerhalb eines längeren Laufs. Das kommt einer Wettkampfprobe am nächsten: gleiches Tempo, gleiche Verpflegung, gleiche Monotonie.',
   'why.ms.alternating':
@@ -74,9 +74,9 @@ export const marathonCopyDe: MarathonCopy = {
   'why.ms.progression':
     'Starte ruhig, beende die Einheit im Marathon-Pace. Eine Progression lehrt frühzeitig Tempodisziplin und lässt dich am schnellsten laufen, wenn du bereits müde bist.',
   'why.ms.long_specific':
-    'Die Einheit, für die diese Phase existiert: ein langer Lauf, dessen größter Teil im oder nahe am Renntempo läuft — auf Beinen, die schon müde sind.',
+    'Die Einheit, für die diese Phase existiert: ein langer Lauf, dessen größter Teil im oder nahe am Renntempo läuft, auf Beinen, die schon müde sind.',
   'why.ms.progressive_blocks':
-    'Vier Blöcke, die sich stufenweise dem Marathon-Pace annähern. Jeder ist härter als der vorherige, während sich die Ermüdung aufbaut — die spezifische Anforderung der letzten 10 km.',
+    'Vier Blöcke, die sich stufenweise dem Marathon-Pace annähern. Jeder ist härter als der vorherige, während sich die Ermüdung aufbaut, was die spezifische Anforderung der letzten 10 km ist.',
 
   // -------------------------------------------------------------------------
   // Taper
@@ -86,10 +86,10 @@ export const marathonCopyDe: MarathonCopy = {
   'why.taper.mp':
     'Eine kurze Erinnerung an den Marathon-Pace. Lang genug, um den Rhythmus zu proben, kurz genug, dass du danach noch Lust auf mehr hast.',
   'why.taper.primer':
-    'Rennwoche. Eine Handvoll einminütiger Belastungen, um die Beine zu wecken — hier wird keine Fitness mehr aufgebaut, es verhindert nur, dass du dich am Renntagmorgen platt fühlst.',
+    'Rennwoche. Eine Handvoll einminütiger Belastungen, um die Beine zu wecken. Hier wird keine Fitness mehr aufgebaut, es verhindert nur, dass du dich am Renntagmorgen platt fühlst.',
 
   // -------------------------------------------------------------------------
-  // Substitutions — every session has an answer for a bad week
+  // Substitutions: every session has an answer for a bad week
   // -------------------------------------------------------------------------
   'sub.treadmill':
     'Laufband: halte das Pace-Band bei 1 % Steigung und laufe dieselben Zeiten.',
@@ -110,8 +110,8 @@ export const marathonCopyDe: MarathonCopy = {
   // Week labels
   // -------------------------------------------------------------------------
   'week.label.base': 'Sub-Threshold-Grundlage',
-  'week.label.supportive': 'Marathon-unterstützend',
-  'week.label.specific': 'Marathonspezifisch',
+  'week.label.supportive': 'Renntempo-Aufbau',
+  'week.label.specific': 'Rennsimulation',
   'week.label.taper': 'Taper',
   'week.label.deload': 'Entlastungswoche',
   'week.label.test': 'Testwoche',
@@ -123,7 +123,7 @@ export const marathonCopyDe: MarathonCopy = {
   'strength.notes.lifting':
     'Trainiere Kraft nach dem Lauf, nie davor, und nie am Tag vor einer harten Einheit. Schwer, wenige Wiederholungen: du trainierst Laufökonomie, nicht Muskelaufbau.',
   'strength.notes.plyometrics':
-    'Lass mehrere Stunden nach dem Lauf vergehen. Maximale Höhe und minimaler Bodenkontakt bei jedem Sprung — höre auf, sobald die Sprungkraft nachlässt.',
+    'Lass mehrere Stunden nach dem Lauf vergehen. Maximale Höhe und minimaler Bodenkontakt bei jedem Sprung, und höre auf, sobald die Sprungkraft nachlässt.',
   'strength.notes.hill_sprints':
     'Nach einem lockeren Lauf, solange du noch frisch genug zum Sprinten bist. Steigere sie über mehrere Wochen und setze sie in der Rennwoche komplett aus. Führe sie vorsichtig ein, wenn du Vorgeschichte mit Achillessehne, Wade, Fuß oder Knöchel hast.',
 

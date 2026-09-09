@@ -79,7 +79,7 @@ describe('volume curve', () => {
 
   it('the supportive-phase long-run share is lower than the base-phase share for the same volume', () => {
     // Compare the first week of each phase, where volume is low enough that
-    // the tier's long-run cap never clamps the result — so the ratio
+    // the tier's long-run cap never clamps the result, so the ratio
     // longRunM/volume is a pure read of the phase's share.
     for (const tier of TIER_IDS) {
       for (const length of PLAN_LENGTHS) {

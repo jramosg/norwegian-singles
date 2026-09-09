@@ -30,7 +30,8 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 8
+          # Must match the pnpm pinned in the Dockerfile.
+          version: 11.5.2
 
       - name: Use Node.js
         uses: actions/setup-node@v4

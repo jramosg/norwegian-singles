@@ -289,7 +289,7 @@ export function createTierStructuredData(
     {
       '@context': 'https://schema.org',
       '@type': 'Product',
-      name: `${page.copy.name} — Norwegian Singles marathon plan`,
+      name: `${page.copy.name}, Norwegian Singles marathon plan`,
       description: page.copy.description,
       url,
       brand: { '@type': 'Brand', name: 'Norwegian Singles' },

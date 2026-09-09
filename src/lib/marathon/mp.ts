@@ -2,7 +2,7 @@
  * Marathon pace estimation.
  *
  * The existing free tools use a flat `MP = 5K pace x 1.14`, which is a Riegel
- * exponent of 1.06 — an elite-grade conversion. Applied to a 20:00 5K it
+ * exponent of 1.06, an elite-grade conversion. Applied to a 20:00 5K it
  * promises a 3:12 marathon where the standard tables say ~3:21. Selling plans
  * off that number would have people racing a pace they cannot hold, so the
  * exponent here scales with weekly volume: high volume is the evidence that

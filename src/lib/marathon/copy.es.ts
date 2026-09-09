@@ -5,7 +5,7 @@
  * requirement, not decoration: it is most of what separates a training plan
  * from a spreadsheet of intervals.
  *
- * This file is the schema of record — other locales are typed against it.
+ * This file is the schema of record; other locales are typed against it.
  */
 
 import type { MarathonCopy } from './copy.en';
@@ -89,7 +89,7 @@ export const marathonCopyEs: MarathonCopy = {
     'Semana de carrera. Un puñado de esfuerzos de un minuto para despertar las piernas: esto no construye forma física, solo evita que te sientas apagado la mañana de la carrera.',
 
   // -------------------------------------------------------------------------
-  // Substitutions — every session has an answer for a bad week
+  // Substitutions: every session has an answer for a bad week
   // -------------------------------------------------------------------------
   'sub.treadmill':
     'Cinta: mantén la banda de ritmo con un 1% de inclinación y corre las mismas duraciones.',
@@ -110,8 +110,8 @@ export const marathonCopyEs: MarathonCopy = {
   // Week labels
   // -------------------------------------------------------------------------
   'week.label.base': 'Base sub-umbral',
-  'week.label.supportive': 'Apoyo al maratón',
-  'week.label.specific': 'Específica de maratón',
+  'week.label.supportive': 'Construcción del ritmo de maratón',
+  'week.label.specific': 'Simulación de carrera',
   'week.label.taper': 'Taper',
   'week.label.deload': 'Semana de descarga',
   'week.label.test': 'Semana de test',

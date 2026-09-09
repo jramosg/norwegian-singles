@@ -1,0 +1,15 @@
+node_modules
+dist
+.git
+.github
+.astro
+.vscode
+.idea
+.lsp
+.clj-kondo
+data
+*.tar
+*.tar.gz
+.env
+.env.*
+!.env.example

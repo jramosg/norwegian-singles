@@ -18,7 +18,8 @@ The application intelligently adapts training volume and interval structure base
 - **Half Marathon/Marathon**: Increased aerobic base and longer threshold blocks.
 
 ## 🛠 Tech Stack
-- **Framework**: [Astro](https://astro.build/) (Static Site Generation + Islands Architecture)
+- **Framework**: [Astro](https://astro.build/) (prerendered pages + islands,
+  with a Node adapter so a handful of routes render on demand)
 - **Frontend**: [React](https://reactjs.org/) (Form logic & interactive Plan Viewer)
 - **Styling**: Modern CSS variables, mobile-first design.
 - **i18n**: Native Astro internationalization (English, Spanish, Korean,
@@ -54,8 +55,9 @@ tracking ID. Open each generated short link and verify its product and
 `tag=jramosg-20` before replacing a URL. All seven current links were verified
 on Amazon.es on 2026-10-15.
 
-Affiliate and support clicks are recorded without cookies by Nginx. Inspect
-them on the server with:
+Affiliate and support clicks are recorded without cookies by the app itself
+(`src/pages/events/outbound.ts`, a 204 plus one log line). Inspect them on the
+server with:
 
 ```shell
 docker logs norwegian-singles 2>&1 | grep '^monetization '
@@ -63,6 +65,49 @@ docker logs norwegian-singles 2>&1 | grep '^monetization '
 
 Amazon Associates remains the source of truth for ordered items, dispatched
 items, conversion rate, and commission income.
+
+## 🚢 Deployment
+
+The site is **prerendered by default with a Node runtime attached**. Only
+routes that opt out with `export const prerender = false` are rendered on
+demand, so every free page is still a static file and the sitemap still
+lists it.
+
+Build output:
+
+```
+dist/client/   prerendered HTML, assets, sitemap
+dist/server/   entry.mjs, the Node server
+```
+
+On-demand routes today:
+
+| Route | Why it needs a server |
+| --- | --- |
+| `/` | A real 301 to `/en/` instead of a meta refresh |
+| `/events/outbound` | Cookie-free click beacon, returns 204 and logs a line |
+
+Pushing to `master` triggers `.github/workflows/deploy.yml`, which builds the
+image in CI, `docker save`s it, copies the tarball to the VPS over SSH, and
+restarts the compose stack. Secrets are written to `.env` on the server by
+that workflow and read by compose via `env_file`; see `.env.example` for the
+full list. `PUBLIC_*` values are inlined into the client bundle at build time
+and therefore have to be passed as `--build-arg`, not as runtime env.
+
+nginx no longer lives in the image. TLS, the vhost, asset caching and the
+security headers belong to the reverse proxy on the host: see
+`deploy/nginx-host.conf.example`, which is a reference to copy to the server,
+not something the repo installs.
+
+Local check of the production container:
+
+```shell
+pnpm build && node dist/server/entry.mjs   # or:
+docker build -t norwegian-singles:test . && docker run --rm -p 4321:4321 norwegian-singles:test
+```
+
+`./data` is mounted into the container for the SQLite database, so orders
+survive a redeploy.
 
 ## 🧪 Methodology Details
 - **VDOT Calculations**: Based on Jack Daniels' oxygen power formula.

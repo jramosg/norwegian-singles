@@ -1,17 +1,10 @@
 ---
-/* Root redirect. Astro i18n still requires this page to exist. */
----
+/**
+ * Root redirect. Rendered on demand so this is a real 301 rather than a
+ * meta-refresh, the nginx image used to do this, and the Node runtime that
+ * replaced it has to keep doing it.
+ */
+export const prerender = false;
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="robots" content="noindex" />
-    <meta http-equiv="refresh" content="0;url=/en/" />
-    <title>Norwegian Singles</title>
-    <script is:inline>
-      window.location.replace('/en/');
-    </script>
-  </head>
-  <body></body>
-</html>
+return Astro.redirect('/en/', 301);
+---

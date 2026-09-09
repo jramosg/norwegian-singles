@@ -5,7 +5,7 @@
  * requirement, not decoration: it is most of what separates a training plan
  * from a spreadsheet of intervals.
  *
- * This file is the schema of record — other locales are typed against it.
+ * This file is the schema of record; other locales are typed against it.
  */
 
 import type { MarathonCopy } from './copy.en';
@@ -88,7 +88,7 @@ export const marathonCopyKo: MarathonCopy = {
     '레이스 주간입니다. 다리를 깨우는 1분짜리 자극 몇 개가 전부입니다. 체력을 키우는 것이 아니라, 레이스 당일 아침에 몸이 무겁게 느껴지는 것을 막아줄 뿐입니다.',
 
   // -------------------------------------------------------------------------
-  // Substitutions — every session has an answer for a bad week
+  // Substitutions: every session has an answer for a bad week
   // -------------------------------------------------------------------------
   'sub.treadmill':
     '트레드밀: 경사 1%에서 페이스 범위를 유지하며 같은 시간만큼 달립니다.',
@@ -109,8 +109,8 @@ export const marathonCopyKo: MarathonCopy = {
   // Week labels
   // -------------------------------------------------------------------------
   'week.label.base': '서브스레숄드 베이스',
-  'week.label.supportive': '마라톤 서포트',
-  'week.label.specific': '마라톤 특화',
+  'week.label.supportive': '레이스 페이스 빌드업',
+  'week.label.specific': '레이스 시뮬레이션',
   'week.label.taper': '테이퍼',
   'week.label.deload': '회복 주간',
   'week.label.test': '테스트 주간',

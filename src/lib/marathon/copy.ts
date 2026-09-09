@@ -3,7 +3,7 @@
  *
  * `MARATHON_LOCALES` is the list of locales whose copy is actually
  * translated. Pages are only generated for these, so an untranslated locale
- * gets no marathon pages rather than English text under a /es/ URL — which
+ * gets no marathon pages rather than English text under a /es/ URL, which
  * would be worse than nothing for both readers and search engines.
  */
 

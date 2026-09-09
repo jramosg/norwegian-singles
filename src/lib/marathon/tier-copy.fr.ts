@@ -17,7 +17,7 @@ export const tierCopyFr: Record<TierId, TierPageCopy> = {
       'Plan marathon Norwegian Singles : 75 km/semaine (47 mi) | 12, 15 ou 18 semaines',
     description:
       'Un plan marathon sous-seuil culminant à 75 km (47 mi) par semaine, en 12, 15 ou 18 semaines. Allures calculées à partir de ton propre résultat de course, en km ou en miles.',
-    h1: 'Singles 75 — un plan marathon culminant à 75 km par semaine',
+    h1: 'Singles 75 : un plan marathon culminant à 75 km par semaine',
     intro:
       "La porte d'entrée vers l'entraînement marathon sous-seuil. Six jours de course par semaine, deux séances sous-seuil et une séance X, et une sortie longue qui grandit jusqu'à 30 km. Assez de volume pour courir un marathon sérieusement sans que l'entraînement ne prenne toute la place dans ta vie.",
     whoFor: [
@@ -26,7 +26,7 @@ export const tierCopyFr: Record<TierId, TierPageCopy> = {
       'Tu as six jours par semaine pour courir et aucune envie de doubler',
     ],
     notFor: [
-      'Si tu cours déjà 90 km par semaine, commence par Singles 95 — celui-ci te paraîtra trop facile pour valoir la peine de payer',
+      'Tu cours déjà 90 km par semaine. Commence par Singles 95, car celui-ci te paraîtra trop facile pour valoir la peine de payer',
       "Si tu cours moins de 45 km par semaine, passe d'abord quelques mois à construire ta base. Aucun plan ne comble une base absente",
     ],
     weeklyShape:
@@ -40,7 +40,7 @@ export const tierCopyFr: Record<TierId, TierPageCopy> = {
       'Plan marathon Norwegian Singles : 95 km/semaine (59 mi) | 12, 15 ou 18 semaines',
     description:
       'Un plan marathon sous-seuil culminant à 95 km (59 mi) par semaine, en 12, 15 ou 18 semaines. Allures calculées à partir de ton propre résultat de course, en km ou en miles.',
-    h1: 'Singles 95 — un plan marathon culminant à 95 km par semaine',
+    h1: 'Singles 95 : un plan marathon culminant à 95 km par semaine',
     intro:
       "Le palier où se retrouve la plupart de ceux qui visent un record personnel. Sept jours de course, des séances sous-seuil plus longues que Singles 75, et un travail spécifique marathon le week-end qui monte jusqu'à 20 km à l'allure de course au sein d'une sortie longue.",
     whoFor: [
@@ -49,8 +49,8 @@ export const tierCopyFr: Record<TierId, TierPageCopy> = {
       'Tu vises un temps qualificatif pour Boston, Londres ou une autre course de championnat',
     ],
     notFor: [
-      'Si cela représenterait un grand saut par rapport à ton volume actuel, prends Singles 75 pour un cycle et reviens ici la prochaine fois',
-      'Si tu dépasses régulièrement 110 km par semaine, Singles 120 te conviendra mieux',
+      'Ce serait un grand saut par rapport à ce que tu cours actuellement. Prends Singles 75 pour un cycle et reviens ici pour le suivant',
+      'Tu dépasses régulièrement 110 km par semaine, auquel cas Singles 120 te conviendra mieux',
     ],
     weeklyShape:
       "Deux séances sous-seuil et une séance X par semaine réparties sur sept jours de course, avec la sortie longue qui grandit jusqu'à 32 km. Dans la phase spécifique marathon, la semaine descend à deux séances de qualité : une grande séance de week-end et une séance sous-seuil trois à quatre jours avant ou après.",
@@ -63,7 +63,7 @@ export const tierCopyFr: Record<TierId, TierPageCopy> = {
       'Plan marathon Norwegian Singles : 120 km/semaine (75 mi) | 12, 15 ou 18 semaines',
     description:
       'Un plan marathon sous-seuil culminant à 120 km (75 mi) par semaine, en 12, 15 ou 18 semaines. Allures calculées à partir de ton propre résultat de course, en km ou en miles.',
-    h1: 'Singles 120 — un plan marathon culminant à 120 km par semaine',
+    h1: 'Singles 120 : un plan marathon culminant à 120 km par semaine',
     intro:
       "Un gros volume, mais toujours une seule séance principale par jour. Sept jours de course avec une ou deux deuxièmes sorties par semaine, des séances sous-seuil de 30-40 minutes de qualité, et des séances spécifiques marathon qui atteignent 20 km à l'allure de course.",
     whoFor: [
@@ -72,8 +72,8 @@ export const tierCopyFr: Record<TierId, TierPageCopy> = {
       'Prêt à ajouter une courte deuxième sortie quand la semaine le demande',
     ],
     notFor: [
-      "Si 120 km par semaine serait un record personnel de volume, ne l'apprends pas pendant un cycle marathon",
-      'Si ta vie ne peut pas absorber 9-11 heures de course par semaine, Singles 95 te donnera une meilleure course',
+      '120 km par semaine serait un record personnel de volume. Un cycle marathon est le pire endroit pour le découvrir',
+      "Ta semaine ne peut pas absorber 9 à 11 heures de course. Singles 95 te donnera une meilleure course qu'un palier où tu sautes sans cesse des séances",
     ],
     weeklyShape:
       "Sept jours de course plus environ une deuxième sortie, une sortie longue jusqu'à 34 km, et 30-40 minutes de travail sous-seuil par séance. Les deuxièmes sorties fractionnent une grande journée facile plutôt que de s'y ajouter.",
@@ -86,20 +86,20 @@ export const tierCopyFr: Record<TierId, TierPageCopy> = {
       'Plan marathon Norwegian Singles : 140 km/semaine (87 mi) | 12, 15 ou 18 semaines',
     description:
       'Un plan marathon sous-seuil culminant à 140 km (87 mi) par semaine, en 12, 15 ou 18 semaines. Allures calculées à partir de ton propre résultat de course, en km ou en miles.',
-    h1: 'Singles 140 — un plan marathon culminant à 140 km par semaine',
+    h1: 'Singles 140 : un plan marathon culminant à 140 km par semaine',
     intro:
       "Le volume maximal que cette méthode peut porter tout en restant reconnaissable comme entraînement singles. Deux à trois deuxièmes sorties par semaine, des séances sous-seuil de 35-45 minutes de qualité, et une sortie longue jusqu'à 38 km.",
     whoFor: [
       "Tu as tenu 120 km par semaine ou plus pendant des mois d'affilée",
       "Tu cours près de la tête de ta catégorie d'âge ou tu vises un temps absolu rapide",
-      "Tu as les habitudes de récupération — sommeil, alimentation, peu de stress au quotidien — qu'exige ce volume",
+      "Tu as les habitudes de récupération (sommeil, alimentation, peu de stress au quotidien) qu'exige ce volume",
     ],
     notFor: [
-      "Presque tout le monde. Le volume n'est pas la variable qui manque à la plupart des coureurs, et ce palier suppose des années de volume déjà derrière toi",
-      "Si tu n'es pas sûr d'avoir ta place ici, ta place est en Singles 120",
+      'Presque tout le monde. Le volume est rarement la variable qui manque vraiment à un coureur, et ce palier suppose déjà des années de volume derrière toi',
+      "Tu n'es pas sûr d'avoir ta place ici, auquel cas ta place est en Singles 120",
     ],
     weeklyShape:
-      "Sept jours de course avec deux à trois deuxièmes sorties, une sortie longue jusqu'à 38 km, et les plus grosses doses sous-seuil de toute la gamme. La phase spécifique marathon garde tout de même deux séances de qualité par semaine — à ce volume, la séance du week-end est déjà assez dure à elle seule.",
+      "Sept jours de course avec deux à trois deuxièmes sorties, une sortie longue jusqu'à 38 km, et les plus grosses doses sous-seuil de toute la gamme. La phase spécifique marathon garde tout de même deux séances de qualité par semaine, car à ce volume la séance du week-end est déjà assez dure à elle seule.",
   },
 };
 
@@ -116,7 +116,8 @@ export const sharedCopyFr: MarathonCopyShared = {
     "Ces plans reposent sur les principes publiés de la Norwegian Singles Method et sur les écrits de Marius Bakken sur l'entraînement marathon. Ils ne sont pas officiels, ni affiliés à, ni approuvés par Bakken, James Copeland, ou tout autre entraîneur. Les séances sont générées par notre propre moteur.",
   medicalNote:
     "Conseil d'entraînement, pas un conseil médical. Si tu es blessé, malade, ou si tu n'es pas sûr que ce volume te convienne, parles-en à un médecin ou un kinésithérapeute avant de commencer.",
-  chooseTierHeading: 'Quel palier te correspond',
+  chooseTierHeading: "C'est pour toi si",
+  notForHeading: 'Choisis un autre palier si',
   chooseLengthHeading: 'Combien de temps as-tu devant toi',
   lengthNote:
     "Chaque palier existe dans les trois durées, et les phases s'ajustent à la durée plutôt que d'être coupées à la fin. Si ta course a lieu dans 14 semaines, prends le plan de 12 semaines et continue à construire ta base deux semaines de plus avant.",
@@ -125,15 +126,15 @@ export const sharedCopyFr: MarathonCopyShared = {
     {
       name: 'Base sous-seuil',
       weeks: 'Semaines 1-6 sur 18',
-      body: "Tout ce qui est qualité est sous-seuil, avec des répétitions longues dès la première semaine, plus une sortie longue qui grandit régulièrement. La troisième séance de chaque semaine est la séance X : côtes, 45/15, intervalles courts, ou un parkrun. Pas encore de travail à allure marathon — inutile de répéter une allure que tu n'as pas encore méritée.",
+      body: "Tout ce qui est qualité est sous-seuil, avec des répétitions longues dès la première semaine, plus une sortie longue qui grandit régulièrement. La troisième séance de chaque semaine est la séance X : côtes, 45/15, intervalles courts, ou un parkrun. Pas encore de travail à allure marathon, car inutile de répéter une allure que tu n'as pas encore méritée.",
     },
     {
-      name: 'Soutien marathon',
+      name: "Construction de l'allure de course",
       weeks: 'Semaines 7-11 sur 18',
       body: "Les deux séances sous-seuil restent. La troisième devient une séance modérée spécifique marathon le week-end : des blocs à allure marathon, un bloc continu à allure marathon au sein d'une sortie plus longue, ou une progression. La sortie longue reste une sortie facile.",
     },
     {
-      name: 'Spécifique marathon',
+      name: 'Simulation de course',
       weeks: 'Semaines 12-15 sur 18',
       body: "La séance du week-end devient assez dure pour que deux séances de qualité suffisent à remplir la semaine. La grande séance spécifique marathon devient la sortie longue, et une séance sous-seuil se place trois à quatre jours avant ou après. Tout le reste est facile. C'est la phase où la course se gagne.",
     },
@@ -196,7 +197,7 @@ export const sharedCopyFr: MarathonCopyShared = {
     "Le plan complet, chaque semaine, chaque séance, avec tes propres fourchettes d'allure",
     'Les trois durées de ton palier : 12, 15 et 18 semaines',
     'Une raison en une ligne pour chaque séance, et une alternative pour chacune qui nécessite une côte, une piste ou un événement',
-    'Des bilans de forme qui ne nécessitent pas de course — mets à jour tes allures selon la façon dont les séances se sont réellement passées',
+    'Des bilans de forme qui ne nécessitent pas de course : mets à jour tes allures selon la façon dont les séances se sont réellement passées',
     'Un volet renforcement optionnel : musculation lourde, pliométrie et sprints en côte, placés pour ne pas gêner la course',
     'Des feuilles imprimables, un CSV, et un flux calendrier qui reste à jour',
     "Un accès à vie depuis n'importe quel appareil, et toutes les améliorations que nous ferons plus tard",
@@ -217,7 +218,7 @@ export const sharedCopyFr: MarathonCopyShared = {
     },
     {
       q: 'Que se passe-t-il quand je progresse en plein cycle ?',
-      a: 'Tu fais un bilan — quelques questions sur le ressenti des dernières séances, ou un résultat de 5K si tu en as un — et chaque semaine restante se recalcule autour de la nouvelle estimation. Les semaines déjà courues gardent les allures avec lesquelles tu les as courues.',
+      a: 'Tu fais un bilan (quelques questions sur le ressenti des dernières séances, ou un résultat de 5K si tu en as un) et chaque semaine restante se recalcule autour de la nouvelle estimation. Les semaines déjà courues gardent les allures avec lesquelles tu les as courues.',
     },
     {
       q: "Ai-je besoin d'une course pour mettre à jour ma forme ?",

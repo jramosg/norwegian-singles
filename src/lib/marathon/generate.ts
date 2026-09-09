@@ -3,7 +3,7 @@
  *
  * Deterministic and pure: the same input always produces the same plan, which
  * is what shareable links, reproducible orders and the test suite depend on.
- * Nothing here resolves a pace into a number — sessions keep their anchors so
+ * Nothing here resolves a pace into a number, sessions keep their anchors so
  * a later fitness update re-prices every remaining week.
  */
 
@@ -74,14 +74,14 @@ const MIN_EASY_M = 4000;
 const MIN_SECOND_RUN_M = 5000;
 /**
  * Above this, a single easy run stops being easy. The overflow goes into a
- * second run that day — which is the point of doubling: it splits a big day,
+ * second run that day, which is the point of doubling: it splits a big day,
  * it does not bolt extra mileage onto one.
  */
 const MAX_SINGLE_EASY_M = 16_000;
 
 /**
  * Week templates. Position 6 is always the last day of the week, which is the
- * same weekday as the marathon — so a Saturday race shifts the whole build
+ * same weekday as the marathon, so a Saturday race shifts the whole build
  * coherently rather than leaving the long session mid-week.
  */
 function template(
@@ -263,7 +263,7 @@ export function generateMarathonPlan(input: MarathonPlanInput): MarathonPlan {
     const testWeek = isTestWeek(lengthWeeks, weekNumber) && !isRaceWeek;
     const slots = template(phase, tier.runDays, isRaceWeek);
     if (testWeek && (slots[5] === 'x' || slots[5] === 'ms')) {
-      // On a test week the third session becomes a parkrun or time trial —
+      // On a test week the third session becomes a parkrun or time trial:
       // and the week drops to two quality sessions, because a 5K flat out is
       // the hard session. Keeping three would blow the week's quality budget.
       slots[5] = 'test';
@@ -280,7 +280,7 @@ export function generateMarathonPlan(input: MarathonPlanInput): MarathonPlan {
       const segments: Segment[] = archetype.build(slotCtx);
 
       // A test needs a parkrun, a race, or the willingness to run one flat
-      // out — none of which can be assumed. Every test therefore ships with
+      // out, none of which can be assumed. Every test therefore ships with
       // a real session to do instead, at no cost to the plan.
       let alternative: DayAlternative | null = null;
       if (slot === 'test') {
@@ -299,7 +299,8 @@ export function generateMarathonPlan(input: MarathonPlanInput): MarathonPlan {
     const longTargetM =
       phase === 'specific' && !isRaceWeek
         ? 0
-        : longRunM(input.tier, lengthWeeks, weekNumber);
+        : Math.round(longRunM(input.tier, lengthWeeks, weekNumber) / 1000) *
+          1000;
 
     const shakeoutM = isRaceWeek ? RACE_WEEK_SHAKEOUT_M : SHAKEOUT_M;
 
@@ -324,12 +325,15 @@ export function generateMarathonPlan(input: MarathonPlanInput): MarathonPlan {
     );
 
     const remainingM = targetVolumeM - fixedM;
+    // Easy and long runs are prescribed in whole kilometres. Nobody sets out
+    // to run 8.4 km, and a plan that says so reads like a spreadsheet
+    // rounding error rather than a coach's instruction.
     const perEasyM = isRaceWeek
       ? RACE_WEEK_EASY_M
       : easyPositions.length > 0
         ? Math.max(
             MIN_EASY_M,
-            Math.round(remainingM / easyPositions.length / 500) * 500,
+            Math.round(remainingM / easyPositions.length / 1000) * 1000,
           )
         : 0;
 
@@ -422,13 +426,21 @@ export function generateMarathonPlan(input: MarathonPlanInput): MarathonPlan {
       .reduce((sum, d) => sum + d.targetDistanceM, 0);
     const drift =
       targetVolumeM - (days.reduce((sum, d) => sum + dayTotal(d), 0) - raceM);
-    const largestEasy = days
+    const easyDays = days
       .filter((d) => d.kind === 'easy' && d.targetDistanceM > 0)
-      .sort((a, b) => b.targetDistanceM - a.targetDistanceM)[0];
-    if (largestEasy && Math.abs(drift) < largestEasy.targetDistanceM * 0.5) {
-      largestEasy.targetDistanceM = Math.round(
-        largestEasy.targetDistanceM + drift,
-      );
+      .sort((a, b) => b.targetDistanceM - a.targetDistanceM);
+    // Hand out whole kilometres, one day at a time, so every easy run stays a
+    // round number and the week still adds up to its target.
+    let remainingDriftKm = Math.round(drift / 1000);
+    for (let i = 0; remainingDriftKm !== 0 && easyDays.length > 0; i++) {
+      const day = easyDays[i % easyDays.length];
+      const step = remainingDriftKm > 0 ? 1000 : -1000;
+      if (step < 0 && day.targetDistanceM <= MIN_EASY_M) {
+        if (easyDays.every((d) => d.targetDistanceM <= MIN_EASY_M)) break;
+        continue;
+      }
+      day.targetDistanceM += step;
+      remainingDriftKm -= step / 1000;
     }
 
     const actualVolumeM = days.reduce((sum, d) => sum + dayTotal(d), 0);

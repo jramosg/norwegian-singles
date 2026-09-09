@@ -5,7 +5,7 @@
  * requirement, not decoration: it is most of what separates a training plan
  * from a spreadsheet of intervals.
  *
- * This file is the schema of record — other locales are typed against it.
+ * This file is the schema of record; other locales are typed against it.
  */
 
 export const marathonCopyEn = {
@@ -33,13 +33,13 @@ export const marathonCopyEn = {
   'why.x.hills_short':
     'Short hill sprints are strength work disguised as running: near-maximal force with almost no impact, which is why they carry so little injury risk.',
   'why.x.hills_200':
-    'Two hundred metres uphill, above threshold — a Bakken staple. The hill does the strength work while the reduced speed keeps the risk down.',
+    'Two hundred metres uphill, above threshold, a Bakken staple. The hill does the strength work while the reduced speed keeps the risk down.',
   'why.x.hills_long':
     'Longer hill reps stay above threshold for long enough to bite, with the gradient capping your speed and protecting your legs.',
   'why.x.4515_progressive':
     'Start just under threshold and finish above it. The same session as the controlled version, but you leave having touched a genuinely hard pace.',
   'why.x.vo2':
-    'A small dose of work above threshold. This is not a VO2max block — it just keeps the top end awake while the threshold work does the heavy lifting.',
+    'A small dose of work above threshold. This is not a VO2max block: it just keeps the top end awake while the threshold work does the heavy lifting.',
   'why.x.long_rest':
     'Long easy rests turn this into a series of separate high-quality efforts instead of one grinding session. You reach near 5K pace on every rep and still recover in a day.',
   'why.test':
@@ -49,7 +49,7 @@ export const marathonCopyEn = {
   // Marathon-specific
   // -------------------------------------------------------------------------
   'why.ms.blocks':
-    'Blocks at marathon pace with short jogs between. Broken up, you can hold goal pace far longer than one continuous run allows — which is the point this early.',
+    'Blocks at marathon pace with short jogs between. Broken up, you can hold goal pace far longer than one continuous run allows, which is the point this early.',
   'why.ms.continuous':
     'One unbroken block at marathon pace inside a longer run. The closest thing to a race rehearsal: same pace, same fuelling, same monotony.',
   'why.ms.alternating':
@@ -59,7 +59,7 @@ export const marathonCopyEn = {
   'why.ms.long_specific':
     'The session this phase exists for: a long run with most of its distance at or near race pace, run on legs that are already tired.',
   'why.ms.progressive_blocks':
-    'Four blocks stepping up towards marathon pace. Each is harder than the last while fatigue accumulates — the specific demand of the final 10 km.',
+    'Four blocks stepping up towards marathon pace. Each is harder than the last while fatigue accumulates, which is the specific demand of the final 10 km.',
 
   // -------------------------------------------------------------------------
   // Taper
@@ -69,10 +69,10 @@ export const marathonCopyEn = {
   'why.taper.mp':
     'A short reminder of marathon pace. Long enough to rehearse the rhythm, short enough that you finish wanting more.',
   'why.taper.primer':
-    'Race week. A handful of one-minute efforts to wake the legs up — nothing here builds fitness, it only stops you feeling flat on race morning.',
+    'Race week. A handful of one-minute efforts to wake the legs up. Nothing here builds fitness, it only stops you feeling flat on race morning.',
 
   // -------------------------------------------------------------------------
-  // Substitutions — every session has an answer for a bad week
+  // Substitutions: every session has an answer for a bad week
   // -------------------------------------------------------------------------
   'sub.treadmill':
     'Treadmill: hold the pace band at 1% incline and run the same durations.',
@@ -94,7 +94,7 @@ export const marathonCopyEn = {
   // -------------------------------------------------------------------------
   'rpe.label': 'Effort',
   'rpe.subt':
-    'Finish around 7 out of 10. You should feel you had another rep or two in you — if you did not, the pace was too quick.',
+    'Finish around 7 out of 10. You should feel you had another rep or two in you. If you did not, the pace was too quick.',
   'rpe.x':
     'Hard, 8 to 9 out of 10, but never a race. Stop the session if the pace starts falling away.',
   'rpe.ms':
@@ -108,7 +108,7 @@ export const marathonCopyEn = {
   // -------------------------------------------------------------------------
   'alt.label': 'Or, instead',
   'alt.reason.no_event':
-    'Tests are optional. No parkrun, no race, or no wish to race — take this instead and update your fitness from how your sessions have felt.',
+    'Tests are optional. No parkrun, no race, or no wish to race? Take this instead and update your fitness from how your sessions have felt.',
   'alt.reason.no_hill':
     'No hill you can use? This does the same job on flat ground.',
 
@@ -116,8 +116,8 @@ export const marathonCopyEn = {
   // Week labels
   // -------------------------------------------------------------------------
   'week.label.base': 'Subthreshold base',
-  'week.label.supportive': 'Marathon-supportive',
-  'week.label.specific': 'Marathon-specific',
+  'week.label.supportive': 'Race-pace build',
+  'week.label.specific': 'Race simulation',
   'week.label.taper': 'Taper',
   'week.label.deload': 'Down week',
   'week.label.test': 'Test week',
@@ -129,7 +129,7 @@ export const marathonCopyEn = {
   'strength.notes.lifting':
     'Lift after the run, never before, and never the day before a hard session. Heavy, few reps: you are training economy, not building muscle.',
   'strength.notes.plyometrics':
-    'Leave several hours after the run. Maximal height and minimal ground contact on every jump — stop the moment the bounce goes.',
+    'Leave several hours after the run. Maximal height and minimal ground contact on every jump, and stop the moment the bounce goes.',
   'strength.notes.hill_sprints':
     'After an easy run, while you are fresh enough to sprint. Build up over weeks and stop entirely in race week. Introduce these carefully if you have any Achilles, calf, foot or ankle history.',
 

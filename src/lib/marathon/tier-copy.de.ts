@@ -17,7 +17,7 @@ export const tierCopyDe: Record<TierId, TierPageCopy> = {
       'Norwegian Singles Marathonplan: 75 km/Woche (47 mi) | 12, 15 oder 18 Wochen',
     description:
       'Ein Sub-Threshold-Marathonplan mit einer Spitze von 75 km (47 mi) pro Woche, in 12, 15 oder 18 Wochen. Paces berechnet aus deinem eigenen Rennergebnis, in km oder Meilen.',
-    h1: 'Singles 75 — ein Marathonplan mit einer Spitze von 75 km pro Woche',
+    h1: 'Singles 75: ein Marathonplan mit einer Spitze von 75 km pro Woche',
     intro:
       'Der Einstieg ins Sub-Threshold-Marathontraining. Sechs Lauftage, zwei Sub-Threshold-Einheiten und eine X-Einheit pro Woche, sowie ein langer Lauf, der auf 30 km anwächst. Genug Umfang, um einen Marathon ordentlich zu laufen, ohne dass das Training dein Leben übernimmt.',
     whoFor: [
@@ -26,7 +26,7 @@ export const tierCopyDe: Record<TierId, TierPageCopy> = {
       'Du hast sechs Tage pro Woche zum Laufen und kein Interesse am Doppeln',
     ],
     notFor: [
-      'Wenn du bereits 90 km pro Woche läufst, starte bei Singles 95 — dieser Plan wird sich zu leicht anfühlen, um dafür zu bezahlen',
+      'Du läufst bereits 90 km pro Woche. Starte bei Singles 95, denn dieser Plan wird sich zu leicht anfühlen, um dafür zu bezahlen',
       'Wenn du unter 45 km pro Woche läufst, baue zuerst ein paar Monate lang eine Basis auf. Kein Plan repariert eine fehlende Grundlage',
     ],
     weeklyShape:
@@ -40,7 +40,7 @@ export const tierCopyDe: Record<TierId, TierPageCopy> = {
       'Norwegian Singles Marathonplan: 95 km/Woche (59 mi) | 12, 15 oder 18 Wochen',
     description:
       'Ein Sub-Threshold-Marathonplan mit einer Spitze von 95 km (59 mi) pro Woche, in 12, 15 oder 18 Wochen. Paces berechnet aus deinem eigenen Rennergebnis, in km oder Meilen.',
-    h1: 'Singles 95 — ein Marathonplan mit einer Spitze von 95 km pro Woche',
+    h1: 'Singles 95: ein Marathonplan mit einer Spitze von 95 km pro Woche',
     intro:
       'Die Stufe, in die die meisten gehören, die eine persönliche Bestzeit wollen. Sieben Lauftage, längere Sub-Threshold-Einheiten als bei Singles 75, und marathonspezifische Wochenendarbeit, die innerhalb eines langen Laufs auf 20 km im Renntempo anwächst.',
     whoFor: [
@@ -49,8 +49,8 @@ export const tierCopyDe: Record<TierId, TierPageCopy> = {
       'Du jagst eine Boston-, London- oder andere qualifizierende Zeit',
     ],
     notFor: [
-      'Wenn das ein großer Sprung von deinem aktuellen Umfang wäre, nimm für einen Aufbau Singles 75 und komm beim nächsten Mal hierher',
-      'Wenn du konstant über 110 km pro Woche läufst, passt Singles 120 besser zu dir',
+      'Das wäre ein großer Sprung von dem, was du aktuell läufst. Nimm für einen Aufbau Singles 75 und komm für den nächsten hierher',
+      'Du läufst konstant über 110 km pro Woche, dann passt Singles 120 besser zu dir',
     ],
     weeklyShape:
       'Zwei Sub-Threshold-Einheiten und eine X-Einheit pro Woche über sieben Lauftage verteilt, wobei der lange Lauf auf 32 km anwächst. In der marathonspezifischen Phase sinkt die Woche auf zwei Qualitätseinheiten: eine große Wochenendeinheit und eine Sub-Threshold-Einheit drei bis vier Tage davon entfernt.',
@@ -63,7 +63,7 @@ export const tierCopyDe: Record<TierId, TierPageCopy> = {
       'Norwegian Singles Marathonplan: 120 km/Woche (75 mi) | 12, 15 oder 18 Wochen',
     description:
       'Ein Sub-Threshold-Marathonplan mit einer Spitze von 120 km (75 mi) pro Woche, in 12, 15 oder 18 Wochen. Paces berechnet aus deinem eigenen Rennergebnis, in km oder Meilen.',
-    h1: 'Singles 120 — ein Marathonplan mit einer Spitze von 120 km pro Woche',
+    h1: 'Singles 120: ein Marathonplan mit einer Spitze von 120 km pro Woche',
     intro:
       'Hoher Umfang, aber immer noch eine Haupteinheit pro Tag. Sieben Lauftage mit ein oder zwei zweiten Läufen pro Woche, Sub-Threshold-Einheiten mit 30-40 Minuten Qualität, und marathonspezifische Einheiten, die 20 km im Renntempo erreichen.',
     whoFor: [
@@ -72,8 +72,8 @@ export const tierCopyDe: Record<TierId, TierPageCopy> = {
       'Bereit, einen kurzen zweiten Lauf hinzuzufügen, wenn die Woche es verlangt',
     ],
     notFor: [
-      'Wenn 120 km pro Woche ein persönlicher Umfangsrekord wären, lerne das nicht während eines Marathonaufbaus',
-      'Wenn dein Leben 9-11 Stunden Laufen pro Woche nicht verkraftet, liefert Singles 95 dir das bessere Rennen',
+      '120 km pro Woche wären ein persönlicher Umfangsrekord. Ein Marathonaufbau ist der falsche Ort, um das herauszufinden',
+      'Deine Woche verkraftet keine 9 bis 11 Stunden Laufen. Singles 95 liefert dir ein besseres Rennen als eine Stufe, in der du ständig Einheiten ausfallen lässt',
     ],
     weeklyShape:
       'Sieben Lauftage plus etwa ein zweiter Lauf, ein langer Lauf bis 34 km, und 30-40 Minuten Sub-Threshold-Arbeit pro Einheit. Zweite Läufe teilen einen großen lockeren Tag, statt ihn zu ergänzen.',
@@ -86,20 +86,20 @@ export const tierCopyDe: Record<TierId, TierPageCopy> = {
       'Norwegian Singles Marathonplan: 140 km/Woche (87 mi) | 12, 15 oder 18 Wochen',
     description:
       'Ein Sub-Threshold-Marathonplan mit einer Spitze von 140 km (87 mi) pro Woche, in 12, 15 oder 18 Wochen. Paces berechnet aus deinem eigenen Rennergebnis, in km oder Meilen.',
-    h1: 'Singles 140 — ein Marathonplan mit einer Spitze von 140 km pro Woche',
+    h1: 'Singles 140: ein Marathonplan mit einer Spitze von 140 km pro Woche',
     intro:
       'Der größte Umfang, den diese Methode trägt, während sie noch erkennbar Singles-Training bleibt. Zwei bis drei zweite Läufe pro Woche, Sub-Threshold-Einheiten mit 35-45 Minuten Qualität, und ein langer Lauf bis 38 km.',
     whoFor: [
       'Du hast monatelang 120 km pro Woche oder mehr durchgehalten',
       'Du läufst nahe der Spitze deiner Altersklasse oder jagst eine schnelle absolute Zeit',
-      'Du hast die Erholungsgewohnheiten — Schlaf, Ernährung, wenig Alltagsstress —, die dieser Umfang verlangt',
+      'Du hast die Erholungsgewohnheiten (Schlaf, Ernährung, wenig Alltagsstress), die dieser Umfang verlangt',
     ],
     notFor: [
-      'Fast jeder. Umfang ist nicht die Variable, die den meisten Läufern fehlt, und diese Stufe setzt Jahre davon voraus',
-      'Wenn du unsicher bist, ob du hierher gehörst, gehörst du zu Singles 120',
+      'Fast jeder. Umfang ist selten die Variable, die einem Läufer tatsächlich fehlt, und diese Stufe setzt bereits Jahre davon voraus',
+      'Du bist unsicher, ob du hierher gehörst, dann gehörst du zu Singles 120',
     ],
     weeklyShape:
-      'Sieben Lauftage mit zwei bis drei zweiten Läufen, ein langer Lauf bis 38 km, und die größten Sub-Threshold-Dosen im ganzen Bereich. Die marathonspezifische Phase hält weiterhin an zwei Qualitätseinheiten pro Woche fest — bei diesem Umfang ist die Wochenendeinheit allein schon hart genug.',
+      'Sieben Lauftage mit zwei bis drei zweiten Läufen, ein langer Lauf bis 38 km, und die größten Sub-Threshold-Dosen im ganzen Bereich. Die marathonspezifische Phase hält weiterhin an zwei Qualitätseinheiten pro Woche fest, weil bei diesem Umfang die Wochenendeinheit allein schon hart genug ist.',
   },
 };
 
@@ -116,7 +116,8 @@ export const sharedCopyDe: MarathonCopyShared = {
     'Diese Pläne basieren auf den veröffentlichten Prinzipien der Norwegian Singles Method und auf Marius Bakkens Texten über Marathontraining. Sie sind nicht offiziell, nicht mit Bakken, James Copeland oder einem anderen Trainer verbunden und werden von ihnen nicht unterstützt. Die Einheiten werden von unserer eigenen Engine erzeugt.',
   medicalNote:
     'Trainingsrat, kein medizinischer Rat. Wenn du verletzt oder krank bist oder unsicher, ob dieser Umfang zu dir passt, sprich vor dem Start mit einem Arzt oder einer Physiotherapeutin.',
-  chooseTierHeading: 'Welche Stufe passt zu dir',
+  chooseTierHeading: 'Das hier ist für dich, wenn',
+  notForHeading: 'Wähle eine andere Stufe, wenn',
   chooseLengthHeading: 'Wie viel Zeit hast du',
   lengthNote:
     'Jede Stufe gibt es in allen drei Längen, und die Phasen skalieren mit der Länge, statt am Ende abgeschnitten zu werden. Wenn dein Rennen in 14 Wochen ist, nimm den 12-Wochen-Plan und baue vorher zwei weitere Wochen lang auf.',
@@ -125,15 +126,15 @@ export const sharedCopyDe: MarathonCopyShared = {
     {
       name: 'Sub-Threshold-Grundlage',
       weeks: 'Wochen 1-6 von 18',
-      body: 'Alles an Qualität ist Sub-Threshold, lange Wiederholungen bereits ab der ersten Woche, dazu ein langer Lauf, der stetig wächst. Die dritte Einheit jeder Woche ist die X-Einheit: Berge, 45/15er, kurze Intervalle oder ein Parkrun. Noch keine Marathon-Pace-Arbeit — es hat keinen Sinn, ein Tempo zu proben, das du dir noch nicht verdient hast.',
+      body: 'Alles an Qualität ist Sub-Threshold, lange Wiederholungen bereits ab der ersten Woche, dazu ein langer Lauf, der stetig wächst. Die dritte Einheit jeder Woche ist die X-Einheit: Berge, 45/15er, kurze Intervalle oder ein Parkrun. Noch keine Marathon-Pace-Arbeit, denn es hat keinen Sinn, ein Tempo zu proben, das du dir noch nicht verdient hast.',
     },
     {
-      name: 'Marathon-unterstützend',
+      name: 'Renntempo-Aufbau',
       weeks: 'Wochen 7-11 von 18',
       body: 'Die beiden Sub-Threshold-Einheiten bleiben bestehen. Die dritte wird am Wochenende zu einer moderaten marathonspezifischen Einheit: Blöcke im Marathon-Pace, ein durchgehender Marathon-Pace-Block innerhalb eines längeren Laufs, oder eine Progression. Der lange Lauf ist weiterhin ein lockerer Lauf.',
     },
     {
-      name: 'Marathonspezifisch',
+      name: 'Rennsimulation',
       weeks: 'Wochen 12-15 von 18',
       body: 'Die Wochenendeinheit wird hart genug, dass zwei Qualitätseinheiten die ganze Woche ausmachen. Die große marathonspezifische Einheit wird zum langen Lauf, und eine Sub-Threshold-Einheit liegt drei bis vier Tage davon entfernt. Alles andere ist locker. Das ist die Phase, in der das Rennen gewonnen wird.',
     },
@@ -196,7 +197,7 @@ export const sharedCopyDe: MarathonCopyShared = {
     'Den vollständigen Plan, jede Woche, jede Einheit, mit deinen eigenen Pace-Bändern',
     'Alle drei Längen deiner Stufe: 12, 15 und 18 Wochen',
     'Einen Einzeiler als Grund für jede Einheit, und eine Alternative für jede, die einen Berg, eine Bahn oder eine Veranstaltung braucht',
-    'Formcheck-ins, die kein Rennen brauchen — aktualisiere deine Paces danach, wie die Einheiten sich tatsächlich angefühlt haben',
+    'Formcheck-ins, die kein Rennen brauchen: aktualisiere deine Paces danach, wie die Einheiten sich tatsächlich angefühlt haben',
     'Ein optionales Krafttraining-Modul: schweres Krafttraining, Plyometrie und Bergsprints, so platziert, dass sie das Laufen nicht ruinieren',
     'Druckbare Blätter, CSV, und einen Kalender-Feed, der aktuell bleibt',
     'Lebenslangen Zugang von jedem Gerät, und jede Verbesserung, die wir später vornehmen',
@@ -217,7 +218,7 @@ export const sharedCopyDe: MarathonCopyShared = {
     },
     {
       q: 'Was passiert, wenn ich mitten im Aufbau fitter werde?',
-      a: 'Du machst einen Check-in — ein paar Fragen dazu, wie sich die letzten Einheiten angefühlt haben, oder ein 5K-Ergebnis, falls du eines hast — und jede verbleibende Woche wird um die neue Schätzung herum neu berechnet. Wochen, die du bereits gelaufen bist, behalten die Paces, mit denen du sie gelaufen bist.',
+      a: 'Du machst einen Check-in (ein paar Fragen dazu, wie sich die letzten Einheiten angefühlt haben, oder ein 5K-Ergebnis, falls du eines hast), und jede verbleibende Woche wird um die neue Schätzung herum neu berechnet. Wochen, die du bereits gelaufen bist, behalten die Paces, mit denen du sie gelaufen bist.',
     },
     {
       q: 'Brauche ich ein Rennen, um meine Form zu aktualisieren?',

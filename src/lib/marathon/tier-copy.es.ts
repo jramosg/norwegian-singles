@@ -17,7 +17,7 @@ export const tierCopyEs: Record<TierId, TierPageCopy> = {
       'Plan de maratón Norwegian Singles: 75 km/semana (47 mi) | 12, 15 o 18 semanas',
     description:
       'Un plan de maratón sub-umbral con un máximo de 75 km (47 mi) a la semana, en 12, 15 o 18 semanas. Ritmos calculados a partir de tu propia marca, en km o millas.',
-    h1: 'Singles 75 — un plan de maratón con un máximo de 75 km a la semana',
+    h1: 'Singles 75: un plan de maratón con un máximo de 75 km a la semana',
     intro:
       'La puerta de entrada al entrenamiento de maratón sub-umbral. Seis días de carrera a la semana, dos sesiones sub-umbral y una sesión X, y una tirada larga que crece hasta 30 km. Volumen suficiente para correr un maratón en condiciones sin que el entrenamiento se adueñe de tu vida.',
     whoFor: [
@@ -26,7 +26,7 @@ export const tierCopyEs: Record<TierId, TierPageCopy> = {
       'Tienes seis días a la semana para correr y ningún interés en doblar',
     ],
     notFor: [
-      'Si ya corres 90 km a la semana, empieza en Singles 95 — este te resultará demasiado fácil como para que merezca la pena pagarlo',
+      'Ya corres 90 km a la semana. Empieza en Singles 95, porque este te resultará demasiado fácil como para que merezca la pena pagarlo',
       'Si corres menos de 45 km a la semana, dedica antes unos meses a construir base. Ningún plan arregla una base inexistente',
     ],
     weeklyShape:
@@ -40,7 +40,7 @@ export const tierCopyEs: Record<TierId, TierPageCopy> = {
       'Plan de maratón Norwegian Singles: 95 km/semana (59 mi) | 12, 15 o 18 semanas',
     description:
       'Un plan de maratón sub-umbral con un máximo de 95 km (59 mi) a la semana, en 12, 15 o 18 semanas. Ritmos calculados a partir de tu propia marca, en km o millas.',
-    h1: 'Singles 95 — un plan de maratón con un máximo de 95 km a la semana',
+    h1: 'Singles 95: un plan de maratón con un máximo de 95 km a la semana',
     intro:
       'El nivel en el que encaja la mayoría de quienes buscan una mejor marca personal. Siete días de carrera, sesiones sub-umbral más largas que en Singles 75, y trabajo específico de maratón el fin de semana que llega a 20 km a ritmo de carrera dentro de una tirada larga.',
     whoFor: [
@@ -49,8 +49,8 @@ export const tierCopyEs: Record<TierId, TierPageCopy> = {
       'Vas a por una marca clasificatoria para Boston, Londres u otra carrera de categoría',
     ],
     notFor: [
-      'Si esto supondría un salto grande respecto a tu volumen actual, coge Singles 75 para un ciclo y ven aquí la próxima vez',
-      'Si superas de forma constante los 110 km a la semana, Singles 120 te encajará mejor',
+      'Esto supondría un salto grande respecto a lo que corres ahora. Coge Singles 75 para un ciclo y ven aquí en el siguiente',
+      'Superas de forma constante los 110 km a la semana, en cuyo caso Singles 120 te encaja mejor',
     ],
     weeklyShape:
       'Dos sesiones sub-umbral y una sesión X a la semana repartidas en siete días de carrera, con la tirada larga creciendo hasta 32 km. En la fase específica de maratón la semana baja a dos sesiones de calidad: una gran sesión de fin de semana y una sesión sub-umbral a tres o cuatro días de ella.',
@@ -63,7 +63,7 @@ export const tierCopyEs: Record<TierId, TierPageCopy> = {
       'Plan de maratón Norwegian Singles: 120 km/semana (75 mi) | 12, 15 o 18 semanas',
     description:
       'Un plan de maratón sub-umbral con un máximo de 120 km (75 mi) a la semana, en 12, 15 o 18 semanas. Ritmos calculados a partir de tu propia marca, en km o millas.',
-    h1: 'Singles 120 — un plan de maratón con un máximo de 120 km a la semana',
+    h1: 'Singles 120: un plan de maratón con un máximo de 120 km a la semana',
     intro:
       'Volumen alto, pero con una sola sesión principal al día. Siete días de carrera con una o dos segundas tiradas a la semana, sesiones sub-umbral de 30-40 minutos de calidad, y sesiones específicas de maratón que llegan a 20 km a ritmo de carrera.',
     whoFor: [
@@ -72,8 +72,8 @@ export const tierCopyEs: Record<TierId, TierPageCopy> = {
       'No te importa añadir una segunda tirada corta cuando la semana lo pide',
     ],
     notFor: [
-      'Si 120 km a la semana sería tu récord personal de volumen, no lo aprendas durante un ciclo de maratón',
-      'Si tu vida no puede absorber 9-11 horas de carrera a la semana, Singles 95 te dará una mejor carrera',
+      '120 km a la semana sería tu récord personal de volumen. Un ciclo de maratón es el peor sitio para descubrirlo',
+      'Tu semana no puede absorber 9 a 11 horas de carrera. Singles 95 te dará una mejor carrera que un nivel en el que te saltas sesiones constantemente',
     ],
     weeklyShape:
       'Siete días de carrera más aproximadamente una segunda tirada, una tirada larga hasta 34 km, y 30-40 minutos de trabajo sub-umbral por sesión. Las segundas tiradas dividen un día fácil largo en lugar de sumarse a él.',
@@ -86,17 +86,17 @@ export const tierCopyEs: Record<TierId, TierPageCopy> = {
       'Plan de maratón Norwegian Singles: 140 km/semana (87 mi) | 12, 15 o 18 semanas',
     description:
       'Un plan de maratón sub-umbral con un máximo de 140 km (87 mi) a la semana, en 12, 15 o 18 semanas. Ritmos calculados a partir de tu propia marca, en km o millas.',
-    h1: 'Singles 140 — un plan de maratón con un máximo de 140 km a la semana',
+    h1: 'Singles 140: un plan de maratón con un máximo de 140 km a la semana',
     intro:
       'El mayor volumen que este método soporta sin dejar de ser reconociblemente entrenamiento singles. De dos a tres segundas tiradas a la semana, sesiones sub-umbral de 35-45 minutos de calidad, y una tirada larga hasta 38 km.',
     whoFor: [
       'Has sostenido 120 km a la semana o más durante meses seguidos',
       'Corres cerca de la cabeza de tu categoría o vas a por una marca absoluta rápida',
-      'Tienes los hábitos de recuperación —sueño, alimentación, poco estrés vital— que exige este volumen',
+      'Tienes los hábitos de recuperación (sueño, alimentación, poco estrés vital) que exige este volumen',
     ],
     notFor: [
-      'Casi todo el mundo. El volumen no es la variable que le falta a la mayoría de corredores, y este nivel da por hecho años de él a tus espaldas',
-      'Si no tienes claro si encajas aquí, encajas en Singles 120',
+      'Casi todo el mundo. El volumen rara vez es la variable que de verdad le falta a un corredor, y este nivel da por hecho años de él ya a tus espaldas',
+      'No tienes claro si encajas aquí, en cuyo caso encajas en Singles 120',
     ],
     weeklyShape:
       'Siete días de carrera con dos o tres segundas tiradas, una tirada larga hasta 38 km, y las mayores dosis sub-umbral de todo el rango. La fase específica de maratón se mantiene en dos sesiones de calidad a la semana: a este volumen, la sesión de fin de semana ya es suficientemente dura por sí sola.',
@@ -116,7 +116,8 @@ export const sharedCopyEs: MarathonCopyShared = {
     'Estos planes se basan en los principios publicados del Norwegian Singles Method y en los escritos de Marius Bakken sobre entrenamiento de maratón. No son oficiales, ni están afiliados ni respaldados por Bakken, James Copeland, ni ningún otro entrenador. Las sesiones las genera nuestro propio motor.',
   medicalNote:
     'Consejo de entrenamiento, no consejo médico. Si estás lesionado, enfermo, o no sabes si este volumen te conviene, habla con un médico o fisioterapeuta antes de empezar.',
-  chooseTierHeading: 'Qué nivel te encaja',
+  chooseTierHeading: 'Este es para ti si',
+  notForHeading: 'Elige otro nivel si',
   chooseLengthHeading: 'Cuánto tiempo tienes',
   lengthNote:
     'Cada nivel viene en las tres duraciones, y las fases escalan con la duración en lugar de recortarse al final. Si tu carrera es dentro de 14 semanas, coge el plan de 12 semanas y sigue construyendo base dos semanas más antes.',
@@ -125,15 +126,15 @@ export const sharedCopyEs: MarathonCopyShared = {
     {
       name: 'Base sub-umbral',
       weeks: 'Semanas 1-6 de 18',
-      body: 'Todo lo de calidad es sub-umbral, con repeticiones largas desde la primera semana, más una tirada larga que crece de forma constante. La tercera sesión de cada semana es la sesión X: cuestas, 45/15, series cortas, o un parkrun. Todavía sin nada de trabajo a ritmo de maratón — no tiene sentido ensayar un ritmo que aún no te has ganado.',
+      body: 'Todo lo de calidad es sub-umbral, con repeticiones largas desde la primera semana, más una tirada larga que crece de forma constante. La tercera sesión de cada semana es la sesión X: cuestas, 45/15, series cortas, o un parkrun. Todavía sin nada de trabajo a ritmo de maratón, porque no tiene sentido ensayar un ritmo que aún no te has ganado.',
     },
     {
-      name: 'Apoyo al maratón',
+      name: 'Construcción del ritmo de maratón',
       weeks: 'Semanas 7-11 de 18',
       body: 'Las dos sesiones sub-umbral se mantienen. La tercera se convierte en una sesión moderada específica de maratón el fin de semana: bloques a ritmo de maratón, un bloque continuo a ritmo de maratón dentro de una tirada más larga, o una progresión. La tirada larga sigue siendo una carrera fácil.',
     },
     {
-      name: 'Específica de maratón',
+      name: 'Simulación de carrera',
       weeks: 'Semanas 12-15 de 18',
       body: 'La sesión de fin de semana se vuelve lo bastante dura como para que dos sesiones de calidad sean toda la semana. La gran sesión específica de maratón se convierte en la tirada larga, y una sesión sub-umbral se coloca a tres o cuatro días de ella. Todo lo demás es fácil. Esta es la fase en la que se gana la carrera.',
     },
@@ -196,7 +197,7 @@ export const sharedCopyEs: MarathonCopyShared = {
     'El plan completo, cada semana, cada sesión, con tus propias bandas de ritmo',
     'Las tres duraciones de tu nivel: 12, 15 y 18 semanas',
     'Una razón de una línea para cada sesión, y una alternativa para cada una que necesite cuesta, pista o evento',
-    'Controles de forma física que no necesitan una carrera — actualiza tus ritmos según cómo te hayan ido de verdad las sesiones',
+    'Controles de forma física que no necesitan una carrera: actualiza tus ritmos según cómo te hayan ido de verdad las sesiones',
     'Un bloque de fuerza opcional: levantamiento pesado, pliometría y sprints de cuesta, colocados para que no estropeen la carrera',
     'Hojas imprimibles, CSV, y un feed de calendario que se mantiene al día',
     'Acceso de por vida desde cualquier dispositivo, y todas las mejoras que hagamos más adelante',
@@ -217,7 +218,7 @@ export const sharedCopyEs: MarathonCopyShared = {
     },
     {
       q: '¿Qué pasa cuando mejoro mi forma física a mitad del ciclo?',
-      a: 'Haces un check-in — unas preguntas sobre cómo te sentaron las últimas sesiones, o un resultado de 5K si tienes uno — y cada semana que queda se reajusta en torno a la nueva estimación. Las semanas que ya has corrido conservan los ritmos con los que las corriste.',
+      a: 'Haces un check-in (unas preguntas sobre cómo te sentaron las últimas sesiones, o un resultado de 5K si tienes uno) y cada semana que queda se reajusta en torno a la nueva estimación. Las semanas que ya has corrido conservan los ritmos con los que las corriste.',
     },
     {
       q: '¿Necesito una carrera para actualizar mi forma física?',
