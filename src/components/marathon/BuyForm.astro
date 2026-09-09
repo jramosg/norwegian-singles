@@ -118,8 +118,9 @@ const today = new Date().toISOString().slice(0, 10);
         type="text"
         name="raceTime"
         placeholder={buy.timePlaceholder}
-        inputmode="numeric"
-        pattern="^\d{1,2}(:\d{2}){1,2}$"
+        pattern="^[0-9]{1,2}(:[0-9]{2}){1,2}$"
+        title={buy.timePlaceholder}
+        autocomplete="off"
         required
       />
     </label>
@@ -147,8 +148,9 @@ const today = new Date().toISOString().slice(0, 10);
       type="text"
       name="goalTime"
       placeholder={buy.timePlaceholder}
-      inputmode="numeric"
-      pattern="^\d{1,2}(:\d{2}){1,2}$"
+      pattern="^[0-9]{1,2}(:[0-9]{2}){1,2}$"
+      title={buy.timePlaceholder}
+      autocomplete="off"
     />
   </label>
   <p class="bf-hint">{buy.goalHint}</p>
