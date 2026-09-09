@@ -263,6 +263,14 @@ const copy = {
     },
   },
 }[locale];
+
+/**
+ * Affiliate item keys are plain strings, so index the per-locale copy through
+ * a string-keyed view rather than the literal union of one locale's object.
+ */
+type RecCopy = Record<string, { badge: string; description: string }>;
+const gearCopy: RecCopy = copy.gear;
+const bookCopy: RecCopy = copy.books;
 ---
 
 <section
@@ -309,9 +317,9 @@ const copy = {
               )}
             </div>
             <div class="rec-body">
-              <span class="rec-badge">{copy.gear[item.key]?.badge}</span>
+              <span class="rec-badge">{gearCopy[item.key]?.badge}</span>
               <h3>{item.title}</h3>
-              <p class="rec-description">{copy.gear[item.key]?.description}</p>
+              <p class="rec-description">{gearCopy[item.key]?.description}</p>
               <span class="rec-cta">
                 {copy.cta}
                 <Icon name="arrow-right" size={16} />
@@ -347,10 +355,10 @@ const copy = {
               )}
             </div>
             <div class="rec-body">
-              <span class="rec-badge">{copy.books[book.key]?.badge}</span>
+              <span class="rec-badge">{bookCopy[book.key]?.badge}</span>
               <h3>{book.title}</h3>
               {book.author && <p class="rec-author">{book.author}</p>}
-              <p class="rec-description">{copy.books[book.key]?.description}</p>
+              <p class="rec-description">{bookCopy[book.key]?.description}</p>
               <div class="rec-ctas">
                 <span class="rec-cta">
                   {copy.cta}

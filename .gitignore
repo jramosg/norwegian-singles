@@ -24,3 +24,6 @@ pnpm-debug.log*
 .idea/
 
 .vscode/
+# clojure-lsp / editor caches
+.lsp/
+.clj-kondo/.cache/

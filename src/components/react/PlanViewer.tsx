@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import type { SavedPlan, Locale, TrainingPaces } from '../../types';
+import type { SavedPlan, Locale } from '../../types';
 import { useTranslations, type TranslationKey } from '../../i18n/ui';
 import { loadPlan, savePlan } from '../../lib/storage';
 import { createPlan } from '../../lib/plan-generator';
@@ -30,15 +30,6 @@ import {
   TAPER_HALF,
   REVERSE_TAPER_HALF,
 } from '../../lib/tapering';
-import {
-  MARATHON_BUILD,
-  getBuildStartDate,
-  getWeekStartDate,
-  getCurrentBuildWeek,
-  getWeeksToMarathon,
-  getMarathonSpecificDurationMin,
-} from '../../lib/marathon-build';
-import type { MarathonBuildDay } from '../../lib/marathon-build';
 
 interface Props {
   locale: Locale;
@@ -102,9 +93,7 @@ export default function PlanViewer({ locale }: Props) {
     label.replace('h/week', t('plan.hoursPerWeek'));
   const [plan, setPlan] = useState<SavedPlan | null>(null);
   const [unit, setUnit] = useState<'km' | 'mile'>('km');
-  const [tab, setTab] = useState<'week' | 'paces' | 'taper' | 'marathon'>(
-    'week',
-  );
+  const [tab, setTab] = useState<'week' | 'paces' | 'taper'>('week');
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
   const [imgBusy, setImgBusy] = useState(false);
@@ -219,7 +208,6 @@ export default function PlanViewer({ locale }: Props) {
       empty: "You don't have a plan yet",
       create: 'Create my plan',
       paces: 'Paces',
-      marathon: 'Marathon',
       share: 'Share',
       copied: 'Copied',
       image: 'Image',
@@ -233,7 +221,6 @@ export default function PlanViewer({ locale }: Props) {
       empty: 'Aún no tienes un plan',
       create: 'Crear mi plan',
       paces: 'Ritmos',
-      marathon: 'Maratón',
       share: 'Compartir',
       copied: 'Copiado',
       image: 'Imagen',
@@ -247,7 +234,6 @@ export default function PlanViewer({ locale }: Props) {
       empty: '아직 플랜이 없습니다',
       create: '플랜 만들기',
       paces: '페이스',
-      marathon: '마라톤',
       share: '공유',
       copied: '복사됨',
       image: '이미지',
@@ -261,7 +247,6 @@ export default function PlanViewer({ locale }: Props) {
       empty: 'Du hast noch keinen Plan',
       create: 'Plan erstellen',
       paces: 'Paces',
-      marathon: 'Marathon',
       share: 'Teilen',
       copied: 'Kopiert',
       image: 'Bild',
@@ -275,7 +260,6 @@ export default function PlanViewer({ locale }: Props) {
       empty: "Tu n'as pas encore de plan",
       create: 'Créer mon plan',
       paces: 'Allures',
-      marathon: 'Marathon',
       share: 'Partager',
       copied: 'Copié',
       image: 'Image',
@@ -371,20 +355,10 @@ export default function PlanViewer({ locale }: Props) {
     return `${duration} (${wucd}) · ${rec} ${recLabel}${note}`;
   };
 
-  const hasMarathon = Boolean(input.marathonDate);
-
   const tabs = [
     { id: 'week' as const, label: t('plan.week') },
     { id: 'paces' as const, label: text.paces },
     { id: 'taper' as const, label: t('taper.tab') },
-    ...(hasMarathon
-      ? [
-          {
-            id: 'marathon' as const,
-            label: text.marathon,
-          },
-        ]
-      : []),
   ];
 
   return (
@@ -642,17 +616,6 @@ export default function PlanViewer({ locale }: Props) {
             t={t}
           />
         </div>
-      )}
-
-      {/* Tab: Marathon Build */}
-      {tab === 'marathon' && input.marathonDate && (
-        <MarathonBuildTab
-          marathonDate={input.marathonDate}
-          paces={paces}
-          unit={unit}
-          unitLabel={unitLabel}
-          locale={locale}
-        />
       )}
 
       <style>{`
@@ -941,513 +904,6 @@ function TaperTable({
           ))}
         </tbody>
       </table>
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// MarathonBuildTab
-// ---------------------------------------------------------------------------
-
-const MB_DAY_ABBR = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-const MB_DAY_FULL = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-
-function mbSessionColor(day: MarathonBuildDay): string {
-  if (day.kind === 'rest') return 'var(--color-text-muted)';
-  if (day.kind === 'easy') return 'var(--color-easy)';
-  if (day.kind === 'race') return 'var(--color-accent-primary)';
-  return 'var(--color-threshold)';
-}
-
-function mbSessionLabel(day: MarathonBuildDay): string {
-  if (day.kind === 'rest') return 'Rest';
-  if (day.kind === 'easy') return `${day.durationMin}E`;
-  if (day.kind === 'race') return day.raceName;
-  if (day.kind === 'subT') {
-    if (day.reps === 1) return `${day.distanceM / 1000}K S`;
-    return `${day.reps}×${day.distanceM >= 1000 ? `${day.distanceM / 1000}K` : `${day.distanceM}m`}`;
-  }
-  if (day.kind === 'marathon_specific') {
-    if (day.reps === 1) return `${day.distanceM / 1000}K*`;
-    return `${day.reps}×${day.distanceM >= 1000 ? `${day.distanceM / 1000}K*` : `${day.distanceM}m*`}`;
-  }
-  return '-';
-}
-
-function mbSessionDetail(
-  day: MarathonBuildDay,
-  paces: TrainingPaces,
-  unit: 'km' | 'mile',
-  unitLabel: string,
-): React.ReactNode {
-  if (day.kind === 'rest')
-    return <span style={{ color: 'var(--color-text-muted)' }}>-</span>;
-
-  if (day.kind === 'easy') {
-    return (
-      <>
-        <div className="mb-day-main" style={{ color: 'var(--color-easy)' }}>
-          {day.durationMin} min easy
-        </div>
-        <div className="mb-day-pace">
-          {formatPace(paces.easy, unit)}{' '}
-          <span className="mb-day-unit">{unitLabel}</span>
-        </div>
-      </>
-    );
-  }
-
-  if (day.kind === 'race') {
-    return <div className="mb-day-main mb-day-race">{day.raceName}</div>;
-  }
-
-  if (day.kind === 'subT') {
-    const pace = formatPace(paces[day.paceColumn], unit);
-    const repLabel =
-      day.reps === 1
-        ? `${day.distanceM >= 1000 ? `${day.distanceM / 1000} km` : `${day.distanceM} m`}`
-        : `${day.reps} × ${day.distanceM >= 1000 ? `${day.distanceM / 1000} km` : `${day.distanceM} m`}`;
-    return (
-      <>
-        <div
-          className="mb-day-main"
-          style={{ color: 'var(--color-threshold)' }}
-        >
-          {repLabel}
-        </div>
-        <div className="mb-day-pace">
-          {pace} <span className="mb-day-unit">{unitLabel}</span>
-        </div>
-        <div className="mb-day-meta">{day.totalDurationMin} min total</div>
-      </>
-    );
-  }
-
-  if (day.kind === 'marathon_specific') {
-    const pace = formatPace(paces.marathonPace, unit);
-    const totalDurationMin = getMarathonSpecificDurationMin(
-      day,
-      paces.marathonPace,
-    );
-    const repLabel =
-      day.reps === 1
-        ? `${day.distanceM >= 1000 ? `${day.distanceM / 1000} km` : `${day.distanceM} m`} @ MP`
-        : `${day.reps} × ${day.distanceM >= 1000 ? `${day.distanceM / 1000} km` : `${day.distanceM} m`} @ MP`;
-    return (
-      <>
-        <div className="mb-day-main mb-day-mp">{repLabel}</div>
-        <div className="mb-day-pace">
-          {pace} <span className="mb-day-unit">{unitLabel}</span>
-        </div>
-        {day.paceNote && <div className="mb-day-meta">{day.paceNote}</div>}
-        <div className="mb-day-meta">
-          {day.warmupCooldownMin !== undefined ? '~' : ''}
-          {totalDurationMin} min total
-        </div>
-      </>
-    );
-  }
-
-  return null;
-}
-
-function MarathonBuildTab({
-  marathonDate,
-  paces,
-  unit,
-  unitLabel,
-  locale,
-}: {
-  marathonDate: string;
-  paces: TrainingPaces;
-  unit: 'km' | 'mile';
-  unitLabel: string;
-  locale: Locale;
-}) {
-  const currentWeek = getCurrentBuildWeek(marathonDate);
-  const weeksLeft = getWeeksToMarathon(marathonDate);
-  const startDate = getBuildStartDate(marathonDate);
-  const marathonDateObj = new Date(marathonDate);
-  marathonDateObj.setHours(0, 0, 0, 0);
-
-  const [expandedWeek, setExpandedWeek] = useState<number | null>(currentWeek);
-  const localeCode =
-    locale === 'es'
-      ? 'es-ES'
-      : locale === 'ko'
-        ? 'ko-KR'
-        : locale === 'de'
-          ? 'de-DE'
-          : locale === 'fr'
-            ? 'fr-FR'
-            : 'en-GB';
-  const text = {
-    en: {
-      title: 'Marathon Build',
-      weeks: 'wks',
-      starts: (date: string) => `Build starts ${date}.`,
-    },
-    es: {
-      title: 'Preparación Maratón',
-      weeks: 'sem.',
-      starts: (date: string) => `La preparación empieza el ${date}.`,
-    },
-    ko: {
-      title: '마라톤 빌드업',
-      weeks: '주',
-      starts: (date: string) => `빌드업은 ${date}에 시작합니다.`,
-    },
-    de: {
-      title: 'Marathon-Aufbau',
-      weeks: 'Wo.',
-      starts: (date: string) => `Aufbau startet am ${date}.`,
-    },
-    fr: {
-      title: 'Plan marathon',
-      weeks: 'sem.',
-      starts: (date: string) => `Le plan commence le ${date}.`,
-    },
-  }[locale];
-
-  const fmt = (d: Date) =>
-    d.toLocaleDateString(localeCode, {
-      day: 'numeric',
-      month: 'short',
-    });
-
-  const notStarted = currentWeek === null && new Date() < startDate;
-  const isFinished = currentWeek === null && new Date() >= startDate;
-
-  return (
-    <div className="mb-root">
-      {/* Header */}
-      <div className="mb-header">
-        <div>
-          <div className="mb-header-title">{text.title}</div>
-          <div className="mb-header-date">
-            {marathonDateObj.toLocaleDateString(localeCode, {
-              weekday: 'long',
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric',
-            })}
-          </div>
-        </div>
-        <div className="mb-header-badge">
-          {notStarted ? (
-            <>
-              <span className="mb-badge-num">{weeksLeft}</span>
-              <span className="mb-badge-label">{text.weeks}</span>
-            </>
-          ) : isFinished ? (
-            <span className="mb-badge-done">✓</span>
-          ) : (
-            <>
-              <span className="mb-badge-num">{currentWeek}</span>
-              <span className="mb-badge-label">/ 15</span>
-            </>
-          )}
-        </div>
-      </div>
-
-      {notStarted && (
-        <div className="mb-notice">{text.starts(fmt(startDate))}</div>
-      )}
-
-      {/* Week list */}
-      <div className="mb-weeks">
-        {MARATHON_BUILD.map((week) => {
-          const weekStart = getWeekStartDate(marathonDate, week.weekNumber);
-          const weekEnd = new Date(weekStart);
-          weekEnd.setDate(weekEnd.getDate() + 6);
-          const isCurrent = week.weekNumber === currentWeek;
-          const isPast =
-            currentWeek !== null ? week.weekNumber < currentWeek : !notStarted;
-          const isOpen = expandedWeek === week.weekNumber;
-
-          return (
-            <div
-              key={week.weekNumber}
-              className={`mb-week ${isCurrent ? 'mb-week--current' : ''} ${isPast ? 'mb-week--past' : ''}`}
-            >
-              {/* Week header (always visible, clickable) */}
-              <button
-                className="mb-week-header"
-                onClick={() => setExpandedWeek(isOpen ? null : week.weekNumber)}
-                aria-expanded={isOpen}
-              >
-                <div className="mb-week-meta">
-                  <span className="mb-week-num">
-                    {locale === 'es'
-                      ? `Semana ${week.weekNumber}`
-                      : `Week ${week.weekNumber}`}
-                  </span>
-                  <span className="mb-week-label">{week.label}</span>
-                </div>
-                <div className="mb-week-right">
-                  <span className="mb-week-dates">
-                    {fmt(weekStart)} – {fmt(weekEnd)}
-                  </span>
-                  <span className="mb-week-chevron">{isOpen ? '▲' : '▼'}</span>
-                </div>
-              </button>
-
-              {/* Compact day strip (always visible) */}
-              <div className="mb-day-strip">
-                {week.days.map((day, i) => (
-                  <div key={i} className="mb-strip-cell" title={MB_DAY_FULL[i]}>
-                    <span className="mb-strip-abbr">{MB_DAY_ABBR[i]}</span>
-                    <span
-                      className="mb-strip-dot"
-                      style={{ background: mbSessionColor(day) }}
-                    />
-                    <span className="mb-strip-label">
-                      {mbSessionLabel(day)}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Expanded day details */}
-              {isOpen && (
-                <div className="mb-day-grid">
-                  {week.days.map((day, i) => (
-                    <div
-                      key={i}
-                      className={`mb-day-card mb-day-card--${day.kind}`}
-                    >
-                      <div className="mb-day-card-header">
-                        <span className="mb-day-card-name">
-                          {MB_DAY_FULL[i]}
-                        </span>
-                        <span
-                          className="mb-day-card-dot"
-                          style={{ background: mbSessionColor(day) }}
-                        />
-                      </div>
-                      <div className="mb-day-card-body">
-                        {mbSessionDetail(day, paces, unit, unitLabel)}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
-
-      <style>{`
-        .mb-root { }
-        .mb-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-          padding: var(--space-4) var(--space-5);
-          background: var(--color-surface);
-          border: 1px solid var(--color-border);
-          border-radius: var(--radius-lg);
-          margin-bottom: var(--space-4);
-        }
-        .mb-header-title {
-          font-size: var(--text-xs);
-          font-weight: var(--font-semibold);
-          text-transform: uppercase;
-          letter-spacing: 0.08em;
-          color: var(--color-text-muted);
-          margin-bottom: var(--space-1);
-        }
-        .mb-header-date {
-          font-size: var(--text-base);
-          font-weight: var(--font-semibold);
-          color: var(--color-text-primary);
-        }
-        .mb-header-badge {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          background: rgba(239,68,68,0.1);
-          border: 1px solid rgba(239,68,68,0.3);
-          border-radius: var(--radius-md);
-          padding: var(--space-2) var(--space-4);
-          min-width: 60px;
-        }
-        .mb-badge-num {
-          font-family: var(--font-mono);
-          font-size: var(--text-2xl);
-          font-weight: var(--font-bold);
-          color: var(--color-accent-primary);
-          line-height: 1;
-        }
-        .mb-badge-label {
-          font-size: var(--text-xs);
-          color: var(--color-text-muted);
-        }
-        .mb-badge-done {
-          font-size: var(--text-2xl);
-          color: var(--color-easy);
-        }
-        .mb-notice {
-          padding: var(--space-3) var(--space-4);
-          background: rgba(239,68,68,0.06);
-          border: 1px dashed rgba(239,68,68,0.3);
-          border-radius: var(--radius-md);
-          font-size: var(--text-sm);
-          color: var(--color-text-secondary);
-          margin-bottom: var(--space-4);
-        }
-        .mb-weeks { display: grid; gap: var(--space-2); }
-        .mb-week {
-          border: 1px solid var(--color-border);
-          border-radius: var(--radius-lg);
-          background: var(--color-surface);
-          overflow: hidden;
-          transition: border-color var(--transition-fast);
-        }
-        .mb-week--current {
-          border-color: var(--color-accent-primary);
-          box-shadow: 0 0 0 1px rgba(239,68,68,0.2);
-        }
-        .mb-week--past { opacity: 0.55; }
-        .mb-week-header {
-          width: 100%;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: var(--space-3) var(--space-4);
-          background: none;
-          border: none;
-          cursor: pointer;
-          text-align: left;
-          gap: var(--space-4);
-        }
-        .mb-week-header:hover { background: var(--color-bg-glass); }
-        .mb-week-meta { display: flex; flex-direction: column; gap: 2px; }
-        .mb-week-num {
-          font-size: var(--text-xs);
-          font-weight: var(--font-bold);
-          color: var(--color-accent-primary);
-          text-transform: uppercase;
-          letter-spacing: 0.06em;
-        }
-        .mb-week-label {
-          font-size: var(--text-sm);
-          font-weight: var(--font-semibold);
-          color: var(--color-text-primary);
-        }
-        .mb-week-right {
-          display: flex;
-          align-items: center;
-          gap: var(--space-3);
-          flex-shrink: 0;
-        }
-        .mb-week-dates {
-          font-size: var(--text-xs);
-          color: var(--color-text-muted);
-          font-family: var(--font-mono);
-        }
-        .mb-week-chevron {
-          font-size: var(--text-xs);
-          color: var(--color-text-muted);
-        }
-        .mb-day-strip {
-          display: grid;
-          grid-template-columns: repeat(7, 1fr);
-          border-top: 1px solid var(--color-border);
-          padding: var(--space-2) var(--space-3);
-          gap: var(--space-1);
-        }
-        .mb-strip-cell {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 2px;
-        }
-        .mb-strip-abbr {
-          font-size: 10px;
-          color: var(--color-text-muted);
-          font-weight: var(--font-semibold);
-        }
-        .mb-strip-dot {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          flex-shrink: 0;
-        }
-        .mb-strip-label {
-          font-size: 9px;
-          color: var(--color-text-secondary);
-          text-align: center;
-          line-height: 1.2;
-          max-width: 36px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-        .mb-day-grid {
-          display: grid;
-          grid-template-columns: repeat(7, 1fr);
-          border-top: 1px solid var(--color-border);
-          gap: 0;
-        }
-        .mb-day-card {
-          padding: var(--space-3) var(--space-2);
-          border-right: 1px solid var(--color-border);
-        }
-        .mb-day-card:last-child { border-right: none; }
-        .mb-day-card--rest { opacity: 0.4; }
-        .mb-day-card-header {
-          display: flex;
-          align-items: center;
-          gap: var(--space-1);
-          margin-bottom: var(--space-2);
-        }
-        .mb-day-card-name {
-          font-size: 10px;
-          font-weight: var(--font-bold);
-          color: var(--color-text-muted);
-          text-transform: uppercase;
-          letter-spacing: 0.06em;
-        }
-        .mb-day-card-dot {
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          flex-shrink: 0;
-        }
-        .mb-day-card-body { display: flex; flex-direction: column; gap: 2px; }
-        .mb-day-main {
-          font-size: var(--text-xs);
-          font-weight: var(--font-semibold);
-          line-height: 1.3;
-        }
-        .mb-day-race {
-          color: var(--color-accent-primary) !important;
-          font-weight: var(--font-bold) !important;
-        }
-        .mb-day-mp { color: var(--color-threshold) !important; }
-        .mb-day-pace {
-          font-family: var(--font-mono);
-          font-size: 10px;
-          font-weight: var(--font-bold);
-          color: var(--color-text-primary);
-        }
-        .mb-day-unit {
-          font-weight: var(--font-normal);
-          color: var(--color-text-muted);
-          font-size: 9px;
-        }
-        .mb-day-meta {
-          font-size: 9px;
-          color: var(--color-text-muted);
-          line-height: 1.3;
-        }
-        @media (max-width: 600px) {
-          .mb-day-grid { grid-template-columns: repeat(7, 1fr); }
-          .mb-day-card { padding: var(--space-2) var(--space-1); }
-          .mb-week-dates { display: none; }
-        }
-      `}</style>
     </div>
   );
 }
