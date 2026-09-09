@@ -30,6 +30,7 @@ pnpm-debug.log*
 
 # Local operator notes, deliberately not committed
 STRIPE-SETUP.md
+EMAIL-SETUP.md
 
 # Local SQLite database, runtime state and buyer data
 data/
