@@ -11,27 +11,38 @@
 import { effortDistanceM, type PaceResolver } from './resolve';
 import type { PaceAnchor, PlannedWeek, Segment } from './types';
 
-/** Cost per kilometre relative to subthreshold long reps (= 1.0). */
+/**
+ * Cost per kilometre relative to subthreshold long reps (= 1.0).
+ *
+ * These were originally set by race-distance label, which was wrong: for a
+ * 40:00 10K runner, 10K pace is 4:00 and the short subthreshold rep pace is
+ * 4:04. Charging 10K work 50% more than subthreshold starved the X-session
+ * budget and produced sessions like 3 x 1 km, which is not a session. The
+ * weights now track the actual pace gap above threshold.
+ */
 export function intensityWeight(anchor: PaceAnchor): number {
   switch (anchor.kind) {
     case 'easy':
       return 0;
     case 'mp':
-      // Marathon pace is slower than subthreshold for almost everyone, and
-      // a float is slower still.
+      // Marathon pace is slower than subthreshold for almost everyone, and a
+      // float is slower still.
       if (anchor.pct <= 92) return 0.5;
       return 0.75;
     case 'subT':
       return { rep10min: 1, rep6min: 1.05, rep3min: 1.1 }[anchor.column];
     case 'race':
-      return { '21K': 1.2, '10K': 1.5, '5K': 1.9, '3K': 2.2 }[anchor.distance];
+      // Half marathon pace sits at or just under threshold; 10K is a few
+      // seconds per km above it; 5K and 3K are where the cost really climbs.
+      return { '21K': 1, '10K': 1.15, '5K': 1.4, '3K': 1.7 }[anchor.distance];
     case 'effort':
       return {
         relaxed: 0.3,
-        above_threshold: 1.6,
-        hill_strong: 1.8,
-        hill_max: 2.2,
-        max_speed: 2.2,
+        above_threshold: 1.3,
+        hill_strong: 1.5,
+        // Ten-second sprints cost little in volume terms whatever the effort.
+        hill_max: 1.8,
+        max_speed: 1.8,
       }[anchor.label];
   }
 }
@@ -76,10 +87,10 @@ export function weeklyQualityBudgetM(
  * highest, which is the whole reason the budget is weighted.
  */
 export const SLOT_BUDGET_SHARE: Record<string, number> = {
-  subT_long: 0.4,
-  subT_medium: 0.34,
+  subT_long: 0.36,
+  subT_medium: 0.32,
   subT_short: 0.3,
-  x: 0.26,
+  x: 0.32,
   ms: 0.36,
   test: 0.26,
 };
@@ -100,9 +111,9 @@ export const SLOT_ASSUMED_WEIGHT: Record<string, number> = {
   subT_long: 1,
   subT_medium: 1.05,
   subT_short: 1.1,
-  x: 1.7,
+  x: 1.2,
   ms: 0.75,
-  test: 1.9,
+  test: 1.4,
 };
 
 export interface QualityLoad {

@@ -7,6 +7,7 @@
  * test and live mode can differ.
  */
 
+import { env } from '../server/env';
 import type { TierId } from './types';
 
 export const CURRENCY = 'EUR';
@@ -34,7 +35,7 @@ export function formatPrice(amount: number): string {
  */
 export function stripePriceId(sku: Sku): string {
   const key = `STRIPE_PRICE_${sku.toUpperCase()}`;
-  const value = process.env[key];
+  const value = process.env[key] || import.meta.env[key];
   if (!value) throw new Error(`Missing ${key} in the environment.`);
   return value;
 }

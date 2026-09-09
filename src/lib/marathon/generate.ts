@@ -325,30 +325,62 @@ export function generateMarathonPlan(input: MarathonPlanInput): MarathonPlan {
     );
 
     const remainingM = targetVolumeM - fixedM;
-    // Easy and long runs are prescribed in whole kilometres. Nobody sets out
-    // to run 8.4 km, and a plan that says so reads like a spreadsheet
-    // rounding error rather than a coach's instruction.
-    const perEasyM = isRaceWeek
-      ? RACE_WEEK_EASY_M
-      : easyPositions.length > 0
-        ? Math.max(
-            MIN_EASY_M,
-            Math.round(remainingM / easyPositions.length / 1000) * 1000,
-          )
-        : 0;
+    /**
+     * Easy volume is shaped around the hard days rather than spread flat.
+     *
+     * A flat split put 13 km on the Monday after a 135-minute marathon-pace
+     * session and gave four identical 13 km days in a row. The day after
+     * quality is the easiest day of the week, the day before it comes down a
+     * little, and the untouched mid-week days carry the rest.
+     */
+    const isHard = (position: number): boolean => {
+      const slot = slots[position];
+      return QUALITY_SLOTS.includes(slot) || slot === 'long' || slot === 'race';
+    };
+    const easyWeight = (position: number): number => {
+      // Position 0 follows the previous week's last day, and consecutive
+      // weeks share a shape, so the last slot stands in for it.
+      const previous = position === 0 ? slots.length - 1 : position - 1;
+      if (isHard(previous)) return 0.72;
+      // How many days until the next hard day. A shakeout the day before a
+      // big weekend session does not make the day before *that* a free
+      // licence to run the longest easy run of the week.
+      let gap = 0;
+      for (let i = position + 1; i < slots.length; i++) {
+        gap += 1;
+        if (isHard(i)) break;
+        if (i === slots.length - 1) gap = 99;
+      }
+      if (gap <= 1) return 0.88;
+      if (gap === 2) return 1;
+      return 1.15;
+    };
+
+    const weightTotal = easyPositions.reduce(
+      (sum, position) => sum + easyWeight(position),
+      0,
+    );
+    // Whole kilometres: nobody sets out to run 8.4 km, and a plan that says
+    // so reads like a rounding error rather than an instruction.
+    const easyForPosition = (position: number): number => {
+      if (isRaceWeek) return RACE_WEEK_EASY_M;
+      if (weightTotal === 0) return 0;
+      const share = (remainingM * easyWeight(position)) / weightTotal;
+      return Math.max(MIN_EASY_M, Math.round(share / 1000) * 1000);
+    };
 
     // A day is split when the tier calls for a double, or when the day's
     // share has simply grown too big to run in one go.
     const splitEasyDay = (position: number): number | null => {
       if (isRaceWeek) return null;
-      const wanted =
-        doublePositions.has(position) || perEasyM > MAX_SINGLE_EASY_M;
+      const dayM = easyForPosition(position);
+      const wanted = doublePositions.has(position) || dayM > MAX_SINGLE_EASY_M;
       if (!wanted) return null;
       const second = Math.max(
         MIN_SECOND_RUN_M,
-        Math.round((perEasyM * 0.4) / 500) * 500,
+        Math.round((dayM * 0.4) / 1000) * 1000,
       );
-      return second < perEasyM - MIN_EASY_M ? second : null;
+      return second < dayM - MIN_EASY_M ? second : null;
     };
 
     const days: PlannedDay[] = built.map((b, position) => {
@@ -360,10 +392,12 @@ export function generateMarathonPlan(input: MarathonPlanInput): MarathonPlan {
       else if (b.slot === 'long') targetDistanceM = longTargetM;
       else if (b.slot === 'shakeout') targetDistanceM = shakeoutM;
       else if (b.slot === 'race') targetDistanceM = 42_195;
-      else if (b.slot === 'easy') targetDistanceM = perEasyM;
+      else if (b.slot === 'easy') targetDistanceM = easyForPosition(position);
 
       const secondRunM = b.slot === 'easy' ? splitEasyDay(position) : null;
-      if (secondRunM !== null) targetDistanceM = perEasyM - secondRunM;
+      if (secondRunM !== null) {
+        targetDistanceM = easyForPosition(position) - secondRunM;
+      }
 
       const day: PlannedDay = {
         dayIndex: position as DayIndex,
@@ -443,7 +477,10 @@ export function generateMarathonPlan(input: MarathonPlanInput): MarathonPlan {
       remainingDriftKm -= step / 1000;
     }
 
-    const actualVolumeM = days.reduce((sum, d) => sum + dayTotal(d), 0);
+    // The marathon itself is not training volume. Counting it made race week
+    // read as higher than the week before it, which looks like a mistake on a
+    // chart and is confusing on a plan.
+    const actualVolumeM = days.reduce((sum, d) => sum + dayTotal(d), 0) - raceM;
 
     weeks.push({
       weekNumber,

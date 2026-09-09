@@ -9,9 +9,10 @@
  * be present at runtime.
  */
 
-import Database from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import { mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
+import { env } from './env';
 
 const MIGRATIONS: string[] = [
   // 1
@@ -69,30 +70,57 @@ const MIGRATIONS: string[] = [
   `,
 ];
 
-export type Db = Database.Database;
+export type Db = DatabaseSync;
 
-let instance: Db | null = null;
+/**
+ * The connection is kept on globalThis, not in a module-level variable.
+ *
+ * Vite's dev server re-instantiates modules on change, so a module-scoped
+ * singleton is created once per instantiation: two DatabaseSync handles end
+ * up open on the same file, and node:sqlite segfaults when the first one is
+ * finalised while the second is in use. That crash takes the dev server down
+ * mid-request, which is exactly what a Stripe webhook landing looks like.
+ */
+const DB_KEY = Symbol.for('norwegian-singles.db');
+type Global = typeof globalThis & { [DB_KEY]?: Db };
 
-function databasePath(): string {
-  return process.env.DATABASE_PATH || '/app/data/app.db';
+export function databasePath(): string {
+  if (process.env.DATABASE_PATH) return process.env.DATABASE_PATH;
+  if (import.meta.env?.DATABASE_PATH) return import.meta.env.DATABASE_PATH;
+  if (process.env.NODE_ENV === 'production') return '/app/data/app.db';
+  return './data/app.db';
 }
 
 export function getDb(): Db {
-  if (instance) return instance;
+  const store = globalThis as Global;
+  const existing = store[DB_KEY];
+  if (existing) return existing;
 
   const path = databasePath();
   if (path !== ':memory:') mkdirSync(dirname(path), { recursive: true });
 
-  const db = new Database(path);
+  const db = new DatabaseSync(path);
   // WAL keeps a reader (someone opening their plan) from blocking on a
   // writer (a webhook landing).
-  db.pragma('journal_mode = WAL');
-  db.pragma('foreign_keys = ON');
-  db.pragma('busy_timeout = 5000');
+  db.exec('PRAGMA journal_mode = WAL;');
+  db.exec('PRAGMA foreign_keys = ON;');
+  db.exec('PRAGMA busy_timeout = 5000;');
 
   migrate(db);
-  instance = db;
+  store[DB_KEY] = db;
   return db;
+}
+
+/** Close and forget the connection. Only needed by tests and shutdown. */
+export function closeDb(): void {
+  const store = globalThis as Global;
+  const db = store[DB_KEY];
+  if (!db) return;
+  try {
+    db.close();
+  } finally {
+    delete store[DB_KEY];
+  }
 }
 
 function migrate(db: Db): void {
@@ -121,8 +149,8 @@ function migrate(db: Db): void {
 
 /** Test helper: an isolated in-memory database with the schema applied. */
 export function createTestDb(): Db {
-  const db = new Database(':memory:');
-  db.pragma('foreign_keys = ON');
+  const db = new DatabaseSync(':memory:');
+  db.exec('PRAGMA foreign_keys = ON;');
   migrate(db);
   return db;
 }

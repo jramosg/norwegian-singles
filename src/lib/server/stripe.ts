@@ -7,20 +7,19 @@
 
 import Stripe from 'stripe';
 import { CURRENCY, stripePriceId, type Sku } from '../marathon/pricing';
+import { env, requireEnv } from './env';
 import type { StoredPlanInputs } from './entitlements';
 
 let client: Stripe | null = null;
 
 export function getStripe(): Stripe {
   if (client) return client;
-  const key = process.env.STRIPE_SECRET_KEY;
-  if (!key) throw new Error('Missing STRIPE_SECRET_KEY in the environment.');
-  client = new Stripe(key);
+  client = new Stripe(requireEnv('STRIPE_SECRET_KEY'));
   return client;
 }
 
 export function siteUrl(): string {
-  return (process.env.SITE_URL || 'https://norwegian-singles.app').replace(
+  return (env('SITE_URL') || 'https://norwegian-singles.app').replace(
     /\/$/,
     '',
   );
@@ -68,7 +67,7 @@ export function verifyWebhook(
   rawBody: string,
   signature: string | null,
 ): Stripe.Event {
-  const secret = process.env.STRIPE_WEBHOOK_SECRET;
+  const secret = env('STRIPE_WEBHOOK_SECRET');
   if (!secret) throw new Error('Missing STRIPE_WEBHOOK_SECRET.');
   if (!signature) throw new Error('Missing stripe-signature header.');
   return getStripe().webhooks.constructEvent(rawBody, signature, secret);

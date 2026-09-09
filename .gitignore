@@ -27,3 +27,9 @@ pnpm-debug.log*
 # clojure-lsp / editor caches
 .lsp/
 .clj-kondo/.cache/
+
+# Local operator notes, deliberately not committed
+STRIPE-SETUP.md
+
+# Local SQLite database, runtime state and buyer data
+data/

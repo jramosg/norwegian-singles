@@ -9,6 +9,7 @@
 
 import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
 import { getDb, type Db } from './db';
+import { env } from './env';
 import { TIER_IDS } from '../marathon/tiers';
 import type { Sku } from '../marathon/pricing';
 import type { FitnessSource, TierId } from '../marathon/types';
@@ -22,6 +23,8 @@ export interface StoredPlanInputs {
   /** The race result the plan was bought with. */
   raceDistanceM: number;
   raceTimeSec: number;
+  /** No prior hill-sprint experience triggers the introductory ramp. */
+  strengthInexperienced?: boolean;
 }
 
 export interface Order {
@@ -163,7 +166,7 @@ export function findOrderByToken(
 export function findOrdersByEmail(email: string, db: Db = getDb()): Order[] {
   const rows = db
     .prepare('SELECT * FROM orders WHERE email = ? ORDER BY created_at DESC')
-    .all(email.trim().toLowerCase()) as OrderRow[];
+    .all(email.trim().toLowerCase()) as unknown as OrderRow[];
   return rows.map(toOrder);
 }
 
@@ -246,7 +249,7 @@ export function currentFitness(
 
 function hash(value: string): string {
   return createHash('sha256')
-    .update(`${process.env.PLAN_TOKEN_SECRET ?? ''}:${value}`)
+    .update(`${env('PLAN_TOKEN_SECRET') ?? ''}:${value}`)
     .digest('hex')
     .slice(0, 32);
 }

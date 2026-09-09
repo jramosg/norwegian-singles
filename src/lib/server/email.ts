@@ -7,6 +7,7 @@
  * a missing mail key must never fail a purchase.
  */
 
+import { env } from './env';
 import { siteUrl } from './stripe';
 
 export interface PlanLinkEmail {
@@ -17,7 +18,7 @@ export interface PlanLinkEmail {
 }
 
 function isConfigured(): boolean {
-  return Boolean(process.env.RESEND_API_KEY && process.env.MAIL_FROM);
+  return Boolean(env('RESEND_API_KEY') && env('MAIL_FROM'));
 }
 
 const SUBJECTS: Record<string, string> = {
@@ -55,12 +56,12 @@ export async function sendPlanLink(email: PlanLinkEmail): Promise<boolean> {
   const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+      Authorization: `Bearer ${env('RESEND_API_KEY')}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: process.env.MAIL_FROM,
-      reply_to: process.env.MAIL_REPLY_TO || undefined,
+      from: env('MAIL_FROM'),
+      reply_to: env('MAIL_REPLY_TO') || undefined,
       to: [email.to],
       subject: SUBJECTS[locale],
       text: `${body}\n\n${siteUrl()}`,

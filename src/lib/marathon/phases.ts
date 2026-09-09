@@ -76,37 +76,82 @@ export function lastBuildWeek(lengthWeeks: PlanLength): number {
 // Volume curve
 // ---------------------------------------------------------------------------
 
-/** Week 1 as a fraction of peak. */
-const START_FRACTION = 0.73;
-/** Down-week multiplier applied to the ramp value. */
-const DELOAD_FACTOR = 0.82;
-/** Taper fractions of peak, indexed by taper length. */
+/**
+ * Volume progression.
+ *
+ * Three weeks up, one week back, in four-week blocks. Each block opens higher
+ * than the last, and the down week returns to the block's own opening volume
+ * rather than dropping below it.
+ *
+ * The earlier version ramped almost flat (about 2 km a week) and then applied
+ * a multiplicative down week, so coming out of a deload was a 21 km jump on a
+ * 95 km plan while normal progression was 2 km. This keeps every week-to-week
+ * change inside roughly 8% of peak.
+ */
+const START_FRACTION = 0.72;
+/** Step between consecutive weeks inside a block. */
+const WEEK_STEP = 0.03;
+const BLOCK_LENGTH = 4;
+
+/** Taper weeks before race week, as fractions of peak. */
 const TAPER_FRACTIONS: Record<number, number[]> = {
-  2: [0.68, 0.45],
-  3: [0.8, 0.62, 0.45],
+  1: [],
+  2: [0.72],
+  3: [0.82, 0.65],
 };
+/**
+ * Race week counts only the running around the marathon; the race is added on
+ * top. Kept generous enough that nobody arrives feeling flat.
+ */
+const RACE_WEEK_FRACTION = 0.3;
+
+/** Position inside the four-week block, 0-based; 3 is the down week. */
+function positionInBlock(weekNumber: number): number {
+  return (weekNumber - 1) % BLOCK_LENGTH;
+}
 
 /**
- * Deload every fourth week of the build, but never on a peak week and never
- * on the final build week. In the marathon-specific phase this same week is
- * where the big weekend session steps down to a plain long run, so volume
- * and session load come off together.
+ * A down week is the fourth week of a block, and never the last build week:
+ * stepping back immediately before the taper wastes the final chance to
+ * consolidate.
  */
 export function isDeloadWeek(
   lengthWeeks: PlanLength,
   weekNumber: number,
 ): boolean {
   const lastBuild = lastBuildWeek(lengthWeeks);
-  if (weekNumber > lastBuild) return false;
-  if (weekNumber === lastBuild) return false;
+  if (weekNumber >= lastBuild) return false;
   if (peakWeeks(lengthWeeks).includes(weekNumber)) return false;
-  return weekNumber % 4 === 0;
+  return positionInBlock(weekNumber) === BLOCK_LENGTH - 1;
 }
 
-/** The two weeks that hit full peak volume, both inside P3. */
+/** The weeks that reach full peak volume, both in the final block. */
 export function peakWeeks(lengthWeeks: PlanLength): number[] {
   const lastBuild = lastBuildWeek(lengthWeeks);
-  return [lastBuild - 2, lastBuild];
+  return lastBuild > 1 ? [lastBuild - 1, lastBuild] : [lastBuild];
+}
+
+/** Fraction of peak volume for a build week. */
+function buildFraction(lengthWeeks: PlanLength, weekNumber: number): number {
+  const lastBuild = lastBuildWeek(lengthWeeks);
+  if (peakWeeks(lengthWeeks).includes(weekNumber)) return 1;
+
+  const blocks = Math.max(1, Math.ceil(lastBuild / BLOCK_LENGTH));
+  const block = Math.floor((weekNumber - 1) / BLOCK_LENGTH);
+  const position = positionInBlock(weekNumber);
+
+  // Where each block opens, ramped so the final block's closing weeks land
+  // on the peak.
+  const topOfLastBlock = 1 - WEEK_STEP * (BLOCK_LENGTH - 2);
+  const blockOpen =
+    blocks <= 1
+      ? START_FRACTION
+      : START_FRACTION +
+        (topOfLastBlock - START_FRACTION) * (block / (blocks - 1));
+
+  // Positions 0 to 2 climb; position 3 steps back to the block's opening.
+  const step = position === BLOCK_LENGTH - 1 ? 0 : position;
+  return Math.min(1, blockOpen + WEEK_STEP * step);
 }
 
 /** Planned volume for a week, in metres. */
@@ -118,24 +163,16 @@ export function weekVolumeM(
   const { peakM } = getTier(tierId);
   const lastBuild = lastBuildWeek(lengthWeeks);
 
+  if (weekNumber === lengthWeeks) {
+    return Math.round(peakM * RACE_WEEK_FRACTION);
+  }
   if (weekNumber > lastBuild) {
-    // Race week budgets only the running *around* the marathon; the race
-    // itself is added on top, so the fraction here stays deliberately small.
-    if (weekNumber === lengthWeeks) return Math.round(peakM * 0.25);
-    const fractions = TAPER_FRACTIONS[taperWeeks(lengthWeeks)];
+    const fractions = TAPER_FRACTIONS[taperWeeks(lengthWeeks)] ?? [0.72];
     const idx = weekNumber - lastBuild - 1;
-    return Math.round(peakM * fractions[idx]);
+    return Math.round(peakM * (fractions[idx] ?? 0.65));
   }
 
-  if (peakWeeks(lengthWeeks).includes(weekNumber)) return peakM;
-
-  const ramp =
-    lastBuild === 1
-      ? 1
-      : START_FRACTION +
-        (1 - START_FRACTION) * ((weekNumber - 1) / (lastBuild - 1));
-  const factor = isDeloadWeek(lengthWeeks, weekNumber) ? DELOAD_FACTOR : 1;
-  return Math.round(Math.min(peakM, peakM * ramp * factor));
+  return Math.round(peakM * buildFraction(lengthWeeks, weekNumber));
 }
 
 /**
@@ -152,7 +189,9 @@ export function longRunM(
   const phase = phaseForWeek(lengthWeeks, weekNumber);
   // In the supportive phase the weekend already carries a marathon-specific
   // session, so the long run gives ground rather than stacking on top of it.
-  const share = phase === 'taper' ? 0.2 : phase === 'supportive' ? 0.21 : 0.26;
+  // Copeland's long run is about 22% of his week. A quarter of the week in
+  // one run, on top of three quality sessions, leaves nothing easy.
+  const share = phase === 'taper' ? 0.2 : phase === 'supportive' ? 0.21 : 0.23;
   return Math.round(Math.min(tier.longRunCapM, volume * share));
 }
 

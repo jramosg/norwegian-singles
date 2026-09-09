@@ -43,24 +43,27 @@ function easySteady(distanceM: number, label?: string): Segment {
   return { kind: 'steady', distanceM, anchor: EASY, label };
 }
 
-/** Warm-up and cool-down scale with the tier, not with the session. */
-function warmupM(tier: TierId): number {
-  return tierAtLeast(tier, 'singles120')
-    ? 3500
-    : tierAtLeast(tier, 'singles95')
-      ? 3000
-      : 2500;
+/**
+ * Warm-up and cool-down scale with the week, not with the tier.
+ *
+ * A flat 3 km plus 2 km put 13.5 km of a 75 km week into warm-ups alone,
+ * which squeezed the easy days down to 5 km and left a week that was 87%
+ * quality sessions and long run. Most of the week has to be easy running for
+ * this method to work at all.
+ */
+function warmupM(ctx: SessionContext): number {
+  return roundTo(Math.min(4000, Math.max(2000, ctx.weekVolumeM * 0.035)), 500);
 }
 
-function cooldownM(tier: TierId): number {
-  return tierAtLeast(tier, 'singles120') ? 2500 : 2000;
+function cooldownM(ctx: SessionContext): number {
+  return roundTo(Math.min(3000, Math.max(1500, ctx.weekVolumeM * 0.025)), 500);
 }
 
 function wrap(ctx: SessionContext, ...work: Segment[]): Segment[] {
   return [
-    easySteady(warmupM(ctx.tier), 'warmup'),
+    easySteady(warmupM(ctx), 'warmup'),
     ...work,
-    easySteady(cooldownM(ctx.tier), 'cooldown'),
+    easySteady(cooldownM(ctx), 'cooldown'),
   ];
 }
 
@@ -106,6 +109,33 @@ function repsForWork(
   high: number,
 ): number {
   return Math.max(low, Math.min(high, Math.round(ctx.workM / repM)));
+}
+
+/**
+ * Rep count for an X-session, chosen the way a coach would: by tier, growing
+ * a little across the phase.
+ *
+ * X-sessions deliberately do *not* take their dose from the weekly quality
+ * budget. Dividing a threshold-shaped budget by a VO2 cost produced things
+ * like 3 x 1 km at 10K pace, which is not a session anyone would prescribe.
+ * The budget still binds the week as a whole through the load ceiling; it
+ * just no longer decides what a session looks like.
+ */
+function xReps(
+  ctx: SessionContext,
+  perTier: [number, number, number, number],
+  growth = 1,
+): number {
+  const base = tierAtLeast(ctx.tier, 'singles140')
+    ? perTier[3]
+    : tierAtLeast(ctx.tier, 'singles120')
+      ? perTier[2]
+      : tierAtLeast(ctx.tier, 'singles95')
+        ? perTier[1]
+        : perTier[0];
+  // A couple of reps added over the course of the phase, not per week.
+  const added = Math.floor((ctx.weekInPhase / Math.max(1, ctx.phaseWeeks)) * 2);
+  return base + added * growth;
 }
 
 /** Reps of `repM` needed to spend the budget, clamped to a sane count. */
@@ -354,7 +384,7 @@ const X_SESSIONS: SessionArchetype[] = [
     build: (ctx) =>
       wrap(ctx, {
         kind: 'interval',
-        count: repsForWork(ctx, 80, 6, 12),
+        count: xReps(ctx, [8, 8, 10, 10], 0),
         work: { distanceM: 80, anchor: effort('max_speed') },
         recovery: { kind: 'walk', durationSec: min(2) },
       }),
@@ -367,7 +397,7 @@ const X_SESSIONS: SessionArchetype[] = [
     needsHill: true,
     substitutionKeys: ['sub.no_hill_flat_reps', 'sub.treadmill_incline'],
     build: (ctx) => {
-      const reps = repsForWork(ctx, 200, 6, 15);
+      const reps = xReps(ctx, [8, 10, 12, 14]);
       return wrap(
         ctx,
         {
@@ -399,7 +429,7 @@ const X_SESSIONS: SessionArchetype[] = [
         ctx,
         {
           kind: 'interval',
-          count: repsForWork(ctx, 700, 3, 8),
+          count: xReps(ctx, [4, 5, 6, 6]),
           work: { distanceM: 700, anchor: effort('above_threshold') },
           recovery: { kind: 'jog', distanceM: 700 },
         },
@@ -438,9 +468,9 @@ const X_SESSIONS: SessionArchetype[] = [
     build: (ctx) =>
       wrap(ctx, {
         kind: 'interval',
-        count: repsForWork(ctx, 1000, 3, 6),
+        count: xReps(ctx, [5, 6, 8, 8]),
         work: { distanceM: 1000, anchor: race('10K') },
-        recovery: { kind: 'jog', durationSec: min(3) },
+        recovery: { kind: 'jog', durationSec: min(2) },
       }),
   },
   {
@@ -451,7 +481,7 @@ const X_SESSIONS: SessionArchetype[] = [
     build: (ctx) =>
       wrap(ctx, {
         kind: 'interval',
-        count: repsFor(ctx.qualityMin, 3, 4, 8),
+        count: xReps(ctx, [5, 6, 7, 8], 0),
         work: { durationSec: min(3), anchor: race('5K') },
         recovery: { kind: 'jog', durationSec: min(2) },
       }),
@@ -465,7 +495,7 @@ const X_SESSIONS: SessionArchetype[] = [
     build: (ctx) =>
       wrap(ctx, {
         kind: 'interval',
-        count: repsForWork(ctx, 400, 6, 12),
+        count: xReps(ctx, [8, 10, 10, 12], 0),
         work: { distanceM: 400, anchor: race('5K') },
         // Long easy rests: ten separate high-quality doses instead of one
         // grinding session. Race-pace work without the wreckage.
@@ -530,11 +560,11 @@ const MS_MODERATE: SessionArchetype[] = [
     whyKey: 'why.ms.continuous',
     build: (ctx) => {
       const block = msWorkM(ctx);
-      const leadIn = roundTo(warmupM(ctx.tier) * 1.5, 500);
+      const leadIn = roundTo(warmupM(ctx) * 1.5, 500);
       return [
         easySteady(leadIn, 'lead_in'),
         { kind: 'steady', distanceM: block, anchor: mp(100), label: 'mp' },
-        easySteady(cooldownM(ctx.tier), 'cooldown'),
+        easySteady(cooldownM(ctx), 'cooldown'),
       ];
     },
   },

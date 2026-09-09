@@ -1,10 +1,23 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { createTestDb, type Db } from '../db';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { createTestDb, databasePath, type Db } from '../db';
 
 let db: Db;
 
 beforeEach(() => {
   db = createTestDb();
+});
+
+afterEach(() => {
+  delete process.env.DATABASE_PATH;
+  process.env.NODE_ENV = 'test';
+});
+
+describe('database path', () => {
+  it('uses a local data folder in development instead of a Docker-only path', () => {
+    delete process.env.DATABASE_PATH;
+    process.env.NODE_ENV = 'development';
+    expect(databasePath()).toBe('./data/app.db');
+  });
 });
 
 describe('schema', () => {

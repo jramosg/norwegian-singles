@@ -63,6 +63,15 @@ export function planForOrder(order: Order, db: Db = getDb()): OrderPlan {
     unit: order.planInputs.unit,
     fitness,
     goalFinishSec: order.planInputs.goalFinishSec,
+    // Always generated, shown on request. Without this the strength toggle on
+    // the plan page has nothing to reveal, because the track would never have
+    // been built in the first place.
+    strength: {
+      lifting: true,
+      plyometrics: true,
+      hillSprints: true,
+      hillSprintsInexperienced: order.planInputs.strengthInexperienced ?? false,
+    },
   });
 
   return { plan, fitness, history };
