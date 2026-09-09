@@ -1,0 +1,368 @@
+---
+/**
+ * One week of a bought plan.
+ *
+ * Collapsed by default with a native details element, so the whole build is
+ * navigable without a line of JavaScript and every week is still on the page
+ * when it is printed.
+ */
+import { describeSession } from '../../lib/marathon/describe';
+import {
+  sessionDurationSec,
+  type PaceResolver,
+} from '../../lib/marathon/resolve';
+import type { MarathonCopy } from '../../lib/marathon/copy.en';
+import type { MarathonCopyShared } from '../../lib/marathon/tier-copy.en';
+import type { PlannedWeek } from '../../lib/marathon/types';
+import type { Unit } from '../../types';
+import { KM_PER_MILE } from '../../lib/marathon/constants';
+
+interface Props {
+  week: PlannedWeek;
+  resolver: PaceResolver;
+  copy: MarathonCopy;
+  labels: MarathonCopyShared['labels'];
+  unit: Unit;
+  dayNames: string[];
+  showStrength: boolean;
+  open: boolean;
+  rpeLabel: string;
+  altLabel: string;
+}
+
+const {
+  week,
+  resolver,
+  copy,
+  labels,
+  unit,
+  dayNames,
+  showStrength,
+  open,
+  rpeLabel,
+  altLabel,
+} = Astro.props;
+
+const dist = (metres: number): string =>
+  unit === 'km'
+    ? `${Math.round(metres / 1000)} km`
+    : `${(metres / 1000 / KM_PER_MILE).toFixed(1)} mi`;
+
+const volume = dist(week.volumeM);
+---
+
+<details class="pw" open={open} id={`week-${week.weekNumber}`}>
+  <summary class="pw-summary">
+    <span class="pw-no">{labels.week} {week.weekNumber}</span>
+    <span class={`pw-phase is-${week.phase}`}
+      >{copy[`week.label.${week.phase}`]}</span
+    >
+    <span class="pw-vol">{volume}</span>
+    {week.isTestWeek && <span class="pw-flag">{copy['week.label.test']}</span>}
+    {week.isDeload && <span class="pw-flag">{copy['week.label.deload']}</span>}
+  </summary>
+
+  <ol class="pw-days">
+    {
+      week.days.map((day) => (
+        <li class:list={['pw-day', { 'is-quality': day.isQuality }]}>
+          <div class="pw-day-head">
+            <span class="pw-dow">{dayNames[day.dayIndex]}</span>
+            {day.date && <span class="pw-date">{day.date.slice(5)}</span>}
+            <span class="pw-kind">{copy[`day.${day.kind}`]}</span>
+            {day.segments && (
+              <span class="pw-dur">
+                ~{Math.round(sessionDurationSec(day.segments, resolver) / 60)}
+                {' min'}
+              </span>
+            )}
+          </div>
+
+          <div class="pw-body">
+            <p class="pw-detail">
+              {day.segments
+                ? describeSession(day.segments, resolver, unit, copy)
+                : day.kind === 'rest'
+                  ? copy['day.rest']
+                  : `${dist(day.targetDistanceM)} ${copy['anchor.easy']}`}
+            </p>
+
+            {day.secondRun && (
+              <p class="pw-second">
+                {copy['day.secondRun']}: {dist(day.secondRun.targetDistanceM)}{' '}
+                {copy['anchor.easy']}
+              </p>
+            )}
+
+            {day.rpe && day.isQuality && (
+              <p class="pw-rpe">
+                <span class="pw-rpe-badge">
+                  {rpeLabel} {day.rpe.target}
+                </span>
+                {copy[day.rpe.noteKey as keyof MarathonCopy]}
+              </p>
+            )}
+
+            {day.whyKey && (
+              <p class="pw-why">
+                <span>{labels.whyThisSession}</span>
+                {copy[day.whyKey as keyof MarathonCopy]}
+              </p>
+            )}
+
+            {day.alternative && (
+              <p class="pw-alt-session">
+                <span>{altLabel}</span>
+                <em>
+                  {describeSession(
+                    day.alternative.segments,
+                    resolver,
+                    unit,
+                    copy,
+                  )}
+                </em>
+                <small>
+                  {copy[day.alternative.reasonKey as keyof MarathonCopy]}
+                </small>
+              </p>
+            )}
+
+            {day.substitutionKeys && day.substitutionKeys.length > 0 && (
+              <ul class="pw-subs">
+                {day.substitutionKeys.map((key) => (
+                  <li>{copy[key as keyof MarathonCopy]}</li>
+                ))}
+              </ul>
+            )}
+
+            {showStrength && day.strength && day.strength.length > 0 && (
+              <ul class="pw-strength">
+                {day.strength.map((item) => (
+                  <li>
+                    <strong>{item.modality.replace('_', ' ')}</strong>
+                    <span>{item.prescription}</span>
+                    {item.notesKey && (
+                      <small>{copy[item.notesKey as keyof MarathonCopy]}</small>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</details>
+
+<style>
+  .pw {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-secondary);
+    margin-bottom: var(--space-3);
+  }
+  .pw-summary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    cursor: pointer;
+    list-style: none;
+  }
+  .pw-summary::-webkit-details-marker {
+    display: none;
+  }
+  .pw-no {
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
+  }
+  .pw-phase {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    padding: 2px var(--space-2);
+    border-radius: var(--radius-full);
+    color: var(--color-bg-primary);
+    background: var(--color-threshold);
+  }
+  .pw-phase.is-supportive {
+    background: color-mix(
+      in oklab,
+      var(--color-threshold),
+      var(--color-ms) 45%
+    );
+  }
+  .pw-phase.is-specific {
+    background: var(--color-ms);
+  }
+  .pw-phase.is-taper {
+    background: var(--color-text-muted);
+  }
+  .pw-vol {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+  .pw-flag {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-test);
+  }
+
+  .pw-days {
+    margin: 0;
+    padding: 0 var(--space-4) var(--space-4);
+    list-style: none;
+  }
+  .pw-day {
+    padding: var(--space-3) 0;
+    border-top: 1px solid var(--color-border);
+  }
+  .pw-day.is-quality .pw-detail {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    line-height: 1.7;
+    color: var(--color-text-primary);
+  }
+  .pw-day-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-3);
+    margin-bottom: var(--space-2);
+  }
+  .pw-dow {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+  }
+  .pw-date {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+  .pw-kind {
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
+  }
+  .pw-dur {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+  .pw-detail,
+  .pw-second {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+  }
+  .pw-second {
+    margin-top: var(--space-2);
+    color: var(--color-text-muted);
+  }
+  .pw-rpe {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-3);
+    margin: var(--space-3) 0 0;
+    font-size: var(--text-sm);
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+  }
+  .pw-rpe-badge {
+    flex: none;
+    padding: 1px var(--space-2);
+    border: 1px solid var(--color-border-accent);
+    border-radius: var(--radius-full);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-primary);
+    white-space: nowrap;
+  }
+  .pw-why {
+    margin: var(--space-2) 0 0;
+    font-size: var(--text-sm);
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+  }
+  .pw-why span {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+  }
+  .pw-alt-session {
+    margin: var(--space-3) 0 0;
+    padding: var(--space-3);
+    border-left: 2px solid var(--color-border-accent);
+    background: var(--color-bg-glass);
+  }
+  .pw-alt-session span {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+  }
+  .pw-alt-session em {
+    display: block;
+    font-style: normal;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    line-height: 1.7;
+    color: var(--color-text-primary);
+  }
+  .pw-alt-session small {
+    display: block;
+    margin-top: var(--space-2);
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+  }
+  .pw-subs,
+  .pw-strength {
+    margin: var(--space-2) 0 0;
+    padding-left: var(--space-5);
+    font-size: var(--text-xs);
+    line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+  .pw-strength li {
+    margin-bottom: var(--space-1);
+  }
+  .pw-strength strong {
+    color: var(--color-text-secondary);
+    text-transform: capitalize;
+  }
+  .pw-strength span {
+    font-family: var(--font-mono);
+    margin-left: var(--space-2);
+  }
+  .pw-strength small {
+    display: block;
+    color: var(--color-text-muted);
+  }
+
+  @media print {
+    .pw {
+      border-color: #ccc;
+      background: none;
+      break-inside: avoid;
+    }
+    .pw-days {
+      display: block;
+    }
+  }
+</style>

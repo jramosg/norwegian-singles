@@ -1,0 +1,448 @@
+---
+/**
+ * A bought plan.
+ *
+ * Server-rendered on purpose. This is a document a runner keeps for four
+ * months and prints, so it works with no JavaScript: the unit and strength
+ * toggles are links, the week list is native details elements, and the
+ * fitness check-in is a form post.
+ */
+import AppLayout from '../../layouts/AppLayout.astro';
+import BuildSilhouette from './BuildSilhouette.astro';
+import PlanWeek from './PlanWeek.astro';
+import { getMarathonCopy } from '../../lib/marathon/copy';
+import { getSharedCopy, getTierCopy } from '../../lib/marathon/tier-copy';
+import { assessGoal } from '../../lib/marathon/mp';
+import { createResolver } from '../../lib/marathon/resolve';
+import { formatPace, formatTime } from '../../lib/paces';
+import { KM_PER_MILE } from '../../lib/marathon/constants';
+import type { OrderPlan } from '../../lib/server/plan';
+import type { Order } from '../../lib/server/entitlements';
+import type { Locale, Unit } from '../../types';
+import type { VolumePoint } from '../../lib/marathon/tier-pages';
+
+interface Props {
+  locale: Locale;
+  order: Order;
+  orderPlan: OrderPlan;
+  unit: Unit;
+  showStrength: boolean;
+  currentWeek: number | null;
+}
+
+const { locale, order, orderPlan, unit, showStrength, currentWeek } =
+  Astro.props;
+const { plan, fitness, history } = orderPlan;
+
+const copy = getMarathonCopy(locale);
+const shared = getSharedCopy(locale);
+const tierCopy = getTierCopy(locale)[order.planInputs.tier];
+const resolver = createResolver(fitness, plan.mp);
+
+const dayNames = Array.from({ length: 7 }, (_, i) =>
+  new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(
+    new Date(Date.UTC(2024, 0, 1 + i)),
+  ),
+);
+
+const curve: VolumePoint[] = plan.weeks.map((w) => ({
+  weekNumber: w.weekNumber,
+  phase: w.phase,
+  phaseLabel: copy[`week.label.${w.phase}`],
+  km: Math.round(w.volumeM / 1000),
+  mi: Math.round(w.volumeM / 1000 / KM_PER_MILE),
+  isDeload: w.isDeload,
+  isTestWeek: w.isTestWeek,
+}));
+
+const paceSuffix = unit === 'km' ? '/km' : '/mi';
+const mpFast = formatPace(plan.mp.fastSecPerKm, unit);
+const mpSlow = formatPace(plan.mp.slowSecPerKm, unit);
+const goal = order.planInputs.goalFinishSec
+  ? assessGoal(plan.mp, order.planInputs.goalFinishSec)
+  : null;
+
+const base = `/${locale}/marathon/p/${order.accessToken}`;
+const link = (over: { unit?: Unit; strength?: boolean }): string => {
+  const params = new URLSearchParams();
+  const nextUnit = over.unit ?? unit;
+  const nextStrength = over.strength ?? showStrength;
+  if (nextUnit === 'mile') params.set('unit', 'mile');
+  if (nextStrength) params.set('strength', '1');
+  const query = params.toString();
+  return query ? `${base}?${query}` : base;
+};
+
+/** Stamped on screen and into every print, so a reprint is visibly current. */
+const stamp = `${copy['rpe.label']} ${fitness.vdot.toFixed(1)} VDOT`;
+const fitnessWeek = fitness.setAtWeek;
+---
+
+<AppLayout
+  title={`${tierCopy.name}: ${order.planInputs.lengthWeeks} weeks`}
+  description={tierCopy.description}
+  locale={locale}
+>
+  <article class="pd">
+    <p class="pd-watermark">
+      {order.buyerName ? `${order.buyerName}, ` : ''}{order.email} · #{order.id}
+    </p>
+
+    <header class="pd-head container">
+      <p class="pd-eyebrow">{shared.indexH1}</p>
+      <h1>{tierCopy.name}</h1>
+      <p class="pd-sub">
+        {order.planInputs.lengthWeeks}
+        {shared.labels.week.toLowerCase()}s
+        {order.planInputs.marathonDate && ` · ${order.planInputs.marathonDate}`}
+      </p>
+
+      <dl class="pd-facts">
+        <div>
+          <dt>VDOT</dt>
+          <dd>{fitness.vdot.toFixed(1)}</dd>
+        </div>
+        <div>
+          <dt>{copy['anchor.mp']}</dt>
+          <dd>{mpFast}&ndash;{mpSlow}{paceSuffix}</dd>
+        </div>
+        <div>
+          <dt>{shared.labels.peakVolume}</dt>
+          <dd>
+            {
+              unit === 'km'
+                ? `${Math.round(plan.peakVolumeM / 1000)} km`
+                : `${Math.round(plan.peakVolumeM / 1000 / KM_PER_MILE)} mi`
+            }
+          </dd>
+        </div>
+        <div>
+          <dt>{copy['day.race']}</dt>
+          <dd>{formatTime(plan.mp.predictedFinishSec)}</dd>
+        </div>
+      </dl>
+
+      {
+        goal && (
+          <p class:list={['pd-goal', `is-${goal.verdict}`]}>
+            {`${formatTime(goal.supportedFinishSec)} vs ${formatTime(goal.goalFinishSec)}`}
+          </p>
+        )
+      }
+
+      <p class="pd-stamp">
+        {`${shared.labels.week} ${fitnessWeek} ${stamp}`}
+      </p>
+    </header>
+
+    <nav class="pd-controls container" aria-label="Plan options">
+      <a
+        href={link({ unit: unit === 'km' ? 'mile' : 'km' })}
+        rel="nofollow"
+        class="pd-btn"
+      >
+        {unit === 'km' ? 'mi' : 'km'}
+      </a>
+      <a href={link({ strength: !showStrength })} rel="nofollow" class="pd-btn">
+        {shared.labels.strengthOptional}
+      </a>
+      <a
+        href={`/api/plan-export?token=${order.accessToken}&format=csv`}
+        class="pd-btn"
+      >
+        CSV
+      </a>
+      <a
+        href={`/api/plan-export?token=${order.accessToken}&format=ics`}
+        class="pd-btn"
+      >
+        Calendar
+      </a>
+      <button type="button" class="pd-btn" id="pd-print">Print</button>
+    </nav>
+
+    <section class="pd-shape container">
+      <BuildSilhouette
+        weeks={curve}
+        unit={unit}
+        ariaLabel={`${tierCopy.name}: weekly volume across ${plan.weeks.length} weeks`}
+      />
+    </section>
+
+    <section class="pd-weeks container">
+      {
+        plan.weeks.map((week) => (
+          <PlanWeek
+            week={week}
+            resolver={resolver}
+            copy={copy}
+            labels={shared.labels}
+            unit={unit}
+            dayNames={dayNames}
+            showStrength={showStrength}
+            open={
+              currentWeek === week.weekNumber ||
+              (!currentWeek && week.weekNumber === 1)
+            }
+            rpeLabel={copy['rpe.label']}
+            altLabel={copy['alt.label']}
+          />
+        ))
+      }
+    </section>
+
+    <section class="pd-checkin container" id="fitness">
+      <h2>{copy['rpe.label']}</h2>
+      <p class="pd-note">{copy['rpe.subt']}</p>
+      <form method="post" action="/api/fitness" class="pd-form">
+        <input type="hidden" name="token" value={order.accessToken} />
+        <input type="hidden" name="mode" value="checkin" />
+        <label>
+          <span>Could you have done more?</span>
+          <select name="reserve">
+            <option value="several_more">Several more reps</option>
+            <option value="one_or_two_more" selected>One or two more</option>
+            <option value="nothing_left">Nothing left</option>
+            <option value="could_not_finish">Could not finish it</option>
+          </select>
+        </label>
+        <label>
+          <span>Last rep versus the first?</span>
+          <select name="lastRep">
+            <option value="held" selected>Held the pace</option>
+            <option value="drifted">Drifted a little</option>
+            <option value="fell_away">Fell away</option>
+          </select>
+        </label>
+        <label>
+          <span>Effort out of 10?</span>
+          <select name="effort">
+            <option value="under">Under 7</option>
+            <option value="on_target" selected>About 7</option>
+            <option value="over">Over 8</option>
+          </select>
+        </label>
+        <button type="submit" class="btn btn-primary">Update my paces</button>
+      </form>
+
+      {
+        history.length > 0 && (
+          <ol class="pd-history">
+            {history.map((record) => (
+              <li>
+                <span>
+                  {shared.labels.week} {record.setAtWeek}
+                </span>
+                <strong>{record.vdot.toFixed(1)}</strong>
+                <em>{record.source}</em>
+              </li>
+            ))}
+          </ol>
+        )
+      }
+    </section>
+
+    <footer class="pd-legal container">
+      <p>{shared.disclaimer}</p>
+      <p>{shared.medicalNote}</p>
+      <p class="pd-print-stamp">
+        {
+          `${order.email} · #${order.id} · ${shared.labels.week} ${fitnessWeek} · VDOT ${fitness.vdot.toFixed(1)}`
+        }
+      </p>
+    </footer>
+  </article>
+</AppLayout>
+
+<script is:inline>
+  document.getElementById('pd-print')?.addEventListener('click', () => {
+    window.print();
+  });
+</script>
+
+<style>
+  .pd {
+    padding-block: var(--space-8) var(--space-20);
+  }
+  .pd > * + * {
+    margin-top: var(--space-10);
+  }
+  .pd-watermark {
+    margin: 0 0 var(--space-6);
+    padding: var(--space-2) var(--space-4);
+    background: var(--color-bg-elevated);
+    border-bottom: 1px solid var(--color-border);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+  .pd-eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-3);
+  }
+  .pd-head h1 {
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 5vw, var(--text-4xl));
+    font-weight: var(--font-bold);
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+  .pd-sub {
+    margin: var(--space-2) 0 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+  .pd-facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+    gap: var(--space-4);
+    margin: var(--space-6) 0 0;
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--color-border);
+  }
+  .pd-facts dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+  }
+  .pd-facts dd {
+    margin: var(--space-1) 0 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-lg);
+    color: var(--color-text-primary);
+  }
+  .pd-goal {
+    margin: var(--space-4) 0 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+  }
+  .pd-goal.is-realistic {
+    color: var(--color-easy);
+  }
+  .pd-goal.is-ambitious {
+    color: var(--color-threshold);
+  }
+  .pd-goal.is-unrealistic {
+    color: var(--color-accent-primary);
+  }
+  .pd-stamp {
+    margin: var(--space-3) 0 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+
+  .pd-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  .pd-btn {
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    background: var(--color-bg-secondary);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .pd-btn:hover {
+    border-color: var(--color-border-accent);
+    color: var(--color-text-primary);
+  }
+
+  .pd-checkin h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    margin: 0 0 var(--space-3);
+  }
+  .pd-note {
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    max-width: 66ch;
+  }
+  .pd-form {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 32rem;
+    margin-top: var(--space-5);
+  }
+  .pd-form label {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .pd-form span {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+  .pd-form select {
+    padding: var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    font-size: var(--text-sm);
+  }
+  .pd-history {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin: var(--space-6) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .pd-history li {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+  .pd-history strong {
+    color: var(--color-text-primary);
+  }
+
+  .pd-legal {
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-border);
+  }
+  .pd-legal p {
+    font-size: var(--text-xs);
+    line-height: 1.65;
+    color: var(--color-text-muted);
+    max-width: 78ch;
+  }
+  .pd-print-stamp {
+    display: none;
+  }
+
+  @media print {
+    .pd-controls,
+    .pd-checkin,
+    .pd-history {
+      display: none;
+    }
+    .pd-print-stamp {
+      display: block;
+    }
+    /* A collapsed details element prints nothing, so open the whole build. */
+    :global(details:not([open]) > *:not(summary)) {
+      display: block !important;
+    }
+  }
+</style>

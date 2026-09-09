@@ -55,6 +55,23 @@ export interface MarathonCopyShared {
   ctaBundle: string;
   ctaLearnMore: string;
   priceNote: string;
+  /** The purchase form. */
+  buy: {
+    heading: string;
+    lengthLabel: string;
+    lengthHint: string;
+    raceLabel: string;
+    raceHint: string;
+    timeLabel: string;
+    timePlaceholder: string;
+    unitLabel: string;
+    dateLabel: string;
+    dateHint: string;
+    goalLabel: string;
+    goalHint: string;
+    submit: string;
+    weeks: string;
+  };
   /** Labels used in the plan grid and tables. */
   labels: {
     peakVolume: string;
@@ -308,6 +325,24 @@ export const sharedCopyEn: MarathonCopyShared = {
   ctaBundle: 'Get all four tiers',
   ctaLearnMore: 'See the plan',
   priceNote: 'One payment, lifetime access. No subscription.',
+  buy: {
+    heading: 'Build my plan',
+    lengthLabel: 'How long is your build',
+    lengthHint: 'Take the longest one that fits before your race.',
+    raceLabel: 'Your most recent race',
+    raceHint:
+      'Any distance. This is what every pace in the plan is computed from, so use a result you actually ran, not one you hope to run.',
+    timeLabel: 'Time',
+    timePlaceholder: 'mm:ss or h:mm:ss',
+    unitLabel: 'Show paces in',
+    dateLabel: 'Race date (optional)',
+    dateHint: 'Adds real calendar dates to every session.',
+    goalLabel: 'Goal time (optional)',
+    goalHint:
+      'Shown next to what your current fitness supports. No session is ever prescribed from a goal.',
+    submit: 'Continue to payment',
+    weeks: 'weeks',
+  },
   labels: {
     peakVolume: 'Peak volume',
     weeklyVolume: 'Weekly volume',

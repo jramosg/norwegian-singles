@@ -241,6 +241,24 @@ export const sharedCopyKo: MarathonCopyShared = {
   ctaBundle: '4단계 모두 구매하기',
   ctaLearnMore: '플랜 보기',
   priceNote: '단일 결제, 평생 이용 가능. 구독 없음.',
+  buy: {
+    heading: '내 플랜 만들기',
+    lengthLabel: '훈련 기간',
+    lengthHint: '레이스 전까지 들어가는 가장 긴 기간을 선택하세요.',
+    raceLabel: '가장 최근 레이스 기록',
+    raceHint:
+      '거리는 상관없습니다. 플랜의 모든 페이스가 이 기록을 기준으로 계산되므로, 희망하는 기록이 아니라 실제로 달린 기록을 입력하세요.',
+    timeLabel: '기록',
+    timePlaceholder: 'mm:ss 또는 h:mm:ss',
+    unitLabel: '페이스 단위',
+    dateLabel: '레이스 날짜 (선택)',
+    dateHint: '모든 세션에 실제 캘린더 날짜를 추가합니다.',
+    goalLabel: '목표 기록 (선택)',
+    goalHint:
+      '현재 체력이 뒷받침하는 기록과 나란히 표시됩니다. 어떤 세션도 목표 기록을 기준으로 설계되지 않습니다.',
+    submit: '결제로 이동',
+    weeks: '주',
+  },
   labels: {
     peakVolume: '피크 볼륨',
     weeklyVolume: '주간 볼륨',

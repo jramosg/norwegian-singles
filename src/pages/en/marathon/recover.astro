@@ -1,0 +1,85 @@
+---
+/**
+ * Re-send a plan link. Responds the same way whether or not the address
+ * bought anything, so it cannot be used to enumerate customers.
+ */
+import AppLayout from '../../../layouts/AppLayout.astro';
+import { getSharedCopy } from '../../../lib/marathon/tier-copy';
+
+export const prerender = false;
+
+const locale = 'en';
+const shared = getSharedCopy(locale);
+const sent = Astro.url.searchParams.get('sent') === '1';
+
+Astro.response.headers.set('Cache-Control', 'no-store');
+Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+---
+
+<AppLayout title={shared.indexTitle} locale={locale}>
+  <article class="rc container">
+    <h1>Resend my plan link</h1>
+    {
+      sent ? (
+        <p class="rc-lead">
+          If that address has a plan, the link is on its way. Check your spam
+          folder if it does not arrive.
+        </p>
+      ) : (
+        <form method="post" action="/api/recover" class="rc-form">
+          <input type="hidden" name="locale" value={locale} />
+          <label>
+            <span>The email you paid with</span>
+            <input type="email" name="email" required autocomplete="email" />
+          </label>
+          <button type="submit" class="btn btn-primary">
+            Send the link
+          </button>
+        </form>
+      )
+    }
+    <p class="rc-note">{shared.medicalNote}</p>
+  </article>
+</AppLayout>
+
+<style>
+  .rc {
+    padding-block: var(--space-16) var(--space-20);
+    max-width: 34rem;
+  }
+  .rc h1 {
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    margin: 0 0 var(--space-4);
+  }
+  .rc-lead {
+    font-size: var(--text-base);
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+  .rc-form {
+    display: grid;
+    gap: var(--space-4);
+    margin: var(--space-6) 0;
+  }
+  .rc-form label {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .rc-form span {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+  .rc-form input {
+    padding: var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+  }
+  .rc-note {
+    margin-top: var(--space-8);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+</style>

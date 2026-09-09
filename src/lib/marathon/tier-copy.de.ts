@@ -245,6 +245,24 @@ export const sharedCopyDe: MarathonCopyShared = {
   ctaBundle: 'Alle vier Stufen holen',
   ctaLearnMore: 'Plan ansehen',
   priceNote: 'Einmalzahlung, lebenslanger Zugang. Kein Abo.',
+  buy: {
+    heading: 'Meinen Plan erstellen',
+    lengthLabel: 'Wie lang ist dein Aufbau',
+    lengthHint: 'Wähle die längste, die noch vor deinem Rennen passt.',
+    raceLabel: 'Dein letztes Rennergebnis',
+    raceHint:
+      'Beliebige Distanz. Daraus wird jeder Pace im Plan berechnet, also nutze ein Ergebnis, das du wirklich gelaufen bist, nicht eines, das du dir erhoffst.',
+    timeLabel: 'Zeit',
+    timePlaceholder: 'mm:ss oder h:mm:ss',
+    unitLabel: 'Paces anzeigen in',
+    dateLabel: 'Renndatum (optional)',
+    dateHint: 'Fügt jeder Einheit echte Kalenderdaten hinzu.',
+    goalLabel: 'Zielzeit (optional)',
+    goalHint:
+      'Wird neben dem angezeigt, was deine aktuelle Form hergibt. Keine Einheit wird jemals aus einem Ziel abgeleitet.',
+    submit: 'Weiter zur Zahlung',
+    weeks: 'Wochen',
+  },
   labels: {
     peakVolume: 'Spitzenumfang',
     weeklyVolume: 'Wochenumfang',

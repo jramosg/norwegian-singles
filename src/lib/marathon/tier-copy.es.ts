@@ -245,6 +245,24 @@ export const sharedCopyEs: MarathonCopyShared = {
   ctaBundle: 'Consigue los cuatro niveles',
   ctaLearnMore: 'Ver el plan',
   priceNote: 'Un solo pago, acceso de por vida. Sin suscripción.',
+  buy: {
+    heading: 'Crea mi plan',
+    lengthLabel: 'Cuánto dura tu preparación',
+    lengthHint: 'Elige la más larga que encaje antes de tu carrera.',
+    raceLabel: 'Tu carrera más reciente',
+    raceHint:
+      'Cualquier distancia. Es la base a partir de la cual se calcula cada ritmo del plan, así que usa una marca que hayas corrido de verdad, no una que esperas conseguir.',
+    timeLabel: 'Tiempo',
+    timePlaceholder: 'mm:ss o h:mm:ss',
+    unitLabel: 'Mostrar ritmos en',
+    dateLabel: 'Fecha de la carrera (opcional)',
+    dateHint: 'Añade fechas reales del calendario a cada sesión.',
+    goalLabel: 'Marca objetivo (opcional)',
+    goalHint:
+      'Se muestra junto a lo que tu forma actual permite. Ninguna sesión se calcula nunca a partir de un objetivo.',
+    submit: 'Continuar al pago',
+    weeks: 'semanas',
+  },
   labels: {
     peakVolume: 'Volumen máximo',
     weeklyVolume: 'Volumen semanal',

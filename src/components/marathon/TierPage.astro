@@ -1,16 +1,13 @@
 ---
 import AppLayout from '../../layouts/AppLayout.astro';
 import BuildSilhouette from './BuildSilhouette.astro';
+import BuyForm from './BuyForm.astro';
 import SampleWeek from './SampleWeek.astro';
 import type { MarathonTierPage } from '../../lib/marathon/tier-pages';
 import { createTierStructuredData } from '../../lib/marathon/tier-pages';
 import { getSharedCopy } from '../../lib/marathon/tier-copy';
 import { getMarathonCopy } from '../../lib/marathon/copy';
-import {
-  CURRENCY,
-  SINGLE_TIER_PRICE,
-  formatPrice,
-} from '../../lib/marathon/pricing';
+import { CURRENCY, SINGLE_TIER_PRICE } from '../../lib/marathon/pricing';
 import { formatPace } from '../../lib/paces';
 
 interface Props {
@@ -145,18 +142,7 @@ const mpSlow = formatPace(page.referenceMp.slowSecPerKm, 'km');
       <ul class="tp-included">
         {shared.included.map((item) => <li>{item}</li>)}
       </ul>
-      <div class="tp-cta">
-        <p class="tp-price">
-          {formatPrice(SINGLE_TIER_PRICE)}
-          <span>{shared.priceNote}</span>
-        </p>
-        <a
-          class="btn btn-primary"
-          href={`/${page.locale}/${shared.indexSlug}/`}
-        >
-          {shared.ctaBuy}
-        </a>
-      </div>
+      <BuyForm locale={page.locale} tier={page.tier} shared={shared} />
       <p class="tp-lengths">{shared.lengthNote}</p>
     </section>
 

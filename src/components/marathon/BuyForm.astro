@@ -1,0 +1,254 @@
+---
+/**
+ * The purchase form.
+ *
+ * A plain form post: it creates the Stripe session server-side and redirects
+ * to Stripe, so buying works with JavaScript disabled. The race result is the
+ * only required input, because it is the only thing every pace in the plan is
+ * derived from.
+ */
+import { DISTANCE_METERS } from '../../types';
+import { PLAN_LENGTHS } from '../../lib/marathon/phases';
+import { formatPrice, SINGLE_TIER_PRICE } from '../../lib/marathon/pricing';
+import type { MarathonCopyShared } from '../../lib/marathon/tier-copy.en';
+import type { Locale } from '../../types';
+import type { TierId } from '../../lib/marathon/types';
+
+interface Props {
+  locale: Locale;
+  /** Omitted for the bundle, where the buyer chooses a starting tier. */
+  tier?: TierId;
+  shared: MarathonCopyShared;
+  sku?: 'bundle' | TierId;
+  price?: number;
+  /** Tier options, required when no fixed tier is given. */
+  tierChoices?: { id: TierId; name: string; peakKm: number }[];
+}
+
+const {
+  locale,
+  tier,
+  shared,
+  sku = tier,
+  price = SINGLE_TIER_PRICE,
+  tierChoices,
+} = Astro.props;
+const buy = shared.buy;
+
+const RACE_CHOICES: { label: string; metres: number }[] = [
+  { label: '5K', metres: DISTANCE_METERS['5K'] },
+  { label: '10K', metres: DISTANCE_METERS['10K'] },
+  { label: '15K', metres: DISTANCE_METERS['15K'] },
+  { label: 'Half marathon', metres: DISTANCE_METERS['21K'] },
+  { label: 'Marathon', metres: DISTANCE_METERS['42K'] },
+];
+
+const today = new Date().toISOString().slice(0, 10);
+---
+
+<form method="post" action="/api/checkout" class="bf">
+  <input type="hidden" name="sku" value={sku} />
+  <input type="hidden" name="locale" value={locale} />
+  {tier && <input type="hidden" name="tier" value={tier} />}
+
+  <h3 class="bf-h">{buy.heading}</h3>
+
+  {
+    !tier && tierChoices && (
+      <fieldset class="bf-set">
+        <legend>{shared.chooseTierHeading}</legend>
+        <div class="bf-radios">
+          {tierChoices.map((choice, i) => (
+            <label class="bf-radio">
+              <input
+                type="radio"
+                name="tier"
+                value={choice.id}
+                checked={i === 1}
+                required
+              />
+              <span>{choice.name}</span>
+            </label>
+          ))}
+        </div>
+        <p class="bf-hint">{shared.lengthNote}</p>
+      </fieldset>
+    )
+  }
+
+  <fieldset class="bf-set">
+    <legend>{buy.lengthLabel}</legend>
+    <div class="bf-radios">
+      {
+        PLAN_LENGTHS.map((weeks, i) => (
+          <label class="bf-radio">
+            <input
+              type="radio"
+              name="lengthWeeks"
+              value={weeks}
+              checked={i === PLAN_LENGTHS.length - 1}
+              required
+            />
+            <span>
+              {weeks} {buy.weeks}
+            </span>
+          </label>
+        ))
+      }
+    </div>
+    <p class="bf-hint">{buy.lengthHint}</p>
+  </fieldset>
+
+  <div class="bf-row">
+    <label class="bf-field">
+      <span>{buy.raceLabel}</span>
+      <select name="raceDistanceM" required>
+        {
+          RACE_CHOICES.map((choice) => (
+            <option value={choice.metres} selected={choice.label === '10K'}>
+              {choice.label}
+            </option>
+          ))
+        }
+      </select>
+    </label>
+    <label class="bf-field">
+      <span>{buy.timeLabel}</span>
+      <input
+        type="text"
+        name="raceTime"
+        placeholder={buy.timePlaceholder}
+        inputmode="numeric"
+        pattern="^\d{1,2}(:\d{2}){1,2}$"
+        required
+      />
+    </label>
+  </div>
+  <p class="bf-hint">{buy.raceHint}</p>
+
+  <div class="bf-row">
+    <label class="bf-field">
+      <span>{buy.unitLabel}</span>
+      <select name="unit">
+        <option value="km" selected>km</option>
+        <option value="mile">mi</option>
+      </select>
+    </label>
+    <label class="bf-field">
+      <span>{buy.dateLabel}</span>
+      <input type="date" name="marathonDate" min={today} />
+    </label>
+  </div>
+  <p class="bf-hint">{buy.dateHint}</p>
+
+  <label class="bf-field">
+    <span>{buy.goalLabel}</span>
+    <input
+      type="text"
+      name="goalTime"
+      placeholder={buy.timePlaceholder}
+      inputmode="numeric"
+      pattern="^\d{1,2}(:\d{2}){1,2}$"
+    />
+  </label>
+  <p class="bf-hint">{buy.goalHint}</p>
+
+  <div class="bf-submit">
+    <span class="bf-price">{formatPrice(price)}</span>
+    <button type="submit" class="btn btn-primary">{buy.submit}</button>
+  </div>
+  <p class="bf-hint">{shared.priceNote}</p>
+</form>
+
+<style>
+  .bf {
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-6);
+    border: 1px solid var(--color-border-accent);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-elevated);
+  }
+  .bf-h {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    margin: 0;
+  }
+  .bf-set {
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+  .bf-set legend {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-2);
+  }
+  .bf-radios {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  .bf-radio {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+  }
+  .bf-radio:has(input:checked) {
+    border-color: var(--color-ms);
+    color: var(--color-text-primary);
+  }
+  .bf-row {
+    display: grid;
+    gap: var(--space-4);
+  }
+  .bf-field {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .bf-field > span {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+  .bf-field select,
+  .bf-field input {
+    padding: var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    font-size: var(--text-base);
+  }
+  .bf-hint {
+    margin: 0;
+    font-size: var(--text-xs);
+    line-height: 1.55;
+    color: var(--color-text-muted);
+  }
+  .bf-submit {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+    margin-top: var(--space-2);
+  }
+  .bf-price {
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: var(--font-bold);
+    letter-spacing: -0.02em;
+  }
+
+  @media (min-width: 560px) {
+    .bf-row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

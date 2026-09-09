@@ -1,0 +1,104 @@
+---
+/**
+ * Post-checkout landing. Looks the order up by its Stripe session so the plan
+ * link is on screen immediately, without waiting for an email.
+ */
+import AppLayout from '../../../layouts/AppLayout.astro';
+import { getDb } from '../../../lib/server/db';
+import { findOrderBySessionId } from '../../../lib/server/entitlements';
+import { getSharedCopy } from '../../../lib/marathon/tier-copy';
+
+export const prerender = false;
+
+const locale = 'ko';
+const shared = getSharedCopy(locale);
+const sessionId = Astro.url.searchParams.get('session_id') ?? '';
+
+Astro.response.headers.set('Cache-Control', 'no-store');
+Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+
+// The webhook usually lands before the buyer does, but not always: Stripe
+// redirects the browser and delivers the event independently.
+const order = sessionId ? findOrderBySessionId(sessionId, getDb()) : null;
+const planPath = order ? `/${locale}/marathon/p/${order.accessToken}` : null;
+---
+
+<AppLayout title={shared.indexTitle} locale={locale}>
+  <article class="ck container">
+    <h1>{shared.ctaBuy}</h1>
+    {
+      planPath ? (
+        <Fragment>
+          <p class="ck-lead">{shared.priceNote}</p>
+          <p class="ck-link">
+            <a href={planPath}>{planPath}</a>
+          </p>
+          <p class="ck-note">{shared.lengthNote}</p>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <p class="ck-lead">
+            Payment received. Your plan link is being prepared and an email is
+            on its way. Reload this page in a moment.
+          </p>
+          <p class="ck-note">
+            <a href={`/${locale}/marathon/recover`}>Resend my link</a>
+          </p>
+        </Fragment>
+      )
+    }
+  </article>
+</AppLayout>
+
+{
+  /* Saved locally as a second way back in, alongside the emailed link. Kept
+     out of the template above because a script inside a JSX fragment has its
+     braces parsed as expressions. */
+}
+{
+  planPath && (
+    <script
+      is:inline
+      define:vars={{ planPath }}
+      set:html={`
+      try {
+        localStorage.setItem('nsm-marathon-plan', planPath);
+      } catch (error) {
+        /* Private browsing or blocked storage: the emailed link stands. */
+      }
+    `}
+    />
+  )
+}
+
+<style>
+  .ck {
+    padding-block: var(--space-16) var(--space-20);
+  }
+  .ck h1 {
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    margin: 0 0 var(--space-4);
+  }
+  .ck-lead {
+    font-size: var(--text-lg);
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    max-width: 60ch;
+  }
+  .ck-link {
+    margin: var(--space-6) 0;
+    padding: var(--space-4);
+    border: 1px solid var(--color-border-accent);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-elevated);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    word-break: break-all;
+  }
+  .ck-note {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    max-width: 60ch;
+  }
+</style>

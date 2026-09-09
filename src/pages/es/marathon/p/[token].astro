@@ -1,0 +1,58 @@
+---
+/**
+ * A bought plan, addressed by its secret token. Rendered on demand: the
+ * paces come from the current fitness estimate, so this page must never be
+ * cached or indexed.
+ */
+import PlanDocument from '../../../../components/marathon/PlanDocument.astro';
+import { getDb } from '../../../../lib/server/db';
+import {
+  DEVICE_SOFT_LIMIT,
+  findOrderByToken,
+  noteTokenAccess,
+} from '../../../../lib/server/entitlements';
+import { currentWeekNumber, planForOrder } from '../../../../lib/server/plan';
+
+export const prerender = false;
+
+const locale = 'es';
+const token = Astro.params.token ?? '';
+
+Astro.response.headers.set('Cache-Control', 'no-store');
+Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+Astro.response.headers.set('Referrer-Policy', 'no-referrer');
+
+const db = getDb();
+const order = findOrderByToken(token, db);
+if (!order) {
+  return new Response('Not found', { status: 404 });
+}
+
+// Count distinct devices. A buyer uses a phone and a laptop; a token doing
+// the rounds of a club looks nothing like that. Logged only, never blocked.
+const devices = noteTokenAccess(
+  order.id,
+  Astro.clientAddress ?? 'unknown',
+  Astro.request.headers.get('user-agent') ?? 'unknown',
+  db,
+);
+if (devices > DEVICE_SOFT_LIMIT) {
+  console.warn(
+    `[plan] order ${order.id} seen on ${devices} devices, over the soft limit`,
+  );
+}
+
+const orderPlan = planForOrder(order, db);
+const unit = Astro.url.searchParams.get('unit') === 'mile' ? 'mile' : 'km';
+const showStrength = Astro.url.searchParams.get('strength') === '1';
+const currentWeek = currentWeekNumber(orderPlan.plan);
+---
+
+<PlanDocument
+  locale={locale}
+  order={order}
+  orderPlan={orderPlan}
+  unit={unit}
+  showStrength={showStrength}
+  currentWeek={currentWeek}
+/>

@@ -1,6 +1,7 @@
 ---
 import AppLayout from '../../layouts/AppLayout.astro';
 import BuildSilhouette from './BuildSilhouette.astro';
+import BuyForm from './BuyForm.astro';
 import type { MarathonIndexPage } from '../../lib/marathon/tier-pages';
 import { createMarathonFaqStructuredData } from '../../lib/marathon/tier-pages';
 import {
@@ -120,12 +121,35 @@ const structuredData = createMarathonFaqStructuredData(page);
           <span class="mh-price-label">{shared.ctaBuy}</span>
           <strong>{formatPrice(SINGLE_TIER_PRICE)}</strong>
           <span class="mh-price-note">{shared.priceNote}</span>
+          <ul class="mh-price-links">
+            {
+              tiers.map((tier) => (
+                <li>
+                  <a href={`/${page.locale}/${tier.slug}/`}>{tier.copy.name}</a>
+                </li>
+              ))
+            }
+          </ul>
         </div>
         <div class="mh-price is-bundle">
           <span class="mh-price-label">{shared.ctaBundle}</span>
           <strong>{formatPrice(BUNDLE_PRICE)}</strong>
           <span class="mh-price-note">{shared.priceNote}</span>
         </div>
+      </div>
+
+      <div class="mh-bundle-form">
+        <BuyForm
+          locale={page.locale}
+          shared={shared}
+          sku="bundle"
+          price={BUNDLE_PRICE}
+          tierChoices={tiers.map((tier) => ({
+            id: tier.tier,
+            name: tier.copy.name,
+            peakKm: tier.peakKm,
+          }))}
+        />
       </div>
     </section>
 
@@ -429,6 +453,23 @@ const structuredData = createMarathonFaqStructuredData(page);
   .mh-price-note {
     font-size: var(--text-xs);
     color: var(--color-text-muted);
+  }
+  .mh-price-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+  }
+  .mh-price-links a {
+    color: var(--color-accent-primary);
+  }
+  .mh-bundle-form {
+    margin-top: var(--space-6);
+    max-width: 34rem;
   }
 
   .mh-faq-list {

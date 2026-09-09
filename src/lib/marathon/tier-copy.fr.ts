@@ -245,6 +245,24 @@ export const sharedCopyFr: MarathonCopyShared = {
   ctaBundle: 'Obtenir les quatre paliers',
   ctaLearnMore: 'Voir le plan',
   priceNote: "Un seul paiement, accès à vie. Pas d'abonnement.",
+  buy: {
+    heading: 'Créer mon plan',
+    lengthLabel: 'Durée de ta préparation',
+    lengthHint: 'Prends la plus longue qui tienne avant ta course.',
+    raceLabel: 'Ton résultat de course le plus récent',
+    raceHint:
+      "N'importe quelle distance. C'est à partir de ce résultat que chaque allure du plan est calculée, alors utilise un résultat que tu as vraiment couru, pas celui que tu espères courir.",
+    timeLabel: 'Temps',
+    timePlaceholder: 'mm:ss ou h:mm:ss',
+    unitLabel: 'Afficher les allures en',
+    dateLabel: 'Date de la course (optionnel)',
+    dateHint: 'Ajoute de vraies dates de calendrier à chaque séance.',
+    goalLabel: 'Temps objectif (optionnel)',
+    goalHint:
+      "Affiché à côté de ce que ta forme actuelle permet. Aucune séance n'est jamais construite à partir d'un objectif.",
+    submit: 'Continuer vers le paiement',
+    weeks: 'semaines',
+  },
   labels: {
     peakVolume: 'Volume maximal',
     weeklyVolume: 'Volume hebdomadaire',
