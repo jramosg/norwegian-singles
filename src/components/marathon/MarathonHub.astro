@@ -1,0 +1,482 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import BuildSilhouette from './BuildSilhouette.astro';
+import type { MarathonIndexPage } from '../../lib/marathon/tier-pages';
+import { createMarathonFaqStructuredData } from '../../lib/marathon/tier-pages';
+import {
+  BUNDLE_PRICE,
+  SINGLE_TIER_PRICE,
+  formatPrice,
+} from '../../lib/marathon/pricing';
+import { PLAN_LENGTHS } from '../../lib/marathon/phases';
+
+interface Props {
+  page: MarathonIndexPage;
+}
+
+const { page } = Astro.props;
+const { shared, tiers } = page;
+const structuredData = createMarathonFaqStructuredData(page);
+---
+
+<AppLayout
+  title={shared.indexTitle}
+  description={shared.indexDescription}
+  locale={page.locale}
+  structuredData={structuredData}
+>
+  <article class="mh">
+    <header class="mh-hero container">
+      <h1>{shared.indexH1}</h1>
+      <p class="mh-lead">{shared.indexIntro}</p>
+    </header>
+
+    <section class="mh-tiers container" aria-labelledby="mh-tiers-h">
+      <h2 id="mh-tiers-h" class="mh-h2">{shared.chooseTierHeading}</h2>
+      <ul class="mh-grid">
+        {
+          tiers.map((tier) => (
+            <li class="mh-card">
+              <a href={`/${page.locale}/${tier.slug}/`}>
+                <span class="mh-card-name">{tier.copy.name}</span>
+                <span class="mh-card-peak">
+                  <strong>{tier.peakKm}</strong>
+                  <abbr>km</abbr>
+                  <em>{tier.peakMi} mi</em>
+                </span>
+                <BuildSilhouette
+                  weeks={tier.volumeCurve}
+                  compact={true}
+                  ariaLabel={`${tier.copy.name}: peaks at ${tier.peakKm} km a week`}
+                />
+                <span class="mh-card-tag">{tier.copy.tagline}</span>
+                <span class="mh-card-cta">{shared.ctaLearnMore}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mh-note">{shared.lengthNote}</p>
+      <ul class="mh-lengths">
+        {
+          PLAN_LENGTHS.map((weeks) => (
+            <li>
+              <strong>{weeks}</strong> {shared.chooseLengthHeading}
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="mh-why container" aria-labelledby="mh-why-h">
+      <h2 id="mh-why-h" class="mh-h2">{shared.comparisonHeading}</h2>
+      <p class="mh-lead-sm">{shared.comparisonIntro}</p>
+      <div class="mh-table-wrap">
+        <table class="mh-table">
+          <thead>
+            <tr>
+              <th scope="col"><span class="sr-only">Feature</span></th>
+              <th scope="col">PDF</th>
+              <th scope="col">{shared.indexH1}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              shared.comparison.map((row) => (
+                <tr>
+                  <th scope="row">{row.label}</th>
+                  <td class="mh-pdf">{row.pdf}</td>
+                  <td class="mh-ours">{row.ours}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="mh-phases container" aria-labelledby="mh-phases-h">
+      <h2 id="mh-phases-h" class="mh-h2">{shared.phasesHeading}</h2>
+      <ol class="mh-phase-list">
+        {
+          shared.phases.map((phase, i) => (
+            <li class={`is-${['base', 'supportive', 'specific', 'taper'][i]}`}>
+              <h3>{phase.name}</h3>
+              <p class="mh-phase-weeks">{phase.weeks}</p>
+              <p>{phase.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section class="mh-buy container" aria-labelledby="mh-buy-h">
+      <h2 id="mh-buy-h" class="mh-h2">{shared.includedHeading}</h2>
+      <ul class="mh-included">
+        {shared.included.map((item) => <li>{item}</li>)}
+      </ul>
+      <div class="mh-prices">
+        <div class="mh-price">
+          <span class="mh-price-label">{shared.ctaBuy}</span>
+          <strong>{formatPrice(SINGLE_TIER_PRICE)}</strong>
+          <span class="mh-price-note">{shared.priceNote}</span>
+        </div>
+        <div class="mh-price is-bundle">
+          <span class="mh-price-label">{shared.ctaBundle}</span>
+          <strong>{formatPrice(BUNDLE_PRICE)}</strong>
+          <span class="mh-price-note">{shared.priceNote}</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="mh-faq container" aria-labelledby="mh-faq-h">
+      <h2 id="mh-faq-h" class="mh-h2">{shared.faqHeading}</h2>
+      <dl class="mh-faq-list">
+        {
+          shared.faq.map((item) => (
+            <div>
+              <dt>{item.q}</dt>
+              <dd>{item.a}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <footer class="mh-legal container">
+      <p>{shared.disclaimer}</p>
+      <p>{shared.medicalNote}</p>
+    </footer>
+  </article>
+</AppLayout>
+
+<style>
+  .mh {
+    padding-block: var(--space-12) var(--space-20);
+  }
+  .mh > * + * {
+    margin-top: var(--space-16);
+  }
+
+  .mh-hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.1rem, 6vw, var(--text-6xl));
+    font-weight: var(--font-bold);
+    letter-spacing: -0.025em;
+    line-height: 1.02;
+    margin: 0 0 var(--space-5);
+    max-width: 20ch;
+  }
+  .mh-lead {
+    font-size: var(--text-lg);
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    max-width: 62ch;
+    margin: 0;
+  }
+  .mh-lead-sm {
+    font-size: var(--text-base);
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    max-width: 62ch;
+    margin: 0 0 var(--space-6);
+  }
+
+  .mh-h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: var(--font-semibold);
+    letter-spacing: -0.01em;
+    margin: 0 0 var(--space-6);
+  }
+
+  /* The tier chooser. Each card leads with its silhouette, because the
+     shape of the build is the thing that actually distinguishes the tiers. */
+  .mh-grid {
+    display: grid;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .mh-card a {
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-secondary);
+    text-decoration: none;
+    transition:
+      border-color 0.18s ease,
+      background 0.18s ease,
+      transform 0.18s ease;
+  }
+  .mh-card a:hover,
+  .mh-card a:focus-visible {
+    border-color: var(--color-border-accent);
+    background: var(--color-bg-elevated);
+    transform: translateY(-2px);
+  }
+  .mh-card-name {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
+  }
+  .mh-card-peak {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+  .mh-card-peak strong {
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: var(--font-bold);
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+  }
+  .mh-card-peak abbr {
+    text-decoration: none;
+    margin-left: 2px;
+  }
+  .mh-card-peak em {
+    font-style: normal;
+    color: var(--color-text-muted);
+    margin-left: var(--space-2);
+  }
+  .mh-card-tag {
+    font-size: var(--text-sm);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+  }
+  .mh-card-cta {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-accent-primary);
+  }
+
+  .mh-note {
+    margin: var(--space-8) 0 var(--space-4);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    max-width: 68ch;
+  }
+  .mh-lengths {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .mh-lengths li {
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+  }
+  .mh-lengths strong {
+    font-family: var(--font-mono);
+    color: var(--color-text-primary);
+  }
+
+  .mh-table-wrap {
+    overflow-x: auto;
+  }
+  .mh-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+  }
+  .mh-table th,
+  .mh-table td {
+    text-align: left;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .mh-table thead th {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    font-weight: var(--font-normal);
+  }
+  .mh-table tbody th {
+    font-weight: var(--font-medium);
+    color: var(--color-text-primary);
+    white-space: nowrap;
+  }
+  .mh-pdf {
+    color: var(--color-text-muted);
+  }
+  .mh-ours {
+    color: var(--color-text-primary);
+  }
+
+  .mh-phase-list {
+    display: grid;
+    gap: var(--space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .mh-phase-list li {
+    padding-left: var(--space-5);
+    border-left: 2px solid var(--color-border);
+  }
+  .mh-phase-list li.is-base {
+    border-left-color: color-mix(
+      in oklab,
+      var(--color-threshold),
+      transparent 25%
+    );
+  }
+  .mh-phase-list li.is-supportive {
+    border-left-color: color-mix(
+      in oklab,
+      var(--color-threshold),
+      var(--color-ms) 45%
+    );
+  }
+  .mh-phase-list li.is-specific {
+    border-left-color: var(--color-ms);
+  }
+  .mh-phase-list li.is-taper {
+    border-left-color: var(--color-text-muted);
+  }
+  .mh-phase-list h3 {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    margin: 0;
+  }
+  .mh-phase-weeks {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    margin: var(--space-1) 0 var(--space-3);
+  }
+  .mh-phase-list p:last-child {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    max-width: 68ch;
+  }
+
+  .mh-included {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0 0 var(--space-8);
+    padding: 0;
+    list-style: none;
+  }
+  .mh-included li {
+    position: relative;
+    padding-left: var(--space-6);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+  .mh-included li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5em;
+    width: 6px;
+    height: 6px;
+    border-radius: var(--radius-full);
+    background: var(--color-ms);
+  }
+
+  .mh-prices {
+    display: grid;
+    gap: var(--space-4);
+  }
+  .mh-price {
+    padding: var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-secondary);
+  }
+  .mh-price.is-bundle {
+    border-color: var(--color-border-accent);
+    background: var(--color-bg-elevated);
+  }
+  .mh-price-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+  }
+  .mh-price strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    font-weight: var(--font-bold);
+    letter-spacing: -0.02em;
+    margin: var(--space-2) 0;
+  }
+  .mh-price-note {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+
+  .mh-faq-list {
+    display: grid;
+    gap: var(--space-6);
+    margin: 0;
+  }
+  .mh-faq-list dt {
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-2);
+  }
+  .mh-faq-list dd {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    max-width: 70ch;
+  }
+
+  .mh-legal {
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-border);
+  }
+  .mh-legal p {
+    font-size: var(--text-xs);
+    line-height: 1.65;
+    color: var(--color-text-muted);
+    max-width: 78ch;
+  }
+
+  @media (min-width: 640px) {
+    .mh-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .mh-prices {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 980px) {
+    .mh-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .mh-phase-list {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-8) var(--space-10);
+    }
+  }
+</style>

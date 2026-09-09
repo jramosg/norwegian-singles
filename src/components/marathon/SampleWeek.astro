@@ -1,0 +1,283 @@
+---
+/**
+ * A full week from the plan, rendered from the engine.
+ *
+ * Quality days are solid, easy days are hairline: the shape of the week is
+ * readable before a single word is. That contrast is what makes the drop from
+ * three quality sessions to two visible when phases change.
+ */
+import type { SampleWeek } from '../../lib/marathon/tier-pages';
+import type { MarathonCopyShared } from '../../lib/marathon/tier-copy.en';
+
+interface Props {
+  week: SampleWeek;
+  labels: MarathonCopyShared['labels'];
+  dayNames: string[];
+  rpeLabel: string;
+  altLabel: string;
+}
+
+const { week, labels, dayNames, rpeLabel, altLabel } = Astro.props;
+---
+
+<div class="sw">
+  <ol class="sw-strip" aria-hidden="true">
+    {
+      week.days.map((d) => (
+        <li
+          class:list={[
+            'sw-cell',
+            d.isQuality ? 'is-quality' : `is-${d.kindLabel ? 'easy' : 'rest'}`,
+          ]}
+        />
+      ))
+    }
+  </ol>
+
+  <ol class="sw-days">
+    {
+      week.days.map((d) => (
+        <li class:list={['sw-day', { 'is-quality': d.isQuality }]}>
+          <div class="sw-day-head">
+            <span class="sw-dow">{dayNames[d.dayIndex]}</span>
+            <span class="sw-kind">{d.kindLabel}</span>
+            {d.durationMin && <span class="sw-dur">~{d.durationMin} min</span>}
+          </div>
+          <p class="sw-detail">{d.detail}</p>
+          {d.rpe && d.isQuality && (
+            <p class="sw-rpe">
+              <span class="sw-rpe-badge">
+                {rpeLabel} {d.rpe.target}
+              </span>
+              {d.rpe.note}
+            </p>
+          )}
+          {d.alternative && (
+            <p class="sw-altsession">
+              <span>{altLabel}</span>
+              <em>{d.alternative.detail}</em>
+              <small>{d.alternative.reason}</small>
+            </p>
+          )}
+          {d.why && (
+            <p class="sw-why">
+              <span>{labels.whyThisSession}</span>
+              {d.why}
+            </p>
+          )}
+          {d.substitutions.length > 0 && (
+            <details class="sw-alt">
+              <summary>{labels.ifYouCant}</summary>
+              <ul>
+                {d.substitutions.map((s) => (
+                  <li>{s}</li>
+                ))}
+              </ul>
+            </details>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</div>
+
+<style>
+  .sw-strip {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+    margin: 0 0 var(--space-5);
+    padding: 0;
+    list-style: none;
+  }
+  .sw-cell {
+    height: 6px;
+    border-radius: var(--radius-full);
+    background: var(--color-border);
+  }
+  .sw-cell.is-quality {
+    background: var(--color-threshold);
+  }
+
+  .sw-days {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .sw-day {
+    padding: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-left: 2px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-secondary);
+  }
+  .sw-day.is-quality {
+    border-left-color: var(--color-threshold);
+    background: var(--color-bg-elevated);
+  }
+
+  .sw-day-head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    margin-bottom: var(--space-2);
+  }
+  .sw-dow {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    min-width: 2.6em;
+  }
+  .sw-kind {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
+  }
+  .sw-dur {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+
+  .sw-detail {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+  }
+  /* Paces and rep counts read as data, so they are set in mono. */
+  .sw-day.is-quality .sw-detail {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    line-height: 1.7;
+    color: var(--color-text-primary);
+  }
+
+  .sw-why {
+    margin: var(--space-3) 0 0;
+    font-size: var(--text-sm);
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+  }
+  .sw-why span {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-1);
+  }
+
+  .sw-rpe {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-3);
+    margin: var(--space-3) 0 0;
+    font-size: var(--text-sm);
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+  }
+  .sw-rpe-badge {
+    flex: none;
+    padding: 2px var(--space-2);
+    border: 1px solid var(--color-border-accent);
+    border-radius: var(--radius-full);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-primary);
+    white-space: nowrap;
+  }
+
+  /* An optional session is offered, not buried: tests need an event, and
+     plenty of runners have neither one nor the wish to race. */
+  .sw-altsession {
+    margin: var(--space-3) 0 0;
+    padding: var(--space-3) var(--space-4);
+    border-left: 2px solid var(--color-border-accent);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    background: var(--color-bg-glass);
+  }
+  .sw-altsession span {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-1);
+  }
+  .sw-altsession em {
+    display: block;
+    font-style: normal;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    line-height: 1.7;
+    color: var(--color-text-primary);
+  }
+  .sw-altsession small {
+    display: block;
+    margin-top: var(--space-2);
+    font-size: var(--text-xs);
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+  }
+
+  .sw-alt {
+    margin-top: var(--space-3);
+  }
+  .sw-alt summary {
+    cursor: pointer;
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+  .sw-alt summary:hover {
+    color: var(--color-text-secondary);
+  }
+  .sw-alt ul {
+    margin: var(--space-2) 0 0;
+    padding-left: var(--space-5);
+    font-size: var(--text-sm);
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+  }
+
+  @media (min-width: 720px) {
+    .sw-day {
+      display: grid;
+      grid-template-columns: 8.5rem 1fr;
+      gap: var(--space-4);
+      align-items: start;
+    }
+    .sw-day-head {
+      display: block;
+      margin-bottom: 0;
+    }
+    .sw-dow {
+      display: block;
+      margin-bottom: var(--space-1);
+    }
+    .sw-kind {
+      display: block;
+    }
+    .sw-dur {
+      display: block;
+      margin-left: 0;
+      margin-top: var(--space-1);
+    }
+    .sw-detail,
+    .sw-why,
+    .sw-rpe,
+    .sw-altsession,
+    .sw-alt {
+      grid-column: 2;
+    }
+  }
+</style>

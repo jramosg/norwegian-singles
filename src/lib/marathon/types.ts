@@ -232,6 +232,32 @@ export interface SecondRun {
   anchor: PaceAnchor;
 }
 
+/**
+ * Perceived-effort target for a session.
+ *
+ * The subthreshold cue is the one that matters: finish around 7 out of 10,
+ * feeling like there was room for another rep or two. That is how the
+ * intensity is actually controlled day to day — and it is also the primary
+ * evidence for a fitness check-in, which is why it is part of the plan data
+ * rather than a footnote.
+ */
+export interface RpeTarget {
+  /** e.g. '7' or '8-9'. */
+  target: string;
+  /** i18n key for the one-line cue. */
+  noteKey: string;
+}
+
+/** A session the runner may do instead, with no penalty. */
+export interface DayAlternative {
+  sessionId: string;
+  segments: Segment[];
+  whyKey: string;
+  substitutionKeys?: string[];
+  /** Why this is offered, e.g. 'no race available'. */
+  reasonKey: string;
+}
+
 export interface PlannedDay {
   dayIndex: DayIndex;
   /** ISO date, present when the plan is anchored to a marathon date. */
@@ -244,6 +270,9 @@ export interface PlannedDay {
   targetDistanceM: number;
   whyKey?: string;
   substitutionKeys?: string[];
+  rpe?: RpeTarget;
+  /** Offered when the prescribed session needs a race, a hill or an event. */
+  alternative?: DayAlternative;
   strength?: StrengthItem[];
   /** Second easy run for the doubling tiers. */
   secondRun?: SecondRun;

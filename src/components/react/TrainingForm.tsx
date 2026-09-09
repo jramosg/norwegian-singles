@@ -32,6 +32,11 @@ import { trackEvent } from '../../lib/analytics';
 
 interface Props {
   locale: Locale;
+  /**
+   * Path to the marathon plans hub, when this locale has one. Passed in
+   * rather than looked up so the plan engine stays out of the client bundle.
+   */
+  marathonHubPath?: string;
 }
 
 const RACE_OPTIONS = [
@@ -156,7 +161,7 @@ const EQUIV_LABELS: Record<string, Record<Locale, string>> = {
   '5K': { en: '5K', es: '5K', ko: '5K', de: '5K', fr: '5K' },
 };
 
-export default function TrainingForm({ locale }: Props) {
+export default function TrainingForm({ locale, marathonHubPath }: Props) {
   const [raceDistance, setRaceDistance] = useState<RaceDistance>('5K');
   const [raceTime, setRaceTime] = useState('');
   const [customDistanceRaw, setCustomDistanceRaw] = useState('');
@@ -178,6 +183,19 @@ export default function TrainingForm({ locale }: Props) {
 
   // Earliest selectable marathon date: today (no past dates).
   const todayISO = new Date().toISOString().slice(0, 10);
+
+  /** Whole weeks between today and the entered race date. */
+  const weeksToRace = useMemo(() => {
+    if (!marathonDate) return null;
+    const race = new Date(`${marathonDate}T00:00:00`);
+    if (Number.isNaN(race.getTime())) return null;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const weeks = Math.floor(
+      (race.getTime() - today.getTime()) / (7 * 86_400_000),
+    );
+    return weeks >= 1 ? weeks : null;
+  }, [marathonDate]);
 
   const weeklyHours = parseFloat(weeklyHoursRaw) || 6;
   const matchedPlan = getPlanByHours(weeklyHours);
@@ -417,7 +435,11 @@ export default function TrainingForm({ locale }: Props) {
       rep10: '10-min reps',
       easyLabel: 'Easy pace',
       marathonDateLabel: 'Marathon date (optional)',
-      marathonDateHint: 'Generates a 15-week build plan.',
+      marathonDateHint:
+        'Used to date your plan. Marathon plans run 12, 15 or 18 weeks.',
+      weeksToRace: 'Your race is in {n} weeks',
+      weeksToRaceOne: 'Your race is next week',
+      seeMarathonPlans: 'See marathon plans',
       vdotTraining: 'Training',
       vdotEquivalent: 'Equivalent',
       vdotType: 'Type',
@@ -447,7 +469,11 @@ export default function TrainingForm({ locale }: Props) {
       rep10: 'Intervalos 10 min',
       easyLabel: 'Ritmo fácil',
       marathonDateLabel: 'Fecha del maratón (opcional)',
-      marathonDateHint: 'Genera un plan de 15 semanas.',
+      marathonDateHint:
+        'Se usa para fechar tu plan. Los planes de maratón son de 12, 15 o 18 semanas.',
+      weeksToRace: 'Tu carrera es en {n} semanas',
+      weeksToRaceOne: 'Tu carrera es la semana que viene',
+      seeMarathonPlans: 'Ver planes de maratón',
       vdotTraining: 'Entrenamiento',
       vdotEquivalent: 'Equivalente',
       vdotType: 'Tipo',
@@ -477,7 +503,11 @@ export default function TrainingForm({ locale }: Props) {
       rep10: '10분 반복',
       easyLabel: '이지 페이스',
       marathonDateLabel: '마라톤 날짜(선택)',
-      marathonDateHint: '15주 빌드업 플랜을 생성합니다.',
+      marathonDateHint:
+        '플랜 날짜를 계산하는 데 사용됩니다. 마라톤 플랜은 12, 15, 18주입니다.',
+      weeksToRace: '레이스까지 {n}주',
+      weeksToRaceOne: '레이스가 다음 주입니다',
+      seeMarathonPlans: '마라톤 플랜 보기',
       vdotTraining: '훈련',
       vdotEquivalent: '등가',
       vdotType: '유형',
@@ -507,7 +537,11 @@ export default function TrainingForm({ locale }: Props) {
       rep10: '10-min-Intervalle',
       easyLabel: 'Lockeres Tempo',
       marathonDateLabel: 'Marathon-Datum (optional)',
-      marathonDateHint: 'Erstellt einen 15-Wochen-Aufbauplan.',
+      marathonDateHint:
+        'Wird zur Datierung deines Plans verwendet. Marathonpläne dauern 12, 15 oder 18 Wochen.',
+      weeksToRace: 'Dein Wettkampf ist in {n} Wochen',
+      weeksToRaceOne: 'Dein Wettkampf ist nächste Woche',
+      seeMarathonPlans: 'Marathonpläne ansehen',
       vdotTraining: 'Training',
       vdotEquivalent: 'Äquivalent',
       vdotType: 'Typ',
@@ -537,7 +571,11 @@ export default function TrainingForm({ locale }: Props) {
       rep10: 'Répét. 10 min',
       easyLabel: 'Allure facile',
       marathonDateLabel: 'Date du marathon (optionnel)',
-      marathonDateHint: 'Génère un plan de 15 semaines.',
+      marathonDateHint:
+        'Sert à dater ton plan. Les plans marathon durent 12, 15 ou 18 semaines.',
+      weeksToRace: 'Ta course est dans {n} semaines',
+      weeksToRaceOne: 'Ta course est la semaine prochaine',
+      seeMarathonPlans: 'Voir les plans marathon',
       vdotTraining: 'Entraînement',
       vdotEquivalent: 'Équivalent',
       vdotType: 'Type',
@@ -701,6 +739,16 @@ export default function TrainingForm({ locale }: Props) {
             onChange={(e) => setMarathonDate(e.target.value)}
           />
           <p className="form-hint tf-hours-hint">{T.marathonDateHint}</p>
+          {marathonHubPath && weeksToRace !== null && (
+            <a className="tf-marathon-cta" href={marathonHubPath}>
+              <span>
+                {weeksToRace === 1
+                  ? T.weeksToRaceOne
+                  : T.weeksToRace.replace('{n}', String(weeksToRace))}
+              </span>
+              <strong>{T.seeMarathonPlans}</strong>
+            </a>
+          )}
         </div>
 
         {/* Unit */}

@@ -1,6 +1,7 @@
 ---
 import AppLayout from '../layouts/AppLayout.astro';
 import TrainingForm from './react/TrainingForm';
+import { getMarathonHubPath } from '../lib/marathon/hub';
 import MethodologySection from './MethodologySection.astro';
 import Recommendations from './Recommendations.astro';
 import { useTranslations } from '../i18n/ui';
@@ -888,6 +889,8 @@ const relatedGroups = {
       ),
   }))
   .filter((group) => group.pages.length > 0);
+// Undefined for a locale with no marathon pages, which hides the callout.
+const marathonHubPath = getMarathonHubPath(locale);
 ---
 
 <AppLayout
@@ -952,7 +955,11 @@ const relatedGroups = {
               <h2 class="card-title">{t('form.title')}</h2>
             </div>
             <div class="card-body">
-              <TrainingForm locale={locale} client:idle />
+              <TrainingForm
+                locale={locale}
+                marathonHubPath={marathonHubPath}
+                client:idle
+              />
             </div>
           </div>
         </div>

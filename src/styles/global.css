@@ -46,6 +46,8 @@
   --color-race-a: #ef4444;
   --color-race-b: #3b82f6;
   --color-test: #ec4899;
+  /* Marathon-specific work: distinct from threshold amber and easy green. */
+  --color-ms: #06b6d4;
 
   /* Typography */
   --font-sans:

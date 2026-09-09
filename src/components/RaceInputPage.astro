@@ -1,6 +1,7 @@
 ---
 import AppLayout from '../layouts/AppLayout.astro';
 import TrainingForm from './react/TrainingForm';
+import { getMarathonHubPath } from '../lib/marathon/hub';
 import { encodePlanInput } from '../lib/plan-url';
 import { getNearbyRacePages, type RaceSeoPage } from '../lib/race-seo-pages';
 import { getPlanByHours, type DaySession } from '../lib/training-plans';
@@ -224,6 +225,8 @@ const sessionDetail = (session: DaySession): string => {
     : `${session.recoverySeconds}s`;
   return `${session.totalDurationMin} min ${labels.total} · ${recovery} ${labels.recovery}`;
 };
+// Undefined for a locale with no marathon pages, which hides the callout.
+const marathonHubPath = getMarathonHubPath(locale);
 ---
 
 <AppLayout
@@ -341,7 +344,11 @@ const sessionDetail = (session: DaySession): string => {
           <div class="race-form-head">
             <h3>{labels.formTitle}</h3>
           </div>
-          <TrainingForm locale={locale} client:idle />
+          <TrainingForm
+            locale={locale}
+            marathonHubPath={marathonHubPath}
+            client:idle
+          />
         </div>
       </div>
     </section>

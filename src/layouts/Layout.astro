@@ -4,7 +4,7 @@ import '../styles/components.css';
 import '@fontsource-variable/inter';
 import type { Locale } from '../types';
 import { languageLabels, locales, useTranslations } from '../i18n/ui';
-import { getAlternateSeoPath } from '../lib/seo-pages';
+import { getAlternateSeoPath, hasMappedAlternates } from '../lib/seo-pages';
 
 interface Props {
   title?: string;
@@ -30,18 +30,29 @@ const isAppPage =
     (pathParts.length === 2 && pathParts[1] === 'plan'));
 
 const canonicalURL = new URL(currentPath, Astro.site || siteURL);
-const localeUrls = locales.map((lang) => {
-  const path =
-    lang === locale
-      ? currentPath
-      : getAlternateSeoPath(currentPath, locale, lang) ||
-        currentPath.replace(`/${locale}`, `/${lang}`);
-
-  return {
-    lang,
-    url: new URL(path, Astro.site || siteURL),
-  };
-});
+// Pages whose slugs are mapped per locale must not fall back to swapping the
+// locale segment: for those, no mapping means no such page, and advertising
+// one via hreflang points search engines at a 404.
+const slugsAreMapped = hasMappedAlternates(currentPath, locale);
+const localeUrls = locales
+  .map((lang) => {
+    if (lang === locale)
+      return { lang, url: new URL(currentPath, Astro.site || siteURL) };
+    const mapped = getAlternateSeoPath(currentPath, locale, lang);
+    if (mapped) return { lang, url: new URL(mapped, Astro.site || siteURL) };
+    if (slugsAreMapped) return null;
+    return {
+      lang,
+      url: new URL(
+        currentPath.replace(`/${locale}`, `/${lang}`),
+        Astro.site || siteURL,
+      ),
+    };
+  })
+  .filter(
+    (entry): entry is { lang: (typeof locales)[number]; url: URL } =>
+      entry !== null,
+  );
 const defaultURL = new URL(
   localeUrls.find(({ lang }) => lang === 'en')?.url.pathname || currentPath,
   Astro.site || siteURL,

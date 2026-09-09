@@ -38,8 +38,10 @@ import {
 import { strengthForWeek } from './strength';
 import { getTier } from './tiers';
 import type {
+  DayAlternative,
   DayIndex,
   DayKind,
+  RpeTarget,
   MarathonPlan,
   MarathonPlanInput,
   PlannedDay,
@@ -106,6 +108,32 @@ function template(
       return ['easy', 'easy', 'subT_long', 'easy', filler, 'shakeout', 'ms'];
     case 'taper':
       return ['easy', 'subT_medium', 'easy', 'x', 'rest', 'easy', 'long'];
+  }
+}
+
+/**
+ * Perceived-effort target per slot. Sub-threshold finishing around 7/10 with
+ * a rep or two in reserve is the cue that keeps the method honest, and it is
+ * also what a fitness check-in is read from.
+ */
+function rpeFor(slot: SlotKind): RpeTarget | undefined {
+  switch (slot) {
+    case 'subT_long':
+    case 'subT_medium':
+    case 'subT_short':
+      return { target: '7', noteKey: 'rpe.subt' };
+    case 'x':
+      return { target: '8-9', noteKey: 'rpe.x' };
+    case 'ms':
+      return { target: '6-7', noteKey: 'rpe.ms' };
+    case 'test':
+      return { target: '10', noteKey: 'rpe.test' };
+    case 'easy':
+    case 'long':
+    case 'shakeout':
+      return { target: '2-3', noteKey: 'rpe.easy' };
+    default:
+      return undefined;
   }
 }
 
@@ -246,9 +274,26 @@ export function generateMarathonPlan(input: MarathonPlanInput): MarathonPlan {
     const built = slots.map((slot) => {
       const slotCtx = contextFor(slot);
       const archetype = archetypeFor(slot, slotCtx, isRaceWeek);
-      if (!archetype) return { slot, archetype: null, segments: null };
+      if (!archetype) {
+        return { slot, archetype: null, segments: null, alternative: null };
+      }
       const segments: Segment[] = archetype.build(slotCtx);
-      return { slot, archetype, segments };
+
+      // A test needs a parkrun, a race, or the willingness to run one flat
+      // out — none of which can be assumed. Every test therefore ships with
+      // a real session to do instead, at no cost to the plan.
+      let alternative: DayAlternative | null = null;
+      if (slot === 'test') {
+        const fallback = pickX(slotCtx);
+        alternative = {
+          sessionId: fallback.id,
+          segments: fallback.build(slotCtx),
+          whyKey: fallback.whyKey,
+          substitutionKeys: fallback.substitutionKeys,
+          reasonKey: 'alt.reason.no_event',
+        };
+      }
+      return { slot, archetype, segments, alternative };
     });
 
     const longTargetM =
@@ -325,6 +370,8 @@ export function generateMarathonPlan(input: MarathonPlanInput): MarathonPlan {
         segments: b.segments ?? undefined,
         whyKey: b.archetype?.whyKey,
         substitutionKeys: b.archetype?.substitutionKeys,
+        rpe: rpeFor(b.slot),
+        alternative: b.alternative ?? undefined,
       };
 
       if (secondRunM !== null) {
@@ -365,10 +412,26 @@ export function generateMarathonPlan(input: MarathonPlanInput): MarathonPlan {
       }
     }
 
-    const actualVolumeM = days.reduce(
-      (sum, d) => sum + d.targetDistanceM + (d.secondRun?.targetDistanceM ?? 0),
-      0,
-    );
+    // Per-day rounding drifts a kilometre or two off the week's target, which
+    // then shows up as a plan that peaks at 96 km on a page that promises 95.
+    // Settle the difference on the largest easy day.
+    const dayTotal = (d: PlannedDay) =>
+      d.targetDistanceM + (d.secondRun?.targetDistanceM ?? 0);
+    const raceM = days
+      .filter((d) => d.kind === 'race')
+      .reduce((sum, d) => sum + d.targetDistanceM, 0);
+    const drift =
+      targetVolumeM - (days.reduce((sum, d) => sum + dayTotal(d), 0) - raceM);
+    const largestEasy = days
+      .filter((d) => d.kind === 'easy' && d.targetDistanceM > 0)
+      .sort((a, b) => b.targetDistanceM - a.targetDistanceM)[0];
+    if (largestEasy && Math.abs(drift) < largestEasy.targetDistanceM * 0.5) {
+      largestEasy.targetDistanceM = Math.round(
+        largestEasy.targetDistanceM + drift,
+      );
+    }
+
+    const actualVolumeM = days.reduce((sum, d) => sum + dayTotal(d), 0);
 
     weeks.push({
       weekNumber,

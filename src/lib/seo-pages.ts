@@ -1,5 +1,9 @@
 import type { Locale } from '../types';
-import { getRaceAlternateSlug } from './race-seo-pages';
+import { getRaceAlternateSlug, getRacePage } from './race-seo-pages';
+import {
+  getMarathonAlternatePath,
+  isMarathonSlug,
+} from './marathon/alternates';
 
 export interface SeoLandingPage {
   slug: string;
@@ -1350,7 +1354,26 @@ export function getAlternateSeoPath(
   }
 
   const raceSlug = getRaceAlternateSlug(locale, slug, alternateLocale);
-  return raceSlug ? `/${alternateLocale}/${raceSlug}/` : undefined;
+  if (raceSlug) return `/${alternateLocale}/${raceSlug}/`;
+
+  return getMarathonAlternatePath(slug, locale, alternateLocale);
+}
+
+/**
+ * True when a path belongs to a page set whose slugs are explicitly mapped
+ * between locales. For those, an unresolved alternate means the page does not
+ * exist in that locale — so the caller must omit the hreflang rather than
+ * guessing at a URL by swapping the locale segment.
+ */
+export function hasMappedAlternates(
+  currentPath: string,
+  locale: Locale,
+): boolean {
+  const slug = currentPath.split('/').filter(Boolean)[1];
+  if (!slug) return false;
+  if (pages[locale].some((page) => page.slug === slug)) return true;
+  if (getRacePage(locale, slug)) return true;
+  return isMarathonSlug(locale, slug);
 }
 
 export function createSeoStructuredData(

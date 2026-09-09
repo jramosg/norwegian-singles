@@ -1,6 +1,8 @@
 ---
 import LandingPage from '../../components/LandingPage.astro';
 import RaceInputPage from '../../components/RaceInputPage.astro';
+import MarathonHub from '../../components/marathon/MarathonHub.astro';
+import TierPage from '../../components/marathon/TierPage.astro';
 import {
   createSeoStructuredData,
   getSeoPage,
@@ -11,37 +13,73 @@ import {
   getRacePage,
   getRacePages,
 } from '../../lib/race-seo-pages';
+import {
+  getMarathonIndexPage,
+  getMarathonTierPage,
+  getMarathonTierPages,
+} from '../../lib/marathon/tier-pages';
 
 const locale = 'es';
 
 export function getStaticPaths() {
   const seoPages = getSeoPages('es').map((page) => ({
     params: { slug: page.slug },
-    props: { page, racePage: null },
+    props: { page, racePage: null, tierPage: null, marathonHub: null },
   }));
   const racePages = getRacePages('es').map((page) => ({
     params: { slug: page.slug },
-    props: { page: null, racePage: page },
+    props: { page: null, racePage: page, tierPage: null, marathonHub: null },
   }));
-  return [...seoPages, ...racePages];
+  const tierPages = getMarathonTierPages('es').map((page) => ({
+    params: { slug: page.slug },
+    props: { page: null, racePage: null, tierPage: page, marathonHub: null },
+  }));
+  // Undefined for any locale whose marathon copy is not translated yet.
+  const hub = getMarathonIndexPage('es');
+  const hubPages = hub
+    ? [
+        {
+          params: { slug: hub.slug },
+          props: {
+            page: null,
+            racePage: null,
+            tierPage: null,
+            marathonHub: hub,
+          },
+        },
+      ]
+    : [];
+  return [...seoPages, ...racePages, ...tierPages, ...hubPages];
 }
 
-const { page, racePage } = Astro.props;
-const foundPage = page || getSeoPage(locale, Astro.params.slug || '');
-const foundRacePage = racePage || getRacePage(locale, Astro.params.slug || '');
+const { page, racePage, tierPage, marathonHub } = Astro.props;
+const slug = Astro.params.slug || '';
+const foundPage = page || getSeoPage(locale, slug);
+const foundRacePage = racePage || getRacePage(locale, slug);
+const foundTierPage = tierPage || getMarathonTierPage(locale, slug);
+const foundHub =
+  marathonHub ??
+  (getMarathonIndexPage(locale)?.slug === slug
+    ? getMarathonIndexPage(locale)
+    : null);
 
-if (!foundPage && !foundRacePage) {
+if (!foundPage && !foundRacePage && !foundTierPage && !foundHub) {
   return Astro.redirect(`/${locale}/`);
 }
 
-const activePage = foundPage || foundRacePage!;
 const structuredData = foundRacePage
   ? createRaceSeoStructuredData(locale, foundRacePage)
-  : createSeoStructuredData(locale, foundPage!);
+  : foundPage
+    ? createSeoStructuredData(locale, foundPage)
+    : undefined;
 ---
 
 {
-  foundRacePage ? (
+  foundHub ? (
+    <MarathonHub page={foundHub} />
+  ) : foundTierPage ? (
+    <TierPage page={foundTierPage} />
+  ) : foundRacePage ? (
     <RaceInputPage
       locale={locale}
       page={foundRacePage}
@@ -50,10 +88,10 @@ const structuredData = foundRacePage
   ) : (
     <LandingPage
       locale={locale}
-      title={activePage.title}
-      description={activePage.description}
-      seoHeading={activePage.h1}
-      seoIntro={activePage.intro}
+      title={foundPage!.title}
+      description={foundPage!.description}
+      seoHeading={foundPage!.h1}
+      seoIntro={foundPage!.intro}
       structuredData={structuredData}
     />
   )

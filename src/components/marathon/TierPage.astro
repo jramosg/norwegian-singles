@@ -1,0 +1,436 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import BuildSilhouette from './BuildSilhouette.astro';
+import SampleWeek from './SampleWeek.astro';
+import type { MarathonTierPage } from '../../lib/marathon/tier-pages';
+import { createTierStructuredData } from '../../lib/marathon/tier-pages';
+import { getSharedCopy } from '../../lib/marathon/tier-copy';
+import { getMarathonCopy } from '../../lib/marathon/copy';
+import {
+  CURRENCY,
+  SINGLE_TIER_PRICE,
+  formatPrice,
+} from '../../lib/marathon/pricing';
+import { formatPace } from '../../lib/paces';
+
+interface Props {
+  page: MarathonTierPage;
+}
+
+const { page } = Astro.props;
+const shared = getSharedCopy(page.locale);
+const copyStrings = getMarathonCopy(page.locale);
+const { copy, spec } = page;
+
+// Weekday names come from the platform rather than a new set of strings.
+const dayNames = Array.from({ length: 7 }, (_, i) =>
+  new Intl.DateTimeFormat(page.locale, { weekday: 'short' }).format(
+    // 2024-01-01 was a Monday.
+    new Date(Date.UTC(2024, 0, 1 + i)),
+  ),
+);
+
+const structuredData = createTierStructuredData(
+  page,
+  SINGLE_TIER_PRICE,
+  CURRENCY,
+);
+
+const mpFast = formatPace(page.referenceMp.fastSecPerKm, 'km');
+const mpSlow = formatPace(page.referenceMp.slowSecPerKm, 'km');
+---
+
+<AppLayout
+  title={copy.title}
+  description={copy.description}
+  locale={page.locale}
+  structuredData={structuredData}
+>
+  <article class="tp">
+    <header class="tp-hero container">
+      <p class="tp-eyebrow">{shared.indexH1}</p>
+      <h1>{copy.h1}</h1>
+      <p class="tp-lead">{copy.intro}</p>
+
+      <dl class="tp-facts">
+        <div>
+          <dt>{shared.labels.peakVolume}</dt>
+          <dd>
+            <strong>{page.peakKm}</strong> km
+            <span>{page.peakMi} mi</span>
+          </dd>
+        </div>
+        <div>
+          <dt>{shared.labels.runsPerWeek}</dt>
+          <dd>
+            <strong>{spec.runDays}</strong>
+            {spec.doublesPerWeek > 0 && <span>+{spec.doublesPerWeek} 2nd</span>}
+          </dd>
+        </div>
+        <div>
+          <dt>{shared.labels.qualitySessions}</dt>
+          <dd>
+            <strong>3 &rarr; 2</strong>
+            <span>{shared.labels.perWeek}</span>
+          </dd>
+        </div>
+        <div>
+          <dt>{shared.labels.longRun}</dt>
+          <dd>
+            <strong>{Math.round(spec.longRunCapM / 1000)}</strong> km
+            <span>{Math.round(spec.longRunCapM / 1609.344)} mi</span>
+          </dd>
+        </div>
+      </dl>
+    </header>
+
+    <section class="tp-shape container" aria-labelledby="tp-shape-h">
+      <h2 id="tp-shape-h" class="tp-h2">{shared.phasesHeading}</h2>
+      <BuildSilhouette
+        weeks={page.volumeCurve}
+        peakLabel={`${shared.labels.week} 13 & 15`}
+        ariaLabel={`${copy.name}: weekly volume across the 18-week build, peaking at ${page.peakKm} km`}
+      />
+      <ol class="tp-phases">
+        {
+          shared.phases.map((phase, i) => (
+            <li class={`is-${['base', 'supportive', 'specific', 'taper'][i]}`}>
+              <h3>{phase.name}</h3>
+              <p class="tp-phase-weeks">{phase.weeks}</p>
+              <p>{phase.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section class="tp-fit container">
+      <div>
+        <h2 class="tp-h3">{shared.chooseTierHeading}</h2>
+        <ul class="tp-yes">
+          {copy.whoFor.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+      <div>
+        <h2 class="tp-h3">&mdash;</h2>
+        <ul class="tp-no">
+          {copy.notFor.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="tp-week container" aria-labelledby="tp-week-h">
+      <h2 id="tp-week-h" class="tp-h2">{shared.sampleHeading}</h2>
+      <p class="tp-note">{shared.sampleNote}</p>
+      <p class="tp-weekmeta">
+        <span>{shared.labels.week} {page.sampleWeek.weekNumber}</span>
+        <span>{page.sampleWeek.phaseLabel}</span>
+        <span
+          >{page.sampleWeek.volumeKm} km / {page.sampleWeek.volumeMi} mi</span
+        >
+        <span>MP {mpFast}&ndash;{mpSlow}/km</span>
+      </p>
+      <SampleWeek
+        week={page.sampleWeek}
+        labels={shared.labels}
+        dayNames={dayNames}
+        rpeLabel={copyStrings['rpe.label']}
+        altLabel={copyStrings['alt.label']}
+      />
+      <p class="tp-note">{copy.weeklyShape}</p>
+    </section>
+
+    <section class="tp-buy container" aria-labelledby="tp-buy-h">
+      <h2 id="tp-buy-h" class="tp-h2">{shared.includedHeading}</h2>
+      <ul class="tp-included">
+        {shared.included.map((item) => <li>{item}</li>)}
+      </ul>
+      <div class="tp-cta">
+        <p class="tp-price">
+          {formatPrice(SINGLE_TIER_PRICE)}
+          <span>{shared.priceNote}</span>
+        </p>
+        <a
+          class="btn btn-primary"
+          href={`/${page.locale}/${shared.indexSlug}/`}
+        >
+          {shared.ctaBuy}
+        </a>
+      </div>
+      <p class="tp-lengths">{shared.lengthNote}</p>
+    </section>
+
+    <footer class="tp-legal container">
+      <p>{shared.disclaimer}</p>
+      <p>{shared.medicalNote}</p>
+    </footer>
+  </article>
+</AppLayout>
+
+<style>
+  .tp {
+    padding-block: var(--space-12) var(--space-20);
+  }
+  .tp > * + * {
+    margin-top: var(--space-16);
+  }
+
+  .tp-eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-4);
+  }
+  .tp-hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5.2vw, var(--text-5xl));
+    font-weight: var(--font-bold);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin: 0 0 var(--space-5);
+    max-width: 22ch;
+  }
+  .tp-lead {
+    font-size: var(--text-lg);
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    max-width: 60ch;
+    margin: 0;
+  }
+
+  .tp-facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: var(--space-4);
+    margin: var(--space-10) 0 0;
+    padding: var(--space-5) 0 0;
+    border-top: 1px solid var(--color-border);
+  }
+  .tp-facts dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+  }
+  .tp-facts dd {
+    margin: var(--space-2) 0 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+  .tp-facts strong {
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: var(--font-bold);
+    color: var(--color-text-primary);
+    letter-spacing: -0.02em;
+  }
+  .tp-facts span {
+    display: block;
+    color: var(--color-text-muted);
+  }
+
+  .tp-h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: var(--font-semibold);
+    letter-spacing: -0.01em;
+    margin: 0 0 var(--space-5);
+  }
+  .tp-h3 {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-4);
+  }
+
+  .tp-phases {
+    display: grid;
+    gap: var(--space-5);
+    margin: var(--space-10) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .tp-phases li {
+    padding-left: var(--space-5);
+    border-left: 2px solid var(--color-border);
+  }
+  .tp-phases li.is-base {
+    border-left-color: color-mix(
+      in oklab,
+      var(--color-threshold),
+      transparent 25%
+    );
+  }
+  .tp-phases li.is-supportive {
+    border-left-color: color-mix(
+      in oklab,
+      var(--color-threshold),
+      var(--color-ms) 45%
+    );
+  }
+  .tp-phases li.is-specific {
+    border-left-color: var(--color-ms);
+  }
+  .tp-phases li.is-taper {
+    border-left-color: var(--color-text-muted);
+  }
+  .tp-phases h3 {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    margin: 0;
+  }
+  .tp-phase-weeks {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    margin: var(--space-1) 0 var(--space-3);
+  }
+  .tp-phases p:last-child {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    max-width: 68ch;
+  }
+
+  .tp-fit {
+    display: grid;
+    gap: var(--space-8);
+  }
+  .tp-yes,
+  .tp-no {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--space-3);
+  }
+  .tp-yes li,
+  .tp-no li {
+    position: relative;
+    padding-left: var(--space-6);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+  .tp-yes li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 10px;
+    height: 2px;
+    background: var(--color-easy);
+  }
+  .tp-no li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 10px;
+    height: 2px;
+    background: var(--color-text-muted);
+  }
+
+  .tp-note {
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    max-width: 68ch;
+  }
+  .tp-weekmeta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin: var(--space-5) 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+  }
+
+  .tp-included {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0 0 var(--space-8);
+    padding: 0;
+    list-style: none;
+  }
+  .tp-included li {
+    position: relative;
+    padding-left: var(--space-6);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+  .tp-included li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5em;
+    width: 6px;
+    height: 6px;
+    border-radius: var(--radius-full);
+    background: var(--color-ms);
+  }
+
+  .tp-cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-6);
+    padding: var(--space-6);
+    border: 1px solid var(--color-border-accent);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-elevated);
+  }
+  .tp-price {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    font-weight: var(--font-bold);
+    letter-spacing: -0.02em;
+  }
+  .tp-price span {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: var(--font-normal);
+    color: var(--color-text-muted);
+    margin-top: var(--space-1);
+  }
+  .tp-lengths {
+    margin: var(--space-5) 0 0;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    max-width: 68ch;
+  }
+
+  .tp-legal {
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-border);
+  }
+  .tp-legal p {
+    font-size: var(--text-xs);
+    line-height: 1.65;
+    color: var(--color-text-muted);
+    max-width: 78ch;
+  }
+
+  @media (min-width: 760px) {
+    .tp-fit {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-12);
+    }
+    .tp-phases {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-8) var(--space-10);
+    }
+  }
+</style>

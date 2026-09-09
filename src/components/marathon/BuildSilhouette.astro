@@ -1,0 +1,186 @@
+---
+/**
+ * The build silhouette: one bar per week of the plan, coloured by phase,
+ * with down weeks notched and the peak weeks ticked.
+ *
+ * This is the one chart that makes a periodised plan legible at a glance —
+ * the three-up-one-down cadence, the double peak and the taper are all
+ * readable without a legend. Each tier has a recognisably different
+ * silhouette, which is what makes the tiers comparable on the hub page.
+ */
+import type { VolumePoint } from '../../lib/marathon/tier-pages';
+
+interface Props {
+  weeks: VolumePoint[];
+  unit?: 'km' | 'mile';
+  /** Compact mode drops the axis, for side-by-side comparison. */
+  compact?: boolean;
+  peakLabel?: string;
+  ariaLabel: string;
+}
+
+const {
+  weeks,
+  unit = 'km',
+  compact = false,
+  peakLabel,
+  ariaLabel,
+} = Astro.props;
+
+const value = (w: VolumePoint) => (unit === 'km' ? w.km : w.mi);
+const peak = Math.max(...weeks.map(value));
+const barW = 100 / weeks.length;
+const height = compact ? 44 : 100;
+const gap = barW * 0.22;
+---
+
+<figure class:list={['sil', { 'sil-compact': compact }]}>
+  <svg
+    viewBox={`0 0 100 ${height + 10}`}
+    preserveAspectRatio="none"
+    role="img"
+    aria-label={ariaLabel}
+  >
+    {
+      weeks.map((w, i) => {
+        const h = (value(w) / peak) * height;
+        const x = i * barW + gap / 2;
+        const bw = barW - gap;
+        return (
+          <g>
+            <rect
+              x={x}
+              y={height - h}
+              width={bw}
+              height={h}
+              rx="0.35"
+              class:list={[`ph-${w.phase}`, { deload: w.isDeload }]}
+            />
+            {value(w) === peak && (
+              <rect
+                x={x}
+                y={height - h - 2.4}
+                width={bw}
+                height="1.1"
+                class="peak-tick"
+              />
+            )}
+            {w.isTestWeek && (
+              <circle
+                cx={x + bw / 2}
+                cy={height + 4}
+                r="0.9"
+                class="test-dot"
+              />
+            )}
+          </g>
+        );
+      })
+    }
+  </svg>
+
+  {
+    !compact && (
+      <figcaption class="sil-axis">
+        <span class="sil-peak">
+          {peak}
+          <abbr>{unit === 'km' ? 'km' : 'mi'}</abbr>
+          {peakLabel && <em>{peakLabel}</em>}
+        </span>
+        <ol class="sil-weeks">
+          {weeks.map((w) =>
+            w.weekNumber === 1 ||
+            w.weekNumber % 6 === 0 ||
+            w.weekNumber === weeks.length ? (
+              <li
+                style={`--at:${((w.weekNumber - 0.5) / weeks.length) * 100}%`}
+              >
+                {w.weekNumber}
+              </li>
+            ) : null,
+          )}
+        </ol>
+      </figcaption>
+    )
+  }
+</figure>
+
+<style>
+  .sil {
+    margin: 0;
+  }
+  .sil svg {
+    display: block;
+    width: 100%;
+    height: 128px;
+    overflow: visible;
+  }
+  .sil-compact svg {
+    height: 52px;
+  }
+
+  /* Phase colours extend the site's existing session vocabulary: amber is
+     threshold work, cyan is marathon-specific, the taper recedes. */
+  .ph-base {
+    fill: var(--color-threshold);
+    opacity: 0.75;
+  }
+  .ph-supportive {
+    fill: color-mix(in oklab, var(--color-threshold), var(--color-ms) 45%);
+    opacity: 0.85;
+  }
+  .ph-specific {
+    fill: var(--color-ms);
+  }
+  .ph-taper {
+    fill: var(--color-text-muted);
+    opacity: 0.55;
+  }
+  /* A down week is drawn hollow: the gap in the silhouette is the point. */
+  .deload {
+    opacity: 0.32;
+  }
+  .peak-tick {
+    fill: var(--color-text-primary);
+  }
+  .test-dot {
+    fill: var(--color-test);
+  }
+
+  .sil-axis {
+    display: block;
+    margin-top: var(--space-2);
+  }
+  .sil-peak {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+  .sil-peak abbr {
+    text-decoration: none;
+    margin-left: 1px;
+  }
+  .sil-peak em {
+    font-style: normal;
+    color: var(--color-text-muted);
+    margin-left: var(--space-2);
+    font-family: var(--font-sans);
+  }
+  .sil-weeks {
+    position: relative;
+    display: block;
+    height: 1.1em;
+    margin: var(--space-1) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .sil-weeks li {
+    position: absolute;
+    left: var(--at);
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+</style>
