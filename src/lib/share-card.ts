@@ -6,6 +6,7 @@
  */
 
 import type { Locale } from '../types';
+import { useTranslations } from '../i18n/ui';
 
 /** One pace row on the card. */
 export interface PlanCardRow {
@@ -251,10 +252,7 @@ export async function sharePlanCard(
         files: [file],
         url: shareUrl,
         title: 'Norwegian Singles',
-        text:
-          locale === 'es'
-            ? 'Mis ritmos sub-umbral 🇳🇴'
-            : 'My sub-threshold paces 🇳🇴',
+        text: useTranslations(locale)('share.caption'),
       });
       return 'shared';
     }

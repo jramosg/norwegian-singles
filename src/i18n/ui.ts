@@ -1,6 +1,7 @@
 // Internationalization utilities for Norwegian Singles
 
 import type { Locale } from '../types';
+import { appUiEn, appUiEs, appUiFr } from './app-ui';
 
 export const defaultLocale: Locale = 'en';
 export const locales: Locale[] = ['en', 'es', 'ko', 'de', 'fr'];
@@ -55,6 +56,7 @@ export const languageLabels: Record<
 // UI translations
 export const ui = {
   es: {
+    ...appUiEs,
     // Navigation
     'nav.home': 'Inicio',
     'nav.plan': 'Mi Plan',
@@ -258,6 +260,7 @@ export const ui = {
     delete: 'Eliminar',
   },
   en: {
+    ...appUiEn,
     // Navigation
     'nav.home': 'Home',
     'nav.plan': 'My Plan',
@@ -833,6 +836,7 @@ export const ui = {
     delete: 'Löschen',
   },
   fr: {
+    ...appUiFr,
     // Navigation
     'nav.home': 'Accueil',
     'nav.plan': 'Mon plan',

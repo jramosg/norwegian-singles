@@ -9,7 +9,7 @@
 import type { IconName } from './icons';
 
 export interface GearItem {
-  key: string;
+  key: 'coospo' | 'coros' | 'garmin-hrm' | 'garmin-fr165';
   title: string;
   description: string;
   icon: IconName;
@@ -18,7 +18,7 @@ export interface GearItem {
 }
 
 export interface Book {
-  key: string;
+  key: 'nsm' | 'bakken';
   title: string;
   author?: string;
   cover?: string;

@@ -98,6 +98,8 @@ const DAY_LABELS: Record<string, Record<Locale, string>> = {
 
 export default function PlanViewer({ locale }: Props) {
   const t = useTranslations(locale);
+  const planLabel = (label: string) =>
+    label.replace('h/week', t('plan.hoursPerWeek'));
   const [plan, setPlan] = useState<SavedPlan | null>(null);
   const [unit, setUnit] = useState<'km' | 'mile'>('km');
   const [tab, setTab] = useState<'week' | 'paces' | 'taper' | 'marathon'>(
@@ -165,57 +167,32 @@ export default function PlanViewer({ locale }: Props) {
     try {
       const { paces } = plan;
       const card: PlanCardData = {
-        planLabel: getPlanByHours(plan.input.weeklyHours).label,
+        planLabel: planLabel(getPlanByHours(plan.input.weeklyHours).label),
         fiveKLabel: formatTime(paces.fiveKSeconds),
         unitLabel: unit === 'km' ? 'min/km' : 'min/mi',
         rows: [
           {
-            label:
-              locale === 'es'
-                ? 'Interv. 3 min'
-                : locale === 'ko'
-                  ? '3분 반복'
-                  : '3-min reps',
+            label: locale === 'ko' ? '3분 반복' : t('plan.reps3'),
             value: formatPace(paces.rep3min, unit),
             color: 'var(--color-threshold)',
           },
           {
-            label:
-              locale === 'es'
-                ? 'Interv. 6 min'
-                : locale === 'ko'
-                  ? '6분 반복'
-                  : '6-min reps',
+            label: locale === 'ko' ? '6분 반복' : t('plan.reps6'),
             value: formatPace(paces.rep6min, unit),
             color: 'var(--color-threshold)',
           },
           {
-            label:
-              locale === 'es'
-                ? 'Interv. 10 min'
-                : locale === 'ko'
-                  ? '10분 반복'
-                  : '10-min reps',
+            label: locale === 'ko' ? '10분 반복' : t('plan.reps10'),
             value: formatPace(paces.rep10min, unit),
             color: 'var(--color-threshold)',
           },
           {
-            label:
-              locale === 'es'
-                ? 'Ritmo maratón'
-                : locale === 'ko'
-                  ? '마라톤 페이스'
-                  : 'Marathon pace',
+            label: locale === 'ko' ? '마라톤 페이스' : t('plan.marathonPace'),
             value: formatPace(paces.marathonPace, unit),
             color: '#ef4444',
           },
           {
-            label:
-              locale === 'es'
-                ? 'Ritmo fácil'
-                : locale === 'ko'
-                  ? '이지 페이스'
-                  : 'Easy pace',
+            label: locale === 'ko' ? '이지 페이스' : t('plan.easyPace'),
             value: formatPace(paces.easy, unit),
             color: '#22c55e',
           },
@@ -358,11 +335,9 @@ export default function PlanViewer({ locale }: Props) {
   };
 
   const sessionTitle = (session: DaySession): string => {
-    if (session.kind === 'rest') return locale === 'es' ? 'Descanso' : 'Rest';
-    if (session.kind === 'easy')
-      return locale === 'es' ? 'Rodaje fácil' : 'Easy run';
-    if (session.kind === 'double')
-      return locale === 'es' ? 'Doble rodaje' : 'Double easy';
+    if (session.kind === 'rest') return t('session.rest');
+    if (session.kind === 'easy') return t('plan.easyRun');
+    if (session.kind === 'double') return t('plan.doubleEasy');
     const s = session as SubTSession;
     return `${s.reps} × ${s.repDurationMin} min`;
   };
@@ -372,9 +347,7 @@ export default function PlanViewer({ locale }: Props) {
     if (session.kind === 'easy') return `${session.durationMin} min`;
     if (session.kind === 'double') {
       const d = session as DoubleDaySession;
-      return locale === 'es'
-        ? `AM ${d.morning.durationMin} min · PM ${d.afternoon.durationMin} min`
-        : `AM ${d.morning.durationMin} min · PM ${d.afternoon.durationMin} min`;
+      return `${t('plan.morning')} ${d.morning.durationMin} min · ${t('plan.afternoon')} ${d.afternoon.durationMin} min`;
     }
     const s = session as SubTSession;
     const fmtSec = (sec: number) => {
@@ -386,10 +359,16 @@ export default function PlanViewer({ locale }: Props) {
     const rec = s.recoverySecondsMax
       ? `${fmtSec(s.recoverySeconds)}–${fmtSec(s.recoverySecondsMax)}`
       : fmtSec(s.recoverySeconds);
-    const note = s.intensityNote ? `: ${s.intensityNote}` : '';
+    const note = s.intensityNote
+      ? `: ${s.intensityNote === '~95% of marathon pace (gateway intensity)' ? t('plan.gatewayIntensity') : s.intensityNote}`
+      : '';
     const wucd = text.wucd;
     const recLabel = text.recovery;
-    return `${s.totalDurationMin} min total (${wucd}) · ${rec} ${recLabel}${note}`;
+    const duration = t('plan.totalMinutes').replace(
+      '{minutes}',
+      String(s.totalDurationMin),
+    );
+    return `${duration} (${wucd}) · ${rec} ${recLabel}${note}`;
   };
 
   const hasMarathon = Boolean(input.marathonDate);
@@ -413,7 +392,7 @@ export default function PlanViewer({ locale }: Props) {
       {/* Header */}
       <div className="pv-header">
         <div>
-          <h2 className="pv-plan-name">{weekly.label}</h2>
+          <h2 className="pv-plan-name">{planLabel(weekly.label)}</h2>
           <p className="pv-5k">
             5K:{' '}
             <span className="pv-5k-val">{formatTime(paces.fiveKSeconds)}</span>
@@ -552,10 +531,8 @@ export default function PlanViewer({ locale }: Props) {
           {nextPlan && nextPlanUrl && (
             <a href={nextPlanUrl} className="pv-next">
               <div className="pv-next-content">
-                <span className="pv-next-label">
-                  {locale === 'es' ? 'Siguiente nivel' : 'Next level'}
-                </span>
-                <span className="pv-next-val">{nextPlan.label}</span>
+                <span className="pv-next-label">{t('plan.nextLevel')}</span>
+                <span className="pv-next-val">{planLabel(nextPlan.label)}</span>
               </div>
               <svg
                 className="pv-next-icon"
@@ -580,75 +557,43 @@ export default function PlanViewer({ locale }: Props) {
       {tab === 'paces' && (
         <div className="pv-paces">
           <PaceCard
-            label={
-              locale === 'es'
-                ? 'Intervalos 3 min (Sub-T corto)'
-                : '3-min reps (short Sub-T)'
-            }
+            label={t('plan.reps3Title')}
             pace={formatPace(paces.rep3min, unit)}
             unit={unitLabel}
             color="var(--color-threshold)"
-            note={
-              locale === 'es' ? 'Ritmo ~15 km de carrera' : '~15 km race pace'
-            }
+            note={t('plan.reps3Note')}
           />
           <PaceCard
-            label={
-              locale === 'es'
-                ? 'Intervalos 6 min (Sub-T medio)'
-                : '6-min reps (medium Sub-T)'
-            }
+            label={t('plan.reps6Title')}
             pace={formatPace(paces.rep6min, unit)}
             unit={unitLabel}
             color="var(--color-threshold)"
-            note={
-              locale === 'es' ? 'Ritmo ~30 km de carrera' : '~30 km race pace'
-            }
+            note={t('plan.reps6Note')}
           />
           <PaceCard
-            label={
-              locale === 'es'
-                ? 'Intervalos 10 min (Sub-T largo)'
-                : '10-min reps (long Sub-T)'
-            }
+            label={t('plan.reps10Title')}
             pace={formatPace(paces.rep10min, unit)}
             unit={unitLabel}
             color="var(--color-threshold)"
-            note={
-              locale === 'es'
-                ? 'Próximo a ritmo maratón'
-                : 'Close to marathon race pace'
-            }
+            note={t('plan.reps10Note')}
           />
           <PaceCard
-            label={
-              locale === 'es' ? 'Ritmo Maratón (MP)' : 'Marathon Pace (MP)'
-            }
+            label={t('plan.mpTitle')}
             pace={formatPace(paces.marathonPace, unit)}
             unit={unitLabel}
             color="var(--color-threshold)"
-            note={
-              locale === 'es'
-                ? 'Usado en recuperación tapering ("@ MP reducido"). ~14% más lento que tu 5K.'
-                : 'Used in taper/recovery sessions ("@ MP reduced intensity"). ~14% slower than 5K pace.'
-            }
+            note={t('plan.mpNote')}
           />
           <PaceCard
-            label={locale === 'es' ? 'Rodaje fácil' : 'Easy run'}
+            label={t('plan.easyRun')}
             pace={formatPace(paces.easy, unit)}
             unit={unitLabel}
             color="var(--color-easy)"
-            note={
-              locale === 'es'
-                ? 'Cómodo, conversacional. Todos los días fáciles.'
-                : 'Comfortable, conversational. All easy days.'
-            }
+            note={t('plan.easyNote')}
           />
           <div className="pv-recovery-note">
             <span className="pv-recovery-icon">⏱</span>
-            {locale === 'es'
-              ? 'Recuperación entre intervalos: 60 s (excepto 10 min con 2 min). Mantiene el estado de lactato.'
-              : 'Recovery between reps: 60 s (except 10-min reps: 2 min). Keeps lactate elevated.'}
+            {t('plan.recoveryNote')}
           </div>
         </div>
       )}
@@ -958,32 +903,26 @@ function TaperTable({
 
     switch (d.kind) {
       case 'easy_normal':
-        return locale === 'es'
-          ? `Rodaje fácil ${normalMin} min`
-          : `Easy run ${normalMin} min`;
+        return `${t('plan.easyRun')} ${normalMin} min`;
       case 'easy_shorter': {
         const computed = Math.round(normalMin * (d.factor ?? 1));
-        return locale === 'es'
-          ? `Rodaje fácil ${computed} min`
-          : `Easy run ${computed} min`;
+        return `${t('plan.easyRun')} ${computed} min`;
       }
       case 'subt_normal': {
         if (normalSession.kind === 'subT') {
           const s = normalSession as SubTSession;
-          return locale === 'es'
-            ? `${s.reps} × ${s.repDurationMin} min (entrenamiento normal)`
-            : `${s.reps} × ${s.repDurationMin} min (normal workout)`;
+          return `${s.reps} × ${s.repDurationMin} min (${t('plan.normalWorkout')})`;
         }
         return t(d.description as TranslationKey);
       }
       case 'subt_modified':
         // Inject the actual MP pace into the description where it says "@ MP"
         return t(d.description as TranslationKey).replace(
-          '@ MP',
-          `@ MP (${mpLabel})`,
+          /@ (?:MP|AM)/,
+          `@ ${locale === 'fr' ? 'AM' : 'MP'} (${mpLabel})`,
         );
       case 'race':
-        return locale === 'es' ? 'Carrera' : 'Race';
+        return t('session.race');
       default:
         return t(d.description as TranslationKey);
     }
