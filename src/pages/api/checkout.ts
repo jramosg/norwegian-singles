@@ -4,7 +4,7 @@ import type { StoredPlanInputs } from '../../lib/server/entitlements';
 import { TIER_IDS } from '../../lib/marathon/tiers';
 import { PLAN_LENGTHS } from '../../lib/marathon/phases';
 import { getMarathonHubPath } from '../../lib/marathon/hub';
-import { locales } from '../../i18n/ui';
+import { locales, useTranslations, type TranslationKey } from '../../i18n/ui';
 import type { Locale } from '../../types';
 import type { Sku } from '../../lib/marathon/pricing';
 import { parseTime } from '../../lib/paces';
@@ -45,32 +45,32 @@ function parse(
   body: Body,
 ):
   | { ok: true; sku: Sku; locale: Locale; inputs: StoredPlanInputs }
-  | { ok: false; error: string } {
+  | { ok: false; error: TranslationKey } {
   const sku = body.sku;
   if (
     !sku ||
     (sku !== 'bundle' && !TIER_IDS.includes(sku as (typeof TIER_IDS)[number]))
   ) {
-    return { ok: false, error: 'Unknown plan.' };
+    return { ok: false, error: 'checkout.unknownPlan' };
   }
 
   const locale = body.locale;
   if (!locale || !locales.includes(locale as Locale)) {
-    return { ok: false, error: 'Unknown locale.' };
+    return { ok: false, error: 'checkout.unknownLocale' };
   }
 
   const tier = body.tier;
   if (!tier || !TIER_IDS.includes(tier as (typeof TIER_IDS)[number])) {
-    return { ok: false, error: 'Pick a tier.' };
+    return { ok: false, error: 'checkout.pickTier' };
   }
   // Buying one tier must not hand over a different one.
   if (sku !== 'bundle' && sku !== tier) {
-    return { ok: false, error: 'That tier is not part of this purchase.' };
+    return { ok: false, error: 'checkout.wrongTier' };
   }
 
   const lengthWeeks = Number(body.lengthWeeks);
   if (!PLAN_LENGTHS.includes(lengthWeeks as (typeof PLAN_LENGTHS)[number])) {
-    return { ok: false, error: 'Pick 12, 15 or 18 weeks.' };
+    return { ok: false, error: 'checkout.pickLength' };
   }
 
   const unit = body.unit === 'mile' ? 'mile' : 'km';
@@ -81,7 +81,7 @@ function parse(
     raceDistanceM < MIN_RACE_M ||
     raceDistanceM > MAX_RACE_M
   ) {
-    return { ok: false, error: 'Enter a race distance.' };
+    return { ok: false, error: 'checkout.raceDistance' };
   }
 
   const raceTimeSec = Number(body.raceTimeSec);
@@ -90,17 +90,17 @@ function parse(
     raceTimeSec < MIN_RACE_SEC ||
     raceTimeSec > MAX_RACE_SEC
   ) {
-    return { ok: false, error: 'Enter a race time.' };
+    return { ok: false, error: 'checkout.raceTime' };
   }
 
   let marathonDate: string | undefined;
   if (body.marathonDate) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(body.marathonDate)) {
-      return { ok: false, error: 'Race date must be YYYY-MM-DD.' };
+      return { ok: false, error: 'checkout.dateFormat' };
     }
     const date = new Date(`${body.marathonDate}T00:00:00Z`);
     if (Number.isNaN(date.getTime())) {
-      return { ok: false, error: 'That race date is not a date.' };
+      return { ok: false, error: 'checkout.invalidDate' };
     }
     marathonDate = body.marathonDate;
   }
@@ -178,11 +178,15 @@ async function readBody(
 
 export const POST: APIRoute = async ({ request }) => {
   const read = await readBody(request);
-  if (!read) return bad('Unsupported body.');
+  if (!read) return bad(useTranslations('en')('request.unsupported'));
   const { body, isForm } = read;
+  const locale = locales.includes(body.locale as Locale)
+    ? (body.locale as Locale)
+    : 'en';
+  const t = useTranslations(locale);
 
   const parsed = parse(body);
-  if (!parsed.ok) return bad(parsed.error);
+  if (!parsed.ok) return bad(t(parsed.error));
 
   const hub = getMarathonHubPath(parsed.locale) ?? `/${parsed.locale}/`;
 
@@ -207,9 +211,9 @@ export const POST: APIRoute = async ({ request }) => {
     });
   } catch (error) {
     console.error('[checkout] failed to create a session', error);
-    return new Response(
-      JSON.stringify({ error: 'Could not start checkout. Try again.' }),
-      { status: 502, headers: { 'Content-Type': 'application/json' } },
-    );
+    return new Response(JSON.stringify({ error: t('checkout.failed') }), {
+      status: 502,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 };

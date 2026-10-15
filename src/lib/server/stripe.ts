@@ -46,6 +46,7 @@ export async function createCheckoutSession(
 
   return stripe.checkout.sessions.create({
     mode: 'payment',
+    locale: request.locale as Stripe.Checkout.SessionCreateParams.Locale,
     line_items: [{ price: stripePriceId(request.sku), quantity: 1 }],
     currency: CURRENCY.toLowerCase(),
     // Stripe collects the email and sends its own receipt, so no sending

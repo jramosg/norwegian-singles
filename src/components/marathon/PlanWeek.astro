@@ -7,6 +7,7 @@
  * when it is printed.
  */
 import { describeSession } from '../../lib/marathon/describe';
+import { useTranslations } from '../../i18n/ui';
 import {
   sessionDurationSec,
   type PaceResolver,
@@ -14,11 +15,12 @@ import {
 import type { MarathonCopy } from '../../lib/marathon/copy.en';
 import type { MarathonCopyShared } from '../../lib/marathon/tier-copy.en';
 import type { PlannedWeek } from '../../lib/marathon/types';
-import type { Unit } from '../../types';
+import type { Locale, Unit } from '../../types';
 import { KM_PER_MILE } from '../../lib/marathon/constants';
 
 interface Props {
   week: PlannedWeek;
+  locale: Locale;
   resolver: PaceResolver;
   copy: MarathonCopy;
   labels: MarathonCopyShared['labels'];
@@ -32,6 +34,7 @@ interface Props {
 
 const {
   week,
+  locale,
   resolver,
   copy,
   labels,
@@ -49,6 +52,19 @@ const dist = (metres: number): string =>
     : `${(metres / 1000 / KM_PER_MILE).toFixed(1)} mi`;
 
 const volume = dist(week.volumeM);
+const t = useTranslations(locale);
+const strengthPrescription = (prescription: string): string => {
+  if (locale !== 'fr') return prescription;
+  return prescription
+    .replace('of working load', 'de la charge de travail')
+    .replace(' at ', ' à ')
+    .replace('max speed', 'de la vitesse maximale')
+    .replace('walk recovery', 'de récupération en marchant')
+    .replace('sets', 'séries')
+    .replace('reps', 'répétitions')
+    .replace('maximal height', 'hauteur maximale')
+    .replace('minimal ground contact', 'contact au sol minimal');
+};
 ---
 
 <details class="pw" open={open} id={`week-${week.weekNumber}`}>
@@ -139,8 +155,8 @@ const volume = dist(week.volumeM);
               <ul class="pw-strength">
                 {day.strength.map((item) => (
                   <li>
-                    <strong>{item.modality.replace('_', ' ')}</strong>
-                    <span>{item.prescription}</span>
+                    <strong>{t(`strength.${item.modality}`)}</strong>
+                    <span>{strengthPrescription(item.prescription)}</span>
                     {item.notesKey && (
                       <small>{copy[item.notesKey as keyof MarathonCopy]}</small>
                     )}

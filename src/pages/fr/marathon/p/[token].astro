@@ -5,6 +5,7 @@
  * cached or indexed.
  */
 import PlanDocument from '../../../../components/marathon/PlanDocument.astro';
+import { useTranslations } from '../../../../i18n/ui';
 import { getDb } from '../../../../lib/server/db';
 import {
   DEVICE_SOFT_LIMIT,
@@ -16,16 +17,20 @@ import { currentWeekNumber, planForOrder } from '../../../../lib/server/plan';
 export const prerender = false;
 
 const locale = 'fr';
+const t = useTranslations(locale);
 const token = Astro.params.token ?? '';
 
 Astro.response.headers.set('Cache-Control', 'no-store');
 Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
-Astro.response.headers.set('Referrer-Policy', 'no-referrer');
+// Keep same-origin form posts working without leaking the token externally.
+Astro.response.headers.set('Referrer-Policy', 'same-origin');
 
 const db = getDb();
 const order = findOrderByToken(token, db);
 if (!order) {
-  return new Response('Not found', { status: 404 });
+  return new Response(t('marathon.notFound'), {
+    status: 404,
+  });
 }
 
 // Count distinct devices. A buyer uses a phone and a laptop; a token doing

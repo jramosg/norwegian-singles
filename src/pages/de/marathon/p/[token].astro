@@ -20,7 +20,8 @@ const token = Astro.params.token ?? '';
 
 Astro.response.headers.set('Cache-Control', 'no-store');
 Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
-Astro.response.headers.set('Referrer-Policy', 'no-referrer');
+// Keep same-origin form posts working without leaking the token externally.
+Astro.response.headers.set('Referrer-Policy', 'same-origin');
 
 const db = getDb();
 const order = findOrderByToken(token, db);

@@ -4,6 +4,7 @@
  * link is on screen immediately, without waiting for an email.
  */
 import AppLayout from '../../../layouts/AppLayout.astro';
+import { useTranslations } from '../../../i18n/ui';
 import { getDb } from '../../../lib/server/db';
 import { findOrderBySessionId } from '../../../lib/server/entitlements';
 import { getSharedCopy } from '../../../lib/marathon/tier-copy';
@@ -11,6 +12,7 @@ import { getSharedCopy } from '../../../lib/marathon/tier-copy';
 export const prerender = false;
 
 const locale = 'fr';
+const t = useTranslations(locale);
 const shared = getSharedCopy(locale);
 const sessionId = Astro.url.searchParams.get('session_id') ?? '';
 
@@ -37,12 +39,11 @@ const planPath = order ? `/${locale}/marathon/p/${order.accessToken}` : null;
         </Fragment>
       ) : (
         <Fragment>
-          <p class="ck-lead">
-            Payment received. Your plan link is being prepared and an email is
-            on its way. Reload this page in a moment.
-          </p>
+          <p class="ck-lead">{t('marathon.paymentPending')}</p>
           <p class="ck-note">
-            <a href={`/${locale}/marathon/recover`}>Resend my link</a>
+            <a href={`/${locale}/marathon/recover`}>
+              {t('marathon.resendLink')}
+            </a>
           </p>
         </Fragment>
       )

@@ -8,6 +8,7 @@
  * fitness check-in is a form post.
  */
 import AppLayout from '../../layouts/AppLayout.astro';
+import { useTranslations } from '../../i18n/ui';
 import BuildSilhouette from './BuildSilhouette.astro';
 import PlanWeek from './PlanWeek.astro';
 import { getMarathonCopy } from '../../lib/marathon/copy';
@@ -33,9 +34,11 @@ interface Props {
 const { locale, order, orderPlan, unit, showStrength, currentWeek } =
   Astro.props;
 const { plan, fitness, history } = orderPlan;
+const t = useTranslations(locale);
 
 const copy = getMarathonCopy(locale);
 const shared = getSharedCopy(locale);
+const durationLabel = `${order.planInputs.lengthWeeks} ${shared.buy.weeks}`;
 const tierCopy = getTierCopy(locale)[order.planInputs.tier];
 const resolver = createResolver(fitness, plan.mp);
 
@@ -79,7 +82,7 @@ const fitnessWeek = fitness.setAtWeek;
 ---
 
 <AppLayout
-  title={`${tierCopy.name}: ${order.planInputs.lengthWeeks} weeks`}
+  title={`${tierCopy.name}: ${durationLabel}`}
   description={tierCopy.description}
   locale={locale}
 >
@@ -92,8 +95,7 @@ const fitnessWeek = fitness.setAtWeek;
       <p class="pd-eyebrow">{shared.indexH1}</p>
       <h1>{tierCopy.name}</h1>
       <p class="pd-sub">
-        {order.planInputs.lengthWeeks}
-        {shared.labels.week.toLowerCase()}s
+        {durationLabel}
         {order.planInputs.marathonDate && ` · ${order.planInputs.marathonDate}`}
       </p>
 
@@ -135,7 +137,7 @@ const fitnessWeek = fitness.setAtWeek;
       </p>
     </header>
 
-    <nav class="pd-controls container" aria-label="Plan options">
+    <nav class="pd-controls container" aria-label={t('marathon.options')}>
       <a
         href={link({ unit: unit === 'km' ? 'mile' : 'km' })}
         rel="nofollow"
@@ -147,25 +149,27 @@ const fitnessWeek = fitness.setAtWeek;
         {shared.labels.strengthOptional}
       </a>
       <a
-        href={`/api/plan-export?token=${order.accessToken}&format=csv`}
+        href={`/api/plan-export?token=${order.accessToken}&format=csv&locale=${locale}&unit=${unit}`}
         class="pd-btn"
       >
         CSV
       </a>
       <a
-        href={`/api/plan-export?token=${order.accessToken}&format=ics`}
+        href={`/api/plan-export?token=${order.accessToken}&format=ics&locale=${locale}&unit=${unit}`}
         class="pd-btn"
       >
-        Calendar
+        {t('marathon.calendar')}
       </a>
-      <button type="button" class="pd-btn" id="pd-print">Print</button>
+      <button type="button" class="pd-btn" id="pd-print"
+        >{t('marathon.print')}</button
+      >
     </nav>
 
     <section class="pd-shape container">
       <BuildSilhouette
         weeks={curve}
         unit={unit}
-        ariaLabel={`${tierCopy.name}: weekly volume across ${plan.weeks.length} weeks`}
+        ariaLabel={`${tierCopy.name}: ${t('marathon.volumeChart').replace('{weeks}', String(plan.weeks.length))}`}
       />
     </section>
 
@@ -174,6 +178,7 @@ const fitnessWeek = fitness.setAtWeek;
         plan.weeks.map((week) => (
           <PlanWeek
             week={week}
+            locale={locale}
             resolver={resolver}
             copy={copy}
             labels={shared.labels}
@@ -196,33 +201,42 @@ const fitnessWeek = fitness.setAtWeek;
       <p class="pd-note">{copy['rpe.subt']}</p>
       <form method="post" action="/api/fitness" class="pd-form">
         <input type="hidden" name="token" value={order.accessToken} />
+        <input type="hidden" name="locale" value={locale} />
         <input type="hidden" name="mode" value="checkin" />
         <label>
-          <span>Could you have done more?</span>
+          <span>{t('marathon.reserveQuestion')}</span>
           <select name="reserve">
-            <option value="several_more">Several more reps</option>
-            <option value="one_or_two_more" selected>One or two more</option>
-            <option value="nothing_left">Nothing left</option>
-            <option value="could_not_finish">Could not finish it</option>
+            <option value="several_more">{t('marathon.reserveSeveral')}</option>
+            <option value="one_or_two_more" selected
+              >{t('marathon.reserveOneTwo')}</option
+            >
+            <option value="nothing_left">{t('marathon.reserveNone')}</option>
+            <option value="could_not_finish"
+              >{t('marathon.reserveUnfinished')}</option
+            >
           </select>
         </label>
         <label>
-          <span>Last rep versus the first?</span>
+          <span>{t('marathon.lastRepQuestion')}</span>
           <select name="lastRep">
-            <option value="held" selected>Held the pace</option>
-            <option value="drifted">Drifted a little</option>
-            <option value="fell_away">Fell away</option>
+            <option value="held" selected>{t('marathon.lastRepHeld')}</option>
+            <option value="drifted">{t('marathon.lastRepDrifted')}</option>
+            <option value="fell_away">{t('marathon.lastRepFaded')}</option>
           </select>
         </label>
         <label>
-          <span>Effort out of 10?</span>
+          <span>{t('marathon.effortQuestion')}</span>
           <select name="effort">
-            <option value="under">Under 7</option>
-            <option value="on_target" selected>About 7</option>
-            <option value="over">Over 8</option>
+            <option value="under">{t('marathon.effortUnder')}</option>
+            <option value="on_target" selected
+              >{t('marathon.effortTarget')}</option
+            >
+            <option value="over">{t('marathon.effortOver')}</option>
           </select>
         </label>
-        <button type="submit" class="btn btn-primary">Update my paces</button>
+        <button type="submit" class="btn btn-primary"
+          >{t('marathon.updatePaces')}</button
+        >
       </form>
 
       {
@@ -234,7 +248,7 @@ const fitnessWeek = fitness.setAtWeek;
                   {shared.labels.week} {record.setAtWeek}
                 </span>
                 <strong>{record.vdot.toFixed(1)}</strong>
-                <em>{record.source}</em>
+                <em>{t(`marathon.source.${record.source}`)}</em>
               </li>
             ))}
           </ol>

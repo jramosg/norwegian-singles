@@ -1,4 +1,6 @@
 import type { APIRoute } from 'astro';
+import { locales, useTranslations } from '../../i18n/ui';
+import type { Locale } from '../../types';
 import { calculateTimeFromVDOT, calculateVDOT } from '../../lib/vdot';
 import {
   applyCheckin,
@@ -20,6 +22,7 @@ export const prerender = false;
  */
 interface Body {
   token?: string;
+  locale?: string;
   /** 'race' | 'time_trial' feed a result; 'checkin' feeds answers. */
   mode?: 'result' | 'checkin' | 'manual';
   raceDistanceM?: number;
@@ -78,6 +81,7 @@ async function readBody(
       isForm: true,
       body: {
         token: get('token'),
+        locale: get('locale'),
         mode: (get('mode') as Body['mode']) ?? 'checkin',
         raceDistanceM: Number(get('raceDistanceM')),
         raceTimeSec: Number(get('raceTimeSec')),
@@ -91,12 +95,20 @@ async function readBody(
 
 export const POST: APIRoute = async ({ request }) => {
   const read = await readBody(request);
-  if (!read) return json({ error: 'Unsupported body.' }, 400);
+  if (!read)
+    return json({ error: useTranslations('en')('request.unsupported') }, 400);
   const { body, isForm } = read;
+  const requestedLocale =
+    body.locale ??
+    request.headers.get('referer')?.match(/\/([a-z]{2})\/marathon\/p\//)?.[1];
+  const locale = locales.includes(requestedLocale as Locale)
+    ? (requestedLocale as Locale)
+    : 'en';
+  const t = useTranslations(locale);
 
   const db = getDb();
   const order = body.token ? findOrderByToken(body.token, db) : null;
-  if (!order) return json({ error: 'Unknown plan link.' }, 404);
+  if (!order) return json({ error: t('fitness.unknownPlan') }, 404);
 
   const { plan, fitness } = planForOrder(order, db);
   const setAtWeek = currentWeekNumber(plan) ?? 1;
@@ -105,7 +117,7 @@ export const POST: APIRoute = async ({ request }) => {
   let source: 'race' | 'time_trial' | 'checkin' | 'manual';
 
   if (body.mode === 'checkin') {
-    if (!body.responses) return json({ error: 'Answer the check-in.' }, 400);
+    if (!body.responses) return json({ error: t('fitness.answer') }, 400);
     const outcome = applyCheckin(fitness.vdot, body.responses);
     nextVdot = outcome.nextVdot;
     source = 'checkin';
@@ -123,7 +135,7 @@ export const POST: APIRoute = async ({ request }) => {
       time < 100 ||
       time > 12 * 3600
     ) {
-      return json({ error: 'Enter a distance and a time.' }, 400);
+      return json({ error: t('fitness.race') }, 400);
     }
     nextVdot = calculateVDOT(distance, time);
     source = 'race';
@@ -134,7 +146,7 @@ export const POST: APIRoute = async ({ request }) => {
     nextVdot < MIN_VDOT ||
     nextVdot > MAX_VDOT
   ) {
-    return json({ error: 'That fitness estimate is out of range.' }, 400);
+    return json({ error: t('fitness.range') }, 400);
   }
 
   recordFitness(
@@ -156,7 +168,7 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(null, {
       status: 303,
       headers: {
-        Location: `${new URL(request.url).origin}${planPath(request, order.accessToken)}#fitness`,
+        Location: `${new URL(request.url).origin}/${locale}/marathon/p/${order.accessToken}#fitness`,
         'Cache-Control': 'no-store',
       },
     });
@@ -169,10 +181,3 @@ export const POST: APIRoute = async ({ request }) => {
     unchanged: nextVdot === fitness.vdot,
   });
 };
-
-/** Rebuild the plan URL from the referring page so the locale is kept. */
-function planPath(request: Request, token: string): string {
-  const referer = request.headers.get('referer');
-  const locale = referer?.match(/\/([a-z]{2})\/marathon\/p\//)?.[1] ?? 'en';
-  return `/${locale}/marathon/p/${token}`;
-}

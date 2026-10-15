@@ -4,11 +4,13 @@
  * bought anything, so it cannot be used to enumerate customers.
  */
 import AppLayout from '../../../layouts/AppLayout.astro';
+import { useTranslations } from '../../../i18n/ui';
 import { getSharedCopy } from '../../../lib/marathon/tier-copy';
 
 export const prerender = false;
 
 const locale = 'fr';
+const t = useTranslations(locale);
 const shared = getSharedCopy(locale);
 const sent = Astro.url.searchParams.get('sent') === '1';
 
@@ -18,22 +20,19 @@ Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
 
 <AppLayout title={shared.indexTitle} locale={locale}>
   <article class="rc container">
-    <h1>Resend my plan link</h1>
+    <h1>{t('marathon.recoverHeading')}</h1>
     {
       sent ? (
-        <p class="rc-lead">
-          If that address has a plan, the link is on its way. Check your spam
-          folder if it does not arrive.
-        </p>
+        <p class="rc-lead">{t('marathon.recoverSent')}</p>
       ) : (
         <form method="post" action="/api/recover" class="rc-form">
           <input type="hidden" name="locale" value={locale} />
           <label>
-            <span>The email you paid with</span>
+            <span>{t('marathon.emailLabel')}</span>
             <input type="email" name="email" required autocomplete="email" />
           </label>
           <button type="submit" class="btn btn-primary">
-            Send the link
+            {t('marathon.recoverSubmit')}
           </button>
         </form>
       )

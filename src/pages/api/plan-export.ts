@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { locales, useTranslations } from '../../i18n/ui';
 import { getDb } from '../../lib/server/db';
 import { findOrderByToken } from '../../lib/server/entitlements';
 import { planForOrder } from '../../lib/server/plan';
@@ -28,20 +29,27 @@ function foldIcs(line: string): string {
   // RFC 5545 caps a content line at 75 octets; continuations start with a
   // space. Calendar clients are strict about this.
   const chunks: string[] = [];
-  let rest = line;
-  chunks.push(rest.slice(0, 74));
-  rest = rest.slice(74);
-  while (rest.length > 0) {
-    chunks.push(` ${rest.slice(0, 73)}`);
-    rest = rest.slice(73);
+  const encoder = new TextEncoder();
+  let chunk = '';
+  let octets = 0;
+  for (const character of line) {
+    const length = encoder.encode(character).length;
+    if (octets + length > 75) {
+      chunks.push(chunk);
+      chunk = ' ';
+      octets = 1;
+    }
+    chunk += character;
+    octets += length;
   }
+  chunks.push(chunk);
   return chunks.join('\r\n');
 }
 
 function escapeIcs(value: string): string {
   return value
     .replace(/\\/g, '\\\\')
-    .replace(/;/g, '\;')
+    .replace(/;/g, '\\;')
     .replace(/,/g, '\\,')
     .replace(/\n/g, '\\n');
 }
@@ -58,7 +66,12 @@ export const GET: APIRoute = ({ url, request }) => {
   const localeMatch = request.headers
     .get('referer')
     ?.match(/\/([a-z]{2})\/marathon\/p\//);
-  const locale = (localeMatch?.[1] ?? 'en') as Locale;
+  // Calendar subscription clients do not send a referring page.
+  const requestedLocale = url.searchParams.get('locale') ?? localeMatch?.[1];
+  const locale = locales.includes(requestedLocale as Locale)
+    ? (requestedLocale as Locale)
+    : 'en';
+  const t = useTranslations(locale);
   const copy: MarathonCopy = getMarathonCopy(locale);
 
   const { plan, fitness } = planForOrder(order, db);
@@ -79,7 +92,15 @@ export const GET: APIRoute = ({ url, request }) => {
 
   if (format === 'csv') {
     const rows = [
-      ['week', 'phase', 'date', 'day', 'kind', 'session', 'notes'].join(','),
+      [
+        t('export.week'),
+        t('export.phase'),
+        t('export.date'),
+        t('export.day'),
+        t('export.kind'),
+        t('export.session'),
+        t('export.notes'),
+      ].join(','),
     ];
     for (const week of plan.weeks) {
       for (const day of week.days) {
@@ -116,7 +137,7 @@ export const GET: APIRoute = ({ url, request }) => {
     'PRODID:-//norwegian-singles//marathon plan//EN',
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
-    `X-WR-CALNAME:${escapeIcs(`Marathon plan (${stamp})`)}`,
+    `X-WR-CALNAME:${escapeIcs(`${t('marathon.calendarName')} (${stamp})`)}`,
   ];
 
   for (const week of plan.weeks) {
