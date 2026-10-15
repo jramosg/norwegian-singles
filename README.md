@@ -48,9 +48,11 @@ The application intelligently adapts training volume and interval structure base
 
 ## 💶 Monetization
 
-Amazon links use locale-specific Associates tags from
-`src/lib/affiliate.ts`. Confirm that every tag belongs to the intended
-Associates account before deployment.
+Amazon links are stored in `src/lib/affiliate.ts`. Generate them with Amazon
+SiteStripe ("Obtener enlace"), selecting `jramosg-20` for both the store ID and
+tracking ID. Open each generated short link and verify its product and
+`tag=jramosg-20` before replacing a URL. All seven current links were verified
+on Amazon.es on 2026-10-15.
 
 Affiliate and support clicks are recorded without cookies by Nginx. Inspect
 them on the server with:

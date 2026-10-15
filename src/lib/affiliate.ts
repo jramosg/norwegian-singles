@@ -1,9 +1,9 @@
 /**
  * Affiliate product data.
  *
- * All links use Global Earning (OneLink): a single link per product
- * automatically redirects visitors to their local Amazon marketplace.
- * No per-marketplace URL building needed.
+ * Links are generated with Amazon SiteStripe ("Obtener enlace") using
+ * jramosg-20 as both the store and tracking ID. Their Amazon.es destinations
+ * and tag=jramosg-20 were verified on 2026-10-15.
  */
 
 import type { IconName } from './icons';
@@ -34,7 +34,7 @@ export const gear: GearItem[] = [
       'Chest strap with Bluetooth + ANT+. Budget-friendly, accurate heart rate data for every session.',
     icon: 'heart-pulse',
     cover: '/coospo-hrm.jpg',
-    link: 'https://amzn.to/3UDL4fS',
+    link: 'https://link.amazon/B00o9vUjk',
   },
   {
     key: 'coros',
@@ -43,7 +43,7 @@ export const gear: GearItem[] = [
       'Advanced optical sensor, 80-day battery, auto-wear detection. Premium arm-band HR monitor.',
     icon: 'heart-pulse',
     cover: '/coros-hrm.jpg',
-    link: 'https://link.amazon/B036D10OK',
+    link: 'https://link.amazon/B0f3Zd8yq',
   },
   {
     key: 'garmin-hrm',
@@ -52,7 +52,7 @@ export const gear: GearItem[] = [
       'Chest strap, water-resistant, washable band, up to 1 year battery. Precise HR for NSM training.',
     icon: 'heart-pulse',
     cover: '/garmin-hrm200.jpg',
-    link: 'https://link.amazon/B0aozWFa9',
+    link: 'https://link.amazon/B0acBWizW',
   },
   {
     key: 'garmin-fr165',
@@ -61,7 +61,7 @@ export const gear: GearItem[] = [
       'Lightweight GPS running watch with AMOLED display, real-time pace, distance and HR data.',
     icon: 'watch',
     cover: '/garmin-fr165.jpg',
-    link: 'https://amzn.to/4xK02PE',
+    link: 'https://link.amazon/B0dKyKxck',
   },
 ];
 
@@ -71,14 +71,14 @@ export const books: Book[] = [
     title: 'Norwegian Singles Method',
     author: 'James Copeland',
     cover: '/book-nsm.jpg',
-    link: 'https://amzn.to/4gjb7jW',
-    kindleLink: 'https://amzn.to/4gpXvU6',
+    link: 'https://link.amazon/B07Btl9Zx',
+    kindleLink: 'https://link.amazon/B0ab0wFoF',
   },
   {
     key: 'bakken',
     title: 'The Norwegian Method Applied',
     author: 'Marius Bakken, MD',
     cover: '/book-bakken.jpg',
-    link: 'https://amzn.to/4giIPFY',
+    link: 'https://link.amazon/B0hEe3cFw',
   },
 ];
