@@ -47,6 +47,12 @@ then the first supported browser language, then English. This requires no
 application server or language lookup request. Without JavaScript, `/`
 redirects to English. The language-specific pages do not run this redirect.
 
+`/llms.txt` provides a concise content map for agents, with links to the
+calculator, training guides, and all supported languages. Missing pages and
+discovery files return HTTP 404 rather than the language chooser's HTML.
+There is no agent resource catalog because the site does not expose an API,
+MCP server, or agent skill.
+
 ## 🧞 Commands
 
 | Command | Action |

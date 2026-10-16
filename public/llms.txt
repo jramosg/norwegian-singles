@@ -1,0 +1,38 @@
+# Norwegian Singles
+
+> Free running pace calculator and training planner for the Norwegian Singles
+> Approach / Method (NSA / NSM), with VDOT estimates, weekly schedules, and
+> marathon builds. Created by Jon Ramos.
+
+The calculator uses a recent race result and available weekly training time to
+estimate sub-threshold interval targets and easy running paces. These are
+performance-based estimates, not measured lactate thresholds. This is an
+independent tool, not an official product of the coaches or authors referenced
+in its guides.
+
+Guides are available as static HTML. Calculations and personalized plans run in
+the browser with JavaScript; there is no public calculation API or MCP server.
+Plan links can include race results, weekly hours, units, and a marathon date in
+their query parameters. Explicit language URLs retain the requested language.
+
+## Calculator and training guides
+
+- [Calculator](https://norwegian-singles.app/en/): Enter a race result and weekly training time to calculate paces and generate a plan.
+- [Norwegian Singles training method](https://norwegian-singles.app/en/nsm-training-method/): Overview of single-session sub-threshold training and interval structures.
+- [Weekly training planner](https://norwegian-singles.app/en/norwegian-singles-training-plan/): Weekly schedules based on current fitness and available training hours.
+- [Marathon planner](https://norwegian-singles.app/en/norwegian-singles-marathon-plan/): A 15-week marathon build with long runs, marathon-specific sessions, and a taper.
+- [VDOT calculator](https://norwegian-singles.app/en/vdot-calculator/): Estimated running fitness, training zones, and equivalent race performances.
+
+## Languages
+
+- [English](https://norwegian-singles.app/en/)
+- [Español](https://norwegian-singles.app/es/)
+- [한국어](https://norwegian-singles.app/ko/)
+- [Deutsch](https://norwegian-singles.app/de/)
+- [Français](https://norwegian-singles.app/fr/)
+- [Italiano](https://norwegian-singles.app/it/)
+- [Português do Brasil](https://norwegian-singles.app/pt-BR/)
+
+## Optional
+
+- [Sitemap](https://norwegian-singles.app/sitemap-index.xml): Complete index of localized calculators, guides, and race pages.

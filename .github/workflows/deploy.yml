@@ -203,6 +203,19 @@ jobs:
                 echo "❌ Expected HTTP 200 from the static homepage, got $CHECK_STATUS"
                 exit 1
               fi
+
+              # Discovery files must contain their own content, not fallback HTML.
+              if curl -fsS --max-time 10 "http://localhost:$CHECK_PORT/llms.txt" | grep -q '^# Norwegian Singles'; then
+                echo "✅ Agent content map is available!"
+              else
+                echo "❌ Agent content map is missing or invalid"
+                exit 1
+              fi
+              MISSING_STATUS=$(curl -s --max-time 10 -o /dev/null -w '%{http_code}' "http://localhost:$CHECK_PORT/missing-resource-health-check.json" || true)
+              if [ "$MISSING_STATUS" != "404" ]; then
+                echo "❌ Expected HTTP 404 for a missing resource, got $MISSING_STATUS"
+                exit 1
+              fi
             else
               echo "❌ Deployment verification failed!"
               echo "Container status:"
