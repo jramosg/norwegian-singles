@@ -193,13 +193,15 @@ jobs:
               echo "✅ Norwegian Singles is running successfully!"
               docker-compose ps
               
-              # Test health endpoint if available (following redirects)
+            # The root must serve the static language chooser, not a redirect.
               # We use the port from .env or default to 4321
               CHECK_PORT=$(grep PORT .env | cut -d'=' -f2 || echo 4321)
-              if curl -f -sL http://localhost:$CHECK_PORT/ >/dev/null 2>&1; then
-                echo "✅ Health check passed on port $CHECK_PORT!"
+              CHECK_STATUS=$(curl -s --max-time 10 -o /dev/null -w '%{http_code}' "http://localhost:$CHECK_PORT/" || true)
+              if [ "$CHECK_STATUS" = "200" ]; then
+                echo "✅ Static homepage health check passed on port $CHECK_PORT!"
               else
-                echo "⚠️  Health check endpoint not responding yet (this might be normal during startup)"
+                echo "❌ Expected HTTP 200 from the static homepage, got $CHECK_STATUS"
+                exit 1
               fi
             else
               echo "❌ Deployment verification failed!"
