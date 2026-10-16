@@ -1,7 +1,7 @@
 // Internationalization utilities for Norwegian Singles
 
 import type { Locale } from '../types';
-import { appUiEn, appUiEs, appUiFr } from './app-ui';
+import { appUiDe, appUiEn, appUiEs, appUiFr } from './app-ui';
 
 export const defaultLocale: Locale = 'en';
 export const locales: Locale[] = ['en', 'es', 'ko', 'de', 'fr'];
@@ -68,6 +68,7 @@ export const ui = {
     'hero.subtitle':
       'Introduce cualquier marca para obtener ritmos sub-umbral NSA / NSM, tu puntuación VDOT de Jack Daniels con todas las zonas de entrenamiento, y un plan de maratón de 15 semanas.',
     'hero.cta': 'Crear mi plan',
+    'hero.features': 'Funciones de la calculadora',
 
     // Form
     'form.title': 'Configura tu entrenamiento',
@@ -205,6 +206,7 @@ export const ui = {
 
     // Footer
     'footer.credit': 'Basado en el método de entrenamiento Norwegian Singles',
+    'footer.rights': 'Todos los derechos reservados.',
     'footer.disclaimer':
       'Herramienta no oficial. No tiene relación con los autores, entrenadores o marcas mencionadas. Consulta con un profesional antes de iniciar un plan.',
     'footer.dev': 'Desarrollado por',
@@ -272,6 +274,7 @@ export const ui = {
     'hero.subtitle':
       'Enter any race to get NSA / NSM sub-threshold paces, your Jack Daniels VDOT score and training zones, and a 15-week marathon build.',
     'hero.cta': 'Create my plan',
+    'hero.features': 'Calculator features',
 
     // Form
     'form.title': 'Configure your training',
@@ -408,6 +411,7 @@ export const ui = {
 
     // Footer
     'footer.credit': 'Based on the Norwegian Singles training method',
+    'footer.rights': 'All rights reserved.',
     'footer.disclaimer':
       'Unofficial planning tool. It has no relationship with the authors, coaches, or brands mentioned. Consult a professional before starting a plan.',
     'footer.dev': 'Built by',
@@ -474,6 +478,7 @@ export const ui = {
     'hero.subtitle':
       '어떤 레이스 기록이든 입력하면 NSA / NSM 서브스레숄드 페이스, Jack Daniels VDOT 점수와 훈련 구역, 15주 마라톤 빌드업 플랜을 받을 수 있습니다.',
     'hero.cta': '플랜 만들기',
+    'hero.features': '계산기 기능',
 
     // Form
     'form.title': '훈련 설정',
@@ -579,6 +584,7 @@ export const ui = {
 
     // Footer
     'footer.credit': 'Norwegian Singles 훈련법 기반',
+    'footer.rights': '모든 권리 보유.',
     'footer.disclaimer':
       '독립적인 비공식 플래닝 도구입니다. 언급된 저자, 코치, 브랜드와 제휴, 보증, 승인 관계가 없습니다. 훈련 프로그램을 시작하기 전에 전문가와 상담하세요.',
     'footer.dev': '제작',
@@ -634,6 +640,7 @@ export const ui = {
     delete: '삭제',
   },
   de: {
+    ...appUiDe,
     // Navigation
     'nav.home': 'Start',
     'nav.plan': 'Mein Plan',
@@ -645,6 +652,7 @@ export const ui = {
     'hero.subtitle':
       'Gib ein beliebiges Rennergebnis ein und erhalte NSA / NSM Sub-Threshold-Paces, deinen Jack-Daniels-VDOT-Wert mit Trainingszonen und einen 15-wöchigen Marathon-Aufbau.',
     'hero.cta': 'Plan erstellen',
+    'hero.features': 'Rechnerfunktionen',
 
     // Form
     'form.title': 'Training einstellen',
@@ -781,6 +789,7 @@ export const ui = {
 
     // Footer
     'footer.credit': 'Basierend auf der Norwegian-Singles-Trainingsmethode',
+    'footer.rights': 'Alle Rechte vorbehalten.',
     'footer.disclaimer':
       'Inoffizielles Planungstool. Es steht in keiner Verbindung zu den genannten Autoren, Trainern oder Marken. Konsultiere vor Beginn eines Plans eine Fachperson.',
     'footer.dev': 'Entwickelt von',
@@ -848,6 +857,7 @@ export const ui = {
     'hero.subtitle':
       "Saisis n'importe quel résultat de course pour obtenir tes allures sous-seuil NSA / NSM, ton score VDOT de Jack Daniels avec les zones d'entraînement et un plan marathon de 15 semaines.",
     'hero.cta': 'Créer mon plan',
+    'hero.features': 'Fonctionnalités du calculateur',
 
     // Form
     'form.title': 'Configure ton entraînement',
@@ -986,6 +996,7 @@ export const ui = {
 
     // Footer
     'footer.credit': "Basé sur la méthode d'entraînement Norwegian Singles",
+    'footer.rights': 'Tous droits réservés.',
     'footer.disclaimer':
       "Outil de planification non officiel. Il n'a aucun lien avec les auteurs, entraîneurs ou marques mentionnés. Consulte un professionnel avant de commencer un plan.",
     'footer.dev': 'Développé par',

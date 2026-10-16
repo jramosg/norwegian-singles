@@ -29,6 +29,7 @@ import { savePlan } from '../../lib/storage';
 import { encodePlanInput } from '../../lib/plan-url';
 import { getPlanByHours } from '../../lib/training-plans';
 import { trackEvent } from '../../lib/analytics';
+import { useTranslations } from '../../i18n/ui';
 
 interface Props {
   locale: Locale;
@@ -157,6 +158,7 @@ const EQUIV_LABELS: Record<string, Record<Locale, string>> = {
 };
 
 export default function TrainingForm({ locale }: Props) {
+  const t = useTranslations(locale);
   const [raceDistance, setRaceDistance] = useState<RaceDistance>('5K');
   const [raceTime, setRaceTime] = useState('');
   const [customDistanceRaw, setCustomDistanceRaw] = useState('');
@@ -289,10 +291,10 @@ export default function TrainingForm({ locale }: Props) {
         return {
           day,
           title: `${session.reps} x ${session.repDurationMin} min`,
-          detail:
-            locale === 'es'
-              ? `${session.totalDurationMin} min total`
-              : `${session.totalDurationMin} min total`,
+          detail: t('plan.totalMinutes').replace(
+            '{minutes}',
+            String(session.totalDurationMin),
+          ),
           pace,
         };
       })
@@ -511,11 +513,11 @@ export default function TrainingForm({ locale }: Props) {
       vdotTraining: 'Training',
       vdotEquivalent: 'Äquivalent',
       vdotType: 'Typ',
-      vdotEasy: 'Easy',
+      vdotEasy: 'Locker',
       vdotMarathon: 'Marathon',
-      vdotThreshold: 'Threshold',
-      vdotInterval: 'Interval',
-      vdotRepetition: 'Repetition',
+      vdotThreshold: 'Schwelle',
+      vdotInterval: 'Intervall',
+      vdotRepetition: 'Wiederholung',
       vdotRace: 'Rennen',
       vdotTime: 'Zeit',
     },
@@ -680,10 +682,13 @@ export default function TrainingForm({ locale }: Props) {
               onChange={(e) => setWeeklyHoursRaw(e.target.value)}
               placeholder="6"
             />
-            <span className="tf-hours-unit">h/week</span>
+            <span className="tf-hours-unit">{t('plan.hoursPerWeek')}</span>
           </div>
           <p className="form-hint tf-hours-hint">
-            {T.hoursHint} <strong>{matchedPlan.label}</strong>
+            {T.hoursHint}{' '}
+            <strong>
+              {matchedPlan.label.replace('h/week', t('plan.hoursPerWeek'))}
+            </strong>
           </p>
         </div>
 

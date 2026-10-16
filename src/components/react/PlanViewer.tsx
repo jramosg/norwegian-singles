@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import type { SavedPlan, Locale, TrainingPaces } from '../../types';
 import { useTranslations, type TranslationKey } from '../../i18n/ui';
+import { localizeMarathonBuildText } from '../../i18n/marathon-build';
 import { loadPlan, savePlan } from '../../lib/storage';
 import { createPlan } from '../../lib/plan-generator';
 import { encodePlanInput, decodePlanInput } from '../../lib/plan-url';
@@ -949,9 +950,6 @@ function TaperTable({
 // MarathonBuildTab
 // ---------------------------------------------------------------------------
 
-const MB_DAY_ABBR = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-const MB_DAY_FULL = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-
 function mbSessionColor(day: MarathonBuildDay): string {
   if (day.kind === 'rest') return 'var(--color-text-muted)';
   if (day.kind === 'easy') return 'var(--color-easy)';
@@ -959,10 +957,11 @@ function mbSessionColor(day: MarathonBuildDay): string {
   return 'var(--color-threshold)';
 }
 
-function mbSessionLabel(day: MarathonBuildDay): string {
-  if (day.kind === 'rest') return 'Rest';
+function mbSessionLabel(day: MarathonBuildDay, locale: Locale): string {
+  if (day.kind === 'rest') return useTranslations(locale)('session.rest');
   if (day.kind === 'easy') return `${day.durationMin}E`;
-  if (day.kind === 'race') return day.raceName;
+  if (day.kind === 'race')
+    return localizeMarathonBuildText(day.raceName, locale);
   if (day.kind === 'subT') {
     if (day.reps === 1) return `${day.distanceM / 1000}K S`;
     return `${day.reps}×${day.distanceM >= 1000 ? `${day.distanceM / 1000}K` : `${day.distanceM}m`}`;
@@ -979,7 +978,9 @@ function mbSessionDetail(
   paces: TrainingPaces,
   unit: 'km' | 'mile',
   unitLabel: string,
+  locale: Locale,
 ): React.ReactNode {
+  const t = useTranslations(locale);
   if (day.kind === 'rest')
     return <span style={{ color: 'var(--color-text-muted)' }}>-</span>;
 
@@ -987,7 +988,7 @@ function mbSessionDetail(
     return (
       <>
         <div className="mb-day-main" style={{ color: 'var(--color-easy)' }}>
-          {day.durationMin} min easy
+          {day.durationMin} min · {t('session.easy')}
         </div>
         <div className="mb-day-pace">
           {formatPace(paces.easy, unit)}{' '}
@@ -998,7 +999,11 @@ function mbSessionDetail(
   }
 
   if (day.kind === 'race') {
-    return <div className="mb-day-main mb-day-race">{day.raceName}</div>;
+    return (
+      <div className="mb-day-main mb-day-race">
+        {localizeMarathonBuildText(day.raceName, locale)}
+      </div>
+    );
   }
 
   if (day.kind === 'subT') {
@@ -1018,7 +1023,12 @@ function mbSessionDetail(
         <div className="mb-day-pace">
           {pace} <span className="mb-day-unit">{unitLabel}</span>
         </div>
-        <div className="mb-day-meta">{day.totalDurationMin} min total</div>
+        <div className="mb-day-meta">
+          {t('plan.totalMinutes').replace(
+            '{minutes}',
+            String(day.totalDurationMin),
+          )}
+        </div>
       </>
     );
   }
@@ -1039,10 +1049,17 @@ function mbSessionDetail(
         <div className="mb-day-pace">
           {pace} <span className="mb-day-unit">{unitLabel}</span>
         </div>
-        {day.paceNote && <div className="mb-day-meta">{day.paceNote}</div>}
+        {day.paceNote && (
+          <div className="mb-day-meta">
+            {localizeMarathonBuildText(day.paceNote, locale)}
+          </div>
+        )}
         <div className="mb-day-meta">
           {day.warmupCooldownMin !== undefined ? '~' : ''}
-          {totalDurationMin} min total
+          {t('plan.totalMinutes').replace(
+            '{minutes}',
+            String(totalDurationMin),
+          )}
         </div>
       </>
     );
@@ -1064,6 +1081,11 @@ function MarathonBuildTab({
   unitLabel: string;
   locale: Locale;
 }) {
+  const t = useTranslations(locale);
+  const dayNames = DAYS_OF_WEEK.map((day) => DAY_LABELS[day][locale]);
+  const shortDayNames = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'].map(
+    (day) => t(`day.${day}` as TranslationKey),
+  );
   const currentWeek = getCurrentBuildWeek(marathonDate);
   const weeksLeft = getWeeksToMarathon(marathonDate);
   const startDate = getBuildStartDate(marathonDate);
@@ -1100,7 +1122,7 @@ function MarathonBuildTab({
     de: {
       title: 'Marathon-Aufbau',
       weeks: 'Wo.',
-      starts: (date: string) => `Aufbau startet am ${date}.`,
+      starts: (date: string) => `Aufbau startet am ${date}`,
     },
     fr: {
       title: 'Plan marathon',
@@ -1178,11 +1200,11 @@ function MarathonBuildTab({
               >
                 <div className="mb-week-meta">
                   <span className="mb-week-num">
-                    {locale === 'es'
-                      ? `Semana ${week.weekNumber}`
-                      : `Week ${week.weekNumber}`}
+                    {t('plan.week')} {week.weekNumber}
                   </span>
-                  <span className="mb-week-label">{week.label}</span>
+                  <span className="mb-week-label">
+                    {localizeMarathonBuildText(week.label, locale)}
+                  </span>
                 </div>
                 <div className="mb-week-right">
                   <span className="mb-week-dates">
@@ -1195,14 +1217,14 @@ function MarathonBuildTab({
               {/* Compact day strip (always visible) */}
               <div className="mb-day-strip">
                 {week.days.map((day, i) => (
-                  <div key={i} className="mb-strip-cell" title={MB_DAY_FULL[i]}>
-                    <span className="mb-strip-abbr">{MB_DAY_ABBR[i]}</span>
+                  <div key={i} className="mb-strip-cell" title={dayNames[i]}>
+                    <span className="mb-strip-abbr">{shortDayNames[i]}</span>
                     <span
                       className="mb-strip-dot"
                       style={{ background: mbSessionColor(day) }}
                     />
                     <span className="mb-strip-label">
-                      {mbSessionLabel(day)}
+                      {mbSessionLabel(day, locale)}
                     </span>
                   </div>
                 ))}
@@ -1218,7 +1240,7 @@ function MarathonBuildTab({
                     >
                       <div className="mb-day-card-header">
                         <span className="mb-day-card-name">
-                          {MB_DAY_FULL[i]}
+                          {shortDayNames[i]}
                         </span>
                         <span
                           className="mb-day-card-dot"
@@ -1226,7 +1248,7 @@ function MarathonBuildTab({
                         />
                       </div>
                       <div className="mb-day-card-body">
-                        {mbSessionDetail(day, paces, unit, unitLabel)}
+                        {mbSessionDetail(day, paces, unit, unitLabel, locale)}
                       </div>
                     </div>
                   ))}
