@@ -18,13 +18,15 @@ export default defineConfig({
           ko: 'ko-KR',
           de: 'de-DE',
           fr: 'fr-FR',
+          it: 'it-IT',
+          'pt-BR': 'pt-BR',
         },
       },
     }),
   ],
   i18n: {
     defaultLocale: 'en',
-    locales: ['en', 'es', 'ko', 'de', 'fr'],
+    locales: ['en', 'es', 'ko', 'de', 'fr', 'it', 'pt-BR'],
     routing: {
       prefixDefaultLocale: true,
       redirectToDefaultLocale: false,

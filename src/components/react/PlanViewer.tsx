@@ -5,7 +5,11 @@
 
 import React, { useState, useEffect } from 'react';
 import type { SavedPlan, Locale, TrainingPaces } from '../../types';
-import { useTranslations, type TranslationKey } from '../../i18n/ui';
+import {
+  formatWeeklyPlanLabel,
+  useTranslations,
+  type TranslationKey,
+} from '../../i18n/ui';
 import { localizeMarathonBuildText } from '../../i18n/marathon-build';
 import { loadPlan, savePlan } from '../../lib/storage';
 import { createPlan } from '../../lib/plan-generator';
@@ -48,6 +52,8 @@ interface Props {
 const DAY_LABELS: Record<string, Record<Locale, string>> = {
   monday: {
     en: 'Monday',
+    it: 'Lunedì',
+    'pt-BR': 'Segunda-feira',
     es: 'Lunes',
     ko: '월요일',
     de: 'Montag',
@@ -55,6 +61,8 @@ const DAY_LABELS: Record<string, Record<Locale, string>> = {
   },
   tuesday: {
     en: 'Tuesday',
+    it: 'Martedì',
+    'pt-BR': 'Terça-feira',
     es: 'Martes',
     ko: '화요일',
     de: 'Dienstag',
@@ -62,6 +70,8 @@ const DAY_LABELS: Record<string, Record<Locale, string>> = {
   },
   wednesday: {
     en: 'Wednesday',
+    it: 'Mercoledì',
+    'pt-BR': 'Quarta-feira',
     es: 'Miércoles',
     ko: '수요일',
     de: 'Mittwoch',
@@ -69,6 +79,8 @@ const DAY_LABELS: Record<string, Record<Locale, string>> = {
   },
   thursday: {
     en: 'Thursday',
+    it: 'Giovedì',
+    'pt-BR': 'Quinta-feira',
     es: 'Jueves',
     ko: '목요일',
     de: 'Donnerstag',
@@ -76,6 +88,8 @@ const DAY_LABELS: Record<string, Record<Locale, string>> = {
   },
   friday: {
     en: 'Friday',
+    it: 'Venerdì',
+    'pt-BR': 'Sexta-feira',
     es: 'Viernes',
     ko: '금요일',
     de: 'Freitag',
@@ -83,6 +97,8 @@ const DAY_LABELS: Record<string, Record<Locale, string>> = {
   },
   saturday: {
     en: 'Saturday',
+    it: 'Sabato',
+    'pt-BR': 'Sábado',
     es: 'Sábado',
     ko: '토요일',
     de: 'Samstag',
@@ -90,6 +106,8 @@ const DAY_LABELS: Record<string, Record<Locale, string>> = {
   },
   sunday: {
     en: 'Sunday',
+    it: 'Domenica',
+    'pt-BR': 'Domingo',
     es: 'Domingo',
     ko: '일요일',
     de: 'Sonntag',
@@ -99,8 +117,7 @@ const DAY_LABELS: Record<string, Record<Locale, string>> = {
 
 export default function PlanViewer({ locale }: Props) {
   const t = useTranslations(locale);
-  const planLabel = (label: string) =>
-    label.replace('h/week', t('plan.hoursPerWeek'));
+  const planLabel = (label: string) => formatWeeklyPlanLabel(label, locale);
   const [plan, setPlan] = useState<SavedPlan | null>(null);
   const [unit, setUnit] = useState<'km' | 'mile'>('km');
   const [tab, setTab] = useState<'week' | 'paces' | 'taper' | 'marathon'>(
@@ -229,6 +246,34 @@ export default function PlanViewer({ locale }: Props) {
       unit: 'Unit',
       wucd: 'WU+CD incl.',
       recovery: 'recovery',
+    },
+    it: {
+      empty: 'Non hai ancora un piano',
+      create: 'Crea il mio piano',
+      paces: 'Ritmi',
+      marathon: 'Maratona',
+      share: 'Condividi',
+      copied: 'Copiato',
+      image: 'Immagine',
+      sharePlan: 'Condividi il piano',
+      shareImage: 'Condividi come immagine',
+      unit: 'Unità',
+      wucd: 'risc. e defat. inclusi',
+      recovery: 'recupero',
+    },
+    'pt-BR': {
+      empty: 'Você ainda não tem um plano',
+      create: 'Criar meu plano',
+      paces: 'Ritmos',
+      marathon: 'Maratona',
+      share: 'Compartilhar',
+      copied: 'Copiado',
+      image: 'Imagem',
+      sharePlan: 'Compartilhar plano',
+      shareImage: 'Compartilhar como imagem',
+      unit: 'Unidade',
+      wucd: 'aquec. e desaquec. incluídos',
+      recovery: 'recuperação',
     },
     es: {
       empty: 'Aún no tienes un plan',
@@ -716,11 +761,15 @@ export default function PlanViewer({ locale }: Props) {
         .pv-unit-btn.is-active { background: var(--color-accent-primary); color: #fff; }
         .pv-tabs {
           display: flex;
+          overflow-x: auto;
+          overflow-y: hidden;
           gap: var(--space-1);
           border-bottom: 1px solid var(--color-border);
           margin-bottom: var(--space-6);
         }
         .pv-tab {
+          flex-shrink: 0;
+          white-space: nowrap;
           padding: var(--space-2) var(--space-5);
           font-size: var(--text-sm);
           font-weight: var(--font-semibold);
@@ -824,6 +873,10 @@ export default function PlanViewer({ locale }: Props) {
         .pv-taper-table td:last-child { color: var(--color-text-primary); }
         .pv-taper-table tr:last-child td { border-bottom: none; }
         @media (max-width: 520px) {
+          .pv-tab {
+            padding: var(--space-2) var(--space-3);
+            font-size: var(--text-xs);
+          }
           .pv-day { grid-template-columns: 1fr; gap: var(--space-1); }
           .pv-day-name { font-size: var(--text-xs); }
         }
@@ -1093,21 +1146,22 @@ function MarathonBuildTab({
   marathonDateObj.setHours(0, 0, 0, 0);
 
   const [expandedWeek, setExpandedWeek] = useState<number | null>(currentWeek);
-  const localeCode =
-    locale === 'es'
-      ? 'es-ES'
-      : locale === 'ko'
-        ? 'ko-KR'
-        : locale === 'de'
-          ? 'de-DE'
-          : locale === 'fr'
-            ? 'fr-FR'
-            : 'en-GB';
+  const localeCode = locale === 'en' ? 'en-GB' : locale;
   const text = {
     en: {
       title: 'Marathon Build',
       weeks: 'wks',
       starts: (date: string) => `Build starts ${date}.`,
+    },
+    it: {
+      title: 'Preparazione alla maratona',
+      weeks: 'sett.',
+      starts: (date: string) => `La preparazione inizia il ${date}.`,
+    },
+    'pt-BR': {
+      title: 'Preparação para maratona',
+      weeks: 'sem.',
+      starts: (date: string) => `A preparação começa em ${date}`,
     },
     es: {
       title: 'Preparación Maratón',
@@ -1465,8 +1519,15 @@ function MarathonBuildTab({
           line-height: 1.3;
         }
         @media (max-width: 600px) {
-          .mb-day-grid { grid-template-columns: repeat(7, 1fr); }
-          .mb-day-card { padding: var(--space-2) var(--space-1); }
+          .mb-day-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+          .mb-day-card {
+            padding: var(--space-3);
+            border-top: 1px solid var(--color-border);
+          }
+          .mb-day-card:nth-child(even) { border-right: none; }
+          .mb-day-card:nth-child(-n+2) { border-top: none; }
+          .mb-day-main { font-size: var(--text-sm); }
+          .mb-day-pace, .mb-day-meta { font-size: var(--text-xs); }
           .mb-week-dates { display: none; }
         }
       `}</style>

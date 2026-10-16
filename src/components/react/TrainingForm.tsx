@@ -29,7 +29,7 @@ import { savePlan } from '../../lib/storage';
 import { encodePlanInput } from '../../lib/plan-url';
 import { getPlanByHours } from '../../lib/training-plans';
 import { trackEvent } from '../../lib/analytics';
-import { useTranslations } from '../../i18n/ui';
+import { formatWeeklyPlanLabel, useTranslations } from '../../i18n/ui';
 
 interface Props {
   locale: Locale;
@@ -40,6 +40,8 @@ const RACE_OPTIONS = [
     value: '42K',
     labels: {
       en: 'Marathon',
+      it: 'Maratona',
+      'pt-BR': 'Maratona',
       es: 'Maratón',
       ko: '마라톤',
       de: 'Marathon',
@@ -51,6 +53,8 @@ const RACE_OPTIONS = [
     value: '21K',
     labels: {
       en: 'Half-Marathon',
+      it: 'Mezza maratona',
+      'pt-BR': 'Meia maratona',
       es: 'Media maratón',
       ko: '하프 마라톤',
       de: 'Halbmarathon',
@@ -60,28 +64,62 @@ const RACE_OPTIONS = [
   },
   {
     value: '15K',
-    labels: { en: '15K', es: '15K', ko: '15K', de: '15K', fr: '15K' },
+    labels: {
+      en: '15K',
+      it: '15K',
+      'pt-BR': '15K',
+      es: '15K',
+      ko: '15K',
+      de: '15K',
+      fr: '15K',
+    },
     meters: DISTANCE_METERS['15K'],
   },
   {
     value: '10K',
-    labels: { en: '10K', es: '10K', ko: '10K', de: '10K', fr: '10K' },
+    labels: {
+      en: '10K',
+      it: '10K',
+      'pt-BR': '10K',
+      es: '10K',
+      ko: '10K',
+      de: '10K',
+      fr: '10K',
+    },
     meters: DISTANCE_METERS['10K'],
   },
   {
     value: '5K',
-    labels: { en: '5K', es: '5K', ko: '5K', de: '5K', fr: '5K' },
+    labels: {
+      en: '5K',
+      it: '5K',
+      'pt-BR': '5K',
+      es: '5K',
+      ko: '5K',
+      de: '5K',
+      fr: '5K',
+    },
     meters: DISTANCE_METERS['5K'],
   },
   {
     value: '2MI',
-    labels: { en: '2Mi', es: '2 mi', ko: '2마일', de: '2 mi', fr: '2 mi' },
+    labels: {
+      en: '2Mi',
+      it: '2Mi',
+      'pt-BR': '2Mi',
+      es: '2 mi',
+      ko: '2마일',
+      de: '2 mi',
+      fr: '2 mi',
+    },
     meters: DISTANCE_METERS['2MI'],
   },
   {
     value: '3200M',
     labels: {
       en: '3200m',
+      it: '3200m',
+      'pt-BR': '3200m',
       es: '3200 m',
       ko: '3200m',
       de: '3200 m',
@@ -91,18 +129,36 @@ const RACE_OPTIONS = [
   },
   {
     value: '3K',
-    labels: { en: '3K', es: '3K', ko: '3K', de: '3K', fr: '3K' },
+    labels: {
+      en: '3K',
+      it: '3K',
+      'pt-BR': '3K',
+      es: '3K',
+      ko: '3K',
+      de: '3K',
+      fr: '3K',
+    },
     meters: DISTANCE_METERS['3K'],
   },
   {
     value: '1MI',
-    labels: { en: '1Mi', es: '1 mi', ko: '1마일', de: '1 mi', fr: '1 mi' },
+    labels: {
+      en: '1Mi',
+      it: '1Mi',
+      'pt-BR': '1Mi',
+      es: '1 mi',
+      ko: '1마일',
+      de: '1 mi',
+      fr: '1 mi',
+    },
     meters: DISTANCE_METERS['1MI'],
   },
   {
     value: '1600M',
     labels: {
       en: '1600m',
+      it: '1600m',
+      'pt-BR': '1600m',
       es: '1600 m',
       ko: '1600m',
       de: '1600 m',
@@ -114,6 +170,8 @@ const RACE_OPTIONS = [
     value: '1500M',
     labels: {
       en: '1500m',
+      it: '1500m',
+      'pt-BR': '1500m',
       es: '1500 m',
       ko: '1500m',
       de: '1500 m',
@@ -123,7 +181,15 @@ const RACE_OPTIONS = [
   },
   {
     value: 'custom',
-    labels: { en: 'Other', es: 'Otra', ko: '기타', de: 'Andere', fr: 'Autre' },
+    labels: {
+      en: 'Other',
+      it: 'Altra',
+      'pt-BR': 'Outra',
+      es: 'Otra',
+      ko: '기타',
+      de: 'Andere',
+      fr: 'Autre',
+    },
     meters: 0,
   },
 ] as const satisfies ReadonlyArray<{
@@ -140,6 +206,8 @@ const EQUIV_DISTANCES: Distance[] = ['42K', '21K', '15K', '10K', '5K'];
 const EQUIV_LABELS: Record<string, Record<Locale, string>> = {
   '42K': {
     en: 'Marathon',
+    it: 'Maratona',
+    'pt-BR': 'Maratona',
     es: 'Maratón',
     ko: '마라톤',
     de: 'Marathon',
@@ -147,14 +215,40 @@ const EQUIV_LABELS: Record<string, Record<Locale, string>> = {
   },
   '21K': {
     en: 'Half Marathon',
+    it: 'Mezza maratona',
+    'pt-BR': 'Meia maratona',
     es: 'Media Maratón',
     ko: '하프 마라톤',
     de: 'Halbmarathon',
     fr: 'Semi-marathon',
   },
-  '15K': { en: '15K', es: '15K', ko: '15K', de: '15K', fr: '15K' },
-  '10K': { en: '10K', es: '10K', ko: '10K', de: '10K', fr: '10K' },
-  '5K': { en: '5K', es: '5K', ko: '5K', de: '5K', fr: '5K' },
+  '15K': {
+    en: '15K',
+    it: '15K',
+    'pt-BR': '15K',
+    es: '15K',
+    ko: '15K',
+    de: '15K',
+    fr: '15K',
+  },
+  '10K': {
+    en: '10K',
+    it: '10K',
+    'pt-BR': '10K',
+    es: '10K',
+    ko: '10K',
+    de: '10K',
+    fr: '10K',
+  },
+  '5K': {
+    en: '5K',
+    it: '5K',
+    'pt-BR': '5K',
+    es: '5K',
+    ko: '5K',
+    de: '5K',
+    fr: '5K',
+  },
 };
 
 export default function TrainingForm({ locale }: Props) {
@@ -264,6 +358,15 @@ export default function TrainingForm({ locale }: Props) {
 
     const dayNames = {
       en: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      it: ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'],
+      'pt-BR': [
+        'Segunda-feira',
+        'Terça-feira',
+        'Quarta-feira',
+        'Quinta-feira',
+        'Sexta-feira',
+        'Sábado',
+      ],
       es: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
       ko: ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
       de: [
@@ -342,6 +445,8 @@ export default function TrainingForm({ locale }: Props) {
       setError(
         {
           en: 'Enter a recent race time',
+          it: 'Inserisci un tempo di gara recente',
+          'pt-BR': 'Informe um tempo de prova recente',
           es: 'Introduce una marca reciente',
           ko: '최근 레이스 기록을 입력하세요',
           de: 'Gib eine aktuelle Rennzeit ein',
@@ -354,6 +459,8 @@ export default function TrainingForm({ locale }: Props) {
       setError(
         {
           en: 'Invalid time format',
+          it: 'Formato del tempo non valido',
+          'pt-BR': 'Formato de tempo inválido',
           es: 'Formato inválido',
           ko: '시간 형식이 올바르지 않습니다',
           de: 'Ungültiges Zeitformat',
@@ -371,6 +478,8 @@ export default function TrainingForm({ locale }: Props) {
       setError(
         {
           en: 'Enter a valid custom distance',
+          it: 'Inserisci una distanza personalizzata valida',
+          'pt-BR': 'Informe uma distância personalizada válida',
           es: 'Introduce una distancia personalizada válida',
           ko: '올바른 사용자 지정 거리를 입력하세요',
           de: 'Gib eine gültige eigene Distanz ein',
@@ -430,6 +539,66 @@ export default function TrainingForm({ locale }: Props) {
       vdotRepetition: 'Repetition',
       vdotRace: 'Race',
       vdotTime: 'Time',
+    },
+    it: {
+      title: 'Configura il tuo piano',
+      raceDistance: 'Distanza di gara',
+      raceTime: 'Tempo di gara recente',
+      customDistance: 'Distanza personalizzata',
+      customDistanceUnit: 'Unità della distanza personalizzata',
+      hint: 'Usa un risultato recente. I 5 o 10 km di solito danno i ritmi più precisi.',
+      hours: 'Ore di allenamento settimanali',
+      hoursHint: 'Piano più vicino:',
+      unitLabel: 'Unità',
+      previewTitle: 'Anteprima dei ritmi',
+      keySessions: 'Le tue sedute principali',
+      submit: 'Genera il piano',
+      rep3: 'Ripetute di 3 min',
+      rep6: 'Ripetute di 6 min',
+      rep10: 'Ripetute di 10 min',
+      easyLabel: 'Ritmo lento',
+      marathonDateLabel: 'Data della maratona (facoltativa)',
+      marathonDateHint: 'Genera un programma di preparazione di 15 settimane.',
+      vdotTraining: 'Allenamento',
+      vdotEquivalent: 'Equivalenze',
+      vdotType: 'Tipo',
+      vdotEasy: 'Lento',
+      vdotMarathon: 'Maratona',
+      vdotThreshold: 'Soglia',
+      vdotInterval: 'Intervallo',
+      vdotRepetition: 'Ripetizione',
+      vdotRace: 'Gara',
+      vdotTime: 'Tempo',
+    },
+    'pt-BR': {
+      title: 'Configure seu plano',
+      raceDistance: 'Distância da prova',
+      raceTime: 'Tempo de prova recente',
+      customDistance: 'Distância personalizada',
+      customDistanceUnit: 'Unidade da distância personalizada',
+      hint: 'Use um resultado recente. Os 5 ou 10 km costumam fornecer os ritmos mais precisos.',
+      hours: 'Horas de treino por semana',
+      hoursHint: 'Plano mais próximo:',
+      unitLabel: 'Unidade',
+      previewTitle: 'Prévia dos ritmos',
+      keySessions: 'Seus treinos principais',
+      submit: 'Gerar plano',
+      rep3: 'Repetições de 3 min',
+      rep6: 'Repetições de 6 min',
+      rep10: 'Repetições de 10 min',
+      easyLabel: 'Ritmo leve',
+      marathonDateLabel: 'Data da maratona (opcional)',
+      marathonDateHint: 'Gera uma preparação de 15 semanas.',
+      vdotTraining: 'Treino',
+      vdotEquivalent: 'Equivalências',
+      vdotType: 'Tipo',
+      vdotEasy: 'Leve',
+      vdotMarathon: 'Maratona',
+      vdotThreshold: 'Limiar',
+      vdotInterval: 'Intervalado',
+      vdotRepetition: 'Repetição',
+      vdotRace: 'Prova',
+      vdotTime: 'Tempo',
     },
     es: {
       title: 'Configura tu plan',
@@ -686,9 +855,7 @@ export default function TrainingForm({ locale }: Props) {
           </div>
           <p className="form-hint tf-hours-hint">
             {T.hoursHint}{' '}
-            <strong>
-              {matchedPlan.label.replace('h/week', t('plan.hoursPerWeek'))}
-            </strong>
+            <strong>{formatWeeklyPlanLabel(matchedPlan.label, locale)}</strong>
           </p>
         </div>
 

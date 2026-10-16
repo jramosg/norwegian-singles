@@ -22,6 +22,8 @@ const localizedPath = (lang: Locale) =>
 const currentLanguage = languageLabels[locale];
 const languageMenuLabel = {
   en: 'Language',
+  it: 'Lingua',
+  'pt-BR': 'Idioma',
   es: 'Idioma',
   ko: '언어',
   de: 'Sprache',
@@ -266,8 +268,11 @@ const languageMenuLabel = {
   .mobile-lang-option span {
     display: inline-grid;
     place-items: center;
-    width: 2rem;
+    min-width: 2rem;
     height: 1.75rem;
+    padding-inline: 0.35rem;
+    flex-shrink: 0;
+    white-space: nowrap;
     color: var(--color-text-primary);
     background: rgba(239, 68, 68, 0.16);
     border: 1px solid rgba(239, 68, 68, 0.28);
@@ -344,6 +349,7 @@ const languageMenuLabel = {
     transition: transform var(--transition-slow);
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
   }
 
   .mobile-menu.is-open {

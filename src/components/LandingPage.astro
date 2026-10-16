@@ -50,6 +50,18 @@ const raceGroups = {
     { key: 'HM' as const, label: 'Half Marathon' },
     { key: 'marathon' as const, label: 'Marathon' },
   ],
+  it: [
+    { key: '5K' as const, label: '5K' },
+    { key: '10K' as const, label: '10K' },
+    { key: 'HM' as const, label: 'Mezza maratona' },
+    { key: 'marathon' as const, label: 'Maratona' },
+  ],
+  'pt-BR': [
+    { key: '5K' as const, label: '5K' },
+    { key: '10K' as const, label: '10K' },
+    { key: 'HM' as const, label: 'Meia maratona' },
+    { key: 'marathon' as const, label: 'Maratona' },
+  ],
   es: [
     { key: '5K' as const, label: '5K' },
     { key: '10K' as const, label: '10K' },
@@ -95,6 +107,18 @@ const proofBullets = {
     '15-week marathon build',
     'VDOT score + training zones',
   ],
+  it: [
+    'Ritmi da un risultato sui 5 o 10 km',
+    'Piani da 4,5 a 9 ore settimanali',
+    'Preparazione alla maratona di 15 settimane',
+    'VDOT e zone di allenamento',
+  ],
+  'pt-BR': [
+    'Ritmos a partir dos 5 ou 10 km',
+    'Planos de 4,5 a 9 horas semanais',
+    'Preparação de 15 semanas para maratona',
+    'VDOT e zonas de treino',
+  ],
   es: [
     'Ritmos desde 5K o 10K',
     'Planes semanales de 4.5-9 h',
@@ -131,6 +155,28 @@ const sample = {
       ['Thu', '5 x 6 min', '4:15/km'],
       ['Sat', '9 x 3 min', '4:04/km'],
       ['Sun', '75 min easy', '5:35/km'],
+    ],
+  },
+  it: {
+    eyebrow: 'Esempio immediato',
+    title: 'Settimana NSA / NSM',
+    input: '5 km in 20:00 · 6 h/settimana',
+    days: [
+      ['Mar', '3 x 10 min', '4:28/km'],
+      ['Gio', '5 x 6 min', '4:15/km'],
+      ['Sab', '9 x 3 min', '4:04/km'],
+      ['Dom', '75 min di corsa lenta', '5:35/km'],
+    ],
+  },
+  'pt-BR': {
+    eyebrow: 'Veja um exemplo',
+    title: 'Semana NSA / NSM',
+    input: '5 km em 20:00 · 6 h/semana',
+    days: [
+      ['Ter', '3 x 10 min', '4:28/km'],
+      ['Qui', '5 x 6 min', '4:15/km'],
+      ['Sáb', '9 x 3 min', '4:04/km'],
+      ['Dom', '75 min de rodagem leve', '5:35/km'],
     ],
   },
   es: {
@@ -199,6 +245,46 @@ const landingText = {
     lookupTitle: 'NSA training paces by race time',
     lookupIntro:
       'Select your race time to see the calculated sub-threshold training paces.',
+  },
+  it: {
+    faqTitle: 'FAQ',
+    faqIntro: 'Risposte rapide su NSA, NSM e sul calcolatore.',
+    relatedTitle: 'Scegli la guida che ti serve',
+    relatedIntro: 'Altre pagine utili per il tuo prossimo passo.',
+    paceTitle: 'Ritmi di allenamento',
+    paceIntro:
+      'Ritmi NSA / NSM calcolati dal tuo tempo di gara. Usa il calcolatore qui sopra per verificarli o affinarli.',
+    shortSubT: 'Sotto soglia brevi',
+    mediumSubT: 'Sotto soglia medi',
+    longSubT: 'Sotto soglia lunghi',
+    easyPace: 'Ritmo lento',
+    rep3: 'Ripetute di 3 min',
+    rep6: 'Ripetute di 6 min',
+    rep10: 'Ripetute di 10 min',
+    easyRunning: 'corsa lenta',
+    lookupTitle: 'Ritmi NSA per tempo di gara',
+    lookupIntro:
+      'Seleziona il tuo tempo di gara per vedere i ritmi sotto soglia calcolati.',
+  },
+  'pt-BR': {
+    faqTitle: 'FAQ',
+    faqIntro: 'Respostas rápidas sobre NSA, NSM e a calculadora.',
+    relatedTitle: 'Escolha o guia ideal',
+    relatedIntro: 'Outras páginas úteis para o seu próximo passo.',
+    paceTitle: 'Ritmos de treino',
+    paceIntro:
+      'Ritmos NSA / NSM calculados a partir do seu tempo de prova. Use a calculadora acima para conferir ou ajustar.',
+    shortSubT: 'Sub-limiar curtos',
+    mediumSubT: 'Sub-limiar médios',
+    longSubT: 'Sub-limiar longos',
+    easyPace: 'Ritmo leve',
+    rep3: 'Repetições de 3 min',
+    rep6: 'Repetições de 6 min',
+    rep10: 'Repetições de 10 min',
+    easyRunning: 'rodagem leve',
+    lookupTitle: 'Ritmos de treino NSA por tempo de prova',
+    lookupIntro:
+      'Selecione seu tempo de prova para ver os ritmos sub-limiar calculados.',
   },
   es: {
     faqTitle: 'Preguntas frecuentes',
@@ -289,6 +375,18 @@ const educationLinks = {
     bakken: '/en/marius-bakken-pace-calculator/#guide',
     marathon: '/en/norwegian-method-marathon-plan/#guide',
   },
+  it: {
+    nsm: '/it/calcolatore-nsm/#calculator',
+    method: '/it/calcolatore-metodo-norvegese/#guide',
+    bakken: '/it/calcolatore-ritmi-marius-bakken/#guide',
+    marathon: '/it/piano-maratona-metodo-norvegese/#guide',
+  },
+  'pt-BR': {
+    nsm: '/pt-BR/calculadora-nsm/#calculator',
+    method: '/pt-BR/calculadora-metodo-noruegues/#guide',
+    bakken: '/pt-BR/calculadora-ritmos-marius-bakken/#guide',
+    marathon: '/pt-BR/plano-maratona-metodo-noruegues/#guide',
+  },
   es: {
     nsm: '/es/calculadora-nsm/#calculator',
     method: '/es/calculadora-metodo-noruego/#guide',
@@ -363,6 +461,106 @@ const educationText = {
         label: 'Norwegian method marathon plan',
         eyebrow: 'Marathon',
         text: 'Build a 15-week marathon block around sub-threshold days.',
+      },
+    ],
+  },
+  it: {
+    title: 'Come usare questi ritmi',
+    intro:
+      'Il calcolatore propone ritmi prudenti per settimane di allenamento sostenibili e ripetibili.',
+    cards: [
+      {
+        title: 'Ripetute di 3 minuti',
+        text: 'Usale nella seduta sotto soglia con le ripetute più brevi della settimana. Corri in modo brillante ma controllato.',
+      },
+      {
+        title: 'Ripetute di 6 minuti',
+        text: 'Usale nella seduta intermedia. Richiedono un ritmo più regolare e meno veloce delle ripetute di 3 minuti.',
+      },
+      {
+        title: 'Ripetute di 10 minuti',
+        text: 'Usale per uno stimolo aerobico più prolungato. Termina l’ultima ripetuta con un margine di energie.',
+      },
+      {
+        title: 'Ritmo lento',
+        text: 'Le corse lente devono permetterti di recuperare per la seduta successiva. Se la fatica aumenta, rallenta prima di tutto queste corse.',
+      },
+    ],
+    nextTitle: 'Il prossimo passo',
+    actions: [
+      {
+        href: educationLinks.nsm,
+        label: 'Calcolatore NSM',
+        eyebrow: 'Inizia qui',
+        text: 'Inserisci un risultato di gara e ottieni i ritmi per ripetute di 3, 6 e 10 minuti.',
+      },
+      {
+        href: educationLinks.method,
+        label: 'Calcolatore del metodo norvegese',
+        eyebrow: 'Confronta',
+        text: 'Scopri come le sedute singole applicano i principi norvegesi dell’allenamento di soglia.',
+      },
+      {
+        href: educationLinks.bakken,
+        label: 'I ritmi secondo Marius Bakken',
+        eyebrow: 'Approfondisci',
+        text: 'Collega i ritmi di riferimento all’allenamento di soglia ispirato a Bakken.',
+      },
+      {
+        href: educationLinks.marathon,
+        label: 'Piano maratona con il metodo norvegese',
+        eyebrow: 'Maratona',
+        text: 'Organizza 15 settimane di preparazione alla maratona intorno alle sedute sotto soglia.',
+      },
+    ],
+  },
+  'pt-BR': {
+    title: 'Como usar estes ritmos',
+    intro:
+      'A calculadora fornece ritmos conservadores para semanas de treino que você consegue repetir.',
+    cards: [
+      {
+        title: 'Repetições de 3 minutos',
+        text: 'Use na sessão sub-limiar com as repetições mais curtas da semana. Mantenha a velocidade com controle.',
+      },
+      {
+        title: 'Repetições de 6 minutos',
+        text: 'Use na sessão intermediária. O ritmo é mais estável e menos veloz que nas repetições de 3 minutos.',
+      },
+      {
+        title: 'Repetições de 10 minutos',
+        text: 'Use para sustentar o estímulo aeróbico por mais tempo. Termine a última repetição com energia de sobra.',
+      },
+      {
+        title: 'Ritmo leve',
+        text: 'As rodagens leves devem permitir a recuperação para o próximo treino. Se a fadiga aumentar, reduza primeiro o ritmo dessas rodagens.',
+      },
+    ],
+    nextTitle: 'Próximo passo',
+    actions: [
+      {
+        href: educationLinks.nsm,
+        label: 'Calculadora NSM',
+        eyebrow: 'Comece aqui',
+        text: 'Informe um resultado de prova e obtenha os ritmos para repetições de 3, 6 e 10 minutos.',
+      },
+      {
+        href: educationLinks.method,
+        label: 'Calculadora do método norueguês',
+        eyebrow: 'Compare',
+        text: 'Veja como o treino com uma sessão diária aplica os princípios noruegueses de limiar.',
+      },
+      {
+        href: educationLinks.bakken,
+        label: 'Ritmos e ideias de Marius Bakken',
+        eyebrow: 'Entenda os fundamentos',
+        text: 'Entenda a relação entre os ritmos e o treino de limiar inspirado em Bakken.',
+      },
+      {
+        href: educationLinks.marathon,
+        label: 'Plano de maratona com o método norueguês',
+        eyebrow: 'Maratona',
+        text: 'Monte uma preparação de 15 semanas para maratona em torno dos treinos sub-limiar.',
       },
     ],
   },
@@ -629,6 +827,128 @@ const relatedGroups = {
         {
           slug: 'james-copeland-norwegian-singles',
           text: 'How the James Copeland (sirpoc) method maps to these paces.',
+        },
+      ],
+    },
+  ],
+  it: [
+    {
+      title: 'Calcolatori dei ritmi',
+      links: [
+        {
+          slug: 'calcolatore-vdot',
+          text: 'Dal risultato di gara al VDOT e a tutte e cinque le zone di allenamento.',
+        },
+        {
+          slug: 'calcolatore-nsm',
+          text: 'Dal risultato di gara ai ritmi per ripetute di 3, 6 e 10 minuti.',
+        },
+        {
+          slug: 'norwegian-singles-app',
+          text: 'L’app gratuita nel browser: ritmi, piano settimanale e preparazione alla maratona.',
+        },
+        {
+          slug: 'calcolatore-ritmi-sotto-soglia',
+          text: 'Per allenarti con attenzione al controllo della soglia.',
+        },
+        {
+          slug: 'calcolatore-ritmi-marius-bakken',
+          text: 'I ritmi di riferimento alla luce dell’approccio di Bakken.',
+        },
+      ],
+    },
+    {
+      title: 'Piani',
+      links: [
+        {
+          slug: 'piano-allenamento-norwegian-singles',
+          text: 'Trasforma i ritmi in una struttura settimanale.',
+        },
+        {
+          slug: 'piano-maratona-metodo-norvegese',
+          text: 'Inserisci lo stesso lavoro nella preparazione alla maratona.',
+        },
+      ],
+    },
+    {
+      title: 'Confronti',
+      links: [
+        {
+          slug: 'metodo-norvegese-amatori',
+          text: 'Adatta il lavoro di soglia norvegese alle tue settimane di allenamento.',
+        },
+        {
+          slug: 'alternativa-calcolatore-subthreshold',
+          text: 'Confronta gli strumenti per calcolare i ritmi senza creare un account.',
+        },
+        {
+          slug: 'confronto-calcolatori-norwegian-singles',
+          text: 'Scopri quali funzioni del pianificatore contano prima di scegliere.',
+        },
+        {
+          slug: 'james-copeland-norwegian-singles',
+          text: 'Come il metodo di James Copeland (sirpoc) si traduce in questi ritmi.',
+        },
+      ],
+    },
+  ],
+  'pt-BR': [
+    {
+      title: 'Calculadoras de ritmo',
+      links: [
+        {
+          slug: 'calculadora-vdot',
+          text: 'Do resultado de prova ao VDOT e às cinco zonas de treino.',
+        },
+        {
+          slug: 'calculadora-nsm',
+          text: 'Do resultado de prova aos ritmos para repetições de 3, 6 e 10 minutos.',
+        },
+        {
+          slug: 'norwegian-singles-app',
+          text: 'O app gratuito no navegador: ritmos, plano semanal e preparação para maratona.',
+        },
+        {
+          slug: 'calculadora-ritmo-sub-limiar',
+          text: 'Para treinar com atenção ao controle do limiar.',
+        },
+        {
+          slug: 'calculadora-ritmos-marius-bakken',
+          text: 'Os ritmos de referência à luz da abordagem de Bakken.',
+        },
+      ],
+    },
+    {
+      title: 'Planos',
+      links: [
+        {
+          slug: 'plano-treino-norwegian-singles',
+          text: 'Transforme os ritmos em uma estrutura semanal.',
+        },
+        {
+          slug: 'plano-maratona-metodo-noruegues',
+          text: 'Inclua esse trabalho na preparação para maratona.',
+        },
+      ],
+    },
+    {
+      title: 'Comparações',
+      links: [
+        {
+          slug: 'metodo-noruegues-corredores-amadores',
+          text: 'Adapte o trabalho de limiar norueguês à sua semana de treino.',
+        },
+        {
+          slug: 'alternativa-calculadora-subthreshold',
+          text: 'Compare ferramentas de ritmo sem criar uma conta.',
+        },
+        {
+          slug: 'comparacao-calculadoras-norwegian-singles',
+          text: 'Veja quais recursos do planejador importam antes de escolher.',
+        },
+        {
+          slug: 'james-copeland-norwegian-singles',
+          text: 'Como o método de James Copeland (sirpoc) se traduz nestes ritmos.',
         },
       ],
     },

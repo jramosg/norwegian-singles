@@ -71,6 +71,16 @@ const T = {
     fiveK: '5K',
     tagline: 'Calculate yours free at',
   },
+  it: {
+    subtitle: 'I miei ritmi sotto soglia',
+    fiveK: '5K',
+    tagline: 'Calcola gratis i tuoi ritmi su',
+  },
+  'pt-BR': {
+    subtitle: 'Meus ritmos sub-limiar',
+    fiveK: '5K',
+    tagline: 'Calcule seus ritmos grátis em',
+  },
   ko: {
     subtitle: '내 서브스레숄드 페이스',
     fiveK: '5K',

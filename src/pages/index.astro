@@ -1,5 +1,5 @@
 ---
-/* Root redirect. Astro i18n still requires this page to exist. */
+import { defaultLocale, languageLabels, locales } from '../i18n/ui';
 ---
 
 <!doctype html>
@@ -7,11 +7,53 @@
   <head>
     <meta charset="utf-8" />
     <meta name="robots" content="noindex" />
-    <meta http-equiv="refresh" content="0;url=/en/" />
+    <noscript><meta http-equiv="refresh" content="0;url=/en/" /></noscript>
     <title>Norwegian Singles</title>
-    <script is:inline>
-      window.location.replace('/en/');
+    <script
+      is:inline
+      define:vars={{ supportedLocales: locales, fallbackLocale: defaultLocale }}
+    >
+      (function () {
+        const matchLocale = (language) => {
+          const normalized = String(language || '').toLowerCase();
+          return (
+            supportedLocales.find(
+              (locale) => locale.toLowerCase() === normalized,
+            ) ||
+            supportedLocales.find(
+              (locale) =>
+                locale.toLowerCase().split('-')[0] === normalized.split('-')[0],
+            )
+          );
+        };
+
+        let selected;
+        try {
+          selected = matchLocale(localStorage.getItem('ns-locale'));
+        } catch {
+          // Browser language still works when storage is unavailable.
+        }
+
+        const languages = navigator.languages?.length
+          ? navigator.languages
+          : [navigator.language];
+        const preferred = languages.map(matchLocale).find(Boolean);
+        const locale = selected || preferred || fallbackLocale;
+        window.location.replace(
+          `/${locale}/${window.location.search}${window.location.hash}`,
+        );
+      })();
     </script>
   </head>
-  <body></body>
+  <body>
+    <nav aria-label="Language">
+      {
+        locales.map((locale) => (
+          <a href={`/${locale}/`} lang={locale}>
+            {languageLabels[locale].nativeName}
+          </a>
+        ))
+      }
+    </nav>
+  </body>
 </html>

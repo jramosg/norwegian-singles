@@ -1,4 +1,6 @@
 import type { Locale } from '../types';
+import { seoPagesIt, seoFaqsIt } from '../i18n/seo-it';
+import { seoPagesPtBr, seoFaqsPtBr } from '../i18n/seo-pt-BR';
 import { getRaceAlternateSlug } from './race-seo-pages';
 
 export interface SeoLandingPage {
@@ -248,6 +250,8 @@ const pages: Record<Locale, SeoLandingPage[]> = {
       howToName: 'Apply the James Copeland Norwegian Singles Method',
     },
   ],
+  it: seoPagesIt,
+  'pt-BR': seoPagesPtBr,
   es: [
     {
       slug: 'calculadora-ritmos-nsa',
@@ -1182,6 +1186,8 @@ const pages: Record<Locale, SeoLandingPage[]> = {
 };
 
 export function getVisibleFaqs(locale: Locale): SeoFaq[] {
+  if (locale === 'it') return seoFaqsIt;
+  if (locale === 'pt-BR') return seoFaqsPtBr;
   if (locale === 'ko') {
     return [
       {
@@ -1369,15 +1375,19 @@ export function createSeoStructuredData(
           '@type': 'ListItem',
           position: 1,
           name:
-            locale === 'es'
-              ? 'Inicio'
-              : locale === 'ko'
-                ? '홈'
-                : locale === 'de'
-                  ? 'Start'
-                  : locale === 'fr'
-                    ? 'Accueil'
-                    : 'Home',
+            locale === 'it'
+              ? 'Home'
+              : locale === 'pt-BR'
+                ? 'Início'
+                : locale === 'es'
+                  ? 'Inicio'
+                  : locale === 'ko'
+                    ? '홈'
+                    : locale === 'de'
+                      ? 'Start'
+                      : locale === 'fr'
+                        ? 'Accueil'
+                        : 'Home',
           item: `${site}/${locale}/`,
         },
         {
@@ -1397,71 +1407,95 @@ export function createSeoStructuredData(
         {
           '@type': 'HowToStep',
           name:
-            locale === 'es'
-              ? 'Introduce tu marca'
-              : locale === 'ko'
-                ? '레이스 기록 입력'
-                : locale === 'de'
-                  ? 'Gib deine Rennzeit ein'
-                  : locale === 'fr'
-                    ? 'Saisis ton temps de course'
-                    : 'Enter your race time',
+            locale === 'it'
+              ? 'Inserisci il tuo tempo di gara'
+              : locale === 'pt-BR'
+                ? 'Informe seu tempo de prova'
+                : locale === 'es'
+                  ? 'Introduce tu marca'
+                  : locale === 'ko'
+                    ? '레이스 기록 입력'
+                    : locale === 'de'
+                      ? 'Gib deine Rennzeit ein'
+                      : locale === 'fr'
+                        ? 'Saisis ton temps de course'
+                        : 'Enter your race time',
           text:
-            locale === 'es'
-              ? 'Añade una marca reciente de 5K o 10K.'
-              : locale === 'ko'
-                ? '최근 5K 또는 10K 기록을 입력하세요.'
-                : locale === 'de'
-                  ? 'Füge ein aktuelles 5K- oder 10K-Ergebnis hinzu.'
-                  : locale === 'fr'
-                    ? 'Ajoute un résultat récent sur 5K ou 10K.'
-                    : 'Add a recent 5K or 10K result.',
+            locale === 'it'
+              ? 'Aggiungi un risultato recente sui 5 o 10 km.'
+              : locale === 'pt-BR'
+                ? 'Informe um resultado recente nos 5 ou 10 km.'
+                : locale === 'es'
+                  ? 'Añade una marca reciente de 5K o 10K.'
+                  : locale === 'ko'
+                    ? '최근 5K 또는 10K 기록을 입력하세요.'
+                    : locale === 'de'
+                      ? 'Füge ein aktuelles 5K- oder 10K-Ergebnis hinzu.'
+                      : locale === 'fr'
+                        ? 'Ajoute un résultat récent sur 5K ou 10K.'
+                        : 'Add a recent 5K or 10K result.',
         },
         {
           '@type': 'HowToStep',
           name:
-            locale === 'es'
-              ? 'Elige horas semanales'
-              : locale === 'ko'
-                ? '주간 훈련 시간 선택'
-                : locale === 'de'
-                  ? 'Wähle die Wochenstunden'
-                  : locale === 'fr'
-                    ? 'Choisis tes heures hebdomadaires'
-                    : 'Choose weekly training hours',
+            locale === 'it'
+              ? 'Scegli le ore di allenamento settimanali'
+              : locale === 'pt-BR'
+                ? 'Escolha as horas de treino por semana'
+                : locale === 'es'
+                  ? 'Elige horas semanales'
+                  : locale === 'ko'
+                    ? '주간 훈련 시간 선택'
+                    : locale === 'de'
+                      ? 'Wähle die Wochenstunden'
+                      : locale === 'fr'
+                        ? 'Choisis tes heures hebdomadaires'
+                        : 'Choose weekly training hours',
           text:
-            locale === 'es'
-              ? 'Selecciona el volumen semanal que puedes repetir.'
-              : locale === 'ko'
-                ? '꾸준히 반복할 수 있는 주간 볼륨을 선택하세요.'
-                : locale === 'de'
-                  ? 'Wähle den Wochenumfang, den du konstant wiederholen kannst.'
-                  : locale === 'fr'
-                    ? 'Choisis le volume hebdomadaire que tu peux répéter régulièrement.'
-                    : 'Select the weekly volume you can repeat consistently.',
+            locale === 'it'
+              ? 'Scegli un volume settimanale che puoi sostenere con costanza.'
+              : locale === 'pt-BR'
+                ? 'Escolha um volume semanal que consiga repetir com consistência.'
+                : locale === 'es'
+                  ? 'Selecciona el volumen semanal que puedes repetir.'
+                  : locale === 'ko'
+                    ? '꾸준히 반복할 수 있는 주간 볼륨을 선택하세요.'
+                    : locale === 'de'
+                      ? 'Wähle den Wochenumfang, den du konstant wiederholen kannst.'
+                      : locale === 'fr'
+                        ? 'Choisis le volume hebdomadaire que tu peux répéter régulièrement.'
+                        : 'Select the weekly volume you can repeat consistently.',
         },
         {
           '@type': 'HowToStep',
           name:
-            locale === 'es'
-              ? 'Genera ritmos y plan'
-              : locale === 'ko'
-                ? '페이스와 플랜 생성'
-                : locale === 'de'
-                  ? 'Paces und Plan generieren'
-                  : locale === 'fr'
-                    ? 'Génère les allures et le plan'
-                    : 'Generate paces and plan',
+            locale === 'it'
+              ? 'Genera i ritmi e il piano'
+              : locale === 'pt-BR'
+                ? 'Gere os ritmos e o plano'
+                : locale === 'es'
+                  ? 'Genera ritmos y plan'
+                  : locale === 'ko'
+                    ? '페이스와 플랜 생성'
+                    : locale === 'de'
+                      ? 'Paces und Plan generieren'
+                      : locale === 'fr'
+                        ? 'Génère les allures et le plan'
+                        : 'Generate paces and plan',
           text:
-            locale === 'es'
-              ? 'Obtén ritmos sub-umbral, ritmo fácil y una semana NSA/NSM.'
-              : locale === 'ko'
-                ? '서브스레숄드 페이스, 이지 페이스, NSA/NSM 주간을 확인하세요.'
-                : locale === 'de'
-                  ? 'Erhalte Sub-Threshold-Paces, lockeres Tempo und eine NSA/NSM-Woche.'
-                  : locale === 'fr'
-                    ? "Obtiens des allures sous-seuil, l'allure facile et une semaine NSA/NSM."
-                    : 'Get sub-threshold paces, easy pace, and an NSA/NSM week.',
+            locale === 'it'
+              ? 'Ottieni i ritmi sotto soglia, il ritmo lento e una settimana NSA / NSM.'
+              : locale === 'pt-BR'
+                ? 'Obtenha os ritmos sub-limiar, o ritmo leve e uma semana NSA / NSM.'
+                : locale === 'es'
+                  ? 'Obtén ritmos sub-umbral, ritmo fácil y una semana NSA/NSM.'
+                  : locale === 'ko'
+                    ? '서브스레숄드 페이스, 이지 페이스, NSA/NSM 주간을 확인하세요.'
+                    : locale === 'de'
+                      ? 'Erhalte Sub-Threshold-Paces, lockeres Tempo und eine NSA/NSM-Woche.'
+                      : locale === 'fr'
+                        ? "Obtiens des allures sous-seuil, l'allure facile et une semaine NSA/NSM."
+                        : 'Get sub-threshold paces, easy pace, and an NSA/NSM week.',
         },
       ],
     },

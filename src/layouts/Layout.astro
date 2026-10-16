@@ -157,12 +157,16 @@ const allStructuredData = [
     <slot />
 
     <!-- Language persistence script -->
-    <script is:inline>
+    <script is:inline define:vars={{ supportedLocales: locales }}>
       (function () {
         const path = window.location.pathname;
         const locale = path.split('/')[1];
-        if (['en', 'es', 'ko', 'de', 'fr'].includes(locale)) {
-          localStorage.setItem('ns-locale', locale);
+        if (supportedLocales.includes(locale)) {
+          try {
+            localStorage.setItem('ns-locale', locale);
+          } catch {
+            // The selected URL keeps working when storage is unavailable.
+          }
         }
       })();
     </script>

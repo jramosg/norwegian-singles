@@ -22,7 +22,7 @@ The application intelligently adapts training volume and interval structure base
 - **Frontend**: [React](https://reactjs.org/) (Form logic & interactive Plan Viewer)
 - **Styling**: Modern CSS variables, mobile-first design.
 - **i18n**: Native Astro internationalization (English, Spanish, Korean,
-  German, and French).
+  German, French, Italian, and Brazilian Portuguese).
 - **Architecture**: Clean separation between calculation logic (`lib`) and UI (`components`).
 
 ## 📁 Project Structure
@@ -36,6 +36,16 @@ The application intelligently adapts training volume and interval structure base
   ├── styles/         # Global & component styles
   └── types/          # TypeScript interfaces
 ```
+
+Language pages are prerendered at `/en/`, `/es/`, `/ko/`, `/de/`, `/fr/`,
+`/it/`, and `/pt-BR/`, with localized guides, race pages, and language
+annotations in the HTML and sitemap. Explicit language URLs always keep
+their language.
+
+The root `/` uses a small inline script to select the last visited language,
+then the first supported browser language, then English. This requires no
+application server or language lookup request. Without JavaScript, `/`
+redirects to English. The language-specific pages do not run this redirect.
 
 ## 🧞 Commands
 
