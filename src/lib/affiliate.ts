@@ -10,11 +10,19 @@
 import type { IconName } from './icons';
 
 export interface GearItem {
-  key: 'coospo' | 'coros' | 'garmin-hrm' | 'garmin-fr165';
+  key:
+    | 'polar-h10'
+    | 'coros-pace4'
+    | 'garmin-fr265'
+    | 'coospo'
+    | 'coros'
+    | 'garmin-hrm'
+    | 'garmin-fr165';
   title: string;
   description: string;
   icon: IconName;
-  cover: string;
+  /** Local product photo; items without one show their icon. */
+  cover?: string;
   link: string;
 }
 
@@ -28,6 +36,33 @@ export interface Book {
 }
 
 export const gear: GearItem[] = [
+  {
+    key: 'polar-h10',
+    title: 'Polar H10',
+    description:
+      'Reference chest strap for heart rate accuracy. Bluetooth + ANT+.',
+    icon: 'heart-pulse',
+    // amazon.es/dp/B07PM54P4N, verified 2026-11-05
+    link: 'https://link.amazon/B0iKXSYWG',
+  },
+  {
+    key: 'coros-pace4',
+    title: 'COROS PACE 4',
+    description:
+      'Ultralight GPS watch with AMOLED screen and long battery life.',
+    icon: 'watch',
+    // amazon.es/dp/B0FYGTCX83, verified 2026-11-05
+    link: 'https://link.amazon/B07HNDdLd',
+  },
+  {
+    key: 'garmin-fr265',
+    title: 'Garmin Forerunner 265',
+    description:
+      'AMOLED GPS running watch with training readiness and structured workouts.',
+    icon: 'watch',
+    // amazon.es/dp/B0BS1T9J4Y, verified 2026-11-05
+    link: 'https://link.amazon/B00HeGlMU',
+  },
   {
     key: 'coospo',
     title: 'COOSPO HR Monitor',

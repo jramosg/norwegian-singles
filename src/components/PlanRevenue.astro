@@ -3,6 +3,7 @@ import type { Locale } from '../types';
 import Recommendations from './Recommendations.astro';
 import SupportCard from './SupportCard.astro';
 import RetestSignup from './RetestSignup.astro';
+import GearStrip from './GearStrip.astro';
 
 interface Props {
   locale: Locale;
@@ -13,6 +14,7 @@ const { locale } = Astro.props;
 
 <div data-plan-revenue hidden>
   <div class="plan-support">
+    <GearStrip locale={locale} placement="plan-strip" />
     <RetestSignup locale={locale} placement="plan" />
     <SupportCard locale={locale} placement="plan" />
   </div>
