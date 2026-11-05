@@ -1330,15 +1330,53 @@ export function getVisibleFaqs(locale: Locale): SeoFaq[] {
       ];
 }
 
+/**
+ * Weak duplicates folded into their stronger twin (English slugs; the same
+ * position is redirected in every locale). Chosen from Search Console data
+ * in Nov 2026: each source had a fraction of its target's clicks.
+ */
+const REDIRECTS_EN: Record<string, string> = {
+  'nsa-pace-calculator': 'nsm-calculator',
+  'norwegian-singles-calculator': 'nsm-calculator',
+  'norwegian-singles-marathon-plan': 'norwegian-method-marathon-plan',
+  'sub-threshold-running-calculator': 'sub-threshold-pace-calculator',
+  'nsa-training-plan-generator': 'norwegian-singles-training-plan',
+  'jack-daniels-running-calculator': 'vdot-calculator',
+  'vdot-running-formula': 'vdot-calculator',
+};
+
+/** Index of the page that the page at `index` resolves to. */
+function resolveIndex(index: number): number {
+  const target = REDIRECTS_EN[pages.en[index]?.slug ?? ''];
+  return target ? pages.en.findIndex((page) => page.slug === target) : index;
+}
+
+/** Pages that are built and listed; redirected duplicates are excluded. */
 export function getSeoPages(locale: Locale): SeoLandingPage[] {
-  return pages[locale];
+  return pages[locale].filter((_, index) => resolveIndex(index) === index);
 }
 
 export function getSeoPage(
   locale: Locale,
   slug: string,
 ): SeoLandingPage | undefined {
-  return pages[locale].find((page) => page.slug === slug);
+  return getSeoPages(locale).find((page) => page.slug === slug);
+}
+
+/** Permanent redirects for every locale, as root-relative paths. */
+export function getSeoRedirects(): { from: string; to: string }[] {
+  return (Object.keys(pages) as Locale[]).flatMap((locale) =>
+    pages[locale].flatMap((page, index) => {
+      const target = resolveIndex(index);
+      if (target === index) return [];
+      return [
+        {
+          from: `/${locale}/${page.slug}/`,
+          to: `/${locale}/${pages[locale][target].slug}/`,
+        },
+      ];
+    }),
+  );
 }
 
 const VDOT_PAGE_SLUGS_EN = new Set([
@@ -1364,7 +1402,7 @@ export function getSeoPageByEnglishSlug(
   englishSlug: string,
 ): SeoLandingPage | undefined {
   const index = pages.en.findIndex((page) => page.slug === englishSlug);
-  return index === -1 ? undefined : pages[locale][index];
+  return index === -1 ? undefined : pages[locale][resolveIndex(index)];
 }
 
 export function getAlternateSeoPath(
@@ -1377,7 +1415,7 @@ export function getAlternateSeoPath(
 
   const index = pages[locale].findIndex((page) => page.slug === slug);
   if (index !== -1) {
-    const alternate = pages[alternateLocale][index];
+    const alternate = pages[alternateLocale][resolveIndex(index)];
     return alternate ? `/${alternateLocale}/${alternate.slug}/` : undefined;
   }
 

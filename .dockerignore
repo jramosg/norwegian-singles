@@ -1,0 +1,15 @@
+# Build from source only; dependencies and output are recreated in the image.
+node_modules
+dist
+.astro
+.git
+.github
+.lsp
+.vscode
+.claude
+data
+.env
+.env.*
+!.env.example
+pnpm-workspace.yaml
+*.md

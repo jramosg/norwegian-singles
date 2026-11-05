@@ -20,7 +20,7 @@ their query parameters. Explicit language URLs retain the requested language.
 - [Calculator](https://norwegian-singles.app/en/): Enter a race result and weekly training time to calculate paces and generate a plan.
 - [Norwegian Singles training method](https://norwegian-singles.app/en/nsm-training-method/): Overview of single-session sub-threshold training and interval structures.
 - [Weekly training planner](https://norwegian-singles.app/en/norwegian-singles-training-plan/): Weekly schedules based on current fitness and available training hours.
-- [Marathon planner](https://norwegian-singles.app/en/norwegian-singles-marathon-plan/): A 15-week marathon build with long runs, marathon-specific sessions, and a taper.
+- [Marathon planner](https://norwegian-singles.app/en/norwegian-method-marathon-plan/): A 15-week marathon build with long runs, marathon-specific sessions, and a taper.
 - [VDOT calculator](https://norwegian-singles.app/en/vdot-calculator/): Estimated running fitness, training zones, and equivalent race performances.
 
 ## Languages
