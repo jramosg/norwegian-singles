@@ -7,7 +7,8 @@
  * The provider handles double opt-in, unsubscribes and the 6-week email.
  */
 export const NEWSLETTER = {
-  action: '',
+  action:
+    'https://assets.mailerlite.com/jsonp/2772369/forms/203325435304478081/subscribe',
   fields: {
     email: 'fields[email]',
     locale: 'fields[locale]',
