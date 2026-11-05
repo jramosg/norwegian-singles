@@ -36,7 +36,6 @@ const book = books.find((b) => b.key === 'nsm')!;
         data-monetization="affiliate"
         data-placement={placement}
         data-item="nsm"
-        data-amazon-asin={book.asin}
       >
         {copy.paperback}
       </a>
@@ -50,8 +49,6 @@ const book = books.find((b) => b.key === 'nsm')!;
             data-monetization="affiliate"
             data-placement={placement}
             data-item="nsm-kindle"
-            data-amazon-asin={book.asin}
-            data-amazon-format="kindle"
           >
             {copy.kindle}
           </a>

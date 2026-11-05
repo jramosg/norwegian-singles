@@ -386,7 +386,6 @@ const copy = {
             data-monetization="affiliate"
             data-placement={placement}
             data-item={item.key}
-            data-amazon-asin={item.asin}
           >
             <div class="rec-cover-wrap">
               {item.cover && imageMap[item.cover] ? (
@@ -444,7 +443,6 @@ const copy = {
                   data-monetization="affiliate"
                   data-placement={placement}
                   data-item={book.key}
-                  data-amazon-asin={book.asin}
                 >
                   {copy.cta}
                 </a>
@@ -457,8 +455,6 @@ const copy = {
                     data-monetization="affiliate"
                     data-placement={placement}
                     data-item={`${book.key}-kindle`}
-                    data-amazon-asin={book.asin}
-                    data-amazon-format="kindle"
                   >
                     {copy.kindle}
                   </a>
