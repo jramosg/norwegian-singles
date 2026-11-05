@@ -1,0 +1,199 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import Recommendations from './Recommendations.astro';
+import VdotCalculator from './react/VdotCalculator';
+import { vdotCopy } from '../i18n/vdot-page';
+import { getSeoPageByEnglishSlug, type SeoLandingPage } from '../lib/seo-pages';
+import { buildVdotChart } from '../lib/vdot-report';
+import { formatPace, formatTime } from '../lib/vdot';
+import type { Locale } from '../types';
+import '../styles/vdot.css';
+
+interface Props {
+  locale: Locale;
+  page: SeoLandingPage;
+  structuredData: Record<string, unknown>[];
+}
+
+const { locale, page, structuredData } = Astro.props;
+const copy = vdotCopy[locale];
+const chart = buildVdotChart();
+const site = 'https://norwegian-singles.app';
+
+// Related guides: the other VDOT pages first, then the planner tools.
+const related = [
+  'vdot-calculator',
+  'jack-daniels-running-calculator',
+  'vdot-running-formula',
+  'nsm-calculator',
+  'norwegian-singles-training-plan',
+  'sub-threshold-pace-calculator',
+]
+  .map((slug) => getSeoPageByEnglishSlug(locale, slug))
+  .filter(
+    (candidate): candidate is SeoLandingPage =>
+      Boolean(candidate) && candidate!.slug !== page.slug,
+  );
+
+const pageData = [
+  ...structuredData,
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: page.h1,
+    url: `${site}/${locale}/${page.slug}/`,
+    description: page.description,
+    applicationCategory: 'SportsApplication',
+    operatingSystem: 'All',
+    inLanguage: locale,
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: copy.faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.q,
+      acceptedAnswer: { '@type': 'Answer', text: faq.a },
+    })),
+  },
+];
+---
+
+<AppLayout
+  title={page.title}
+  description={page.description}
+  locale={locale}
+  structuredData={pageData}
+>
+  <section class="vp-hero">
+    <div class="vp-hero-panel">
+      <div class="container vp-hero-head">
+        <h1>{page.h1}</h1>
+        <p set:html={page.intro} />
+      </div>
+    </div>
+    <div class="container vp-tool">
+      <VdotCalculator locale={locale} copy={copy} client:load />
+    </div>
+  </section>
+
+  <section class="vp-chart" aria-labelledby="vdot-chart-title">
+    <div class="container">
+      <div class="vp-section-head">
+        <h2 id="vdot-chart-title">{copy.chartTitle}</h2>
+        <p>{copy.chartIntro}</p>
+      </div>
+
+      <div class="vp-chart-switch" role="radiogroup" aria-label={copy.unit}>
+        <input type="radio" name="vdot-unit" id="vdot-unit-km" checked />
+        <label for="vdot-unit-km">km</label>
+        <input type="radio" name="vdot-unit" id="vdot-unit-mi" />
+        <label for="vdot-unit-mi">mi</label>
+      </div>
+
+      <div
+        class="vp-chart-scroll"
+        tabindex="0"
+        aria-labelledby="vdot-chart-title"
+      >
+        <table class="vp-chart-table">
+          <thead>
+            <tr>
+              <th scope="col">{copy.chartVdotCol}</th>
+              <th scope="col">5K</th>
+              <th scope="col">10K</th>
+              <th scope="col">{copy.chartHalfCol}</th>
+              <th scope="col">{copy.chartMarathonCol}</th>
+              <th scope="col">
+                {copy.chartEasyCol}
+                <span class="u-km">/km</span><span class="u-mi">/mi</span>
+              </th>
+              <th scope="col">
+                {copy.chartThresholdCol}
+                <span class="u-km">/km</span><span class="u-mi">/mi</span>
+              </th>
+              <th scope="col">
+                {copy.chartIntervalCol}
+                <span class="u-km">/km</span><span class="u-mi">/mi</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              chart.map((row) => (
+                <tr class:list={{ 'is-major': row.vdot % 5 === 0 }}>
+                  <th scope="row">{row.vdot}</th>
+                  <td>{formatTime(row.fiveK)}</td>
+                  <td>{formatTime(row.tenK)}</td>
+                  <td>{formatTime(row.half)}</td>
+                  <td>{formatTime(row.marathon)}</td>
+                  {[
+                    row.paces.easy.min,
+                    row.paces.threshold,
+                    row.paces.interval,
+                  ].map((secondsPerKm) => (
+                    <td>
+                      <span class="u-km">{formatPace(secondsPerKm, 'km')}</span>
+                      <span class="u-mi">
+                        {formatPace(secondsPerKm, 'mile')}
+                      </span>
+                    </td>
+                  ))}
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="vp-guide">
+    <div class="container vp-guide-inner">
+      {
+        copy.sections.map((section) => (
+          <div class="vp-guide-item">
+            <h2>{section.title}</h2>
+            <p>{section.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="vp-faq" aria-labelledby="vdot-faq-title">
+    <div class="container vp-faq-inner">
+      <h2 id="vdot-faq-title">{copy.faqTitle}</h2>
+      {
+        copy.faqs.map((faq, i) => (
+          <details class="faq-item" open={i === 0}>
+            <summary>
+              <h3>{faq.q}</h3>
+              <span class="faq-toggle" aria-hidden="true" />
+            </summary>
+            <p>{faq.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+
+  <Recommendations locale={locale} />
+
+  {
+    related.length > 0 && (
+      <nav class="vp-related" aria-label={page.h1}>
+        <div class="container">
+          <ul>
+            {related.map((link) => (
+              <li>
+                <a href={`/${locale}/${link.slug}/`}>{link.h1}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </nav>
+    )
+  }
+</AppLayout>

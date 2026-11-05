@@ -1,0 +1,502 @@
+/* VDOT calculator page. The calculator is the hero: a headline panel with
+   the tool overlapping its lower edge, like the home page. */
+
+/* ---------- Hero ---------- */
+.vp-hero {
+  padding: var(--space-2) clamp(0.5rem, 1.5vw, 1.25rem) 0;
+}
+
+.vp-hero-panel {
+  padding: clamp(3.5rem, 8vw, 6.5rem) 0 clamp(8rem, 13vw, 10rem);
+  background: linear-gradient(
+    180deg,
+    #fbfcfd 0%,
+    var(--mist) 58%,
+    var(--glacier) 100%
+  );
+  border-radius: var(--radius-panel);
+}
+
+.vp-hero-head {
+  display: grid;
+  justify-items: center;
+  max-width: 54rem;
+  text-align: center;
+}
+
+.vp-hero-head h1 {
+  margin-bottom: var(--space-5);
+  font-size: clamp(2.75rem, 1.5rem + 5vw, 5.75rem);
+  font-weight: 450;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+}
+
+.vp-hero-head p {
+  max-width: 40rem;
+  margin: 0;
+  font-size: clamp(1.0625rem, 0.95rem + 0.45vw, 1.25rem);
+}
+
+.vp-hero-head p strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.vp-tool {
+  position: relative;
+  z-index: 1;
+  margin-top: clamp(-7rem, -10vw, -5rem);
+}
+
+/* ---------- Calculator ---------- */
+.vc {
+  display: grid;
+  gap: 1px;
+  overflow: hidden;
+  background: var(--color-border);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-xl);
+}
+
+@media (min-width: 900px) {
+  .vc {
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  }
+
+  .vc-cta {
+    grid-column: 1 / -1;
+  }
+}
+
+.vc > * {
+  background: var(--paper);
+}
+
+.vc-input,
+.vc-block {
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.vc-input-title {
+  margin-bottom: var(--space-5);
+  font-size: var(--text-2xl);
+}
+
+.vc-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: var(--space-4);
+}
+
+.vc-time {
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+.vc-hint {
+  margin: var(--space-2) 0 var(--space-5);
+  color: var(--slate);
+  font-size: var(--text-sm);
+}
+
+.vc-hint.is-error {
+  color: var(--flag);
+}
+
+.vc-unit {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  background: var(--mist);
+  border-radius: var(--radius-full);
+}
+
+.vc-unit button {
+  min-width: 3.5rem;
+  padding: var(--space-2) var(--space-4);
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-full);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.vc-unit button.is-active {
+  color: var(--ink);
+  background: var(--paper);
+  box-shadow:
+    var(--shadow-sm),
+    0 0 0 1px var(--color-border);
+}
+
+/* The score: the one number visitors came for. */
+.vc-score {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: var(--space-2);
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  color: #dbe5ee;
+  background: var(--ink) !important;
+}
+
+.vc-score-label {
+  color: #a9bacb;
+  font-weight: 500;
+}
+
+.vc-score-value {
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: clamp(4.5rem, 3rem + 6vw, 8rem);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+}
+
+.vc-score-note {
+  max-width: 28ch;
+  color: #a9bacb;
+  font-size: var(--text-sm);
+}
+
+.vc-block-head {
+  margin-bottom: var(--space-4);
+}
+
+.vc-block-head h2 {
+  margin-bottom: var(--space-1);
+  font-size: var(--text-2xl);
+}
+
+.vc-block-head p {
+  margin: 0;
+  font-size: var(--text-sm);
+}
+
+.vc-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.vc-table th,
+.vc-table td {
+  padding: var(--space-3) 0;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.vc-table thead th {
+  padding-top: 0;
+  color: var(--slate);
+  font-size: var(--text-xs);
+  font-weight: 500;
+}
+
+.vc-table tbody th {
+  font-weight: 500;
+}
+
+.vc-table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+.vc-num {
+  text-align: right !important;
+  white-space: nowrap;
+}
+
+.vc-table td + td,
+.vc-table th + th {
+  padding-left: var(--space-4);
+}
+
+.vc-strong {
+  color: var(--ink);
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+.vc-zone-name,
+.vc-zone-use {
+  display: block;
+}
+
+.vc-zone-name {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.vc-zone-use {
+  color: var(--slate);
+  font-size: var(--text-xs);
+  font-weight: 400;
+}
+
+/* Zone tick in the margin: easy is green, threshold sits on the red line. */
+.vc-zone th {
+  position: relative;
+  padding-left: var(--space-4);
+}
+
+.vc-zone th::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: var(--space-3);
+  bottom: var(--space-3);
+  width: 3px;
+  border-radius: 2px;
+  background: var(--glacier);
+}
+
+.vc-zone-easy th::before,
+.vc-zone-marathon th::before {
+  background: var(--spruce);
+}
+
+.vc-zone-threshold th::before {
+  background: var(--flag);
+}
+
+.vc-zone-interval th::before,
+.vc-zone-repetition th::before {
+  background: var(--ink);
+}
+
+.vc-table tr.is-input > * {
+  background: var(--snow);
+}
+
+.vc-cta {
+  display: grid;
+  gap: var(--space-5);
+  align-items: center;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  background: var(--mist) !important;
+}
+
+@media (min-width: 768px) {
+  .vc-cta {
+    grid-template-columns: 1fr auto;
+  }
+}
+
+.vc-cta h2 {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-2xl);
+}
+
+.vc-cta p {
+  max-width: 56ch;
+  margin: 0;
+}
+
+@media (max-width: 520px) {
+  .vc-fields {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Shared section rhythm ---------- */
+.vp-chart,
+.vp-guide,
+.vp-faq {
+  padding-top: clamp(4rem, 9vw, 7rem);
+}
+
+.vp-section-head {
+  max-width: 40rem;
+  margin-bottom: var(--space-6);
+}
+
+.vp-section-head h2,
+.vp-faq-inner > h2 {
+  margin-bottom: var(--space-3);
+  font-size: clamp(2.125rem, 1.5rem + 2.4vw, 3.5rem);
+  letter-spacing: -0.025em;
+}
+
+.vp-section-head p {
+  margin: 0;
+  font-size: var(--text-lg);
+}
+
+/* ---------- VDOT chart ---------- */
+.vp-chart-switch {
+  display: inline-flex;
+  gap: 2px;
+  margin-bottom: var(--space-4);
+  padding: 3px;
+  background: var(--mist);
+  border-radius: var(--radius-full);
+}
+
+.vp-chart-switch input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.vp-chart-switch label {
+  min-width: 3.5rem;
+  padding: var(--space-2) var(--space-4);
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+}
+
+.vp-chart-switch input:checked + label {
+  color: var(--ink);
+  background: var(--paper);
+  box-shadow:
+    var(--shadow-sm),
+    0 0 0 1px var(--color-border);
+}
+
+.vp-chart-switch input:focus-visible + label {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.vp-chart .u-mi {
+  display: none;
+}
+
+.vp-chart:has(#vdot-unit-mi:checked) .u-km {
+  display: none;
+}
+
+.vp-chart:has(#vdot-unit-mi:checked) .u-mi {
+  display: inline;
+}
+
+.vp-chart-scroll {
+  max-height: 34rem;
+  overflow: auto;
+  background: var(--paper);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+}
+
+.vp-chart-table {
+  width: 100%;
+  min-width: 46rem;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.vp-chart-table th,
+.vp-chart-table td {
+  padding: 0.6rem var(--space-4);
+  text-align: right;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.vp-chart-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  color: var(--slate);
+  background: var(--paper);
+  font-weight: 500;
+  box-shadow: inset 0 -1px 0 var(--color-border-accent);
+}
+
+.vp-chart-table thead th .u-km,
+.vp-chart-table thead th .u-mi {
+  margin-left: 0.2em;
+  color: var(--slate);
+  font-weight: 400;
+}
+
+.vp-chart-table tbody th {
+  position: sticky;
+  left: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 600;
+  text-align: left;
+}
+
+.vp-chart-table tr.is-major > * {
+  background: var(--snow);
+}
+
+.vp-chart-table tbody tr:hover > * {
+  background: var(--mist);
+}
+
+/* ---------- Guide ---------- */
+.vp-guide-inner {
+  display: grid;
+  gap: var(--space-10) var(--space-12);
+}
+
+@media (min-width: 900px) {
+  .vp-guide-inner {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.vp-guide-item h2 {
+  margin-bottom: var(--space-3);
+  padding-top: var(--space-4);
+  font-size: var(--text-2xl);
+  border-top: 2px solid var(--ink);
+}
+
+.vp-guide-item p {
+  max-width: 60ch;
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+}
+
+/* ---------- FAQ ---------- */
+.vp-faq-inner {
+  max-width: var(--container-narrow);
+}
+
+.vp-faq-inner > h2 {
+  margin-bottom: var(--space-6);
+}
+
+/* ---------- Related ---------- */
+.vp-related {
+  padding-top: var(--space-12);
+}
+
+.vp-related ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+}
+
+.vp-related a {
+  display: inline-block;
+  padding: 0.55rem 1rem;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+.vp-related a:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}

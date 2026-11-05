@@ -1902,66 +1902,6 @@ const sessionShapes = [
     border-top: 1px solid var(--color-border-accent);
   }
 
-  .faq-item {
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .faq-item summary {
-    display: flex;
-    gap: var(--space-4);
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--space-5) 0;
-    cursor: pointer;
-    list-style: none;
-  }
-
-  .faq-item summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .faq-item h3 {
-    font-family: var(--font-sans);
-    font-size: var(--text-lg);
-    font-weight: 600;
-    letter-spacing: 0;
-  }
-
-  .faq-toggle {
-    position: relative;
-    flex: 0 0 1.75rem;
-    height: 1.75rem;
-    border: 1px solid var(--color-border-accent);
-    border-radius: var(--radius-full);
-  }
-
-  .faq-toggle::before,
-  .faq-toggle::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0.65rem;
-    height: 1.5px;
-    background: var(--ink);
-    transform: translate(-50%, -50%);
-    transition: transform var(--transition-base);
-  }
-
-  .faq-toggle::after {
-    transform: translate(-50%, -50%) rotate(90deg);
-  }
-
-  .faq-item[open] .faq-toggle::after {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-
-  .faq-item p {
-    max-width: 62ch;
-    padding-bottom: var(--space-5);
-    margin: 0;
-  }
-
   /* ---------- Related guides ---------- */
   .related-groups {
     display: grid;

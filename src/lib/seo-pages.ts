@@ -1341,6 +1341,32 @@ export function getSeoPage(
   return pages[locale].find((page) => page.slug === slug);
 }
 
+const VDOT_PAGE_SLUGS_EN = new Set([
+  'vdot-calculator',
+  'jack-daniels-running-calculator',
+  'vdot-running-formula',
+]);
+
+/** English slug of the page at the same position in any locale. */
+function englishSlugFor(locale: Locale, slug: string): string | undefined {
+  const index = pages[locale].findIndex((page) => page.slug === slug);
+  return index === -1 ? undefined : pages.en[index]?.slug;
+}
+
+/** True for the pages that show the dedicated VDOT calculator. */
+export function isVdotPage(locale: Locale, slug: string): boolean {
+  return VDOT_PAGE_SLUGS_EN.has(englishSlugFor(locale, slug) ?? '');
+}
+
+/** The localized page for an English slug, e.g. for cross-links. */
+export function getSeoPageByEnglishSlug(
+  locale: Locale,
+  englishSlug: string,
+): SeoLandingPage | undefined {
+  const index = pages.en.findIndex((page) => page.slug === englishSlug);
+  return index === -1 ? undefined : pages[locale][index];
+}
+
 export function getAlternateSeoPath(
   currentPath: string,
   locale: Locale,

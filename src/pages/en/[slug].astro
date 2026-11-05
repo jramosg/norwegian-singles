@@ -1,10 +1,12 @@
 ---
 import LandingPage from '../../components/LandingPage.astro';
 import RaceInputPage from '../../components/RaceInputPage.astro';
+import VdotPage from '../../components/VdotPage.astro';
 import {
   createSeoStructuredData,
   getSeoPage,
   getSeoPages,
+  isVdotPage,
 } from '../../lib/seo-pages';
 import {
   createRaceSeoStructuredData,
@@ -41,7 +43,13 @@ const structuredData = foundRacePage
 ---
 
 {
-  foundRacePage ? (
+  foundPage && isVdotPage(locale, foundPage.slug) ? (
+    <VdotPage
+      locale={locale}
+      page={foundPage}
+      structuredData={structuredData}
+    />
+  ) : foundRacePage ? (
     <RaceInputPage
       locale={locale}
       page={foundRacePage}
