@@ -1,0 +1,206 @@
+---
+/**
+ * "Remind me to retest in 6 weeks" email signup. Hidden until a provider
+ * form is configured in lib/newsletter.ts.
+ */
+import { engagementCopy } from '../i18n/engagement';
+import { NEWSLETTER } from '../lib/newsletter';
+import type { Locale } from '../types';
+
+interface Props {
+  locale: Locale;
+  /** Recorded with signups so placements can be compared in the logs. */
+  placement: string;
+}
+
+const { locale, placement } = Astro.props;
+const copy = engagementCopy[locale].reminder;
+const [before, rest = ''] = copy.consent.split('{link}');
+const [linkText, after = ''] = rest.split('{/link}');
+const id = `retest-${placement}`;
+---
+
+{
+  NEWSLETTER.action && (
+    <section
+      class="retest"
+      aria-labelledby={`${id}-title`}
+      data-retest
+      data-locale={locale}
+      data-placement={placement}
+      data-msg-sending={copy.sending}
+      data-msg-success={copy.success}
+      data-msg-email={copy.invalidEmail}
+      data-msg-consent={copy.consentRequired}
+    >
+      <div class="retest-copy">
+        <h2 id={`${id}-title`}>{copy.title}</h2>
+        <p>{copy.text}</p>
+      </div>
+      <form class="retest-form" novalidate>
+        <label class="sr-only" for={`${id}-email`}>
+          {copy.emailLabel}
+        </label>
+        <div class="retest-row">
+          <input
+            id={`${id}-email`}
+            class="form-input"
+            type="email"
+            name="email"
+            autocomplete="email"
+            placeholder={copy.emailPlaceholder}
+            required
+          />
+          <button class="btn btn-primary" type="submit">
+            {copy.button}
+          </button>
+        </div>
+        <label class="retest-consent">
+          <input type="checkbox" name="consent" required />
+          <span>
+            {before}
+            <a href={`/${locale}/privacy/`}>{linkText}</a>
+            {after}
+          </span>
+        </label>
+        <p class="retest-status" role="status" aria-live="polite" />
+      </form>
+    </section>
+  )
+}
+
+<script>
+  import { NEWSLETTER, isValidEmail, retestDate } from '../lib/newsletter';
+
+  document.querySelectorAll<HTMLElement>('[data-retest]').forEach((root) => {
+    const form = root.querySelector('form');
+    const status = root.querySelector<HTMLElement>('.retest-status');
+    if (!form || !status) return;
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const email = form.querySelector<HTMLInputElement>('[name=email]')!;
+      const consent = form.querySelector<HTMLInputElement>('[name=consent]')!;
+      const show = (message = '', isError = false) => {
+        status.textContent = message;
+        status.classList.toggle('is-error', isError);
+      };
+
+      if (!isValidEmail(email.value)) {
+        show(root.dataset.msgEmail, true);
+        email.focus();
+        return;
+      }
+      if (!consent.checked) {
+        show(root.dataset.msgConsent, true);
+        consent.focus();
+        return;
+      }
+
+      const body = new URLSearchParams(NEWSLETTER.extra);
+      body.set(NEWSLETTER.fields.email, email.value.trim());
+      body.set(NEWSLETTER.fields.locale, root.dataset.locale ?? '');
+      body.set(NEWSLETTER.fields.planUrl, window.location.href);
+      body.set(NEWSLETTER.fields.retestDate, retestDate(new Date()));
+
+      const button = form.querySelector('button')!;
+      button.disabled = true;
+      show(root.dataset.msgSending);
+      try {
+        // Embedded provider forms do not send CORS headers, so the response
+        // is opaque. The provider confirms by email (double opt-in).
+        await fetch(NEWSLETTER.action, {
+          method: 'POST',
+          mode: 'no-cors',
+          body,
+        });
+        form.reset();
+        show(root.dataset.msgSuccess);
+        navigator.sendBeacon(
+          `/events/outbound?${new URLSearchParams({
+            type: 'newsletter',
+            placement: root.dataset.placement ?? 'unknown',
+            item: 'retest-reminder',
+            locale: root.dataset.locale ?? 'unknown',
+            path: window.location.pathname,
+          })}`,
+        );
+      } catch {
+        button.disabled = false;
+        show(root.dataset.msgEmail, true);
+      }
+    });
+  });
+</script>
+
+<style>
+  .retest {
+    display: grid;
+    gap: var(--space-5) var(--space-10);
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    background: var(--paper);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-2xl);
+  }
+
+  @media (min-width: 900px) {
+    .retest {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      align-items: center;
+    }
+  }
+
+  .retest h2 {
+    margin-bottom: var(--space-2);
+    font-size: var(--text-2xl);
+  }
+
+  .retest-copy p {
+    margin: 0;
+  }
+
+  .retest-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .retest-row .form-input {
+    flex: 1 1 14rem;
+  }
+
+  .retest-consent {
+    display: flex;
+    gap: var(--space-2);
+    align-items: flex-start;
+    margin-top: var(--space-3);
+    color: var(--slate);
+    font-size: var(--text-xs);
+    line-height: 1.5;
+  }
+
+  .retest-consent input {
+    flex: 0 0 auto;
+    width: 1rem;
+    height: 1rem;
+    margin-top: 0.1rem;
+    accent-color: var(--ink);
+  }
+
+  .retest-consent a {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+
+  .retest-status {
+    min-height: 1.25rem;
+    margin: var(--space-2) 0 0;
+    color: var(--spruce);
+    font-size: var(--text-sm);
+    font-weight: 500;
+  }
+
+  .retest-status.is-error {
+    color: var(--flag);
+  }
+</style>

@@ -5,6 +5,7 @@ import MethodologySection from './MethodologySection.astro';
 import Recommendations from './Recommendations.astro';
 import ThresholdChart from './ThresholdChart.astro';
 import SupportCard from './SupportCard.astro';
+import BookCard from './BookCard.astro';
 import { useTranslations } from '../i18n/ui';
 import { getEnglishSlug, getSeoPages, getVisibleFaqs } from '../lib/seo-pages';
 import { seoArticles } from '../i18n/seo-articles';
@@ -46,6 +47,11 @@ const article = pageSlug
   : undefined;
 // A page's own questions come first; shared ones fill in after.
 const faqs = [...(article?.faqs ?? []), ...getVisibleFaqs(locale)];
+// Pages where visitors are looking for Copeland's book get an inline offer.
+const showBookCard = [
+  'norwegian-singles-method-book',
+  'james-copeland-norwegian-singles',
+].includes(getEnglishSlug(locale, pageSlug ?? '') ?? '');
 const racePagesByDistance = getRacePagesByDistance(locale);
 const isSeoLanding = Boolean(seoHeading);
 const currentPath = Astro.url.pathname.replace(/\/$/, '');
@@ -1423,10 +1429,13 @@ const sessionShapes = [
 
         {
           article ? (
-            article.sections.map((section) => (
+            article.sections.map((section, i) => (
               <Fragment>
                 <h3>{section.title}</h3>
                 <p set:html={section.html} />
+                {showBookCard && i === 0 && (
+                  <BookCard locale={locale} placement="article" />
+                )}
               </Fragment>
             ))
           ) : (

@@ -1,0 +1,124 @@
+---
+/** Inline offer for James Copeland's book on pages about him and it. */
+import { Image } from 'astro:assets';
+import { engagementCopy } from '../i18n/engagement';
+import { books } from '../lib/affiliate';
+import type { Locale } from '../types';
+import cover from '../assets/book-nsm.jpg';
+
+interface Props {
+  locale: Locale;
+  placement: string;
+}
+
+const { locale, placement } = Astro.props;
+const copy = engagementCopy[locale].book;
+const book = books.find((b) => b.key === 'nsm')!;
+---
+
+<aside class="book-card" aria-label={book.title}>
+  <Image
+    src={cover}
+    alt=""
+    class="book-cover"
+    width={112}
+    densities={[1.5, 2]}
+  />
+  <div class="book-body">
+    <p class="book-title">{copy.title}</p>
+    <p class="book-text">{copy.text}</p>
+    <div class="book-actions">
+      <a
+        class="btn btn-primary"
+        href={book.link}
+        target="_blank"
+        rel="sponsored nofollow noopener noreferrer"
+        data-monetization="affiliate"
+        data-placement={placement}
+        data-item="nsm"
+        data-amazon-asin={book.asin}
+      >
+        {copy.paperback}
+      </a>
+      {
+        book.kindleLink && (
+          <a
+            class="book-kindle"
+            href={book.kindleLink}
+            target="_blank"
+            rel="sponsored nofollow noopener noreferrer"
+            data-monetization="affiliate"
+            data-placement={placement}
+            data-item="nsm-kindle"
+            data-amazon-asin={book.asin}
+            data-amazon-format="kindle"
+          >
+            {copy.kindle}
+          </a>
+        )
+      }
+    </div>
+    <small class="book-paid">{copy.paid}</small>
+  </div>
+</aside>
+
+<style>
+  .book-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-6);
+    align-items: center;
+    margin: var(--space-10) 0;
+    padding: var(--space-6);
+    background: var(--paper);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-md);
+  }
+
+  .book-cover {
+    width: 5.5rem;
+    height: auto;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .book-title {
+    margin-bottom: var(--space-1);
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 500;
+  }
+
+  .book-text {
+    margin-bottom: var(--space-4);
+    font-size: var(--text-sm) !important;
+  }
+
+  .book-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-5);
+    align-items: center;
+  }
+
+  .book-kindle {
+    color: var(--ink) !important;
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+
+  .book-paid {
+    display: block;
+    margin-top: var(--space-2);
+    color: var(--slate);
+    font-size: 0.7rem;
+  }
+
+  @media (max-width: 480px) {
+    .book-card {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

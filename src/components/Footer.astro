@@ -2,6 +2,7 @@
 import type { Locale } from '../types';
 import { useTranslations } from '../i18n/ui';
 import Logo from './Logo.astro';
+import { engagementCopy } from '../i18n/engagement';
 
 interface Props {
   locale: Locale;
@@ -51,6 +52,9 @@ const t = useTranslations(locale);
       <div class="footer-legal">
         <p class="copyright">
           © {new Date().getFullYear()} Norwegian Singles. {t('footer.rights')}
+          <a href={`/${locale}/privacy/`}>
+            {engagementCopy[locale].privacy.footerLink}
+          </a>
         </p>
         <p class="developer">
           {t('footer.dev')}
@@ -196,6 +200,10 @@ const t = useTranslations(locale);
     margin: 0;
     color: #8ea1b4;
     font-size: var(--text-xs);
+  }
+
+  .copyright a {
+    margin-left: var(--space-3);
   }
 
   .footer-legal a {

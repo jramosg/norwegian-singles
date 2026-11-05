@@ -386,6 +386,7 @@ const copy = {
             data-monetization="affiliate"
             data-placement={placement}
             data-item={item.key}
+            data-amazon-asin={item.asin}
           >
             <div class="rec-cover-wrap">
               {item.cover && imageMap[item.cover] ? (
@@ -413,15 +414,7 @@ const copy = {
       }
       {
         books.map((book) => (
-          <a
-            class="rec-card"
-            href={book.link}
-            target="_blank"
-            rel="sponsored nofollow noopener noreferrer"
-            data-monetization="affiliate"
-            data-placement={placement}
-            data-item={book.key}
-          >
+          <article class="rec-card rec-card--book">
             <div class="rec-cover-wrap">
               {book.cover && imageMap[book.cover] ? (
                 <Image
@@ -442,14 +435,38 @@ const copy = {
               {book.author && <p class="rec-author">{book.author}</p>}
               <p class="rec-description">{copy.books[book.key]?.description}</p>
               <div class="rec-ctas">
-                <span class="rec-cta">{copy.cta}</span>
+                {/* The first link covers the whole card (see .rec-stretch). */}
+                <a
+                  class="rec-cta rec-stretch"
+                  href={book.link}
+                  target="_blank"
+                  rel="sponsored nofollow noopener noreferrer"
+                  data-monetization="affiliate"
+                  data-placement={placement}
+                  data-item={book.key}
+                  data-amazon-asin={book.asin}
+                >
+                  {copy.cta}
+                </a>
                 {book.kindleLink && (
-                  <span class="rec-cta rec-cta--secondary">{copy.kindle}</span>
+                  <a
+                    class="rec-cta rec-cta--secondary"
+                    href={book.kindleLink}
+                    target="_blank"
+                    rel="sponsored nofollow noopener noreferrer"
+                    data-monetization="affiliate"
+                    data-placement={placement}
+                    data-item={`${book.key}-kindle`}
+                    data-amazon-asin={book.asin}
+                    data-amazon-format="kindle"
+                  >
+                    {copy.kindle}
+                  </a>
                 )}
               </div>
               <small class="rec-paid">{copy.paid}</small>
             </div>
-          </a>
+          </article>
         ))
       }
     </div>
@@ -646,6 +663,26 @@ const copy = {
   .rec-card:hover .rec-cta:not(.rec-cta--secondary) {
     color: var(--color-on-accent);
     background: var(--ink);
+  }
+
+  .rec-card--book {
+    position: relative;
+  }
+
+  .rec-stretch::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+
+  .rec-card--book .rec-cta--secondary {
+    position: relative;
+    z-index: 1;
+  }
+
+  .rec-card--book:focus-within {
+    border-color: var(--color-border-accent);
   }
 
   .rec-cta--secondary {
