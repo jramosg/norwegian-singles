@@ -1072,6 +1072,7 @@ export default function TrainingForm({ locale }: Props) {
           position: relative;
           display: inline-flex;
           align-items: center;
+          align-self: flex-start;
         }
         .tf-distance-dropdown {
           position: relative;
@@ -1079,6 +1080,7 @@ export default function TrainingForm({ locale }: Props) {
         .tf-distance-btn {
           width: 100%;
           text-align: left;
+          background-image: none;
         }
         .tf-distance-btn::after {
           content: "";
@@ -1116,7 +1118,7 @@ export default function TrainingForm({ locale }: Props) {
         }
         .dropdown-item:hover,
         .dropdown-item:focus-visible {
-          background: rgba(239,68,68,0.12);
+          background: var(--mist);
           color: var(--color-text-primary);
           outline: none;
         }
@@ -1139,7 +1141,7 @@ export default function TrainingForm({ locale }: Props) {
           color: var(--color-text-muted);
         }
         .tf-hours-hint strong {
-          color: var(--color-accent-primary);
+          color: var(--ink);
           font-weight: var(--font-semibold);
         }
         .tf-date-input {
@@ -1147,27 +1149,32 @@ export default function TrainingForm({ locale }: Props) {
           font-family: var(--font-mono);
         }
         .tf-unit {
-          display: flex;
-          gap: var(--space-2);
+          display: inline-flex;
+          align-self: flex-start;
+          gap: 2px;
+          padding: 3px;
+          background: var(--mist);
+          border-radius: var(--radius-full);
         }
         .tf-custom-unit {
           margin-top: var(--space-3);
         }
         .tf-unit-btn {
-          padding: var(--space-2) var(--space-5);
+          min-width: 3.5rem;
+          padding: var(--space-2) var(--space-4);
           font-size: var(--text-sm);
           font-weight: var(--font-semibold);
           color: var(--color-text-secondary);
-          background: var(--color-surface);
-          border: 2px solid var(--color-border);
-          border-radius: var(--radius-md);
+          background: transparent;
+          border: 0;
+          border-radius: var(--radius-full);
           cursor: pointer;
-          transition: all var(--transition-fast);
+          transition: background var(--transition-fast), color var(--transition-fast);
         }
         .tf-unit-btn.is-active {
-          border-color: var(--color-accent-primary);
-          background: rgba(239,68,68,0.12);
-          color: var(--color-text-primary);
+          background: var(--paper);
+          color: var(--ink);
+          box-shadow: var(--shadow-sm), 0 0 0 1px var(--color-border);
         }
         .tf-preview {
           margin-top: var(--space-6);
@@ -1181,8 +1188,6 @@ export default function TrainingForm({ locale }: Props) {
           font-size: var(--text-xs);
           font-weight: var(--font-semibold);
           color: var(--color-text-muted);
-          text-transform: uppercase;
-          letter-spacing: 0.08em;
           margin-bottom: var(--space-3);
         }
         .tf-preview-grid {
@@ -1197,7 +1202,7 @@ export default function TrainingForm({ locale }: Props) {
           justify-content: space-between;
           gap: var(--space-2);
           padding: var(--space-3);
-          background: rgba(255,255,255,0.045);
+          background: rgba(13, 34, 54, 0.05);
           border: 1px solid var(--color-border);
           border-radius: var(--radius-md);
           transition:
@@ -1206,7 +1211,7 @@ export default function TrainingForm({ locale }: Props) {
             background var(--transition-fast);
         }
         .tf-pace-row:hover {
-          background: rgba(255,255,255,0.065);
+          background: rgba(13, 34, 54, 0.072);
           border-color: var(--color-border-accent);
           transform: translateY(-2px);
         }
@@ -1243,8 +1248,8 @@ export default function TrainingForm({ locale }: Props) {
           gap: var(--space-2);
           align-items: center;
           padding: var(--space-3);
-          background: rgba(245,158,11,0.08);
-          border: 1px solid rgba(245,158,11,0.18);
+          background: rgba(181, 101, 13, 0.08);
+          border: 1px solid rgba(181, 101, 13, 0.18);
           border-radius: var(--radius-md);
           font-size: var(--text-sm);
         }
@@ -1252,7 +1257,6 @@ export default function TrainingForm({ locale }: Props) {
           color: var(--color-text-muted);
           font-size: var(--text-xs);
           font-weight: var(--font-bold);
-          text-transform: uppercase;
         }
         .tf-session-card strong {
           color: var(--color-text-primary);
@@ -1283,7 +1287,7 @@ export default function TrainingForm({ locale }: Props) {
           justify-content: space-between;
           padding: var(--space-3) var(--space-4);
           border-bottom: 1px solid var(--color-border);
-          background: rgba(255,255,255,0.02);
+          background: rgba(13, 34, 54, 0.022);
         }
         .tf-vdot-badge {
           display: flex;
@@ -1291,18 +1295,16 @@ export default function TrainingForm({ locale }: Props) {
           gap: var(--space-2);
         }
         .tf-vdot-num {
-          font-family: var(--font-mono);
-          font-size: var(--text-2xl);
-          font-weight: var(--font-bold);
-          color: var(--color-accent-primary);
+          font-family: var(--font-display);
+          font-size: var(--text-3xl);
+          font-weight: 500;
+          color: var(--ink);
           line-height: 1;
         }
         .tf-vdot-badge-label {
           font-size: var(--text-xs);
           font-weight: var(--font-bold);
           color: var(--color-text-muted);
-          text-transform: uppercase;
-          letter-spacing: 0.12em;
         }
         .tf-vdot-tabs {
           display: flex;
@@ -1320,12 +1322,10 @@ export default function TrainingForm({ locale }: Props) {
           border: none;
           cursor: pointer;
           transition: all var(--transition-fast);
-          text-transform: uppercase;
-          letter-spacing: 0.07em;
         }
         .tf-vdot-tab.is-active {
-          background: var(--color-accent-primary);
-          color: #fff;
+          background: var(--ink);
+          color: var(--color-on-accent);
         }
         .tf-vdot-table {
           width: 100%;
@@ -1333,7 +1333,7 @@ export default function TrainingForm({ locale }: Props) {
           font-size: var(--text-sm);
         }
         .tf-vdot-table thead tr {
-          background: rgba(255,255,255,0.025);
+          background: rgba(13, 34, 54, 0.028);
         }
         .tf-vdot-table th {
           padding: var(--space-2) var(--space-4);
@@ -1341,20 +1341,18 @@ export default function TrainingForm({ locale }: Props) {
           font-size: var(--text-xs);
           font-weight: var(--font-semibold);
           color: var(--color-text-muted);
-          text-transform: uppercase;
-          letter-spacing: 0.07em;
           border-bottom: 1px solid var(--color-border);
         }
         .tf-vdot-table td {
           padding: var(--space-2) var(--space-4);
-          border-bottom: 1px solid rgba(255,255,255,0.035);
+          border-bottom: 1px solid rgba(13, 34, 54, 0.039);
           color: var(--color-text-secondary);
           font-weight: var(--font-semibold);
           transition: background var(--transition-fast);
         }
         .tf-vdot-table tr:last-child td { border-bottom: none; }
         .tf-vdot-table tr:hover td {
-          background: rgba(255,255,255,0.03);
+          background: rgba(13, 34, 54, 0.033);
         }
         .tf-vdot-pace,
         .tf-vdot-mono {
@@ -1364,11 +1362,11 @@ export default function TrainingForm({ locale }: Props) {
         }
         .tf-vdot-pace-neutral { color: var(--color-text-secondary) !important; }
         /* Zone row backgrounds + pace colors */
-        .tf-vdot-zone-easy td { background: rgba(34,197,94,0.045); }
+        .tf-vdot-zone-easy td { background: rgba(46, 107, 90, 0.045); }
         .tf-vdot-zone-easy .tf-vdot-pace { color: var(--color-easy); }
-        .tf-vdot-zone-threshold td { background: rgba(245,158,11,0.045); }
+        .tf-vdot-zone-threshold td { background: rgba(181, 101, 13, 0.045); }
         .tf-vdot-zone-threshold .tf-vdot-pace { color: var(--color-threshold); }
-        .tf-vdot-zone-interval td { background: rgba(239,68,68,0.045); }
+        .tf-vdot-zone-interval td { background: rgba(200, 16, 46, 0.045); }
         .tf-vdot-zone-interval .tf-vdot-pace { color: var(--color-accent-primary); }
         @media (max-width: 560px) {
           .tf-row,

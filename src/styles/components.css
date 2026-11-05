@@ -15,9 +15,12 @@
   line-height: 1;
   text-decoration: none;
   border: none;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-full);
   cursor: pointer;
-  transition: all var(--transition-base);
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
   white-space: nowrap;
 }
 
@@ -27,16 +30,14 @@
 }
 
 .btn-primary {
-  background: var(--color-accent-gradient);
-  color: var(--color-text-primary);
-  box-shadow: var(--shadow-md), var(--shadow-glow);
+  background: var(--flag);
+  color: var(--color-on-accent);
 }
 
 .btn-primary:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow:
-    var(--shadow-lg),
-    0 0 60px rgba(239, 68, 68, 0.25);
+  background: #a90d26;
+  color: var(--color-on-accent);
+  transform: translateY(-1px);
 }
 
 .btn-primary:active:not(:disabled) {
@@ -67,20 +68,17 @@
 .btn-lg {
   padding: var(--space-4) var(--space-8);
   font-size: var(--text-base);
-  border-radius: var(--radius-xl);
 }
 
 .btn-sm {
   padding: var(--space-2) var(--space-4);
   font-size: var(--text-xs);
-  border-radius: var(--radius-md);
 }
 
 .btn-icon {
   width: 2.5rem;
   height: 2.5rem;
   padding: 0;
-  border-radius: var(--radius-lg);
 }
 
 /* ---------- Form Elements ---------- */
@@ -93,20 +91,24 @@
 .form-label {
   font-size: var(--text-sm);
   font-weight: var(--font-medium);
-  color: var(--color-text-secondary);
+  color: var(--ink);
 }
 
 .form-input,
 .form-select {
   width: 100%;
+  min-height: 3.25rem;
   padding: var(--space-3) var(--space-4);
   font-family: var(--font-sans);
   font-size: var(--text-base);
   color: var(--color-text-primary);
-  background: var(--color-surface);
+  background: var(--snow);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  transition: all var(--transition-fast);
+  border-radius: var(--radius-md);
+  transition:
+    border-color var(--transition-fast),
+    background var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .form-input::placeholder {
@@ -121,14 +123,15 @@
 .form-input:focus,
 .form-select:focus {
   outline: none;
-  border-color: var(--color-accent-primary);
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+  background: var(--paper);
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px rgba(13, 34, 54, 0.12);
 }
 
 .form-select {
   cursor: pointer;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a1a1aa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2356677a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right var(--space-4) center;
   padding-right: var(--space-10);
@@ -136,7 +139,7 @@
 
 .form-hint {
   font-size: var(--text-xs);
-  color: var(--color-text-primary);
+  color: var(--slate);
 }
 
 .form-error {
@@ -242,14 +245,12 @@
 .pace-unit {
   font-size: var(--text-xs);
   color: var(--color-text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .pace-label {
   font-size: var(--text-sm);
   font-weight: var(--font-medium);
-  color: var(--color-text-secondary);
+  color: var(--ink);
 }
 
 /* ---------- Tables ---------- */
@@ -274,9 +275,7 @@
 .table th {
   font-weight: var(--font-semibold);
   color: var(--color-text-muted);
-  text-transform: uppercase;
   font-size: var(--text-xs);
-  letter-spacing: 0.05em;
 }
 
 .table td {
@@ -299,37 +298,35 @@
   font-size: var(--text-xs);
   font-weight: var(--font-semibold);
   border-radius: var(--radius-full);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .badge-easy {
-  background: rgba(34, 197, 94, 0.15);
+  background: rgba(46, 107, 90, 0.15);
   color: var(--color-easy);
 }
 
 .badge-threshold {
-  background: rgba(245, 158, 11, 0.15);
+  background: rgba(181, 101, 13, 0.15);
   color: var(--color-threshold);
 }
 
 .badge-long {
-  background: rgba(139, 92, 246, 0.15);
+  background: rgba(75, 79, 163, 0.15);
   color: var(--color-long);
 }
 
 .badge-race-a {
-  background: rgba(239, 68, 68, 0.15);
+  background: rgba(200, 16, 46, 0.15);
   color: var(--color-race-a);
 }
 
 .badge-race-b {
-  background: rgba(59, 130, 246, 0.15);
+  background: rgba(42, 95, 158, 0.15);
   color: var(--color-race-b);
 }
 
 .badge-test {
-  background: rgba(236, 72, 153, 0.15);
+  background: rgba(155, 47, 110, 0.12);
   color: var(--color-test);
 }
 
@@ -358,8 +355,6 @@
   font-size: var(--text-xs);
   font-weight: var(--font-semibold);
   color: var(--color-text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
   margin-bottom: var(--space-2);
 }
 
@@ -394,8 +389,6 @@
 .stat-label {
   font-size: var(--text-xs);
   color: var(--color-text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
   margin-top: var(--space-1);
 }
 
@@ -467,7 +460,6 @@
   border-radius: var(--radius-full);
   cursor: pointer;
   transition: all var(--transition-fast);
-  text-transform: uppercase;
 }
 
 .lang-btn:hover {

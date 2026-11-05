@@ -8,8 +8,6 @@
 
 import type { Locale } from '../types';
 import { useTranslations, type TranslationKey } from '../i18n/ui';
-import Icon from './Icon.astro';
-import type { IconName } from '../lib/icons';
 
 interface Props {
   locale: Locale;
@@ -21,27 +19,22 @@ const { locale, includePrinciples = true, includeNotes = true } = Astro.props;
 const t = useTranslations(locale);
 
 const principles: {
-  icon: IconName;
   title: TranslationKey;
   desc: TranslationKey;
 }[] = [
   {
-    icon: 'zap',
     title: 'method.principle1.title',
     desc: 'method.principle1.desc',
   },
   {
-    icon: 'target',
     title: 'method.principle2.title',
     desc: 'method.principle2.desc',
   },
   {
-    icon: 'timer',
     title: 'method.principle3.title',
     desc: 'method.principle3.desc',
   },
   {
-    icon: 'repeat',
     title: 'method.principle4.title',
     desc: 'method.principle4.desc',
   },
@@ -139,29 +132,18 @@ const isGuidePage =
 <div class="methodology-section">
   {
     includePrinciples && (
-      <section class="method-section section">
-        <div class="container">
-          <h2 class="section-title">{t('method.title')}</h2>
-
-          <div class="principles-grid">
-            {principles.map((principle) => (
-              <article class="principle-card">
-                <div class="principle-icon">
-                  <Icon name={principle.icon} size={24} />
-                </div>
-                <h3>{t(principle.title)}</h3>
-                <p>{t(principle.desc)}</p>
-              </article>
-            ))}
-          </div>
-
+      <section class="manifesto" aria-labelledby="manifesto-title">
+        <div class="container manifesto-inner">
+          <h2 id="manifesto-title" class="manifesto-title">
+            {t('method.title')}
+          </h2>
+          <p class="manifesto-text" data-reveal-words>
+            {principles.map((p) => `${t(p.title)}. ${t(p.desc)}`).join(' ')}
+          </p>
           {!isGuidePage && (
-            <div class="method-guide-link">
-              <a href={guideLink.href}>
-                {guideLink.label}
-                <Icon name="arrow-right" size={16} />
-              </a>
-            </div>
+            <a class="manifesto-link" href={guideLink.href}>
+              {guideLink.label}
+            </a>
           )}
         </div>
       </section>
@@ -170,16 +152,16 @@ const isGuidePage =
 
   {
     includeNotes && (
-      <section class="note-section section">
-        <div class="container">
-          <div class="note">
-            <h4 class="note-title">📋 {notesTitle}</h4>
-            <ul class="note-list">
-              {notesList.map((note) => (
-                <li>{note}</li>
-              ))}
-            </ul>
-          </div>
+      <section class="notes" aria-labelledby="notes-title">
+        <div class="container notes-inner">
+          <h2 id="notes-title" class="notes-title">
+            {notesTitle}
+          </h2>
+          <ul class="notes-list">
+            {notesList.map((note) => (
+              <li>{note}</li>
+            ))}
+          </ul>
         </div>
       </section>
     )
@@ -187,136 +169,91 @@ const isGuidePage =
 </div>
 
 <style>
-  .section-title {
-    text-align: center;
-    margin-bottom: var(--space-10);
+  .manifesto {
+    padding: clamp(5rem, 12vw, 10rem) 0 clamp(4rem, 8vw, 7rem);
   }
 
-  .principles-grid {
+  .manifesto-inner {
     display: grid;
-    gap: var(--space-6);
-  }
-
-  .method-guide-link {
-    display: flex;
-    justify-content: center;
-    margin-top: var(--space-8);
-  }
-
-  .method-guide-link a {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    font-size: var(--text-sm);
-    font-weight: var(--font-bold);
-  }
-
-  @media (min-width: 640px) {
-    .principles-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .principles-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
-  .principle-card {
-    position: relative;
-    overflow: hidden;
-    padding: var(--space-8) var(--space-6);
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-2xl);
+    justify-items: center;
     text-align: center;
-    transition: all var(--transition-base);
   }
 
-  .principle-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-      circle at 50% 0%,
-      rgba(239, 68, 68, 0.08),
-      transparent 70%
-    );
-    opacity: 0;
-    transition: opacity var(--transition-base);
-    pointer-events: none;
+  .manifesto-title {
+    margin-bottom: var(--space-8);
+    color: var(--slate);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    font-weight: 500;
+    letter-spacing: 0;
   }
 
-  .principle-card:hover {
-    border-color: var(--color-border-accent);
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-  }
-
-  .principle-card:hover::before {
-    opacity: 1;
-  }
-
-  .principle-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 56px;
-    height: 56px;
-    margin-bottom: var(--space-5);
-    color: var(--color-accent-primary);
-    background: rgba(239, 68, 68, 0.1);
-    border: 1px solid rgba(239, 68, 68, 0.2);
-    border-radius: var(--radius-lg);
-    transition:
-      transform var(--transition-base),
-      background var(--transition-base);
-  }
-
-  .principle-card:hover .principle-icon {
-    transform: scale(1.08);
-    background: rgba(239, 68, 68, 0.16);
-  }
-
-  .principle-card h3 {
-    font-size: var(--text-lg);
-    margin-bottom: var(--space-2);
-  }
-
-  .principle-card p {
-    font-size: var(--text-sm);
+  .manifesto-text {
+    max-width: 24ch;
     margin: 0;
-    color: var(--color-text-secondary);
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 1.1rem + 3.4vw, 4rem);
+    font-weight: 450;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
   }
 
-  .note-section .note {
-    max-width: 600px;
-    margin: 0 auto;
+  .manifesto-text :global(.rw) {
+    display: inline-block;
+    will-change: opacity, filter;
   }
 
-  .note-title {
+  .manifesto-link {
+    margin-top: var(--space-10);
+    padding: 0.85rem 1.5rem;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--color-border-accent);
+    border-radius: var(--radius-full);
+    font-weight: 500;
+    transition: border-color var(--transition-fast);
+  }
+
+  .manifesto-link:hover {
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+
+  .notes {
+    padding-bottom: var(--space-16);
+  }
+
+  .notes-inner {
+    max-width: var(--container-narrow);
+  }
+
+  .notes-title {
     margin-bottom: var(--space-4);
+    font-size: var(--text-2xl);
   }
 
-  .note-list {
+  .notes-list {
+    display: grid;
     list-style: none;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .notes-list li {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-  }
-
-  .note-list li {
-    font-size: var(--text-sm);
+    gap: var(--space-4);
+    align-items: baseline;
+    padding: var(--space-4) 0;
     color: var(--color-text-secondary);
-    padding-left: var(--space-4);
-    position: relative;
+    border-bottom: 1px solid var(--color-border);
   }
 
-  .note-list li::before {
-    content: '→';
-    position: absolute;
-    left: 0;
-    color: var(--color-accent-primary);
+  .notes-list li::before {
+    content: '';
+    flex: 0 0 1.25rem;
+    height: 2px;
+    background: var(--flag);
+    transform: translateY(-0.3em);
   }
 </style>

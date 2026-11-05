@@ -1,6 +1,7 @@
 ---
 import type { Locale } from '../types';
 import { useTranslations } from '../i18n/ui';
+import Logo from './Logo.astro';
 
 interface Props {
   locale: Locale;
@@ -14,15 +15,12 @@ const t = useTranslations(locale);
   <div class="container">
     <div class="footer-content">
       <div class="footer-brand">
-        <a href={`/${locale}`} class="logo">
-          <span class="logo-icon">🇳🇴</span>
-          <span class="logo-text">Norwegian Singles</span>
-        </a>
+        <Logo href={`/${locale}`} />
         <p class="footer-tagline">{t('footer.credit')}</p>
       </div>
 
       <div class="footer-principles">
-        <h4 class="footer-heading">{t('method.title')}</h4>
+        <p class="footer-heading">{t('method.title')}</p>
         <ul class="principles-list">
           <li>{t('method.principle1.title')}</li>
           <li>{t('method.principle2.title')}</li>
@@ -32,7 +30,7 @@ const t = useTranslations(locale);
       </div>
 
       <div class="footer-support">
-        <h4 class="footer-heading">{t('footer.support')}</h4>
+        <p class="footer-heading">{t('footer.support')}</p>
         <p class="support-text">{t('footer.supportTagline')}</p>
         <a
           href="https://buymeacoffee.com/jramosg"
@@ -43,7 +41,6 @@ const t = useTranslations(locale);
           data-placement="footer"
           data-item="buy-me-a-coffee"
         >
-          <span class="coffee-icon">☕</span>
           {t('support.floatingButton')}
         </a>
       </div>
@@ -70,154 +67,140 @@ const t = useTranslations(locale);
 
 <style>
   .footer {
-    border-top: 1px solid var(--color-border);
-    padding: var(--space-12) 0 var(--space-6);
-    margin-top: auto;
+    margin: var(--space-16) clamp(0.5rem, 1.5vw, 1.25rem)
+      clamp(0.5rem, 1.5vw, 1.25rem);
+    padding: clamp(3rem, 6vw, 5rem) 0 var(--space-8);
+    color: #dbe5ee;
+    background: var(--ink);
+    border-radius: var(--radius-panel);
   }
 
   .footer-content {
     display: grid;
-    gap: var(--space-8);
+    gap: var(--space-10);
   }
 
   @media (min-width: 768px) {
     .footer-content {
-      grid-template-columns: 1fr 1fr 1.2fr;
+      grid-template-columns: 1.3fr 1fr 1.2fr;
     }
   }
 
-  .logo {
-    display: flex;
+  .footer :global(.logo) {
+    display: inline-flex;
     align-items: center;
-    gap: var(--space-2);
-    text-decoration: none;
-    color: var(--color-text-primary);
-    margin-bottom: var(--space-3);
+    gap: 0.6rem;
+    margin-bottom: var(--space-4);
+    color: #fff;
   }
 
-  .logo-icon {
-    font-size: var(--text-xl);
+  .footer :global(.logo-mark) {
+    width: 2rem;
+    height: 2rem;
+    fill: none;
+    stroke-linecap: round;
+    stroke-width: 2.25;
   }
 
-  .logo-text {
+  .footer :global(.logo-line) {
+    stroke: #ff4d5e;
+  }
+
+  .footer :global(.logo-curve) {
+    stroke: #fff;
+  }
+
+  .footer :global(.logo-text) {
     font-family: var(--font-display);
-    font-size: var(--text-lg);
-    font-weight: var(--font-bold);
+    font-size: var(--text-2xl);
+    font-weight: 500;
   }
 
-  .footer-tagline {
-    color: var(--color-text-muted);
+  .footer-tagline,
+  .support-text {
+    max-width: 34ch;
+    color: #a9bacb;
     font-size: var(--text-sm);
-    margin: 0;
   }
 
   .footer-heading {
-    font-size: var(--text-sm);
-    font-weight: var(--font-semibold);
-    color: var(--color-text-primary);
     margin-bottom: var(--space-4);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 500;
   }
 
   .principles-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
+    display: grid;
     gap: var(--space-2);
+    list-style: none;
+    color: #c4d2df;
+    font-size: var(--text-sm);
   }
 
   .principles-list li {
-    color: var(--color-text-secondary);
-    font-size: var(--text-sm);
-    padding-left: var(--space-4);
-    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
   }
 
   .principles-list li::before {
-    content: '→';
-    position: absolute;
-    left: 0;
-    color: var(--color-accent-primary);
-  }
-
-  .support-text {
-    font-size: var(--text-sm);
-    color: var(--color-text-secondary);
-    margin-bottom: var(--space-4);
-    line-height: 1.5;
+    content: '';
+    flex: 0 0 0.9rem;
+    height: 1.5px;
+    background: #ff4d5e;
   }
 
   .support-button {
     display: inline-flex;
     align-items: center;
     gap: var(--space-2);
-    background-color: #ffdd00;
-    color: #000000;
-    padding: var(--space-2) var(--space-4);
-    border-radius: var(--radius-md);
+    margin-top: var(--space-2);
+    padding: 0.8rem 1.35rem;
+    color: var(--ink);
+    background: #fff;
+    border-radius: var(--radius-full);
     font-size: var(--text-sm);
-    font-weight: var(--font-bold);
-    text-decoration: none;
-    transition: transform 0.2s ease;
+    font-weight: 600;
+    transition: transform var(--transition-fast);
   }
 
   .support-button:hover {
-    transform: translateY(-2px);
-  }
-
-  .coffee-icon {
-    font-size: var(--text-lg);
+    color: var(--ink);
+    transform: translateY(-1px);
   }
 
   .footer-bottom {
-    margin-top: var(--space-8);
+    margin-top: var(--space-12);
     padding-top: var(--space-6);
-    border-top: 1px solid var(--color-border);
-    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
   }
 
   .disclaimer {
+    max-width: 72ch;
+    margin-bottom: var(--space-4);
+    color: #8ea1b4;
     font-size: var(--text-xs);
-    color: var(--color-text-muted);
-    max-width: 600px;
-    margin: 0 auto var(--space-4);
-  }
-
-  .copyright {
-    font-size: var(--text-xs);
-    color: var(--color-text-muted);
-    margin: 0;
+    line-height: 1.6;
   }
 
   .footer-legal {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
     gap: var(--space-2);
   }
 
-  .developer {
-    font-size: var(--text-xs);
-    color: var(--color-text-muted);
+  .footer-legal p {
     margin: 0;
+    color: #8ea1b4;
+    font-size: var(--text-xs);
   }
 
-  .developer a {
-    color: var(--color-accent-primary);
-    text-decoration: none;
-    font-weight: var(--font-medium);
-  }
-
-  .developer a:hover {
+  .footer-legal a {
+    color: #fff;
     text-decoration: underline;
-  }
-
-  @media (min-width: 640px) {
-    .footer-legal {
-      flex-direction: row;
-      justify-content: center;
-      gap: var(--space-4);
-    }
+    text-underline-offset: 3px;
   }
 </style>

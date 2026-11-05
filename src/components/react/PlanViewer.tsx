@@ -758,7 +758,7 @@ export default function PlanViewer({ locale }: Props) {
           cursor: pointer;
           transition: all var(--transition-fast);
         }
-        .pv-unit-btn.is-active { background: var(--color-accent-primary); color: #fff; }
+        .pv-unit-btn.is-active { background: var(--ink); color: var(--color-on-accent); }
         .pv-tabs {
           display: flex;
           overflow-x: auto;
@@ -799,8 +799,6 @@ export default function PlanViewer({ locale }: Props) {
           font-size: var(--text-xs);
           font-weight: var(--font-semibold);
           color: var(--color-text-muted);
-          text-transform: uppercase;
-          letter-spacing: 0.08em;
           padding-top: 2px;
         }
         .pv-day-content { display: flex; flex-direction: column; gap: var(--space-1); }
@@ -822,7 +820,7 @@ export default function PlanViewer({ locale }: Props) {
         }
         .pv-next:hover {
           border-color: var(--color-accent-primary);
-          background: rgba(239,68,68,0.04);
+          background: rgba(200, 16, 46, 0.04);
         }
         .pv-next:hover .pv-next-icon { color: var(--color-accent-primary); }
         .pv-next-content { display: flex; flex-direction: column; gap: 2px; }
@@ -830,8 +828,6 @@ export default function PlanViewer({ locale }: Props) {
           font-size: var(--text-xs);
           font-weight: var(--font-semibold);
           color: var(--color-text-muted);
-          text-transform: uppercase;
-          letter-spacing: 0.06em;
         }
         .pv-next-val { font-size: var(--text-sm); font-weight: var(--font-semibold); color: var(--color-accent-primary); }
         .pv-next-icon { color: var(--color-text-muted); flex-shrink: 0; transition: color var(--transition-fast); }
@@ -1329,8 +1325,6 @@ function MarathonBuildTab({
         .mb-header-title {
           font-size: var(--text-xs);
           font-weight: var(--font-semibold);
-          text-transform: uppercase;
-          letter-spacing: 0.08em;
           color: var(--color-text-muted);
           margin-bottom: var(--space-1);
         }
@@ -1343,8 +1337,8 @@ function MarathonBuildTab({
           display: flex;
           flex-direction: column;
           align-items: center;
-          background: rgba(239,68,68,0.1);
-          border: 1px solid rgba(239,68,68,0.3);
+          background: rgba(200, 16, 46, 0.1);
+          border: 1px solid rgba(200, 16, 46, 0.3);
           border-radius: var(--radius-md);
           padding: var(--space-2) var(--space-4);
           min-width: 60px;
@@ -1366,8 +1360,8 @@ function MarathonBuildTab({
         }
         .mb-notice {
           padding: var(--space-3) var(--space-4);
-          background: rgba(239,68,68,0.06);
-          border: 1px dashed rgba(239,68,68,0.3);
+          background: rgba(200, 16, 46, 0.06);
+          border: 1px dashed rgba(200, 16, 46, 0.3);
           border-radius: var(--radius-md);
           font-size: var(--text-sm);
           color: var(--color-text-secondary);
@@ -1383,7 +1377,7 @@ function MarathonBuildTab({
         }
         .mb-week--current {
           border-color: var(--color-accent-primary);
-          box-shadow: 0 0 0 1px rgba(239,68,68,0.2);
+          box-shadow: 0 0 0 1px rgba(200, 16, 46, 0.2);
         }
         .mb-week--past { opacity: 0.55; }
         .mb-week-header {
@@ -1404,8 +1398,6 @@ function MarathonBuildTab({
           font-size: var(--text-xs);
           font-weight: var(--font-bold);
           color: var(--color-accent-primary);
-          text-transform: uppercase;
-          letter-spacing: 0.06em;
         }
         .mb-week-label {
           font-size: var(--text-sm);
@@ -1483,8 +1475,6 @@ function MarathonBuildTab({
           font-size: 10px;
           font-weight: var(--font-bold);
           color: var(--color-text-muted);
-          text-transform: uppercase;
-          letter-spacing: 0.06em;
         }
         .mb-day-card-dot {
           width: 6px;

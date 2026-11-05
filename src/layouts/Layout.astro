@@ -1,7 +1,8 @@
 ---
 import '../styles/global.css';
 import '../styles/components.css';
-import '@fontsource-variable/inter';
+import '@fontsource-variable/schibsted-grotesk';
+import '@fontsource-variable/source-serif-4/opsz.css';
 import type { Locale } from '../types';
 import { languageLabels, locales, useTranslations } from '../i18n/ui';
 import { getAlternateSeoPath } from '../lib/seo-pages';
@@ -102,7 +103,7 @@ const allStructuredData = [
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#ef4444" />
+    <meta name="theme-color" content="#f2f5f8" />
     <meta name="author" content="Jon Ramos" />
 
     <!-- Favicon -->
@@ -153,6 +154,18 @@ const allStructuredData = [
     }
 
     <title>{title}</title>
+
+    <script is:inline>
+      // Enable entrance motion before paint; undo it if motion.ts fails.
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('motion-ok');
+        setTimeout(function () {
+          if (!window.__nsMotionReady) {
+            document.documentElement.classList.remove('motion-ok');
+          }
+        }, 3500);
+      }
+    </script>
   </head>
   <body>
     <slot />
@@ -170,6 +183,14 @@ const allStructuredData = [
           }
         }
       })();
+    </script>
+
+    <script>
+      import { initMotion } from '../lib/motion';
+
+      initMotion().catch(() => {
+        document.documentElement.classList.remove('motion-ok');
+      });
     </script>
 
     <script>
