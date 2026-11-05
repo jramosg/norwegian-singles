@@ -66,3 +66,17 @@ describe('formatTimeInput', () => {
     expect(formatTimeInput('2a000')).toBe('20:00');
   });
 });
+
+describe('formatPace rounding', () => {
+  it('never prints 60 seconds', () => {
+    expect(formatPace(299.6)).toBe('5:00');
+    expect(formatPace(186.13, 'mile')).toBe('5:00');
+  });
+});
+
+describe('formatTime rounding', () => {
+  it('rounds fractional seconds', () => {
+    expect(formatTime(299.6)).toBe('5:00');
+    expect(formatTime(3599.7)).toBe('1:00:00');
+  });
+});

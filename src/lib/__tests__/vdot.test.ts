@@ -3,6 +3,7 @@ import {
   calculateVDOT,
   estimateRaceTime,
   formatPace,
+  formatTime,
   getTrainingPacesFromVDOT,
 } from '../vdot';
 import { DISTANCE_METERS, type Distance } from '../../types';
@@ -215,5 +216,18 @@ describe('VDOT training paces match vdoto2.com', () => {
       { distance: '10K', time: '38:25', paceKm: '3:51', toleranceSec: 10 },
       { distance: '5K', time: '18:32', paceKm: '3:42', toleranceSec: 10 },
     ]);
+  });
+});
+
+describe('time formatting rounding', () => {
+  it('carries rounded seconds into the minute', () => {
+    expect(formatPace(299.6)).toBe('5:00');
+    expect(formatTime(299.6)).toBe('5:00');
+    expect(formatTime(3599.7)).toBe('1:00:00');
+  });
+
+  it('carries rounded seconds for mile paces', () => {
+    // 186.13 s/km * 1.60934 = 299.55 s/mi
+    expect(formatPace(186.13, 'mile')).toBe('5:00');
   });
 });

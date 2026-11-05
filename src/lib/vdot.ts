@@ -87,9 +87,11 @@ export function parseTime(timeStr: string): ParsedTime | null {
  * Format seconds to mm:ss or h:mm:ss string
  */
 export function formatTime(totalSeconds: number): string {
-  const hours = Math.floor(totalSeconds / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = Math.round(totalSeconds % 60);
+  // Round first so 59.6 s becomes 1:00 instead of 0:60.
+  const rounded = Math.round(totalSeconds);
+  const hours = Math.floor(rounded / 3600);
+  const minutes = Math.floor((rounded % 3600) / 60);
+  const seconds = rounded % 60;
 
   if (hours > 0) {
     return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
@@ -104,9 +106,11 @@ export function formatPace(
   secondsPerKm: number,
   unit: 'km' | 'mile' = 'km',
 ): string {
-  const pace = unit === 'mile' ? secondsPerKm * 1.60934 : secondsPerKm;
+  const pace = Math.round(
+    unit === 'mile' ? secondsPerKm * 1.60934 : secondsPerKm,
+  );
   const minutes = Math.floor(pace / 60);
-  const seconds = Math.round(pace % 60);
+  const seconds = pace % 60;
   return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 }
 

@@ -12,9 +12,11 @@ export function formatPace(
   secondsPerKm: number,
   unit: 'km' | 'mile' = 'km',
 ): string {
-  const pace = unit === 'mile' ? secondsPerKm * KM_PER_MILE : secondsPerKm;
+  const pace = Math.round(
+    unit === 'mile' ? secondsPerKm * KM_PER_MILE : secondsPerKm,
+  );
   const mins = Math.floor(pace / 60);
-  const secs = Math.round(pace % 60);
+  const secs = pace % 60;
   return `${mins}:${String(secs).padStart(2, '0')}`;
 }
 
@@ -73,9 +75,10 @@ export function formatTimeInput(value: string, includeHours = false): string {
  * Format total seconds as mm:ss (or h:mm:ss when >= 1 hour).
  */
 export function formatTime(totalSeconds: number): string {
-  const hours = Math.floor(totalSeconds / 3600);
-  const mins = Math.floor((totalSeconds % 3600) / 60);
-  const secs = totalSeconds % 60;
+  const rounded = Math.round(totalSeconds);
+  const hours = Math.floor(rounded / 3600);
+  const mins = Math.floor((rounded % 3600) / 60);
+  const secs = rounded % 60;
 
   if (hours > 0) {
     return `${hours}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
