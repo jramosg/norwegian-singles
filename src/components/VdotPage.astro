@@ -1,6 +1,7 @@
 ---
 import AppLayout from '../layouts/AppLayout.astro';
 import Recommendations from './Recommendations.astro';
+import SupportCard from './SupportCard.astro';
 import VdotCalculator from './react/VdotCalculator';
 import { vdotCopy } from '../i18n/vdot-page';
 import { getSeoPageByEnglishSlug, type SeoLandingPage } from '../lib/seo-pages';
@@ -74,6 +75,9 @@ const pageData = [
     </div>
     <div class="container vp-tool">
       <VdotCalculator locale={locale} copy={copy} client:load />
+      <div class="vp-support">
+        <SupportCard locale={locale} placement="vdot-results" />
+      </div>
     </div>
   </section>
 

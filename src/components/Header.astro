@@ -42,6 +42,22 @@ const languageMenuLabel = {
     </nav>
 
     <div class="header-actions">
+      <a
+        class="coffee-link"
+        href="https://buymeacoffee.com/jramosg"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={t('support.floatingButton')}
+        data-monetization="support"
+        data-placement="header"
+        data-item="buy-me-a-coffee"
+      >
+        <svg viewBox="0 0 48 48" aria-hidden="true">
+          <path d="M10 18h24v12a10 10 0 0 1-10 10h-4a10 10 0 0 1-10-10z"></path>
+          <path d="M34 21h3a5 5 0 0 1 0 10h-3"></path>
+        </svg>
+        <span class="coffee-label">{t('support.floatingButton')}</span>
+      </a>
       <details class="lang-menu">
         <summary class="lang-trigger" aria-label={t('nav.changeLanguage')}>
           <span class="lang-trigger-code">{currentLanguage.code}</span>
@@ -238,6 +254,47 @@ const languageMenuLabel = {
     display: flex;
     align-items: center;
     gap: var(--space-3);
+  }
+
+  .coffee-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    height: 2.75rem;
+    padding: 0 0.85rem;
+    color: var(--ink);
+    background: #ffdd00;
+    border-radius: var(--radius-full);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    white-space: nowrap;
+    transition: transform var(--transition-fast);
+  }
+
+  .coffee-link:hover {
+    color: var(--ink);
+    transform: translateY(-1px);
+  }
+
+  .coffee-link svg {
+    width: 1.2rem;
+    height: 1.2rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* Icon only on small screens, so the logo and menu still fit. */
+  .coffee-label {
+    display: none;
+  }
+
+  @media (min-width: 560px) {
+    .coffee-label {
+      display: inline;
+    }
   }
 
   .lang-menu {

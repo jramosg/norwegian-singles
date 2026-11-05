@@ -42,3 +42,15 @@ describe('SEO redirects', () => {
     }
   });
 });
+
+describe('SEO articles', () => {
+  it('only exist for live pages and in every locale', async () => {
+    const { seoArticles } = await import('../../i18n/seo-articles');
+    const liveEn = new Set(getSeoPages('en').map((page) => page.slug));
+    const keys = Object.keys(seoArticles.en);
+    for (const key of keys) expect(liveEn.has(key), key).toBe(true);
+    for (const locale of locales) {
+      expect(Object.keys(seoArticles[locale]).sort()).toEqual(keys.sort());
+    }
+  });
+});

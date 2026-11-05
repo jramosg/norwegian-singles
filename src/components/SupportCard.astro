@@ -1,0 +1,115 @@
+---
+/** Buy Me a Coffee panel, shown at the moments the tool has just helped. */
+import type { Locale } from '../types';
+import { useTranslations } from '../i18n/ui';
+
+interface Props {
+  locale: Locale;
+  /** Recorded with the click so placements can be compared in the logs. */
+  placement: string;
+}
+
+const { locale, placement } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<aside class="support-card" aria-label={t('support.floatingAria')}>
+  <div class="support-cup" aria-hidden="true">
+    <svg viewBox="0 0 48 48">
+      <path d="M10 18h24v12a10 10 0 0 1-10 10h-4a10 10 0 0 1-10-10z"></path>
+      <path d="M34 21h3a5 5 0 0 1 0 10h-3"></path>
+      <path d="M17 6c-2 3 2 5 0 8M24 6c-2 3 2 5 0 8"></path>
+    </svg>
+  </div>
+  <div class="support-copy">
+    <p class="support-message">{t('support.floatingMessage')}</p>
+    <p class="support-sub">{t('footer.supportTagline')}</p>
+  </div>
+  <a
+    class="support-button"
+    href="https://buymeacoffee.com/jramosg"
+    target="_blank"
+    rel="noopener noreferrer"
+    data-monetization="support"
+    data-placement={placement}
+    data-item="buy-me-a-coffee"
+  >
+    {t('support.floatingButton')}
+  </a>
+</aside>
+
+<style>
+  .support-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-4) var(--space-6);
+    align-items: center;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    color: #dbe5ee;
+    background: var(--ink);
+    border-radius: var(--radius-2xl);
+  }
+
+  @media (min-width: 768px) {
+    .support-card {
+      grid-template-columns: auto 1fr auto;
+    }
+  }
+
+  .support-cup {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-full);
+  }
+
+  .support-cup svg {
+    width: 1.9rem;
+    height: 1.9rem;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 2.25;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .support-message {
+    margin: 0 0 var(--space-1);
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 1rem + 0.9vw, 1.625rem);
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  .support-sub {
+    margin: 0;
+    color: #a9bacb;
+    font-size: var(--text-sm);
+  }
+
+  .support-button {
+    grid-column: 1 / -1;
+    justify-self: start;
+    padding: 0.9rem 1.6rem;
+    color: var(--ink);
+    background: #ffdd00;
+    border-radius: var(--radius-full);
+    font-weight: 700;
+    white-space: nowrap;
+    transition: transform var(--transition-fast);
+  }
+
+  @media (min-width: 768px) {
+    .support-button {
+      grid-column: auto;
+    }
+  }
+
+  .support-button:hover {
+    color: var(--ink);
+    transform: translateY(-1px);
+  }
+</style>

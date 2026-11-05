@@ -1,6 +1,7 @@
 ---
 import type { Locale } from '../types';
 import Recommendations from './Recommendations.astro';
+import SupportCard from './SupportCard.astro';
 
 interface Props {
   locale: Locale;
@@ -10,8 +11,18 @@ const { locale } = Astro.props;
 ---
 
 <div data-plan-revenue hidden>
+  <div class="plan-support">
+    <SupportCard locale={locale} placement="plan" />
+  </div>
   <Recommendations locale={locale} placement="plan" />
 </div>
+
+<style>
+  .plan-support {
+    max-width: 920px;
+    margin: var(--space-12) auto 0;
+  }
+</style>
 
 <script>
   const revealPlanRevenue = () => {

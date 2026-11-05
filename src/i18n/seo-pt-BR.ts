@@ -188,7 +188,7 @@ export const seoPagesPtBr: SeoLandingPage[] = [
       'Calculadora VDOT gratuita baseada na fórmula de Jack Daniels. Obtenha os ritmos das cinco zonas de treino e os tempos equivalentes de prova.',
     h1: 'Calculadora VDOT para corrida',
     intro:
-      'Informe um resultado de prova na <strong>calculadora VDOT</strong> para obter seu VDOT, as cinco zonas de Jack Daniels (leve, maratona, limiar, intervalado e repetição) e as previsões de tempos equivalentes. O mesmo formulário gera seu plano semanal NSM completo.',
+      'Informe um resultado de prova na <strong>calculadora VDOT</strong> para obter seu VDOT, as cinco zonas de Jack Daniels (leve, maratona, limiar, intervalado e repetição) e as previsões de tempos equivalentes. Inclui também uma tabela VDOT completa de 30 a 85.',
     howToName: 'Calcular o VDOT e os ritmos de treino',
   },
   {

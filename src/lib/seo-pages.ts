@@ -61,9 +61,9 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'nsm-training-method',
-      title: 'NSM Method: Norwegian Singles Training Guide & Workouts',
+      title: 'NSM Training Method: The 3 Workouts, Paces & a Sample Week',
       description:
-        'Use the NSM training method with 3, 6, and 10-minute sub-threshold workouts, easy runs, and weekly plans.',
+        'The three NSM workouts (3, 6 and 10-minute sub-threshold reps), how long to recover, how easy the easy days are, and how to progress. Get your paces free.',
       h1: 'NSM training method for everyday runners',
       intro:
         'The <strong>NSM training method</strong> organizes the week around three controlled sub-threshold workouts: long 10-minute reps, medium 6-minute reps, and short 3-minute reps. The goal is sustainable aerobic development, not maximal interval effort.',
@@ -111,9 +111,9 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'norwegian-singles-method-book',
-      title: 'Norwegian Singles Method Book: Calculator Companion',
+      title: 'Norwegian Singles Method Book (James Copeland): Summary',
       description:
-        'Explore Norwegian Singles Method book references and use a free calculator to turn NSM concepts into paces and plans.',
+        'What James Copeland’s book NSM: Subthreshold Running Kept Simple covers, its key ideas in short, and a free calculator that turns the method into paces and plans.',
       h1: 'Norwegian Singles Method book and calculator',
       intro:
         'The <strong>Norwegian Singles Method book</strong> gives the training idea. This calculator turns a recent race result into paces, weekly sessions, and marathon builds.',
@@ -151,12 +151,12 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'norwegian-method-recreational-runners',
-      title: 'Norwegian Method for Recreational Runners: Single Sessions',
+      title: 'Norwegian Singles Method Explained: How It Works + Free Plan',
       description:
-        'Apply Norwegian-style threshold training as a recreational runner with single-session NSA / NSM weeks, conservative paces, and easy running.',
-      h1: 'Norwegian method for recreational runners',
+        'What the Norwegian Singles Method is, where it comes from, and what a week looks like: three sub-threshold sessions, easy running, and paces from your 5K. Free planner.',
+      h1: 'The Norwegian Singles Method, explained',
       intro:
-        'The <strong>Norwegian method for recreational runners</strong> works with single-session NSA / NSM weeks: controlled sub-threshold intervals, easy running, and steady progression.',
+        'The <strong>Norwegian Singles Method</strong> brings Norwegian threshold training to everyday runners: one controlled sub-threshold session on three days a week, easy running in between, and paces set from a recent race.',
       howToName: 'Start Norwegian-style training as a recreational runner',
     },
     {
@@ -201,12 +201,12 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'vdot-calculator',
-      title: 'VDOT Calculator: Jack Daniels Running Paces & Race Equivalents',
+      title: 'Jack Daniels VDOT Calculator: Training Paces, Race Times & Chart',
       description:
-        "Free VDOT calculator based on Jack Daniels' running formula. Enter any race result to get Easy, Marathon, Threshold, Interval, and Repetition paces and equivalent times for five race distances.",
+        'Free Jack Daniels VDOT calculator: enter any race for your VDOT, all five training paces, race predictions and a full VDOT chart, in km or miles.',
       h1: 'VDOT running calculator',
       intro:
-        'Enter any race result in the <strong>VDOT calculator</strong> to get your VDOT score, all five Jack Daniels training zones (Easy, Marathon, Threshold, Interval, Repetition), and equivalent race-time predictions. The same form generates your full NSM weekly plan.',
+        'Enter any race result in the <strong>VDOT calculator</strong> to get your VDOT score, all five Jack Daniels training zones (Easy, Marathon, Threshold, Interval, Repetition), and equivalent race-time predictions. It also includes a full VDOT chart from 30 to 85.',
       howToName: 'Calculate VDOT and training paces',
     },
     {
@@ -241,7 +241,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'james-copeland-norwegian-singles',
-      title: 'James Copeland Norwegian Singles: Method Calculator',
+      title: 'James Copeland (sirpoc) Norwegian Singles Method: Paces & Plan',
       description:
         'Turn the James Copeland Norwegian Singles Method into real paces and plans. Free calculator for the sub-threshold single-session approach popularised by Copeland (sirpoc).',
       h1: 'James Copeland Norwegian Singles Method calculator',
@@ -435,13 +435,12 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'calculadora-vdot',
-      title:
-        'Calculadora VDOT: Ritmos de entrenamiento y equivalencias de carrera',
+      title: 'Calculadora VDOT de Jack Daniels: ritmos, tiempos y tabla VDOT',
       description:
         'Calculadora VDOT gratuita basada en la fórmula de Jack Daniels. Calcula ritmos Fácil, Maratón, Umbral, Intervalo y Repetición, y equivalencias de carrera desde cualquier marca.',
       h1: 'Calculadora VDOT de running',
       intro:
-        'Introduce cualquier marca en la <strong>calculadora VDOT</strong> para obtener tu puntuación VDOT, las cinco zonas de entrenamiento Jack Daniels (Fácil, Maratón, Umbral, Intervalo, Repetición) y predicciones de carrera equivalentes. El mismo formulario genera tu plan NSM semanal.',
+        'Introduce cualquier marca en la <strong>calculadora VDOT</strong> para obtener tu puntuación VDOT, las cinco zonas de entrenamiento Jack Daniels (Fácil, Maratón, Umbral, Intervalo, Repetición) y predicciones de carrera equivalentes. Incluye además una tabla VDOT completa de 30 a 85.',
       howToName: 'Calcular VDOT y ritmos de entrenamiento',
     },
     {
@@ -673,7 +672,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
         '잭 대니얼스 공식 기반 무료 VDOT 계산기. 어떤 레이스 기록에서도 이지, 마라톤, 역치, 인터벌, 반복 페이스와 레이스 등가를 계산하세요.',
       h1: 'VDOT 러닝 계산기',
       intro:
-        '<strong>VDOT 계산기</strong>에 어떤 레이스 기록이든 입력하면 VDOT 점수, 잭 대니얼스 5가지 훈련 구역(이지, 마라톤, 역치, 인터벌, 반복), 레이스 등가 예측을 확인할 수 있습니다. 같은 양식으로 전체 NSM 주간 플랜을 생성할 수 있습니다.',
+        '<strong>VDOT 계산기</strong>에 어떤 레이스 기록이든 입력하면 VDOT 점수, 잭 대니얼스 5가지 훈련 구역(이지, 마라톤, 역치, 인터벌, 반복), 레이스 등가 예측을 확인할 수 있습니다. VDOT 30~85 전체 표도 함께 제공합니다.',
       howToName: 'VDOT 및 훈련 페이스 계산하기',
     },
     {
@@ -906,7 +905,7 @@ const pages: Record<Locale, SeoLandingPage[]> = {
         'Kostenloser VDOT Rechner nach der Formel von Jack Daniels. Gib ein Rennergebnis ein und erhalte Easy-, Marathon-, Threshold-, Interval- und Repetition-Paces sowie äquivalente Zeiten.',
       h1: 'VDOT Lauf-Rechner',
       intro:
-        'Gib ein Rennergebnis in den <strong>VDOT Rechner</strong> ein und erhalte deinen VDOT-Wert, alle fünf Jack-Daniels-Trainingszonen (Easy, Marathon, Threshold, Interval, Repetition) und äquivalente Renn-Vorhersagen. Dasselbe Formular erstellt deinen kompletten NSM-Wochenplan.',
+        'Gib ein Rennergebnis in den <strong>VDOT Rechner</strong> ein und erhalte deinen VDOT-Wert, alle fünf Jack-Daniels-Trainingszonen (Easy, Marathon, Threshold, Interval, Repetition) und äquivalente Renn-Vorhersagen. Dazu gibt es eine vollständige VDOT-Tabelle von 30 bis 85.',
       howToName: 'VDOT und Trainingspaces berechnen',
     },
     {
@@ -1134,12 +1133,12 @@ const pages: Record<Locale, SeoLandingPage[]> = {
     },
     {
       slug: 'calculateur-vdot',
-      title: 'Calculateur VDOT : allures Jack Daniels & équivalences de course',
+      title: 'Calculateur VDOT Jack Daniels : allures, temps et tableau VDOT',
       description:
         'Calculateur VDOT gratuit basé sur la formule de Jack Daniels. Saisis un résultat pour obtenir les allures Facile, Marathon, Seuil, Intervalle et Répétition et les temps équivalents.',
       h1: 'Calculateur VDOT de running',
       intro:
-        "Saisis un résultat dans le <strong>calculateur VDOT</strong> pour obtenir ton score VDOT, les cinq zones d'entraînement Jack Daniels (Facile, Marathon, Seuil, Intervalle, Répétition) et des prédictions de course équivalentes. Le même formulaire génère ton plan NSM hebdomadaire.",
+        "Saisis un résultat dans le <strong>calculateur VDOT</strong> pour obtenir ton score VDOT, les cinq zones d'entraînement Jack Daniels (Facile, Marathon, Seuil, Intervalle, Répétition) et des prédictions de course équivalentes, avec en plus un tableau VDOT complet de 30 à 85.",
       howToName: "Calculer le VDOT et les allures d'entraînement",
     },
     {
@@ -1389,6 +1388,14 @@ const VDOT_PAGE_SLUGS_EN = new Set([
 function englishSlugFor(locale: Locale, slug: string): string | undefined {
   const index = pages[locale].findIndex((page) => page.slug === slug);
   return index === -1 ? undefined : pages.en[index]?.slug;
+}
+
+/** English slug for a localized SEO page (pages share positions). */
+export function getEnglishSlug(
+  locale: Locale,
+  slug: string,
+): string | undefined {
+  return englishSlugFor(locale, slug);
 }
 
 /** True for the pages that show the dedicated VDOT calculator. */

@@ -49,6 +49,10 @@
   margin-top: clamp(-7rem, -10vw, -5rem);
 }
 
+.vp-support {
+  margin-top: var(--space-6);
+}
+
 /* ---------- Calculator ---------- */
 .vc {
   display: grid;

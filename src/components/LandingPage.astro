@@ -4,8 +4,10 @@ import TrainingForm from './react/TrainingForm';
 import MethodologySection from './MethodologySection.astro';
 import Recommendations from './Recommendations.astro';
 import ThresholdChart from './ThresholdChart.astro';
+import SupportCard from './SupportCard.astro';
 import { useTranslations } from '../i18n/ui';
-import { getSeoPages, getVisibleFaqs } from '../lib/seo-pages';
+import { getEnglishSlug, getSeoPages, getVisibleFaqs } from '../lib/seo-pages';
+import { seoArticles } from '../i18n/seo-articles';
 import { getRacePagesByDistance } from '../lib/race-seo-pages';
 import type { Locale } from '../types';
 
@@ -38,7 +40,12 @@ const {
 } = Astro.props;
 const t = useTranslations(locale);
 const relatedPages = getSeoPages(locale);
-const faqs = getVisibleFaqs(locale);
+const pageSlug = Astro.url.pathname.split('/').filter(Boolean)[1];
+const article = pageSlug
+  ? seoArticles[locale][getEnglishSlug(locale, pageSlug) ?? '']
+  : undefined;
+// A page's own questions come first; shared ones fill in after.
+const faqs = [...(article?.faqs ?? []), ...getVisibleFaqs(locale)];
 const racePagesByDistance = getRacePagesByDistance(locale);
 const isSeoLanding = Boolean(seoHeading);
 const currentPath = Astro.url.pathname.replace(/\/$/, '');
@@ -1362,6 +1369,10 @@ const sessionShapes = [
 
     <MethodologySection locale={locale} />
 
+    <div class="container landing-support">
+      <SupportCard locale={locale} placement="landing" />
+    </div>
+
     <Recommendations locale={locale} />
 
     {
@@ -1410,26 +1421,39 @@ const sessionShapes = [
           )
         }
 
-        <h3>{t('seo.content.doubleThreshold.title')}</h3>
-        <p set:html={t('seo.content.doubleThreshold.text')} />
+        {
+          article ? (
+            article.sections.map((section) => (
+              <Fragment>
+                <h3>{section.title}</h3>
+                <p set:html={section.html} />
+              </Fragment>
+            ))
+          ) : (
+            <Fragment>
+              <h3>{t('seo.content.doubleThreshold.title')}</h3>
+              <p set:html={t('seo.content.doubleThreshold.text')} />
 
-        <h3>{t('seo.content.howItWorks.title')}</h3>
-        <p set:html={t('seo.content.howItWorks.text')} />
-        <ul>
-          <li set:html={t('seo.content.howItWorks.rep3')} />
-          <li set:html={t('seo.content.howItWorks.rep6')} />
-          <li set:html={t('seo.content.howItWorks.rep10')} />
-        </ul>
-        <p set:html={t('seo.content.howItWorks.paces')} />
+              <h3>{t('seo.content.howItWorks.title')}</h3>
+              <p set:html={t('seo.content.howItWorks.text')} />
+              <ul>
+                <li set:html={t('seo.content.howItWorks.rep3')} />
+                <li set:html={t('seo.content.howItWorks.rep6')} />
+                <li set:html={t('seo.content.howItWorks.rep10')} />
+              </ul>
+              <p set:html={t('seo.content.howItWorks.paces')} />
 
-        <h3>{t('seo.content.weeklyPlans.title')}</h3>
-        <p set:html={t('seo.content.weeklyPlans.text')} />
+              <h3>{t('seo.content.weeklyPlans.title')}</h3>
+              <p set:html={t('seo.content.weeklyPlans.text')} />
 
-        <h3>{t('seo.content.marathon.title')}</h3>
-        <p set:html={t('seo.content.marathon.text')} />
+              <h3>{t('seo.content.marathon.title')}</h3>
+              <p set:html={t('seo.content.marathon.text')} />
 
-        <h3>{t('seo.content.whoIsItFor.title')}</h3>
-        <p set:html={t('seo.content.whoIsItFor.text')} />
+              <h3>{t('seo.content.whoIsItFor.title')}</h3>
+              <p set:html={t('seo.content.whoIsItFor.text')} />
+            </Fragment>
+          )
+        }
       </div>
     </section>
 
@@ -1683,6 +1707,10 @@ const sessionShapes = [
     color: #fff;
     font-size: var(--text-lg);
     font-weight: 600;
+  }
+
+  .landing-support {
+    max-width: 920px;
   }
 
   /* ---------- Shared section rhythm ---------- */
