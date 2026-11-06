@@ -3,7 +3,9 @@
  * Compact gear pick shown right after a generated plan: one watch for
  * pacing the reps, one strap for keeping easy days easy.
  */
+import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
+import { productImage } from '../lib/product-images';
 import { gear } from '../lib/affiliate';
 import type { Locale } from '../types';
 
@@ -69,7 +71,7 @@ const copy = {
 const picks = [
   { item: gear.find((g) => g.key === 'coros-pace4')!, role: copy.watch },
   { item: gear.find((g) => g.key === 'polar-h10')!, role: copy.strap },
-];
+].map((pick) => ({ ...pick, photo: productImage(pick.item.cover) }));
 ---
 
 <aside class="gear-strip" aria-label={copy.title}>
@@ -79,7 +81,7 @@ const picks = [
   </div>
   <ul class="gear-strip-picks">
     {
-      picks.map(({ item, role }) => (
+      picks.map(({ item, role, photo }) => (
         <li>
           <a
             href={item.link}
@@ -90,7 +92,17 @@ const picks = [
             data-item={item.key}
           >
             <span class="gear-strip-icon" aria-hidden="true">
-              <Icon name={item.icon} size={20} />
+              {photo ? (
+                <Image
+                  src={photo}
+                  alt=""
+                  width={56}
+                  densities={[1.5, 2]}
+                  loading="lazy"
+                />
+              ) : (
+                <Icon name={item.icon} size={20} />
+              )}
             </span>
             <span>
               <strong>{item.title}</strong>
@@ -170,11 +182,18 @@ const picks = [
 
   .gear-strip-icon {
     display: grid;
-    flex: 0 0 2.5rem;
+    flex: 0 0 3.5rem;
     place-items: center;
-    height: 2.5rem;
-    background: var(--mist);
-    border-radius: var(--radius-full);
+    height: 3.5rem;
+    overflow: hidden;
+    background: #fff;
+    border-radius: var(--radius-lg);
+  }
+
+  .gear-strip-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
 
   .gear-strip-picks strong,

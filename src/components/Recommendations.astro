@@ -9,21 +9,7 @@ import type { Locale } from '../types';
 import { gear, books } from '../lib/affiliate';
 import Icon from './Icon.astro';
 
-import coospoHrm from '../assets/coospo-hrm.jpg';
-import corosHrm from '../assets/coros-hrm.jpg';
-import garminHrm200 from '../assets/garmin-hrm200.jpg';
-import garminFr165 from '../assets/garmin-fr165.jpg';
-import nsmCover from '../assets/book-nsm.jpg';
-import bakkenCover from '../assets/book-bakken.jpg';
-
-const imageMap: Record<string, ImageMetadata> = {
-  '/coospo-hrm.jpg': coospoHrm,
-  '/coros-hrm.jpg': corosHrm,
-  '/garmin-hrm200.jpg': garminHrm200,
-  '/garmin-fr165.jpg': garminFr165,
-  '/book-nsm.jpg': nsmCover,
-  '/book-bakken.jpg': bakkenCover,
-};
+import { productImage } from '../lib/product-images';
 
 interface Props {
   locale: Locale;
@@ -31,6 +17,8 @@ interface Props {
 }
 
 const { locale, placement = 'landing' } = Astro.props;
+const gearItems = gear.map((g) => ({ ...g, photo: productImage(g.cover) }));
+const bookItems = books.map((b) => ({ ...b, photo: productImage(b.cover) }));
 
 const copy = {
   en: {
@@ -482,7 +470,7 @@ const copy = {
 
     <div class="recs-grid">
       {
-        gear.map((item) => (
+        gearItems.map((item) => (
           <a
             class="rec-card"
             href={item.link}
@@ -493,9 +481,9 @@ const copy = {
             data-item={item.key}
           >
             <div class="rec-cover-wrap">
-              {item.cover && imageMap[item.cover] ? (
+              {item.photo ? (
                 <Image
-                  src={imageMap[item.cover]}
+                  src={item.photo}
                   alt=""
                   class="rec-cover"
                   width={96}
@@ -517,12 +505,12 @@ const copy = {
         ))
       }
       {
-        books.map((book) => (
+        bookItems.map((book) => (
           <article class="rec-card rec-card--book">
             <div class="rec-cover-wrap">
-              {book.cover && imageMap[book.cover] ? (
+              {book.photo ? (
                 <Image
-                  src={imageMap[book.cover]}
+                  src={book.photo}
                   alt=""
                   class="rec-cover rec-cover--book"
                   width={96}

@@ -21,7 +21,7 @@ export interface GearItem {
   title: string;
   description: string;
   icon: IconName;
-  /** Local product photo; items without one show their icon. */
+  /** Product photo in src/assets; items without one show their icon. */
   cover?: string;
   link: string;
 }
@@ -43,6 +43,7 @@ export const gear: GearItem[] = [
       'Reference chest strap for heart rate accuracy. Bluetooth + ANT+.',
     icon: 'heart-pulse',
     // amazon.es/dp/B07PM54P4N, verified 2026-11-05
+    cover: '/polar-h10.jpg',
     link: 'https://link.amazon/B0iKXSYWG',
   },
   {
@@ -52,6 +53,7 @@ export const gear: GearItem[] = [
       'Ultralight GPS watch with AMOLED screen and long battery life.',
     icon: 'watch',
     // amazon.es/dp/B0FYGTCX83, verified 2026-11-05
+    cover: '/coros-pace4.jpg',
     link: 'https://link.amazon/B07HNDdLd',
   },
   {
@@ -61,6 +63,7 @@ export const gear: GearItem[] = [
       'AMOLED GPS running watch with training readiness and structured workouts.',
     icon: 'watch',
     // amazon.es/dp/B0BS1T9J4Y, verified 2026-11-05
+    cover: '/garmin-fr265.jpg',
     link: 'https://link.amazon/B00HeGlMU',
   },
   {
