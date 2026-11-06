@@ -1,0 +1,60 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import { engagementCopy } from '../i18n/engagement';
+import type { Locale } from '../types';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = engagementCopy[locale].privacy;
+---
+
+<AppLayout
+  title={`${copy.title}: Norwegian Singles`}
+  description={copy.description}
+  locale={locale}
+>
+  <article class="privacy container">
+    <h1>{copy.title}</h1>
+    <p class="privacy-updated">{copy.updated}</p>
+    {
+      copy.sections.map((section) => (
+        <section>
+          <h2>{section.title}</h2>
+          <p>{section.text}</p>
+        </section>
+      ))
+    }
+  </article>
+</AppLayout>
+
+<style>
+  .privacy {
+    max-width: var(--container-narrow);
+    padding-top: clamp(3rem, 7vw, 5rem);
+  }
+
+  .privacy h1 {
+    margin-bottom: var(--space-2);
+    font-size: clamp(2.5rem, 1.8rem + 3vw, 4rem);
+  }
+
+  .privacy-updated {
+    margin-bottom: var(--space-8);
+    color: var(--slate);
+    font-size: var(--text-sm);
+  }
+
+  .privacy h2 {
+    margin: var(--space-8) 0 var(--space-2);
+    font-size: var(--text-2xl);
+  }
+
+  .privacy p {
+    max-width: 65ch;
+    font-size: 1.0625rem;
+    line-height: 1.7;
+  }
+</style>
