@@ -1,21 +1,20 @@
 FROM node:26-alpine AS base
 WORKDIR /app
 
-# Pin pnpm to 9 (matches the pnpm-lock.yaml 9.0 format). pnpm 10+ fails
-# install with ERR_PNPM_IGNORED_BUILDS; pnpm 9 runs build scripts by default
-# and honors the lockfile exactly (avoiding esbuild host/binary drift).
-# Node 25+ no longer bundles Corepack, so install it with npm.
-RUN npm install -g pnpm@9
+# Node 25+ no longer bundles Corepack, so install the pnpm from
+# packageManager with npm. pnpm-workspace.yaml lists the install scripts
+# pnpm may run.
+RUN npm install -g pnpm@12.18.0
 ENV PNPM_STORE_PATH=/pnpm/store
 
 # Copy only manifest files to leverage build cache
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 FROM base AS prod-deps
-RUN pnpm install --prod
+RUN pnpm install --prod --frozen-lockfile
 
 FROM base AS build-deps
-RUN pnpm install 
+RUN pnpm install --frozen-lockfile
 
 FROM build-deps AS build
 COPY . .
