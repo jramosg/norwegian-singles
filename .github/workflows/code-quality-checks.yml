@@ -7,6 +7,9 @@ on:
     branches: ['**']
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   format-check:
     name: Run Prettier and TypeScript checks
@@ -14,7 +17,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       - name: Read Node version from .nvmrc
         id: node_version
@@ -28,12 +31,12 @@ jobs:
           fi
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
         with:
           version: 8
 
       - name: Use Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: ${{ steps.node_version.outputs.version }}
           cache: 'pnpm'
@@ -49,3 +52,14 @@ jobs:
 
       - name: Run tests
         run: pnpm test
+
+  docker-build:
+    name: Build production Docker image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Build production image
+        run: docker build --tag site:ci .
