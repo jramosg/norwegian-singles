@@ -52,10 +52,7 @@ export interface SubTSession {
 }
 
 export type DaySession =
-  | EasySession
-  | RestSession
-  | SubTSession
-  | DoubleDaySession;
+  EasySession | RestSession | SubTSession | DoubleDaySession;
 
 export interface WeeklyPlan {
   /** Label shown to user */

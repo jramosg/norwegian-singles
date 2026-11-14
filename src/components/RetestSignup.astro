@@ -58,9 +58,7 @@ const id = `retest-${placement}`;
         <label class="retest-consent">
           <input type="checkbox" name="consent" required />
           <span>
-            {before}
-            <a href={`/${locale}/privacy/`}>{linkText}</a>
-            {after}
+            {[before, <a href={`/${locale}/privacy/`}>{linkText}</a>, after]}
           </span>
         </label>
         <p class="retest-status" role="status" aria-live="polite" />

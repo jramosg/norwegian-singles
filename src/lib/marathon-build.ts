@@ -59,11 +59,7 @@ export interface MBRaceDay {
 }
 
 export type MarathonBuildDay =
-  | MBEasyDay
-  | MBRestDay
-  | MBSubTDay
-  | MBMarathonSpecificDay
-  | MBRaceDay;
+  MBEasyDay | MBRestDay | MBSubTDay | MBMarathonSpecificDay | MBRaceDay;
 
 export interface MarathonBuildWeek {
   weekNumber: number;

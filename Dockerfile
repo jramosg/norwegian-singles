@@ -1,11 +1,11 @@
-FROM node:22-alpine AS base
+FROM node:26-alpine AS base
 WORKDIR /app
 
-# Enable Corepack and pin pnpm to 9 (matches the pnpm-lock.yaml 9.0 format).
-# Unpinned, corepack pulls the latest pnpm (10+), which fails install with
-# ERR_PNPM_IGNORED_BUILDS; pnpm 9 runs build scripts by default and honors
-# the lockfile exactly (avoiding esbuild host/binary version drift).
-RUN corepack enable && corepack prepare pnpm@9 --activate
+# Pin pnpm to 9 (matches the pnpm-lock.yaml 9.0 format). pnpm 10+ fails
+# install with ERR_PNPM_IGNORED_BUILDS; pnpm 9 runs build scripts by default
+# and honors the lockfile exactly (avoiding esbuild host/binary drift).
+# Node 25+ no longer bundles Corepack, so install it with npm.
+RUN npm install -g pnpm@9
 ENV PNPM_STORE_PATH=/pnpm/store
 
 # Copy only manifest files to leverage build cache

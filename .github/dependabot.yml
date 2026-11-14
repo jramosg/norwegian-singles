@@ -4,11 +4,29 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    groups:
+      astro:
+        patterns: ['astro', '@astrojs/*']
+      react:
+        patterns: ['react', 'react-dom', '@types/react', '@types/react-dom']
+      minor-and-patch:
+        patterns: ['*']
+        update-types: ['minor', 'patch']
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+    groups:
+      github-actions:
+        patterns: ['*']
   - package-ecosystem: docker
     directory: /
     schedule:
       interval: weekly
+    ignore:
+      # Stay on Node LTS (even majors).
+      - dependency-name: node
+        versions: ['27']
+    groups:
+      docker-images:
+        patterns: ['*']
