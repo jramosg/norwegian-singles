@@ -42,27 +42,21 @@ const structuredData = foundRacePage
   : createSeoStructuredData(locale, foundPage!);
 ---
 
-{
-  foundPage && isVdotPage(locale, foundPage.slug) ? (
-    <VdotPage
-      locale={locale}
-      page={foundPage}
-      structuredData={structuredData}
-    />
-  ) : foundRacePage ? (
-    <RaceInputPage
-      locale={locale}
-      page={foundRacePage}
-      structuredData={structuredData}
-    />
-  ) : (
-    <LandingPage
-      locale={locale}
-      title={activePage.title}
-      description={activePage.description}
-      seoHeading={activePage.h1}
-      seoIntro={activePage.intro}
-      structuredData={structuredData}
-    />
-  )
-}
+{foundPage && isVdotPage(locale, foundPage.slug) ? (
+  <VdotPage locale={locale} page={foundPage} structuredData={structuredData} />
+) : foundRacePage ? (
+  <RaceInputPage
+    locale={locale}
+    page={foundRacePage}
+    structuredData={structuredData}
+  />
+) : (
+  <LandingPage
+    locale={locale}
+    title={activePage.title}
+    description={activePage.description}
+    seoHeading={activePage.h1}
+    seoIntro={activePage.intro}
+    structuredData={structuredData}
+  />
+)}

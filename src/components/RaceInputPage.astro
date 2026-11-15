@@ -305,15 +305,13 @@ const sessionDetail = (session: DaySession): string => {
             <strong>{page.paceCard.raceLabel}</strong>
           </div>
           <div class="race-pace-grid">
-            {
-              paceCards.map((pace) => (
-                <article class={`race-pace-card is-${pace.tone}`}>
-                  <span>{pace.label}</span>
-                  <strong>{pace.value}</strong>
-                  <em>{pace.note}</em>
-                </article>
-              ))
-            }
+            {paceCards.map((pace) => <article
+              class={`race-pace-card is-${pace.tone}`}
+            >
+              <span>{pace.label}</span>
+              <strong>{pace.value}</strong>
+              <em>{pace.note}</em>
+            </article>)}
           </div>
         </div>
       </div>
@@ -326,16 +324,14 @@ const sessionDetail = (session: DaySession): string => {
           <p>{labels.sampleIntro}</p>
         </div>
         <div class="sample-week">
-          {
-            samplePlan.days.map((session, index) => (
-              <article class={`sample-day sample-day-${session.kind}`}>
-                <span>{dayLabels[index]}</span>
-                <strong>{sessionTitle(session)}</strong>
-                <p>{sessionDetail(session)}</p>
-                {sessionPace(session) && <em>{sessionPace(session)}</em>}
-              </article>
-            ))
-          }
+          {samplePlan.days.map((session, index) => <article
+            class={`sample-day sample-day-${session.kind}`}
+          >
+            <span>{dayLabels[index]}</span>
+            <strong>{sessionTitle(session)}</strong>
+            <p>{sessionDetail(session)}</p>
+            {sessionPace(session) && <em>{sessionPace(session)}</em>}
+          </article>)}
         </div>
       </div>
     </section>
@@ -348,14 +344,10 @@ const sessionDetail = (session: DaySession): string => {
             <p>{labels.equivalentsIntro}</p>
           </div>
           <div class="equivalence-grid">
-            {
-              page.equivalents.map((equivalent) => (
-                <div class="equivalence-card">
-                  <span>{equivalent.label}</span>
-                  <strong>{equivalent.time}</strong>
-                </div>
-              ))
-            }
+            {page.equivalents.map((equivalent) => <div class="equivalence-card">
+              <span>{equivalent.label}</span>
+              <strong>{equivalent.time}</strong>
+            </div>)}
           </div>
         </div>
 
@@ -364,22 +356,18 @@ const sessionDetail = (session: DaySession): string => {
             <h2>{labels.nearbyTitle}</h2>
           </div>
           <nav class="nearby-list" aria-label={labels.nearbyTitle}>
-            {
-              nearbyPages.map((nearby) => (
-                <a
-                  class:list={[
-                    'nearby-link',
-                    nearby.slug === page.slug && 'is-current',
-                  ]}
-                  href={`/${locale}/${nearby.slug}/`}
-                  aria-current={nearby.slug === page.slug ? 'page' : undefined}
-                >
-                  <span>{nearby.displayTime}</span>
-                  <strong>{nearby.paceCard.rep3min}</strong>
-                  {nearby.slug === page.slug && <em>{labels.active}</em>}
-                </a>
-              ))
-            }
+            {nearbyPages.map((nearby) => <a
+              class:list={[
+                'nearby-link',
+                nearby.slug === page.slug && 'is-current',
+              ]}
+              href={`/${locale}/${nearby.slug}/`}
+              aria-current={nearby.slug === page.slug ? 'page' : undefined}
+            >
+              <span>{nearby.displayTime}</span>
+              <strong>{nearby.paceCard.rep3min}</strong>
+              {nearby.slug === page.slug && <em>{labels.active}</em>}
+            </a>)}
           </nav>
         </div>
       </div>

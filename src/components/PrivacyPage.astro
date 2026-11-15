@@ -19,14 +19,10 @@ const copy = engagementCopy[locale].privacy;
   <article class="privacy container">
     <h1>{copy.title}</h1>
     <p class="privacy-updated">{copy.updated}</p>
-    {
-      copy.sections.map((section) => (
-        <section>
-          <h2>{section.title}</h2>
-          <p>{section.text}</p>
-        </section>
-      ))
-    }
+    {copy.sections.map((section) => <section>
+      <h2>{section.title}</h2>
+      <p>{section.text}</p>
+    </section>)}
   </article>
 </AppLayout>
 

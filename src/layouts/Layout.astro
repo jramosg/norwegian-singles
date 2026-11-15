@@ -116,15 +116,13 @@ const allStructuredData = [
 
     <!-- Canonical & Alternates -->
     <link rel="canonical" href={canonicalURL.href} />
-    {
-      localeUrls.map(({ lang, url }) => (
-        <link
-          rel="alternate"
-          hreflang={languageLabels[lang].hreflang}
-          href={url.href}
-        />
-      ))
-    }
+    {localeUrls.map(({ lang, url }) => (
+      <link
+        rel="alternate"
+        hreflang={languageLabels[lang].hreflang}
+        href={url.href}
+      />
+    ))}
     <link rel="alternate" hreflang="x-default" href={defaultURL.href} />
 
     <!-- Open Graph -->
@@ -143,15 +141,13 @@ const allStructuredData = [
     <meta name="twitter:image" content={`${siteURL}/og-image.png`} />
 
     <!-- Structured Data -->
-    {
-      allStructuredData.map((data) => (
-        <script
-          type="application/ld+json"
-          is:inline
-          set:html={JSON.stringify(data)}
-        />
-      ))
-    }
+    {allStructuredData.map((data) => (
+      <script
+        type="application/ld+json"
+        is:inline
+        set:html={JSON.stringify(data)}
+      />
+    ))}
 
     <title>{title}</title>
 

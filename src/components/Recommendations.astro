@@ -469,95 +469,85 @@ const copy = {
     </div>
 
     <div class="recs-grid">
-      {
-        gearItems.map((item) => (
-          <a
-            class="rec-card"
-            href={item.link}
-            target="_blank"
-            rel="sponsored nofollow noopener noreferrer"
-            data-monetization="affiliate"
-            data-placement={placement}
-            data-item={item.key}
-          >
-            <div class="rec-cover-wrap">
-              {item.photo ? (
-                <Image
-                  src={item.photo}
-                  alt=""
-                  class="rec-cover"
-                  width={96}
-                  densities={[1.5, 2]}
-                  loading="lazy"
-                />
-              ) : (
-                <Icon name={item.icon} size={32} />
-              )}
-            </div>
-            <div class="rec-body">
-              <span class="rec-badge">{copy.gear[item.key]?.badge}</span>
-              <h3>{item.title}</h3>
-              <p class="rec-description">{copy.gear[item.key]?.description}</p>
-              <span class="rec-cta">{copy.cta}</span>
-              <small class="rec-paid">{copy.paid}</small>
-            </div>
-          </a>
-        ))
-      }
-      {
-        bookItems.map((book) => (
-          <article class="rec-card rec-card--book">
-            <div class="rec-cover-wrap">
-              {book.photo ? (
-                <Image
-                  src={book.photo}
-                  alt=""
-                  class="rec-cover rec-cover--book"
-                  width={96}
-                  densities={[1.5, 2]}
-                  loading="lazy"
-                />
-              ) : (
-                <Icon name="book-open" size={32} />
-              )}
-            </div>
-            <div class="rec-body">
-              <span class="rec-badge">{copy.books[book.key]?.badge}</span>
-              <h3>{book.title}</h3>
-              {book.author && <p class="rec-author">{book.author}</p>}
-              <p class="rec-description">{copy.books[book.key]?.description}</p>
-              <div class="rec-ctas">
-                {/* The first link covers the whole card (see .rec-stretch). */}
-                <a
-                  class="rec-cta rec-stretch"
-                  href={book.link}
-                  target="_blank"
-                  rel="sponsored nofollow noopener noreferrer"
-                  data-monetization="affiliate"
-                  data-placement={placement}
-                  data-item={book.key}
-                >
-                  {copy.cta}
-                </a>
-                {book.kindleLink && (
-                  <a
-                    class="rec-cta rec-cta--secondary"
-                    href={book.kindleLink}
-                    target="_blank"
-                    rel="sponsored nofollow noopener noreferrer"
-                    data-monetization="affiliate"
-                    data-placement={placement}
-                    data-item={`${book.key}-kindle`}
-                  >
-                    {copy.kindle}
-                  </a>
-                )}
-              </div>
-              <small class="rec-paid">{copy.paid}</small>
-            </div>
-          </article>
-        ))
-      }
+      {gearItems.map((item) => <a
+        class="rec-card"
+        href={item.link}
+        target="_blank"
+        rel="sponsored nofollow noopener noreferrer"
+        data-monetization="affiliate"
+        data-placement={placement}
+        data-item={item.key}
+      >
+        <div class="rec-cover-wrap">
+          {item.photo ? (
+            <Image
+              src={item.photo}
+              alt=""
+              class="rec-cover"
+              width={96}
+              densities={[1.5, 2]}
+              loading="lazy"
+            />
+          ) : (
+            <Icon name={item.icon} size={32} />
+          )}
+        </div>
+        <div class="rec-body">
+          <span class="rec-badge">{copy.gear[item.key]?.badge}</span>
+          <h3>{item.title}</h3>
+          <p class="rec-description">{copy.gear[item.key]?.description}</p>
+          <span class="rec-cta">{copy.cta}</span>
+          <small class="rec-paid">{copy.paid}</small>
+        </div>
+      </a>)}
+      {bookItems.map((book) => <article class="rec-card rec-card--book">
+        <div class="rec-cover-wrap">
+          {book.photo ? (
+            <Image
+              src={book.photo}
+              alt=""
+              class="rec-cover rec-cover--book"
+              width={96}
+              densities={[1.5, 2]}
+              loading="lazy"
+            />
+          ) : (
+            <Icon name="book-open" size={32} />
+          )}
+        </div>
+        <div class="rec-body">
+          <span class="rec-badge">{copy.books[book.key]?.badge}</span>
+          <h3>{book.title}</h3>
+          {book.author && <p class="rec-author">{book.author}</p>}
+          <p class="rec-description">{copy.books[book.key]?.description}</p>
+          <div class="rec-ctas">
+            {/* The first link covers the whole card (see .rec-stretch). */}
+            <a
+              class="rec-cta rec-stretch"
+              href={book.link}
+              target="_blank"
+              rel="sponsored nofollow noopener noreferrer"
+              data-monetization="affiliate"
+              data-placement={placement}
+              data-item={book.key}
+            >
+              {copy.cta}
+            </a>
+            {book.kindleLink && <a
+              class="rec-cta rec-cta--secondary"
+              href={book.kindleLink}
+              target="_blank"
+              rel="sponsored nofollow noopener noreferrer"
+              data-monetization="affiliate"
+              data-placement={placement}
+              data-item={`${book.key}-kindle`}
+            >
+              {copy.kindle}
+            </a>}
+          </div>
+          <small class="rec-paid">{copy.paid}</small>
+        </div>
+      </article>)}
     </div>
 
     <p class="recs-affiliate">

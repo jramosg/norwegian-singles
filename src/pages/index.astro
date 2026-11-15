@@ -48,13 +48,9 @@ import { defaultLocale, languageLabels, locales } from '../i18n/ui';
   </head>
   <body>
     <nav aria-label="Language">
-      {
-        locales.map((locale) => (
-          <a href={`/${locale}/`} lang={locale}>
-            {languageLabels[locale].nativeName}
-          </a>
-        ))
-      }
+      {locales.map((locale) => <a href={`/${locale}/`} lang={locale}>
+        {languageLabels[locale].nativeName}
+      </a>)}
     </nav>
   </body>
 </html>

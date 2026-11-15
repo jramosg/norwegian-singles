@@ -52,7 +52,9 @@ const ticks = Array.from({ length: 25 }, (_, i) => (i * W) / 24);
     focusable="false"
   >
     <g class="tc-ticks">
-      {ticks.map((x) => <line x1={x} x2={x} y1={BASE + 8} y2={BASE + 16} />)}
+      {ticks.map((x) => (
+        <line x1={x} x2={x} y1={BASE + 8} y2={BASE + 16} />
+      ))}
     </g>
     <line
       class="tc-line"
@@ -61,12 +63,14 @@ const ticks = Array.from({ length: 25 }, (_, i) => (i * W) / 24);
       y1={LINE}
       y2={LINE}
       vector-effect="non-scaling-stroke"
-      data-draw="line"></line>
+      data-draw="line"
+    ></line>
     <path
       class="tc-curve"
       d={d}
       vector-effect="non-scaling-stroke"
-      data-draw="curve"></path>
+      data-draw="curve"
+    ></path>
   </svg>
   <span class="tc-label" aria-hidden="true">{label}</span>
 </div>

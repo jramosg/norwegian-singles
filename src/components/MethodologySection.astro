@@ -130,42 +130,33 @@ const isGuidePage =
 ---
 
 <div class="methodology-section">
-  {
-    includePrinciples && (
-      <section class="manifesto" aria-labelledby="manifesto-title">
-        <div class="container manifesto-inner">
-          <h2 id="manifesto-title" class="manifesto-title">
-            {t('method.title')}
-          </h2>
-          <p class="manifesto-text" data-reveal-words>
-            {principles.map((p) => `${t(p.title)}. ${t(p.desc)}`).join(' ')}
-          </p>
-          {!isGuidePage && (
-            <a class="manifesto-link" href={guideLink.href}>
-              {guideLink.label}
-            </a>
-          )}
-        </div>
-      </section>
-    )
-  }
+  {includePrinciples && <section
+    class="manifesto"
+    aria-labelledby="manifesto-title"
+  >
+    <div class="container manifesto-inner">
+      <h2 id="manifesto-title" class="manifesto-title">
+        {t('method.title')}
+      </h2>
+      <p class="manifesto-text" data-reveal-words>
+        {principles.map((p) => `${t(p.title)}. ${t(p.desc)}`).join(' ')}
+      </p>
+      {!isGuidePage && <a class="manifesto-link" href={guideLink.href}>
+        {guideLink.label}
+      </a>}
+    </div>
+  </section>}
 
-  {
-    includeNotes && (
-      <section class="notes" aria-labelledby="notes-title">
-        <div class="container notes-inner">
-          <h2 id="notes-title" class="notes-title">
-            {notesTitle}
-          </h2>
-          <ul class="notes-list">
-            {notesList.map((note) => (
-              <li>{note}</li>
-            ))}
-          </ul>
-        </div>
-      </section>
-    )
-  }
+  {includeNotes && <section class="notes" aria-labelledby="notes-title">
+    <div class="container notes-inner">
+      <h2 id="notes-title" class="notes-title">
+        {notesTitle}
+      </h2>
+      <ul class="notes-list">
+        {notesList.map((note) => <li>{note}</li>)}
+      </ul>
+    </div>
+  </section>}
 </div>
 
 <style>
