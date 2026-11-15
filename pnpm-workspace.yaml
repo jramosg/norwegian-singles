@@ -1,0 +1,3 @@
+# Install scripts pnpm may run (pnpm 10+ blocks them unless listed).
+allowBuilds:
+  esbuild: true

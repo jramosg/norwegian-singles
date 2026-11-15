@@ -11,5 +11,4 @@ data
 .env
 .env.*
 !.env.example
-pnpm-workspace.yaml
 *.md
