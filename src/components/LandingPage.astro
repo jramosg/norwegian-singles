@@ -1266,24 +1266,18 @@ const sessionShapes = [
     <section class="hero" id="calculator">
       <div class="hero-panel">
         <div class="container hero-head">
-          {
-            isSeoLanding ? (
-              <h1 class="hero-title">{keepSlashTogether(seoHeading!)}</h1>
-            ) : (
-              <h1 class="hero-title">
-                {keepSlashTogether(
-                  `${t('hero.title')} ${t('hero.titleAccent')}`,
-                )}
-              </h1>
-            )
-          }
-          {
-            isSeoLanding && seoIntro ? (
-              <p class="hero-subtitle" set:html={seoIntro} />
-            ) : (
-              <p class="hero-subtitle">{t('hero.subtitle')}</p>
-            )
-          }
+          {isSeoLanding ? (
+            <h1 class="hero-title">{keepSlashTogether(seoHeading!)}</h1>
+          ) : (
+            <h1 class="hero-title">
+              {keepSlashTogether(`${t('hero.title')} ${t('hero.titleAccent')}`)}
+            </h1>
+          )}
+          {isSeoLanding && seoIntro ? (
+            <p class="hero-subtitle" set:html={seoIntro} />
+          ) : (
+            <p class="hero-subtitle">{t('hero.subtitle')}</p>
+          )}
           <ul class="proof-list" aria-label={t('hero.features')}>
             {proofBullets.map((item) => <li>{item}</li>)}
           </ul>
@@ -1302,15 +1296,11 @@ const sessionShapes = [
           <h2 id="sample-week-title" class="sample-title">{sample.title}</h2>
           <p class="sample-input">{sample.input}</p>
           <dl class="sample-days">
-            {
-              sample.days.map(([day, session, pace]) => (
-                <div class="sample-day">
-                  <dt>{day}</dt>
-                  <dd class="sample-session">{session}</dd>
-                  <dd class="sample-pace">{pace}</dd>
-                </div>
-              ))
-            }
+            {sample.days.map(([day, session, pace]) => <div class="sample-day">
+              <dt>{day}</dt>
+              <dd class="sample-session">{session}</dd>
+              <dd class="sample-pace">{pace}</dd>
+            </div>)}
           </dl>
         </aside>
       </div>
@@ -1324,52 +1314,48 @@ const sessionShapes = [
         </div>
 
         <ol class="session-list">
-          {
-            educationText.cards.map((card, i) => (
-              <li class="session-row">
-                <div class="session-copy">
-                  <h3>{card.title}</h3>
-                  <p>{card.text}</p>
-                </div>
-                <svg
-                  class="session-shape"
-                  viewBox="0 0 100 24"
-                  preserveAspectRatio="none"
-                  aria-hidden="true"
-                >
-                  <line class="session-limit" x1="0" x2="100" y1="4" y2="4" />
-                  {sessionShapes[i].map((bar) => (
-                    <rect
-                      class:list={['session-bar', { 'is-easy': i === 3 }]}
-                      x={bar.x}
-                      y={bar.y}
-                      width={bar.width}
-                      height={bar.height}
-                      rx="0.6"
-                    />
-                  ))}
-                </svg>
-              </li>
-            ))
-          }
+          {educationText.cards.map((card, i) => <li class="session-row">
+            <div class="session-copy">
+              <h3>{card.title}</h3>
+              <p>{card.text}</p>
+            </div>
+            <svg
+              class="session-shape"
+              viewBox="0 0 100 24"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              <line class="session-limit" x1="0" x2="100" y1="4" y2="4" />
+              {sessionShapes[i].map((bar) => (
+                <rect
+                  class:list={['session-bar', { 'is-easy': i === 3 }]}
+                  x={bar.x}
+                  y={bar.y}
+                  width={bar.width}
+                  height={bar.height}
+                  rx="0.6"
+                />
+              ))}
+            </svg>
+          </li>)}
         </ol>
 
-        {
-          nextStepActions.length > 0 && (
-            <nav class="next-steps" aria-labelledby="next-steps-title">
-              <h3 id="next-steps-title">{educationText.nextTitle}</h3>
-              <div class="next-step-grid">
-                {nextStepActions.map((action) => (
-                  <a class="next-step-link" href={action.href}>
-                    <span class="next-step-tag">{action.eyebrow}</span>
-                    <strong>{action.label}</strong>
-                    <span class="next-step-text">{action.text}</span>
-                  </a>
-                ))}
-              </div>
-            </nav>
-          )
-        }
+        {nextStepActions.length > 0 && <nav
+          class="next-steps"
+          aria-labelledby="next-steps-title"
+        >
+          <h3 id="next-steps-title">{educationText.nextTitle}</h3>
+          <div class="next-step-grid">
+            {nextStepActions.map((action) => <a
+              class="next-step-link"
+              href={action.href}
+            >
+              <span class="next-step-tag">{action.eyebrow}</span>
+              <strong>{action.label}</strong>
+              <span class="next-step-text">{action.text}</span>
+            </a>)}
+          </div>
+        </nav>}
       </div>
     </section>
 
@@ -1381,88 +1367,78 @@ const sessionShapes = [
 
     <Recommendations locale={locale} />
 
-    {
-      paceCard && (
-        <section class="pace-card-section">
-          <div class="container pace-card-container">
-            <div class="section-head">
-              <h2>{`${landingText.paceTitle}: ${paceCard.raceLabel}`}</h2>
-              <p>{landingText.paceIntro}</p>
-            </div>
-            <div class="pace-grid">
-              <div class="pace-cell">
-                <span>{landingText.shortSubT}</span>
-                <strong>{paceCard.rep3min}</strong>
-                <em>{landingText.rep3}</em>
-              </div>
-              <div class="pace-cell">
-                <span>{landingText.mediumSubT}</span>
-                <strong>{paceCard.rep6min}</strong>
-                <em>{landingText.rep6}</em>
-              </div>
-              <div class="pace-cell">
-                <span>{landingText.longSubT}</span>
-                <strong>{paceCard.rep10min}</strong>
-                <em>{landingText.rep10}</em>
-              </div>
-              <div class="pace-cell">
-                <span>{landingText.easyPace}</span>
-                <strong>{paceCard.easy}</strong>
-                <em>{landingText.easyRunning}</em>
-              </div>
-            </div>
+    {paceCard && <section class="pace-card-section">
+      <div class="container pace-card-container">
+        <div class="section-head">
+          <h2>{`${landingText.paceTitle}: ${paceCard.raceLabel}`}</h2>
+          <p>{landingText.paceIntro}</p>
+        </div>
+        <div class="pace-grid">
+          <div class="pace-cell">
+            <span>{landingText.shortSubT}</span>
+            <strong>{paceCard.rep3min}</strong>
+            <em>{landingText.rep3}</em>
           </div>
-        </section>
-      )
-    }
+          <div class="pace-cell">
+            <span>{landingText.mediumSubT}</span>
+            <strong>{paceCard.rep6min}</strong>
+            <em>{landingText.rep6}</em>
+          </div>
+          <div class="pace-cell">
+            <span>{landingText.longSubT}</span>
+            <strong>{paceCard.rep10min}</strong>
+            <em>{landingText.rep10}</em>
+          </div>
+          <div class="pace-cell">
+            <span>{landingText.easyPace}</span>
+            <strong>{paceCard.easy}</strong>
+            <em>{landingText.easyRunning}</em>
+          </div>
+        </div>
+      </div>
+    </section>}
 
     <section class="seo-content" id="guide">
       <div class="container seo-container">
         <h2>{seoHeading || t('seo.content.h2')}</h2>
-        {
-          seoIntro ? (
-            <p set:html={seoIntro} />
-          ) : (
-            <p set:html={t('seo.content.intro')} />
-          )
-        }
+        {seoIntro ? (
+          <p set:html={seoIntro} />
+        ) : (
+          <p set:html={t('seo.content.intro')} />
+        )}
 
-        {
-          article ? (
-            article.sections.map((section, i) => (
-              <Fragment>
-                <h3>{section.title}</h3>
-                <p set:html={section.html} />
-                {showBookCard && i === 0 && (
-                  <BookCard locale={locale} placement="article" />
-                )}
-              </Fragment>
-            ))
-          ) : (
-            <Fragment>
-              <h3>{t('seo.content.doubleThreshold.title')}</h3>
-              <p set:html={t('seo.content.doubleThreshold.text')} />
+        {article ? (
+          article.sections.map((section, i) => <Fragment>
+            <h3>{section.title}</h3>
+            <p set:html={section.html} />
+            {showBookCard && i === 0 && (
+              <BookCard locale={locale} placement="article" />
+            )}
+          </Fragment>)
+        ) : (
+          <Fragment>
+            <h3>{t('seo.content.doubleThreshold.title')}</h3>
+            <p set:html={t('seo.content.doubleThreshold.text')} />
 
-              <h3>{t('seo.content.howItWorks.title')}</h3>
-              <p set:html={t('seo.content.howItWorks.text')} />
-              <ul>
-                <li set:html={t('seo.content.howItWorks.rep3')} />
-                <li set:html={t('seo.content.howItWorks.rep6')} />
-                <li set:html={t('seo.content.howItWorks.rep10')} />
-              </ul>
-              <p set:html={t('seo.content.howItWorks.paces')} />
+            <h3>{t('seo.content.howItWorks.title')}</h3>
+            <p set:html={t('seo.content.howItWorks.text')} />
+            <ul>
+              <li set:html={t('seo.content.howItWorks.rep3')} />
+              <li set:html={t('seo.content.howItWorks.rep6')} />
+              <li set:html={t('seo.content.howItWorks.rep10')} />
+            </ul>
+            <p set:html={t('seo.content.howItWorks.paces')} />
 
-              <h3>{t('seo.content.weeklyPlans.title')}</h3>
-              <p set:html={t('seo.content.weeklyPlans.text')} />
+            <h3>{t('seo.content.weeklyPlans.title')}</h3>
+            <p set:html={t('seo.content.weeklyPlans.text')} />
 
-              <h3>{t('seo.content.marathon.title')}</h3>
-              <p set:html={t('seo.content.marathon.text')} />
+            <h3>{t('seo.content.marathon.title')}</h3>
+            <p set:html={t('seo.content.marathon.text')} />
 
-              <h3>{t('seo.content.whoIsItFor.title')}</h3>
-              <p set:html={t('seo.content.whoIsItFor.text')} />
-            </Fragment>
-          )
-        }
+            <h3>{t('seo.content.whoIsItFor.title')}</h3>
+            <p set:html={t('seo.content.whoIsItFor.text')} />
+          </Fragment>
+        )}
       </div>
     </section>
 
@@ -1474,17 +1450,13 @@ const sessionShapes = [
         </div>
 
         <div class="faq-list">
-          {
-            faqs.map((faq, i) => (
-              <details class="faq-item" open={i === 0}>
-                <summary>
-                  <h3>{faq.q}</h3>
-                  <span class="faq-toggle" aria-hidden="true" />
-                </summary>
-                <p>{faq.a}</p>
-              </details>
-            ))
-          }
+          {faqs.map((faq, i) => <details class="faq-item" open={i === 0}>
+            <summary>
+              <h3>{faq.q}</h3>
+              <span class="faq-toggle" aria-hidden="true" />
+            </summary>
+            <p>{faq.a}</p>
+          </details>)}
         </div>
       </div>
     </section>
@@ -1499,23 +1471,17 @@ const sessionShapes = [
         </div>
 
         <div class="related-groups">
-          {
-            relatedGroups.map((group) => (
-              <article class="related-group">
-                <h3>{group.title}</h3>
-                <ul class="related-list">
-                  {group.pages.map((page) => (
-                    <li>
-                      <a href={`/${locale}/${page.slug}/`}>
-                        <strong>{page.h1}</strong>
-                        <span>{page.summary}</span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            ))
-          }
+          {relatedGroups.map((group) => <article class="related-group">
+            <h3>{group.title}</h3>
+            <ul class="related-list">
+              {group.pages.map((page) => <li>
+                <a href={`/${locale}/${page.slug}/`}>
+                  <strong>{page.h1}</strong>
+                  <span>{page.summary}</span>
+                </a>
+              </li>)}
+            </ul>
+          </article>)}
         </div>
       </div>
     </section>
@@ -1527,23 +1493,17 @@ const sessionShapes = [
           <p>{landingText.lookupIntro}</p>
         </div>
         <div class="pace-lookup-grid">
-          {
-            raceGroups.map(({ key, label }) => (
-              <div class="pace-lookup-group">
-                <h3 class="pace-lookup-label">{label}</h3>
-                <div class="pace-lookup-times">
-                  {racePagesByDistance[key].map((page) => (
-                    <a
-                      class="pace-lookup-time"
-                      href={`/${locale}/${page.slug}/`}
-                    >
-                      {page.displayTime}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            ))
-          }
+          {raceGroups.map(({ key, label }) => <div class="pace-lookup-group">
+            <h3 class="pace-lookup-label">{label}</h3>
+            <div class="pace-lookup-times">
+              {racePagesByDistance[key].map((page) => <a
+                class="pace-lookup-time"
+                href={`/${locale}/${page.slug}/`}
+              >
+                {page.displayTime}
+              </a>)}
+            </div>
+          </div>)}
         </div>
       </div>
     </section>

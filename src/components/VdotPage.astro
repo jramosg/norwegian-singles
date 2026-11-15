@@ -125,29 +125,25 @@ const pageData = [
             </tr>
           </thead>
           <tbody>
-            {
-              chart.map((row) => (
-                <tr class:list={{ 'is-major': row.vdot % 5 === 0 }}>
-                  <th scope="row">{row.vdot}</th>
-                  <td>{formatTime(row.fiveK)}</td>
-                  <td>{formatTime(row.tenK)}</td>
-                  <td>{formatTime(row.half)}</td>
-                  <td>{formatTime(row.marathon)}</td>
-                  {[
-                    row.paces.easy.min,
-                    row.paces.threshold,
-                    row.paces.interval,
-                  ].map((secondsPerKm) => (
-                    <td>
-                      <span class="u-km">{formatPace(secondsPerKm, 'km')}</span>
-                      <span class="u-mi">
-                        {formatPace(secondsPerKm, 'mile')}
-                      </span>
-                    </td>
-                  ))}
-                </tr>
-              ))
-            }
+            {chart.map((row) => <tr
+              class:list={{ 'is-major': row.vdot % 5 === 0 }}
+            >
+              <th scope="row">{row.vdot}</th>
+              <td>{formatTime(row.fiveK)}</td>
+              <td>{formatTime(row.tenK)}</td>
+              <td>{formatTime(row.half)}</td>
+              <td>{formatTime(row.marathon)}</td>
+              {[
+                row.paces.easy.min,
+                row.paces.threshold,
+                row.paces.interval,
+              ].map((secondsPerKm) => <td>
+                <span class="u-km">{formatPace(secondsPerKm, 'km')}</span>
+                <span class="u-mi">
+                  {formatPace(secondsPerKm, 'mile')}
+                </span>
+              </td>)}
+            </tr>)}
           </tbody>
         </table>
       </div>
@@ -156,49 +152,35 @@ const pageData = [
 
   <section class="vp-guide">
     <div class="container vp-guide-inner">
-      {
-        copy.sections.map((section) => (
-          <div class="vp-guide-item">
-            <h2>{section.title}</h2>
-            <p>{section.text}</p>
-          </div>
-        ))
-      }
+      {copy.sections.map((section) => <div class="vp-guide-item">
+        <h2>{section.title}</h2>
+        <p>{section.text}</p>
+      </div>)}
     </div>
   </section>
 
   <section class="vp-faq" aria-labelledby="vdot-faq-title">
     <div class="container vp-faq-inner">
       <h2 id="vdot-faq-title">{copy.faqTitle}</h2>
-      {
-        copy.faqs.map((faq, i) => (
-          <details class="faq-item" open={i === 0}>
-            <summary>
-              <h3>{faq.q}</h3>
-              <span class="faq-toggle" aria-hidden="true" />
-            </summary>
-            <p>{faq.a}</p>
-          </details>
-        ))
-      }
+      {copy.faqs.map((faq, i) => <details class="faq-item" open={i === 0}>
+        <summary>
+          <h3>{faq.q}</h3>
+          <span class="faq-toggle" aria-hidden="true" />
+        </summary>
+        <p>{faq.a}</p>
+      </details>)}
     </div>
   </section>
 
   <Recommendations locale={locale} />
 
-  {
-    related.length > 0 && (
-      <nav class="vp-related" aria-label={page.h1}>
-        <div class="container">
-          <ul>
-            {related.map((link) => (
-              <li>
-                <a href={`/${locale}/${link.slug}/`}>{link.h1}</a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </nav>
-    )
-  }
+  {related.length > 0 && <nav class="vp-related" aria-label={page.h1}>
+    <div class="container">
+      <ul>
+        {related.map((link) => <li>
+          <a href={`/${locale}/${link.slug}/`}>{link.h1}</a>
+        </li>)}
+      </ul>
+    </div>
+  </nav>}
 </AppLayout>

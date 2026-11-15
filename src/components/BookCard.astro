@@ -39,21 +39,17 @@ const book = books.find((b) => b.key === 'nsm')!;
       >
         {copy.paperback}
       </a>
-      {
-        book.kindleLink && (
-          <a
-            class="book-kindle"
-            href={book.kindleLink}
-            target="_blank"
-            rel="sponsored nofollow noopener noreferrer"
-            data-monetization="affiliate"
-            data-placement={placement}
-            data-item="nsm-kindle"
-          >
-            {copy.kindle}
-          </a>
-        )
-      }
+      {book.kindleLink && <a
+        class="book-kindle"
+        href={book.kindleLink}
+        target="_blank"
+        rel="sponsored nofollow noopener noreferrer"
+        data-monetization="affiliate"
+        data-placement={placement}
+        data-item="nsm-kindle"
+      >
+        {copy.kindle}
+      </a>}
     </div>
     <small class="book-paid">{copy.paid}</small>
   </div>

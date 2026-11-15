@@ -80,38 +80,34 @@ const picks = [
     <p class="gear-strip-text">{copy.text}</p>
   </div>
   <ul class="gear-strip-picks">
-    {
-      picks.map(({ item, role, photo }) => (
-        <li>
-          <a
-            href={item.link}
-            target="_blank"
-            rel="sponsored nofollow noopener noreferrer"
-            data-monetization="affiliate"
-            data-placement={placement}
-            data-item={item.key}
-          >
-            <span class="gear-strip-icon" aria-hidden="true">
-              {photo ? (
-                <Image
-                  src={photo}
-                  alt=""
-                  width={56}
-                  densities={[1.5, 2]}
-                  loading="lazy"
-                />
-              ) : (
-                <Icon name={item.icon} size={20} />
-              )}
-            </span>
-            <span>
-              <strong>{item.title}</strong>
-              <em>{role}</em>
-            </span>
-          </a>
-        </li>
-      ))
-    }
+    {picks.map(({ item, role, photo }) => <li>
+      <a
+        href={item.link}
+        target="_blank"
+        rel="sponsored nofollow noopener noreferrer"
+        data-monetization="affiliate"
+        data-placement={placement}
+        data-item={item.key}
+      >
+        <span class="gear-strip-icon" aria-hidden="true">
+          {photo ? (
+            <Image
+              src={photo}
+              alt=""
+              width={56}
+              densities={[1.5, 2]}
+              loading="lazy"
+            />
+          ) : (
+            <Icon name={item.icon} size={20} />
+          )}
+        </span>
+        <span>
+          <strong>{item.title}</strong>
+          <em>{role}</em>
+        </span>
+      </a>
+    </li>)}
   </ul>
   <small class="gear-strip-paid">{copy.paid}</small>
 </aside>

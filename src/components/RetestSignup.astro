@@ -20,52 +20,48 @@ const [linkText, after = ''] = rest.split('{/link}');
 const id = `retest-${placement}`;
 ---
 
-{
-  NEWSLETTER.action && (
-    <section
-      class="retest"
-      aria-labelledby={`${id}-title`}
-      data-retest
-      data-locale={locale}
-      data-placement={placement}
-      data-msg-sending={copy.sending}
-      data-msg-success={copy.success}
-      data-msg-email={copy.invalidEmail}
-      data-msg-consent={copy.consentRequired}
-    >
-      <div class="retest-copy">
-        <h2 id={`${id}-title`}>{copy.title}</h2>
-        <p>{copy.text}</p>
-      </div>
-      <form class="retest-form" novalidate>
-        <label class="sr-only" for={`${id}-email`}>
-          {copy.emailLabel}
-        </label>
-        <div class="retest-row">
-          <input
-            id={`${id}-email`}
-            class="form-input"
-            type="email"
-            name="email"
-            autocomplete="email"
-            placeholder={copy.emailPlaceholder}
-            required
-          />
-          <button class="btn btn-primary" type="submit">
-            {copy.button}
-          </button>
-        </div>
-        <label class="retest-consent">
-          <input type="checkbox" name="consent" required />
-          <span>
-            {[before, <a href={`/${locale}/privacy/`}>{linkText}</a>, after]}
-          </span>
-        </label>
-        <p class="retest-status" role="status" aria-live="polite" />
-      </form>
-    </section>
-  )
-}
+{NEWSLETTER.action && <section
+  class="retest"
+  aria-labelledby={`${id}-title`}
+  data-retest
+  data-locale={locale}
+  data-placement={placement}
+  data-msg-sending={copy.sending}
+  data-msg-success={copy.success}
+  data-msg-email={copy.invalidEmail}
+  data-msg-consent={copy.consentRequired}
+>
+  <div class="retest-copy">
+    <h2 id={`${id}-title`}>{copy.title}</h2>
+    <p>{copy.text}</p>
+  </div>
+  <form class="retest-form" novalidate>
+    <label class="sr-only" for={`${id}-email`}>
+      {copy.emailLabel}
+    </label>
+    <div class="retest-row">
+      <input
+        id={`${id}-email`}
+        class="form-input"
+        type="email"
+        name="email"
+        autocomplete="email"
+        placeholder={copy.emailPlaceholder}
+        required
+      />
+      <button class="btn btn-primary" type="submit">
+        {copy.button}
+      </button>
+    </div>
+    <label class="retest-consent">
+      <input type="checkbox" name="consent" required />
+      <span>
+        {[before, <a href={`/${locale}/privacy/`}>{linkText}</a>, after]}
+      </span>
+    </label>
+    <p class="retest-status" role="status" aria-live="polite" />
+  </form>
+</section>}
 
 <script>
   import { NEWSLETTER, isValidEmail, retestDate } from '../lib/newsletter';

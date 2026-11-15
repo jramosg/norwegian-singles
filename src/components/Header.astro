@@ -71,25 +71,21 @@ const languageMenuLabel = {
           </svg>
         </summary>
         <div class="lang-options">
-          {
-            locales.map((lang) => {
-              const label = languageLabels[lang];
-              return (
-                <a
-                  href={localizedPath(lang)}
-                  class:list={['lang-option', { 'is-active': lang === locale }]}
-                  aria-current={lang === locale ? 'page' : undefined}
-                  data-lang-target={lang}
-                >
-                  <span class="lang-option-code">{label.code}</span>
-                  <span>
-                    <strong>{label.nativeName}</strong>
-                    <em>{label.name}</em>
-                  </span>
-                </a>
-              );
-            })
-          }
+          {locales.map((lang) => {
+            const label = languageLabels[lang];
+            return <a
+              href={localizedPath(lang)}
+              class:list={['lang-option', { 'is-active': lang === locale }]}
+              aria-current={lang === locale ? 'page' : undefined}
+              data-lang-target={lang}
+            >
+              <span class="lang-option-code">{label.code}</span>
+              <span>
+                <strong>{label.nativeName}</strong>
+                <em>{label.name}</em>
+              </span>
+            </a>;
+          })}
         </div>
       </details>
 
@@ -129,25 +125,18 @@ const languageMenuLabel = {
   <div class="mobile-lang">
     <p class="mobile-lang-label">{languageMenuLabel}</p>
     <div class="mobile-lang-grid">
-      {
-        locales.map((lang) => {
-          const label = languageLabels[lang];
-          return (
-            <a
-              href={localizedPath(lang)}
-              class:list={[
-                'mobile-lang-option',
-                { 'is-active': lang === locale },
-              ]}
-              aria-current={lang === locale ? 'page' : undefined}
-              data-lang-target={lang}
-            >
-              <span>{label.code}</span>
-              <strong>{label.nativeName}</strong>
-            </a>
-          );
-        })
-      }
+      {locales.map((lang) => {
+        const label = languageLabels[lang];
+        return <a
+          href={localizedPath(lang)}
+          class:list={['mobile-lang-option', { 'is-active': lang === locale }]}
+          aria-current={lang === locale ? 'page' : undefined}
+          data-lang-target={lang}
+        >
+          <span>{label.code}</span>
+          <strong>{label.nativeName}</strong>
+        </a>;
+      })}
     </div>
   </div>
 </div>
